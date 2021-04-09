@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f4bdb615ed5d463794f03382151ae49, type: 3}
+  m_Name: PrefabsHolder
+  m_EditorClassIdentifier: 
+  Human: {fileID: 1042132282819533149, guid: 9a1151546a1e0402b92e30b61d86303d, type: 3}
+  HeadPrefab: {fileID: 6679148590625315287, guid: 222b3c1d4388940fa92e1d49a1c54f89,
+    type: 3}
+  HeadProfilePrefab: {fileID: 3164207944659733220, guid: b841ee795e37347919b1cda9ed15a70f,
+    type: 3}
+  FloorPrefab: {fileID: 1675221126319874769, guid: 0161fd5228c06488f8ac900d1259fb2f,
+    type: 3}

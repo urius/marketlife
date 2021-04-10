@@ -16,10 +16,12 @@ public class GridCalculator
     }
 
     private Grid _grid;
+    private float _cellSize;
 
     public void SetGrid(Grid grid)
     {
         _grid = grid;
+        _cellSize = _grid.cellSize.x;
     }
 
     public Vector3 CellToWord(Vector2Int cellCoords)
@@ -31,5 +33,19 @@ public class GridCalculator
     {
         var cellCoordsRaw = _grid.WorldToCell(worldCoords);
         return new Vector2Int(cellCoordsRaw.y, cellCoordsRaw.x);
+    }
+
+    public Vector3 GetCellLeftCorner(Vector2Int cellCoords)
+    {
+        var result = _grid.GetCellCenterWorld(new Vector3Int(cellCoords.y, cellCoords.x, 0));
+        result.x += _cellSize * 0.5f;
+        return result;
+    }
+
+    public Vector3 GetCellRightCorner(Vector2Int cellCoords)
+    {
+        var result = _grid.GetCellCenterWorld(new Vector3Int(cellCoords.y, cellCoords.x, 0));
+        result.x -= _cellSize * 0.5f;
+        return result;
     }
 }

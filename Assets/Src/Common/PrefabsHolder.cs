@@ -10,6 +10,7 @@ public class PrefabsHolder : ScriptableObject
     public GameObject HeadProfilePrefab;
 
     public GameObject FloorPrefab;
+    public GameObject WallPrefab;
 
     private void OnEnable()
     {

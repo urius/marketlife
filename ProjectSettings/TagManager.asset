@@ -41,7 +41,16 @@ TagManager:
   - name: Floor
     uniqueID: 2257679439
     locked: 0
-  - name: Orderable
+  - name: Orderable outside
+    uniqueID: 702822615
+    locked: 0
+  - name: Walls
+    uniqueID: 1458420155
+    locked: 0
+  - name: Windows&Doors
+    uniqueID: 17619469
+    locked: 0
+  - name: Orderable inside
     uniqueID: 1955621189
     locked: 0
   - name: Default

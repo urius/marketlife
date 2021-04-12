@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2318549713
+CRC: 2137898516
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 141fcb47e6836b466b1dfa6a5363959f
+    Hash: 85494086d323d7f58c41ab747fc34ca8
   TypeTreeHash:
     serializedVersion: 2
     Hash: 3dbb92f992534c06c4e322444b68580f
@@ -40,6 +40,7 @@ Assets:
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/FootClothes6_Profile.png
 - Assets/External Resources/GameplayGraphicsBundle/Shop/Walls/Wall8.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Hair2_Profile.png
+- Assets/External Resources/GameplayGraphicsBundle/Shop/Windows/Window2.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/Clothes2.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Mouth8.png
 - Assets/External Resources/GameplayGraphicsBundle/Shop/Walls/Wall7.png
@@ -56,10 +57,10 @@ Assets:
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/EarProfileBase.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Glasses1.png
 - Assets/External Resources/GameplayGraphicsBundle/Shop/Floors/Floor3.png
-- Assets/External Resources/GameplayGraphicsBundle/People/Clothes/FootClothes5_Profile.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Mouth10.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Eye2Base.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/FootClothes5.png
+- Assets/External Resources/GameplayGraphicsBundle/People/Clothes/FootClothes5_Profile.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/HandClothes2.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/Clothes1.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/FootClothes3_Profile.png
@@ -68,6 +69,7 @@ Assets:
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Hair3_Profile.png
 - Assets/External Resources/GameplayGraphicsBundle/Shop/Walls/Wall1.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Hair4_Profile.png
+- Assets/External Resources/GameplayGraphicsBundle/Shop/Windows/Window1.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/Clothes4_Profile.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Hair1_Profile.png
 - Assets/External Resources/GameplayGraphicsBundle/Shop/Floors/Floor4.png
@@ -103,8 +105,8 @@ Assets:
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Mouth1.png
 - Assets/External Resources/GameplayGraphicsBundle/Shop/Floors/Floor1.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/Clothes3_Profile.png
-- Assets/External Resources/GameplayGraphicsBundle/People/Clothes/Clothes7_Profile.png
 - Assets/External Resources/GameplayGraphicsBundle/Shop/Floors/Floor5.png
+- Assets/External Resources/GameplayGraphicsBundle/People/Clothes/Clothes7_Profile.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Mouth5.png
 - Assets/External Resources/GameplayGraphicsBundle/Shop/Walls/Wall4.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/HandClothes3.png

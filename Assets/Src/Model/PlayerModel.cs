@@ -2,8 +2,8 @@ using System;
 
 public class PlayerModel
 {
-    public static PlayerModel Instance => GetOrCreateInstance();
-    private static PlayerModel _instance;
+    public static PlayerModel Instance => _instance.Value;
+    private static Lazy<PlayerModel> _instance = new Lazy<PlayerModel>();
 
     public event Action<ShopModel> ViewingShopModelChanged = delegate { };
 
@@ -27,15 +27,5 @@ public class PlayerModel
         ViewingShopModel = shopModel;
 
         ViewingShopModelChanged(ViewingShopModel);
-    }
-
-    private static PlayerModel GetOrCreateInstance()
-    {
-        if (_instance == null)
-        {
-            _instance = new PlayerModel();
-        }
-
-        return _instance;
     }
 }

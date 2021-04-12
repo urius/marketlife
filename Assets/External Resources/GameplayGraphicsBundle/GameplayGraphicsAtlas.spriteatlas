@@ -32,7 +32,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 5804ef6ef86794aa6ac1d44028fafb7e, type: 3}
-    totalSpriteSurfaceArea: 443407
+    totalSpriteSurfaceArea: 451354
     bindAsDefault: 0
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -106,10 +106,12 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 3cefd14ce6d814039840e299dc06b367, type: 3}
   - {fileID: 21300000, guid: c8ac936c5a03f4c9ebf0e82e12ea766d, type: 3}
   - {fileID: 21300000, guid: fd87e86c369ba4eb89a164387cd2f953, type: 3}
+  - {fileID: 21300000, guid: 89d99bac48c7640baa8042b6ab9ff4cf, type: 3}
   - {fileID: 21300000, guid: a85cd0dc6aff74f6dbec14cad26319c8, type: 3}
   - {fileID: 21300000, guid: b5aef7ec65b9e49c8a34588e7e0e6a25, type: 3}
   - {fileID: 21300000, guid: a8d70bfc5bafd452a93eb6df0757472f, type: 3}
   - {fileID: 21300000, guid: 69919f4db9f964f25a6292abec62522c, type: 3}
+  - {fileID: 21300000, guid: c5545d5d349514955a4871b3cca2e150, type: 3}
   - {fileID: 21300000, guid: 9f161bcdd87c248a8aac5a6eb1df11ec, type: 3}
   - {fileID: 21300000, guid: 0dee902e92ab04d25a869284b6472783, type: 3}
   - {fileID: 21300000, guid: af0b8e4eed45c4f479acadf9cffdda36, type: 3}
@@ -197,10 +199,12 @@ SpriteAtlas:
   - Wall1
   - Clothes2_Profile
   - Mouth1
+  - Window1
   - HandSkinWhite
   - Glasses4
   - Clothes5
   - Hair1
+  - Window2
   - Clothes7
   - Mouth4
   - HeadBase

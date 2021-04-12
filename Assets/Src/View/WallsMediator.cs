@@ -20,7 +20,7 @@ public class WallsMediator : MonoBehaviour
 
         if (_playerModel.ViewingShopModel != null)
         {
-            ShowWalls(_playerModel.ViewingShopModel.ShopDesign.Walls);
+            ShowPerimeterDesign(_playerModel.ViewingShopModel.ShopDesign);
         }
     }
 
@@ -31,7 +31,13 @@ public class WallsMediator : MonoBehaviour
 
     private void OnViewingShopModelChanged(ShopModel newShopModel)
     {
-        ShowWalls(newShopModel.ShopDesign.Walls);
+        ShowPerimeterDesign(newShopModel.ShopDesign);
+    }
+
+    private void ShowPerimeterDesign(ShoDesignModel shopDesign)
+    {
+        ShowWalls(shopDesign.Walls);
+        ShowWindows(shopDesign.Windows);
     }
 
     private void ShowWalls(Dictionary<Vector2Int, int> wallsDataNew)
@@ -70,5 +76,21 @@ public class WallsMediator : MonoBehaviour
         }
 
         keysToRemove.ForEach(k => _wallViews.Remove(k));
+    }
+
+    private void ShowWindows(Dictionary<Vector2Int, int> windowsDataNew)
+    {
+        foreach (var kvp in _wallViews)
+        {
+            var wallView = kvp.Value;
+            if (windowsDataNew.TryGetValue(kvp.Key, out var windowId))
+            {
+                wallView.SetWindowId(windowId);
+            }
+            else
+            {
+                wallView.RemoveWindow();
+            }
+        }
     }
 }

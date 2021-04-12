@@ -1,19 +1,10 @@
+using System;
 using UnityEngine;
 
 public class GridCalculator
 {
-    public static GridCalculator Instance => GetOrCreateInstance();
-    private static GridCalculator _instance;
-
-    private static GridCalculator GetOrCreateInstance()
-    {
-        if (_instance == null)
-        {
-            _instance = new GridCalculator();
-        }
-
-        return _instance;
-    }
+    public static GridCalculator Instance => _instance.Value;
+    private static Lazy<GridCalculator> _instance = new Lazy<GridCalculator>();
 
     private Grid _grid;
     private float _cellSize;

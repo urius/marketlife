@@ -37,6 +37,11 @@ public class GraphicsManager : ScriptableObject
         return GetSprite(SpriteAtlasId.GameplayAtlas, $"Window{windowId}");
     }
 
+    public Sprite GetDoorSprite(int doorId)
+    {
+        return GetSprite(SpriteAtlasId.GameplayAtlas, $"Door{doorId}");
+    }
+
     public Sprite GetSprite(SpriteAtlasId atlasId, string spriteName)
     {
         if (TryGetAtlasData(atlasId, out var atlasData))

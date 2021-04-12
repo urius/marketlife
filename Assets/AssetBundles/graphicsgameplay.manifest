@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2137898516
+CRC: 3897479660
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 85494086d323d7f58c41ab747fc34ca8
+    Hash: d132e4771cb4e5b091b724467b6f0a41
   TypeTreeHash:
     serializedVersion: 2
     Hash: 3dbb92f992534c06c4e322444b68580f
@@ -54,6 +54,7 @@ Assets:
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Mouth6.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Brow1Base.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Eye1Base.png
+- Assets/External Resources/GameplayGraphicsBundle/Shop/Doors/Door2.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/EarProfileBase.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Glasses1.png
 - Assets/External Resources/GameplayGraphicsBundle/Shop/Floors/Floor3.png
@@ -61,6 +62,7 @@ Assets:
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Eye2Base.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/FootClothes5.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/FootClothes5_Profile.png
+- Assets/External Resources/GameplayGraphicsBundle/Shop/Doors/Door1.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/HandClothes2.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/Clothes1.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/FootClothes3_Profile.png

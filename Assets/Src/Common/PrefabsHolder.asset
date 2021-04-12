@@ -21,3 +21,5 @@ MonoBehaviour:
     type: 3}
   WallPrefab: {fileID: 2794988592096314229, guid: a1cf383c968af47f2919b9d89ffd7bc1,
     type: 3}
+  DoorPrefab: {fileID: 7378489907865605839, guid: aa5295e8118a447988d8480635ec2a8d,
+    type: 3}

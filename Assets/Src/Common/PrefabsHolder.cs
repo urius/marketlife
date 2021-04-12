@@ -11,6 +11,7 @@ public class PrefabsHolder : ScriptableObject
 
     public GameObject FloorPrefab;
     public GameObject WallPrefab;
+    public GameObject DoorPrefab;
 
     private void OnEnable()
     {

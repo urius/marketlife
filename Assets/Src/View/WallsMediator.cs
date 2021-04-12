@@ -7,6 +7,7 @@ public class WallsMediator : MonoBehaviour
     private GridCalculator _gridCalculator;
 
     private readonly Dictionary<Vector2Int, WallView> _wallViews = new Dictionary<Vector2Int, WallView>();
+    private readonly Dictionary<Vector2Int, DoorView> _doorViews = new Dictionary<Vector2Int, DoorView>();
 
     private void Awake()
     {
@@ -38,16 +39,18 @@ public class WallsMediator : MonoBehaviour
     {
         ShowWalls(shopDesign.Walls);
         ShowWindows(shopDesign.Windows);
+        ShowDoors(shopDesign.Doors);
     }
 
     private void ShowWalls(Dictionary<Vector2Int, int> wallsDataNew)
     {
         foreach (var kvp in wallsDataNew)
         {
+            WallView wallView;
             if (!_wallViews.ContainsKey(kvp.Key))
             {
                 var wallGo = Instantiate(PrefabsHolder.Instance.WallPrefab, transform);
-                var wallView = wallGo.GetComponent<WallView>();
+                wallView = wallGo.GetComponent<WallView>();
                 var irRightWall = kvp.Key.y == -1;
                 wallGo.transform.position = irRightWall ? _gridCalculator.GetCellLeftCorner(kvp.Key) : _gridCalculator.GetCellRightCorner(kvp.Key);
                 if (irRightWall)
@@ -61,8 +64,13 @@ public class WallsMediator : MonoBehaviour
 
                 _wallViews[kvp.Key] = wallView;
             }
+            else
+            {
+                wallView = _wallViews[kvp.Key];
+                wallView.gameObject.SetActive(true);
+            }
 
-            _wallViews[kvp.Key].SetWallId(kvp.Value);
+            wallView.SetWallId(kvp.Value);
         }
 
         var keysToRemove = new List<Vector2Int>();
@@ -92,5 +100,42 @@ public class WallsMediator : MonoBehaviour
                 wallView.RemoveWindow();
             }
         }
+    }
+
+    private void ShowDoors(Dictionary<Vector2Int, int> doorsDataNew)
+    {
+        RemoveAllDoors();
+
+        foreach (var kvp in doorsDataNew)
+        {
+            if (_wallViews.TryGetValue(kvp.Key, out var wallView))
+            {
+                wallView.gameObject.SetActive(false);
+            }
+
+            var doorGo = Instantiate(PrefabsHolder.Instance.DoorPrefab, transform);
+            var doorlView = doorGo.GetComponent<DoorView>();
+            var irRightSide = kvp.Key.y == -1;
+            doorGo.transform.position = irRightSide ? _gridCalculator.GetCellLeftCorner(kvp.Key) : _gridCalculator.GetCellRightCorner(kvp.Key);
+            if (irRightSide)
+            {
+                doorlView.ToRightState();
+            }
+            else
+            {
+                doorlView.ToLeftState();
+            }
+
+            _doorViews[kvp.Key] = doorlView;
+        }
+    }
+
+    private void RemoveAllDoors()
+    {
+        foreach (var doorView in _doorViews.Values)
+        {
+            Destroy(doorView.gameObject);
+        }
+        _doorViews.Clear();
     }
 }

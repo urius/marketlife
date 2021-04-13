@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class WallView : MonoBehaviour
+public class WallView : AbstractWallView
 {
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private SpriteRenderer _windowSpriteRenderer;
@@ -10,20 +10,6 @@ public class WallView : MonoBehaviour
     public void Awake()
     {
         _graphicsManager = GraphicsManager.Instance;
-    }
-
-    public void ToRightState()
-    {
-        var euler = transform.eulerAngles;
-        euler.x = 45;
-        transform.eulerAngles = euler;
-    }
-
-    public void ToLeftState()
-    {
-        var euler = transform.eulerAngles;
-        euler.x = 315;
-        transform.eulerAngles = euler;
     }
 
     public void SetWallId(int wallId)

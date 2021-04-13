@@ -1,0 +1,33 @@
+Plan:
+
+1. Display shelfs
+2. Display products on shelfs
+3. Shelfs occupation matrix + rotation logic
+4. Cashdesk (multicell occupation matrix + rotation logic)
+5. People walking + sorting logic
+6. UI: Top panel
+7. UI: bottom panel Friends
+8. UI: bottom panel Warehouse + handle warehouse data
+9. UI: bottom panel Interior
+10. Interior paint Floors logic
+11. Interior paint Walls logic
+12. Interior paint Windows logic
+14. interior paint Doors logic
+15. UI: Shelf content window + remove product logic
+16. UI: Order product window + order product animation
+17. UI: Place product logic
+18. UI: Cashdesk window + choose cashman view logic
+19. Gold store + buy gold logic + buy cash logic
+20. Calculate offline logic
+21. Report window
+22. People buy product logic
+23. Show friend shop logic
+24: Friend shop thief logic
+25. Friend shop add dirt logic
+26. UI: Leaderboard window
+27: Personal window + personal logic (cleaner + security + merchendiser)
+
+28: Map scrolling logic
+
+approximately: ~10 weeks 
+Plan created: 12.04.2021

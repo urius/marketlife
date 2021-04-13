@@ -13,6 +13,9 @@ public class PrefabsHolder : ScriptableObject
     public GameObject WallPrefab;
     public GameObject DoorPrefab;
 
+    public GameObject Shelf1Prefab;
+    public GameObject Shelf1ProfilePrefab;
+
     private void OnEnable()
     {
         Instance = this;

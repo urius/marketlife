@@ -17,26 +17,26 @@ public class GridCalculator
 
     public Vector3 CellToWord(Vector2Int cellCoords)
     {
-        return _grid.GetCellCenterWorld(new Vector3Int(cellCoords.y, cellCoords.x, 0));
+        return _grid.GetCellCenterWorld(new Vector3Int(-cellCoords.y, -cellCoords.x, 0));
     }
 
     public Vector2Int WorldToCell(Vector3 worldCoords)
     {
         var cellCoordsRaw = _grid.WorldToCell(worldCoords);
-        return new Vector2Int(cellCoordsRaw.y, cellCoordsRaw.x);
+        return new Vector2Int(-cellCoordsRaw.y, -cellCoordsRaw.x);
     }
 
     public Vector3 GetCellLeftCorner(Vector2Int cellCoords)
     {
-        var result = _grid.GetCellCenterWorld(new Vector3Int(cellCoords.y, cellCoords.x, 0));
-        result.x += _cellSize * 0.5f;
+        var result = CellToWord(cellCoords);
+        result.x -= _cellSize * 0.5f;
         return result;
     }
 
     public Vector3 GetCellRightCorner(Vector2Int cellCoords)
     {
-        var result = _grid.GetCellCenterWorld(new Vector3Int(cellCoords.y, cellCoords.x, 0));
-        result.x -= _cellSize * 0.5f;
+        var result = CellToWord(cellCoords);
+        result.x += _cellSize * 0.5f;
         return result;
     }
 }

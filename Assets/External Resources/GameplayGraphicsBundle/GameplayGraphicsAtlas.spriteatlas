@@ -32,8 +32,8 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 5804ef6ef86794aa6ac1d44028fafb7e, type: 3}
-    totalSpriteSurfaceArea: 474762
-    bindAsDefault: 0
+    totalSpriteSurfaceArea: 503423
+    bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
@@ -50,6 +50,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: c8d84dd1a5d944c96bfe5f548faf5c7f, type: 3}
   - {fileID: 21300000, guid: 54673c12e22804941a1b14357d5132fb, type: 3}
   - {fileID: 21300000, guid: e8cb05227720f4a0684e1be061e56386, type: 3}
+  - {fileID: 21300000, guid: 219557221500e44a5a762698fccf8b77, type: 3}
   - {fileID: 21300000, guid: 3c1e6b82fc9894ba7acaf88432ca513a, type: 3}
   - {fileID: 21300000, guid: 2d68c8a295cde48cc94f6448f775a1b9, type: 3}
   - {fileID: 21300000, guid: 6ded7ef2939564324b5961fcee1bd3e0, type: 3}
@@ -88,6 +89,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 16e528e786ae446d3a199cd9f554687f, type: 3}
   - {fileID: 21300000, guid: 0d896a384eb60488898df36f53aa597a, type: 3}
   - {fileID: 21300000, guid: 40478e58369a045f09609677e5a6f00e, type: 3}
+  - {fileID: 21300000, guid: d9175788f26da4656ad53c67499f24f7, type: 3}
   - {fileID: 21300000, guid: 2b9b1b9848d714eb29461815b0c30a94, type: 3}
   - {fileID: 21300000, guid: 401071a869795483fb01e4456a6d55a6, type: 3}
   - {fileID: 21300000, guid: 63b62cc88370f427c994a2f5983f0267, type: 3}
@@ -116,6 +118,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: c5545d5d349514955a4871b3cca2e150, type: 3}
   - {fileID: 21300000, guid: 9f161bcdd87c248a8aac5a6eb1df11ec, type: 3}
   - {fileID: 21300000, guid: 0dee902e92ab04d25a869284b6472783, type: 3}
+  - {fileID: 21300000, guid: 4463db4ea503644818e43db7042a13ba, type: 3}
   - {fileID: 21300000, guid: af0b8e4eed45c4f479acadf9cffdda36, type: 3}
   - {fileID: 21300000, guid: ac22f85e590794d1fb7f3e770b07a8c7, type: 3}
   - {fileID: 21300000, guid: 2d38b95e40bb74eaf9547b11ae2bc1ca, type: 3}
@@ -145,6 +148,7 @@ SpriteAtlas:
   - HandClothes1
   - Brow2Base
   - Clothes6
+  - Shelf_1_back
   - Hair8
   - Wall2
   - Mouth9
@@ -183,6 +187,7 @@ SpriteAtlas:
   - Wall8
   - HandClothes3
   - FootClothes2_Profile
+  - Shelf_1_shadow
   - Floor2
   - FootClothes1
   - EarProfileBase
@@ -211,6 +216,7 @@ SpriteAtlas:
   - Window2
   - Clothes7
   - Mouth4
+  - Shelf_1_floor
   - HeadBase
   - FootClothes7
   - HeadBase_Profile

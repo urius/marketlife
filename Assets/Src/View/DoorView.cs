@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DoorView : MonoBehaviour
+public class DoorView : AbstractWallView
 {
     [SerializeField] private SpriteRenderer _spriteRenderer;
 
@@ -9,20 +9,6 @@ public class DoorView : MonoBehaviour
     public void Awake()
     {
         _graphicsManager = GraphicsManager.Instance;
-    }
-
-    public void ToRightState()
-    {
-        var euler = transform.eulerAngles;
-        euler.x = 45;
-        transform.eulerAngles = euler;
-    }
-
-    public void ToLeftState()
-    {
-        var euler = transform.eulerAngles;
-        euler.x = 315;
-        transform.eulerAngles = euler;
     }
 
     public void SetDoorId(int doorId)

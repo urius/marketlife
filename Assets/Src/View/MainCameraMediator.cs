@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 
-[ExecuteInEditMode]
 public class MainCameraMediator : MonoBehaviour
 {
     [SerializeField] private Camera _camera;

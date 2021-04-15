@@ -1,9 +1,11 @@
+using UnityEngine;
+
 public class ShelfModel : ShopObjectBase
 {
     public ProductModel[] Products;
 
-    public ShelfModel(int level, int angle, ProductModel[] products)
-        : base(level, angle)
+    public ShelfModel(Vector2Int coords, int level, int angle, ProductModel[] products)
+        : base(coords, level, angle)
     {
         Products = products;
     }

@@ -23,13 +23,13 @@ public static class DtoExtensions
         {
             var coords = ParseCoords(kvp.Key);
             var paramsStr = kvp.Value.Split('|');
-            result[coords] = CreateShopObject(paramsStr);
+            result[coords] = CreateShopObject(coords, paramsStr);
         }
 
         return result;
     }
 
-    private static ShopObjectBase CreateShopObject(string[] paramsStr)
+    private static ShopObjectBase CreateShopObject(Vector2Int coords, string[] paramsStr)
     {
         var splitted1StParam = paramsStr[0].Split('_');
         var typeId = splitted1StParam[0];
@@ -39,8 +39,8 @@ public static class DtoExtensions
 
         ShopObjectBase result = typeId switch
         {
-            "s" => new ShelfModel(level, angle, ToProducts(objectParamsShort)),
-            "cd" => new CashDeskModel(level, angle, objectParamsShort),
+            "s" => new ShelfModel(coords, level, angle, ToProducts(objectParamsShort)),
+            "cd" => new CashDeskModel(coords, level, angle, objectParamsShort),
             _ => throw new System.ArgumentOutOfRangeException(typeId, $"typeId {typeId} is not supported"),
         };
         return result;

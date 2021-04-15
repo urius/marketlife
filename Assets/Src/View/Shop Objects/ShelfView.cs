@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class ShelfView : MonoBehaviour
+public class ShelfView : ShopObjectViewBase
 {
     [SerializeField] private ProductFloor[] _productFloors;
 

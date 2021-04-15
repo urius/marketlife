@@ -53,9 +53,12 @@ TagManager:
   - name: Orderable inside
     uniqueID: 1955621189
     locked: 0
-  - name: '[ Shelf temp ]'
+  - name: '[ object temp ]'
     uniqueID: 3105408067
     locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: UI
+    uniqueID: 3940992087
     locked: 0

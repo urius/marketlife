@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/DebugScenes/PeopleAnimations.unity
-    guid: 54f6ce20681b442079d399d36db37e4e
+    path: Assets/Scenes/MainScene.unity
+    guid: efb866f75e013411980ec03f148c97bf
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: bb112ca6a19be4170b5a0d222fe05b92,
       type: 2}

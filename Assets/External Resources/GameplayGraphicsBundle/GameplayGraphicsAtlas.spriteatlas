@@ -32,7 +32,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 5804ef6ef86794aa6ac1d44028fafb7e, type: 3}
-    totalSpriteSurfaceArea: 547567
+    totalSpriteSurfaceArea: 601174
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -53,6 +53,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 219557221500e44a5a762698fccf8b77, type: 3}
   - {fileID: 21300000, guid: 3c1e6b82fc9894ba7acaf88432ca513a, type: 3}
   - {fileID: 21300000, guid: 2d68c8a295cde48cc94f6448f775a1b9, type: 3}
+  - {fileID: 21300000, guid: e4e974d25f92b4efea36dc07f652dff6, type: 3}
   - {fileID: 21300000, guid: 6ded7ef2939564324b5961fcee1bd3e0, type: 3}
   - {fileID: 21300000, guid: 8e13d3938e4694af892b18ad41c6d5e6, type: 3}
   - {fileID: 21300000, guid: 505e4ab35bbef49439afbfe3d6849564, type: 3}
@@ -63,6 +64,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: a9557cf3be29d4b89aa26d0c7f99825b, type: 3}
   - {fileID: 21300000, guid: 05041204e8b604f3ea400e41a49986b4, type: 3}
   - {fileID: 21300000, guid: fbd4bc44d205a4421850224e591d5d4f, type: 3}
+  - {fileID: 21300000, guid: d6252794bceaa4278a48037498bca820, type: 3}
   - {fileID: 21300000, guid: 94d2fbb46073643f295d355737382016, type: 3}
   - {fileID: 21300000, guid: 74523ed4875fd4a7b85b007628de4457, type: 3}
   - {fileID: 21300000, guid: 8983f0e467fc94aacaf2592c467a5ace, type: 3}
@@ -93,6 +95,8 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 2b9b1b9848d714eb29461815b0c30a94, type: 3}
   - {fileID: 21300000, guid: 401071a869795483fb01e4456a6d55a6, type: 3}
   - {fileID: 21300000, guid: 63b62cc88370f427c994a2f5983f0267, type: 3}
+  - {fileID: 21300000, guid: fa1351197687e403084098e2fcb498ce, type: 3}
+  - {fileID: 21300000, guid: d210a489af43346a0b4432593ea05919, type: 3}
   - {fileID: 21300000, guid: 14d01199a8d0d4e5da1f263f89e90404, type: 3}
   - {fileID: 21300000, guid: 0dc4fed9858934a52b68af6bb52ba755, type: 3}
   - {fileID: 21300000, guid: 2125e7e960a55436c84e99bded01935d, type: 3}
@@ -117,6 +121,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: b5aef7ec65b9e49c8a34588e7e0e6a25, type: 3}
   - {fileID: 21300000, guid: a8d70bfc5bafd452a93eb6df0757472f, type: 3}
   - {fileID: 21300000, guid: 69919f4db9f964f25a6292abec62522c, type: 3}
+  - {fileID: 21300000, guid: 8b09f55d7c72b40328e504f1494612ad, type: 3}
   - {fileID: 21300000, guid: c5545d5d349514955a4871b3cca2e150, type: 3}
   - {fileID: 21300000, guid: 9f161bcdd87c248a8aac5a6eb1df11ec, type: 3}
   - {fileID: 21300000, guid: 0dee902e92ab04d25a869284b6472783, type: 3}
@@ -154,6 +159,7 @@ SpriteAtlas:
   - Shelf_1_back
   - Hair8
   - Wall2
+  - Shelf_2_floor
   - Mouth9
   - Clothes1_Profile
   - HandClothes5
@@ -164,6 +170,7 @@ SpriteAtlas:
   - Clothes4_Profile
   - FootClothes6_Profile
   - HandClothes2
+  - Shelf_2_back
   - Hair2
   - Hair4
   - Door1
@@ -194,6 +201,8 @@ SpriteAtlas:
   - Floor2
   - FootClothes1
   - EarProfileBase
+  - Shelf_2_glass_HF
+  - Shelf_1_back
   - Brow1Base
   - Wall5
   - Mouth3
@@ -218,6 +227,7 @@ SpriteAtlas:
   - Glasses4
   - Clothes5
   - Hair1
+  - Shelf_2_glass_face
   - Window2
   - Clothes7
   - Mouth4

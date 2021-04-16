@@ -18,12 +18,15 @@ public class PrefabsHolder : ScriptableObject
 
     public GameObject Shelf1Prefab;
     public GameObject Shelf1ProfilePrefab;
+    public GameObject Shelf2Prefab;
+    public GameObject Shelf2ProfilePrefab;
 
     public (GameObject, GameObject) GetShelfPrefabs(int level)
     {
         return level switch
         {
             1 => (Shelf1Prefab, Shelf1ProfilePrefab),
+            2 => (Shelf2Prefab, Shelf2ProfilePrefab),
             _ => (Shelf1Prefab, Shelf1ProfilePrefab),//throw new ArgumentOutOfRangeException(nameof(level), $"GetShelfPrefabs: Unsupported shelf level {level}"),
         };
     }

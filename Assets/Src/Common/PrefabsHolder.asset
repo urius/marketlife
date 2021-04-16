@@ -29,3 +29,7 @@ MonoBehaviour:
     type: 3}
   Shelf1ProfilePrefab: {fileID: 7329594752370575057, guid: b10c69459453641f3a0e725159f8e27f,
     type: 3}
+  Shelf2Prefab: {fileID: 818053112919683410, guid: 5f92fc13fc1764c7da94fc994058315f,
+    type: 3}
+  Shelf2ProfilePrefab: {fileID: 5250451072811320103, guid: fe3b6eab4d06242ce8d6b4e69dcb100d,
+    type: 3}

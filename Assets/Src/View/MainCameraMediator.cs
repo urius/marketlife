@@ -63,14 +63,6 @@ public class MainCameraMediator : MonoBehaviour
         _camera.transform.position = newCameraPos;
     }
 
-    private void OnDrawGizmos()
-    {
-        var onPlaneWorldPoint = GetOnPlaneMouseWorldPoint();
-
-        var cellWorldCoords = GridCalculator.Instance.CellToWord(GridCalculator.Instance.WorldToCell(onPlaneWorldPoint));
-        Gizmos.DrawSphere(cellWorldCoords, 0.5f);
-    }
-
     private Vector3 GetOnPlaneMouseWorldPoint()
     {
         var cameraTransform = _camera.transform;

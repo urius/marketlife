@@ -36,11 +36,12 @@ public static class DtoExtensions
         var level = int.Parse(splitted1StParam[1]);
         var angle = int.Parse(paramsStr[1]);
         var objectParamsShort = paramsStr[2];
+        var mainConfig = GameConfigManager.Instance.MainConfig;
 
         ShopObjectBase result = typeId switch
         {
-            "s" => new ShelfModel(coords, level, angle, ToProducts(objectParamsShort)),
-            "cd" => new CashDeskModel(coords, level, angle, objectParamsShort),
+            "s" => new ShelfModel(mainConfig.ShelfsConfig[$"s_{level}"], coords, level, angle, ToProducts(objectParamsShort)),
+            "cd" => new CashDeskModel(mainConfig.ShopObjectsConfig[$"cd_{level}"], coords, level, angle, objectParamsShort),
             _ => throw new System.ArgumentOutOfRangeException(typeId, $"typeId {typeId} is not supported"),
         };
         return result;

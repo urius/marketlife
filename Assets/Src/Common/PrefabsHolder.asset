@@ -37,3 +37,11 @@ MonoBehaviour:
     type: 3}
   Shelf3ProfilePrefab: {fileID: 5116539912956772745, guid: 9abb7f9716d81417cbe8c2961beed014,
     type: 3}
+  Shelf4Prefab: {fileID: 7658229692475906047, guid: a5c852a91cfc64870bc9c4c555f8b98a,
+    type: 3}
+  Shelf4ProfilePrefab: {fileID: 6517623011961258258, guid: e93f34136b73f40a79cec747874a3038,
+    type: 3}
+  Shelf5Prefab: {fileID: 9146300022538481727, guid: 24dff2da204134720bbd437bb64af917,
+    type: 3}
+  Shelf5ProfilePrefab: {fileID: 8402292013250654598, guid: b1b731eaca1e24bc08c20c5368eb6f14,
+    type: 3}

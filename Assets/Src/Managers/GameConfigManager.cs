@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using Newtonsoft.Json;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "GameConfigManager", menuName = "Scriptable Objects/Managers/GameConfigManager")]
@@ -12,10 +13,10 @@ public class GameConfigManager : ScriptableObject
 
     public async UniTask<bool> LoadConfig()
     {
-        var getConfigOperation = await new WebRequestsSender().GetAsync<MainConfig>(_mainConfigUrl);
+        var getConfigOperation = await new WebRequestsSender().GetAsync(_mainConfigUrl);
         if (getConfigOperation.IsSuccess)
         {
-            MainConfig = getConfigOperation.Result;
+            MainConfig = JsonConvert.DeserializeObject<MainConfig>(getConfigOperation.Result);
         }
 
         return getConfigOperation.IsSuccess;
@@ -25,9 +26,4 @@ public class GameConfigManager : ScriptableObject
     {
         Instance = this;
     }
-}
-
-public class MainConfig
-{
-    public int GameplayAtlasVersion;
 }

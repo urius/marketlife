@@ -6,18 +6,24 @@ public abstract class ShopObjectBase
     public event Action<int, int> SideChanged = delegate { };
 
     public readonly int Level;
+    public readonly Price Price;
+    public readonly int UnlockLevel;
+    public readonly bool TwoSidesMode;
 
     public Vector2Int Coords;
 
     private int _side;
 
-    public ShopObjectBase(Vector2Int coords, int level, int angle)
+    public ShopObjectBase(Vector2Int coords, int level, int angle, ShopObjectConfigDto config)
     {
+        Coords = coords;
         Level = level;
-
         _side = SideHelper.GetSideFromAngle(angle);
 
-        Coords = coords;
+        Price = Price.FromString(config.price);
+        BuildMatrix = config.build_matrix;
+        UnlockLevel = config.unlock_level;
+        TwoSidesMode = config.two_sides_mode;
     }
 
     public int Angle => SideHelper.ConvertSideToAngle(_side);
@@ -30,6 +36,8 @@ public abstract class ShopObjectBase
             _side = value; SideChanged(sideBefore, value);
         }
     }
+
+    public int[][] BuildMatrix { get; private set; }
 
     public abstract ShopObjectType Type { get; }
 }

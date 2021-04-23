@@ -36,6 +36,7 @@ public abstract class ShopObjectMediatorBase
         var side = _model.Side;
         var prefab = (_hasProfileSide && SideHelper.IsProfileSide(side)) ? _prefabs.Item2 : _prefabs.Item1;
         var viewGo = GameObject.Instantiate(prefab, ParentTransform);
+        _currentViewGo = viewGo;
         viewGo.transform.position = GridCalculator.Instance.CellToWord(_model.Coords);
         var scaleXMultiplier = SideHelper.GetScaleXMultiplier(side);
         viewGo.transform.localScale = new Vector3(scaleXMultiplier, 1, 1);

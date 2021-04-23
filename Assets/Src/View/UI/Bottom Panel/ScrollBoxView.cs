@@ -30,7 +30,6 @@ public class ScrollBoxView : MonoBehaviour
 
         _scrollRight.onClick.AddListener(OnScrollRigthClick);
         _rewindRight.onClick.AddListener(OnRewindRigthClick);
-
         _scrollLeft.onClick.AddListener(OnScrollLeftClick);
         _rewindLeft.onClick.AddListener(OnRewindLeftClick);
     }
@@ -50,8 +49,6 @@ public class ScrollBoxView : MonoBehaviour
 
     private void ScrollToIndex(int closestItemIndex, float duration = DefaultDuration)
     {
-        var tcs = new UniTaskCompletionSource();
-
         var newContentPos = -closestItemIndex * _cellWidth;
         LeanTween.cancel(_contentTransform);
         LeanTween.moveX(_contentTransform, newContentPos, duration);

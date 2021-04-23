@@ -3,6 +3,7 @@ using System.Collections.Generic;
 public class MainConfig
 {
     public int GameplayAtlasVersion;
+    public int InterfaceAtlasVersion;    
     public Dictionary<string, ShelfConfigDto> ShelfsConfig;
     public Dictionary<string, ShopObjectConfigDto> ShopObjectsConfig;
 }

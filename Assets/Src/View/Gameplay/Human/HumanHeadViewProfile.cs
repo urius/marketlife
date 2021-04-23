@@ -10,11 +10,11 @@ public class HumanHeadViewProfile : HumanHeadViewBase
 
     protected void Start()
     {
-        _headBaseSprite.sprite = GraphicsManager.GetHumanSprite("HeadBase_Profile");
+        _headBaseSprite.sprite = SpritesProvider.GetHumanSprite("HeadBase_Profile");
     }
 
     public override void SetHair(int hairId)
     {
-        _hairSprite.sprite = GraphicsManager.GetHumanSprite($"{HAIR_PREFIX}{hairId}{HAIR_POSTFIX}");
+        _hairSprite.sprite = SpritesProvider.GetHumanSprite($"{HAIR_PREFIX}{hairId}{HAIR_POSTFIX}");
     }
 }

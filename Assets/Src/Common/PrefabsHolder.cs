@@ -27,6 +27,9 @@ public class PrefabsHolder : ScriptableObject
     public GameObject Shelf5Prefab;
     public GameObject Shelf5ProfilePrefab;
 
+    //Interface
+    public GameObject UIBottomPanelScrollItem;
+
     public (GameObject, GameObject) GetShelfPrefabs(int level)
     {
         return level switch

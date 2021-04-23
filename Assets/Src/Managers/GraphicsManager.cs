@@ -17,31 +17,6 @@ public class GraphicsManager : ScriptableObject
         _atlasDataById[atlasId] = atlasData;
     }
 
-    public Sprite GetHumanSprite(string name)
-    {
-        return GetSprite(SpriteAtlasId.GameplayAtlas, name);
-    }
-
-    public Sprite GetFloorSprite(int floorId)
-    {
-        return GetSprite(SpriteAtlasId.GameplayAtlas, $"Floor{floorId}");
-    }
-
-    public Sprite GetWallSprite(int wallId)
-    {
-        return GetSprite(SpriteAtlasId.GameplayAtlas, $"Wall{wallId}");
-    }
-
-    public Sprite GetWindowSprite(int windowId)
-    {
-        return GetSprite(SpriteAtlasId.GameplayAtlas, $"Window{windowId}");
-    }
-
-    public Sprite GetDoorSprite(int doorId)
-    {
-        return GetSprite(SpriteAtlasId.GameplayAtlas, $"Door{doorId}");
-    }
-
     public Sprite GetSprite(SpriteAtlasId atlasId, string spriteName)
     {
         if (TryGetAtlasData(atlasId, out var atlasData))
@@ -136,4 +111,5 @@ public enum SpriteAtlasId
 {
     Undefined,
     GameplayAtlas,
+    InterfaceAtlas,
 }

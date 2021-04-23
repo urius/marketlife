@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1594919256
+CRC: 1069571400
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 46206595b619a512e3320360332a0f88
+    Hash: 78d5e7834340ff46a128f4886d60f8ae
   TypeTreeHash:
     serializedVersion: 2
     Hash: 3dbb92f992534c06c4e322444b68580f
@@ -19,11 +19,26 @@ SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_long_green.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_long_blue.png
+- Assets/External Resources/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_5.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/hint_arrow_up.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/Icon_next1.png
 - Assets/External Resources/InterfaceGraphicsBundle/InterfaceGraphicsAtlas.spriteatlas
+- Assets/External Resources/InterfaceGraphicsBundle/Common/icon_dollar.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/Icon_Down2.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/Icon_Play1.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/Icon_Back1.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/price_label.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/bottom_panel.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_long_orange.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/ICON_Mute.png
+- Assets/External Resources/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_2.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_long_crimson.png
+- Assets/External Resources/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_3.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/icon_crystal.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/bottom_panel_item_skin.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/hint_skin.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/Icon_Up3.png
+- Assets/External Resources/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_1.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/ICON_Volume.png
+- Assets/External Resources/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_4.png
 Dependencies: []

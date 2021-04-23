@@ -19,13 +19,13 @@ public class HumanHeadView : HumanHeadViewBase
 
     void Start()
     {
-        _headBaseSprite.sprite = GraphicsManager.GetHumanSprite("HeadBase");
-        _brow1Sprite.sprite = GraphicsManager.GetHumanSprite("Brow1Base");
-        _brow2Sprite.sprite = GraphicsManager.GetHumanSprite("Brow1Base");
-        _eye1Sprite.sprite = GraphicsManager.GetHumanSprite("Eye2Base");
-        _eyePupil1Sprite.sprite = GraphicsManager.GetHumanSprite("EyePupilBase");
-        _eye2Sprite.sprite = GraphicsManager.GetHumanSprite("Eye2Base");
-        _eyePupil2Sprite.sprite = GraphicsManager.GetHumanSprite("EyePupilBase");
+        _headBaseSprite.sprite = SpritesProvider.GetHumanSprite("HeadBase");
+        _brow1Sprite.sprite = SpritesProvider.GetHumanSprite("Brow1Base");
+        _brow2Sprite.sprite = SpritesProvider.GetHumanSprite("Brow1Base");
+        _eye1Sprite.sprite = SpritesProvider.GetHumanSprite("Eye2Base");
+        _eyePupil1Sprite.sprite = SpritesProvider.GetHumanSprite("EyePupilBase");
+        _eye2Sprite.sprite = SpritesProvider.GetHumanSprite("Eye2Base");
+        _eyePupil2Sprite.sprite = SpritesProvider.GetHumanSprite("EyePupilBase");
         SetMouth(1);
     }
 
@@ -41,12 +41,12 @@ public class HumanHeadView : HumanHeadViewBase
 
     public override void SetHair(int hairId)
     {
-        _hairSprite.sprite = GraphicsManager.GetHumanSprite($"{HAIR_PREFIX}{hairId}");
+        _hairSprite.sprite = SpritesProvider.GetHumanSprite($"{HAIR_PREFIX}{hairId}");
     }
 
     public void SetMouth(int mouthId)
     {
-        _mouthSprite.sprite = GraphicsManager.GetHumanSprite($"Mouth{mouthId}");
+        _mouthSprite.sprite = SpritesProvider.GetHumanSprite($"Mouth{mouthId}");
     }
 
     public void SetGlasses(int glassId)
@@ -57,7 +57,7 @@ public class HumanHeadView : HumanHeadViewBase
         }
         else
         {
-            _glassesSprite.sprite = GraphicsManager.GetHumanSprite($"{GLASSES_PREFIX}{glassId}");
+            _glassesSprite.sprite = SpritesProvider.GetHumanSprite($"{GLASSES_PREFIX}{glassId}");
         }
     }
 }

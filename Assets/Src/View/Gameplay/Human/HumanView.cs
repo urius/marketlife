@@ -34,14 +34,14 @@ public class HumanView : MonoBehaviour
     [SerializeField] private SpriteRenderer _bodyProfileSideLeg2Sprite;
     [SerializeField] private SpriteRenderer _bodyProfileSideLeg2OuterSprite;
 
-    private GraphicsManager _graphicsManager;
+    private SpritesProvider _spritesProvider;
 
     private BodyState _bodyState = BodyState.Idle;
     private int _faceAnimationIndex = 0;
 
     void Start()
     {
-        _graphicsManager = GraphicsManager.Instance;
+        _spritesProvider = SpritesProvider.Instance;
 
         SetupSkins(1, 1, 1);
         SetGlasses(0);
@@ -154,7 +154,7 @@ public class HumanView : MonoBehaviour
 
     private Sprite GetSprite(string spriteName)
     {
-        return _graphicsManager.GetHumanSprite(spriteName);
+        return _spritesProvider.GetHumanSprite(spriteName);
     }
 }
 

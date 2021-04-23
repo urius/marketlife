@@ -45,3 +45,5 @@ MonoBehaviour:
     type: 3}
   Shelf5ProfilePrefab: {fileID: 8402292013250654598, guid: b1b731eaca1e24bc08c20c5368eb6f14,
     type: 3}
+  UIBottomPanelScrollItem: {fileID: 875298350171009047, guid: bf774f8a333124ccd8cf0619d9ddcf62,
+    type: 3}

@@ -5,7 +5,7 @@ public class FloorMediator : MonoBehaviour
 {
     private PlayerModel _playerModel;
     private GridCalculator _gridCalculator;
-    private GraphicsManager _graphicsManager;
+    private SpritesProvider _spritesProvider;
 
     private readonly Dictionary<Vector2Int, SpriteRenderer> _floorSprites = new Dictionary<Vector2Int, SpriteRenderer>();
 
@@ -13,7 +13,7 @@ public class FloorMediator : MonoBehaviour
     {
         _playerModel = PlayerModel.Instance;
         _gridCalculator = GridCalculator.Instance;
-        _graphicsManager = GraphicsManager.Instance;
+        _spritesProvider = SpritesProvider.Instance;
     }
 
     private void Start()
@@ -49,7 +49,7 @@ public class FloorMediator : MonoBehaviour
                 _floorSprites[kvp.Key] = spriteRenderer;
             }
 
-            _floorSprites[kvp.Key].sprite = _graphicsManager.GetFloorSprite(kvp.Value);
+            _floorSprites[kvp.Key].sprite = _spritesProvider.GetFloorSprite(kvp.Value);
         }
 
         var keysToRemove = new List<Vector2Int>();

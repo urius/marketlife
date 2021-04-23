@@ -2,11 +2,11 @@ using UnityEngine;
 
 public abstract class HumanHeadViewBase : MonoBehaviour
 {
-    protected GraphicsManager GraphicsManager;
+    protected SpritesProvider SpritesProvider;
 
     virtual protected void Awake()
     {
-        GraphicsManager = GraphicsManager.Instance;
+        SpritesProvider = SpritesProvider.Instance;
     }
 
     public abstract void SetHair(int hairId);

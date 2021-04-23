@@ -1,0 +1,29 @@
+ManifestFileVersion: 0
+CRC: 1594919256
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 46206595b619a512e3320360332a0f88
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 3dbb92f992534c06c4e322444b68580f
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 687078895
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_long_green.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_long_blue.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/hint_arrow_up.png
+- Assets/External Resources/InterfaceGraphicsBundle/InterfaceGraphicsAtlas.spriteatlas
+- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/bottom_panel.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_long_orange.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_long_crimson.png
+- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/bottom_panel_item_skin.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/hint_skin.png
+Dependencies: []

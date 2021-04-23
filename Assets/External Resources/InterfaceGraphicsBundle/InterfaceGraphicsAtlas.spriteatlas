@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: InterfaceGraphicsAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 46b41057a82fe4010b5245cd9e8b4afa, type: 3}
+    totalSpriteSurfaceArea: 178783
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 0c454711431f2483aa1cbf658576a592, type: 3}
+  - {fileID: 21300000, guid: 742722429a021491f9af9a98628524c5, type: 3}
+  - {fileID: 21300000, guid: 99e4d3b3131284fb390e1730c8bb969e, type: 3}
+  - {fileID: 21300000, guid: 64fb61f4d09ea48aba1aaefe877693b2, type: 3}
+  - {fileID: 21300000, guid: cda34d852c13a441db360bbe0f7bc4eb, type: 3}
+  - {fileID: 21300000, guid: 049e44d5b1fa54ca7b9f8b8dd77d28c3, type: 3}
+  - {fileID: 21300000, guid: 3161ea07e77f7418fa88d4848ce3f165, type: 3}
+  - {fileID: 21300000, guid: ab4285177a9f744d296a988d92022b18, type: 3}
+  - {fileID: 21300000, guid: f1f44b474034f49019c48f8c556dd9b4, type: 3}
+  - {fileID: 21300000, guid: eccb7f77a80f64dd1af7097ca29e00cf, type: 3}
+  - {fileID: 21300000, guid: 5773aac8d972141b58f0aaf17633be10, type: 3}
+  - {fileID: 21300000, guid: 8fcee709520284d7799a69863b2222b4, type: 3}
+  - {fileID: 21300000, guid: b00b140a1468748619c82d75ffc5ed5e, type: 3}
+  - {fileID: 21300000, guid: 0376dcaa29ea041dca0831e29332670c, type: 3}
+  - {fileID: 21300000, guid: c5af3edb4c9714d4fb439ce7536f0b38, type: 3}
+  - {fileID: 21300000, guid: c60173ac2eb8f470a8d9d75e481f44fc, type: 3}
+  - {fileID: 21300000, guid: 060ac0ecae44448819c4be17493d1ef5, type: 3}
+  - {fileID: 21300000, guid: a56735fcf4bef4f9091f25446ad512ec, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - price_label
+  - Icon_Up3
+  - hint_skin
+  - Icon_Down2
+  - Icon_next1
+  - bottom_panel
+  - icon_dollar
+  - ICON_Volume
+  - button_1_long_blue
+  - Icon_Play1
+  - button_1_long_crimson
+  - hint_arrow_up
+  - button_1_long_green
+  - button_1_long_orange
+  - Icon_Back1
+  - ICON_Mute
+  - icon_crystal
+  - bottom_panel_item_skin
+  m_RenderDataMap: {}
+  m_Tag: InterfaceGraphicsAtlas
+  m_IsVariant: 0

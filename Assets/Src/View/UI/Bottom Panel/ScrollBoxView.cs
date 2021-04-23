@@ -98,7 +98,7 @@ public class ScrollBoxView : MonoBehaviour
         }
         else
         {
-            newContentPos = ClampPosition(newContentPos); 
+            newContentPos = ClampPosition(newContentPos);
             if (Math.Abs(newContentPos - currentContentPos) < 1)
             {
                 _contentTransform.anchoredPosition = new Vector2(newContentPos, _contentTransform.anchoredPosition.y);

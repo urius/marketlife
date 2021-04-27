@@ -1,14 +1,24 @@
+using System;
 using UnityEngine;
 
 public class RootGameViewMediator : MonoBehaviour
 {
     [SerializeField] private Grid _grid;
 
+    private UpdatesProvider _updatesProvider;
     private GridCalculator _gridCalculator;
 
     private void Awake()
     {
+        _updatesProvider = UpdatesProvider.Instance;
+
         SetupGridCalculator();
+    }
+
+    private void FixedUpdate()
+    {
+        _updatesProvider.CallGameplayUpdate();
+        _updatesProvider.CallRealtimeUpdate();
     }
 
     private void SetupGridCalculator()

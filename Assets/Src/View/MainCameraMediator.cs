@@ -6,15 +6,21 @@ public class MainCameraMediator : MonoBehaviour
     [SerializeField] private Camera _camera;
 
     private Dispatcher _dispatcher;
-
+    private UpdatesProvider _updatesProvider;
+    private GridCalculator _gridCalculator;
+    private MouseCellCoordsProvider _mouseCellCoordsProvider;
     private bool _isDragging;
     private Vector3 _startDragWorldMousePos;
     private Vector3 _deltaWorldMouse;
     private float _cameraZ;
+    private int _framesCounter10;
 
     private void Awake()
     {
         _dispatcher = Dispatcher.Instance;
+        _updatesProvider = UpdatesProvider.Instance;
+        _gridCalculator = GridCalculator.Instance;
+        _mouseCellCoordsProvider = MouseCellCoordsProvider.Instance;
     }
 
     private void Start()
@@ -23,6 +29,7 @@ public class MainCameraMediator : MonoBehaviour
 
         _dispatcher.UIGameViewMouseDown += OnGameViewMouseDown;
         _dispatcher.UIGameViewMouseUp += OnGameViewMouseUp;
+        _updatesProvider.RealtimeUpdate += OnRealtimeUpdate;
     }
 
     private void OnGameViewMouseDown()
@@ -36,9 +43,22 @@ public class MainCameraMediator : MonoBehaviour
         _isDragging = false;
     }
 
-    private void FixedUpdate()
+    private void OnRealtimeUpdate()
     {
         ProcessCameraMove();
+        ProcessMouseCellPositionCalculation();
+    }
+
+    private void ProcessMouseCellPositionCalculation()
+    {
+        _framesCounter10++;
+        if (_framesCounter10 >= 10)
+        {
+            _framesCounter10 = 0;
+            var mouseWorld = GetOnPlaneMouseWorldPoint();
+            var mouseCell = _gridCalculator.WorldToCell(mouseWorld);
+            _mouseCellCoordsProvider.SetMouseCellCoords(mouseCell);
+        }
     }
 
     private void ProcessCameraMove()

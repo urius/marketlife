@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public class Dispatcher
 {
@@ -6,6 +7,7 @@ public class Dispatcher
     public Action UIGameViewMouseDown = delegate { };
     public Action UIGameViewMouseUp = delegate { };
     public Action<int> UIBottomPanelPlaceShelfClicked = delegate { };
+    public Action<Vector2Int> MouseCellCoordsUpdated = delegate { };
 
     private static Lazy<Dispatcher> _instance = new Lazy<Dispatcher>();
     public static Dispatcher Instance => _instance.Value;

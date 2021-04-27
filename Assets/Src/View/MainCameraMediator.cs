@@ -21,8 +21,8 @@ public class MainCameraMediator : MonoBehaviour
     {
         _cameraZ = transform.position.z;
 
-        _dispatcher.GameViewMouseDown += OnGameViewMouseDown;
-        _dispatcher.GameViewMouseUp += OnGameViewMouseUp;
+        _dispatcher.UIGameViewMouseDown += OnGameViewMouseDown;
+        _dispatcher.UIGameViewMouseUp += OnGameViewMouseUp;
     }
 
     private void OnGameViewMouseDown()

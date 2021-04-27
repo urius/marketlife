@@ -1,13 +1,16 @@
 
-public class BottomPanelMediator : UINotMonoMediatorBase
+public class BottomPanelMediator : UINotMonoMediatorBase<BottomPanelView>
 {
-    public override void Mediate()
+    private UINotMonoMediatorBase<BottomPanelView> _currentTabMediator;
+
+    protected override void OnStart()
     {
-        throw new System.NotImplementedException();
+        _currentTabMediator = new UIBottomPanelShelfsTabMediator();
+        _currentTabMediator.Mediate(View);
     }
 
-    public override void Unmediate()
+    protected override void OnStop()
     {
-        throw new System.NotImplementedException();
+
     }
 }

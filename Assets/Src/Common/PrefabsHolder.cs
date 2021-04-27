@@ -30,6 +30,16 @@ public class PrefabsHolder : ScriptableObject
     //Interface
     public GameObject UIBottomPanelScrollItem;
 
+    public (GameObject, GameObject) GetShopObjectPrefabs(ShopObjectType type, int level)
+    {
+        return type switch
+        {
+            ShopObjectType.Shelf => GetShelfPrefabs(level),
+            ShopObjectType.CashDesk => GetCashDeskPrefabs(level),
+            _ => throw new ArgumentOutOfRangeException(nameof(level), $"GetShopObjectPrefabs: Unsupported ShopObjectType {type}"),
+        };
+    }
+
     public (GameObject, GameObject) GetShelfPrefabs(int level)
     {
         return level switch
@@ -48,7 +58,7 @@ public class PrefabsHolder : ScriptableObject
         return level switch
         {
             1 => (CashDesk1Prefab, null),
-            _ => throw new ArgumentOutOfRangeException(nameof(level), $"GetShelfPrefabs: Unsupported shelf level {level}"),
+            _ => throw new ArgumentOutOfRangeException(nameof(level), $"GetShelfPrefabs: Unsupported cashdesk level {level}"),
         };
     }
 

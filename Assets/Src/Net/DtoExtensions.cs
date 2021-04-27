@@ -35,13 +35,13 @@ public static class DtoExtensions
         var typeId = splitted1StParam[0];
         var level = int.Parse(splitted1StParam[1]);
         var angle = int.Parse(paramsStr[1]);
+        var side = SideHelper.GetSideFromAngle(angle);
         var objectParamsShort = paramsStr[2];
-        var mainConfig = GameConfigManager.Instance.MainConfig;
 
         ShopObjectBase result = typeId switch
         {
-            "s" => new ShelfModel(mainConfig.ShelfsConfig[$"s_{level}"], coords, level, angle, ToProducts(objectParamsShort)),
-            "cd" => new CashDeskModel(mainConfig.ShopObjectsConfig[$"cd_{level}"], coords, level, angle, objectParamsShort),
+            "s" => new ShopObjectModelFactory().CreateShelf(level, coords, side, ToProducts(objectParamsShort)),
+            "cd" => new ShopObjectModelFactory().CreateCashDesk(level, coords, side),
             _ => throw new System.ArgumentOutOfRangeException(typeId, $"typeId {typeId} is not supported"),
         };
         return result;

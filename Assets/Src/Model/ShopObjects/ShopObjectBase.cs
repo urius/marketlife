@@ -14,11 +14,11 @@ public abstract class ShopObjectBase
 
     private int _side;
 
-    public ShopObjectBase(Vector2Int coords, int level, int angle, ShopObjectConfigDto config)
+    public ShopObjectBase(int level, ShopObjectConfigDto config, Vector2Int coords, int side)
     {
         Coords = coords;
         Level = level;
-        _side = SideHelper.GetSideFromAngle(angle);
+        _side = side;
 
         Price = Price.FromString(config.price);
         BuildMatrix = config.build_matrix;

@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class CashDeskModel : ShopObjectBase
 {
-    public CashDeskModel(ShopObjectConfigDto cashDeskConfigDto, Vector2Int coords, int level, int angle, string paramsShort)
-        : base(coords, level, angle, cashDeskConfigDto)
+    public CashDeskModel(int level, ShopObjectConfigDto cashDeskConfigDto, Vector2Int coords, int side = 3, string paramsShort = null)
+        : base(level, cashDeskConfigDto, coords, side)
     {
     }
 

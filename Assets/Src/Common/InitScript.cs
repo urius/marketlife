@@ -20,11 +20,6 @@ public class InitScript : MonoBehaviour
     {
         _playerModel.SetUid(_debugUid);
 
-        await new LoadConfigsCommand().ExecuteAsync();
-        await new LoadGraphicsCommand().ExecuteAsync();
-
-        await new LoadPlayerShopCommand().ExecuteAsync();
-
-        _playerModel.SetViewingShopModel(_playerModel.ShopModel);
+        await new InitializeAndLoadCommand().ExecuteAsync();
     }
 }

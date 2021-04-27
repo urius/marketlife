@@ -14,6 +14,7 @@ public struct LoadPlayerShopCommand
         if (resultOperation.IsSuccess)
         {
             var result = JsonConvert.DeserializeObject<GetDataResponseDto>(resultOperation.Result);
+            SetupPlayerValues(playerModel, result.data);
             var shopModel = result.ToShopModel();
             playerModel.SetShopModel(shopModel);
 
@@ -21,5 +22,10 @@ public struct LoadPlayerShopCommand
         }
 
         return resultOperation.IsSuccess;
+    }
+
+    private void SetupPlayerValues(PlayerModel playerModel, GetDataResponseDataDto data)
+    {
+        playerModel.SetValues(int.Parse(data.cash), int.Parse(data.gold), int.Parse(data.exp), int.Parse(data.level));
     }
 }

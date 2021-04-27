@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,9 +20,10 @@ public class ScrollBoxView : MonoBehaviour
     [SerializeField] private Button _scrollRight;
     [SerializeField] private Button _rewindRight;
 
-    [SerializeField] private RectTransform[] _debugItems;
     private float _viewportWidth;
     private float _cellWidth;
+
+    //private List<RectTransform> _items = new List<RectTransform>(10);
 
     public void Awake()
     {
@@ -32,6 +34,12 @@ public class ScrollBoxView : MonoBehaviour
         _rewindRight.onClick.AddListener(OnRewindRigthClick);
         _scrollLeft.onClick.AddListener(OnScrollLeftClick);
         _rewindLeft.onClick.AddListener(OnRewindLeftClick);
+    }
+
+    public void AddItem(RectTransform itemTransform)
+    {
+        itemTransform.parent = _contentTransform;
+        //_items.Add(itemTransform);
     }
 
     public void OnDragEnded()

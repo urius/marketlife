@@ -38,6 +38,16 @@ public class SpritesProvider
         return GetSprite(SpriteAtlasId.InterfaceAtlas, $"Icon_Shelf_{shelfId}");
     }
 
+    public Sprite GetGoldIcon()
+    {
+        return GetSprite(SpriteAtlasId.InterfaceAtlas, "icon_crystal");
+    }
+
+    public Sprite GetCashIcon()
+    {
+        return GetSprite(SpriteAtlasId.InterfaceAtlas, "icon_dollar");
+    }
+
     private Sprite GetSprite(SpriteAtlasId gameplayAtlas, string name)
     {
         if (_graphicsManager == null)

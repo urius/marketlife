@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class FloorMediator : MonoBehaviour
 {
-    private PlayerModel _playerModel;
+    private GameStateModel _gameStateModel;
     private GridCalculator _gridCalculator;
     private SpritesProvider _spritesProvider;
 
@@ -11,7 +11,7 @@ public class FloorMediator : MonoBehaviour
 
     private void Awake()
     {
-        _playerModel = PlayerModel.Instance;
+        _gameStateModel = GameStateModel.Instance;
         _gridCalculator = GridCalculator.Instance;
         _spritesProvider = SpritesProvider.Instance;
     }
@@ -20,15 +20,15 @@ public class FloorMediator : MonoBehaviour
     {
         Activate();
 
-        if (_playerModel.ViewingShopModel != null)
+        if (_gameStateModel.ViewingShopModel != null)
         {
-            ShowFloors(_playerModel.ViewingShopModel.ShopDesign.Floors);
+            ShowFloors(_gameStateModel.ViewingShopModel.ShopDesign.Floors);
         }
     }
 
     private void Activate()
     {
-        _playerModel.ViewingShopModelChanged += OnViewingShopModelChanged;
+        _gameStateModel.ViewingShopModelChanged += OnViewingShopModelChanged;
     }
 
     private void OnViewingShopModelChanged(ShopModel newShopModel)

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class WallsMediator : MonoBehaviour
 {
-    private PlayerModel _playerModel;
+    private GameStateModel _gameStateModel;
     private GridCalculator _gridCalculator;
 
     private readonly Dictionary<Vector2Int, WallView> _wallViews = new Dictionary<Vector2Int, WallView>();
@@ -11,7 +11,7 @@ public class WallsMediator : MonoBehaviour
 
     private void Awake()
     {
-        _playerModel = PlayerModel.Instance;
+        _gameStateModel = GameStateModel.Instance;
         _gridCalculator = GridCalculator.Instance;
     }
 
@@ -19,15 +19,15 @@ public class WallsMediator : MonoBehaviour
     {
         Activate();
 
-        if (_playerModel.ViewingShopModel != null)
+        if (_gameStateModel.ViewingShopModel != null)
         {
-            ShowPerimeterDesign(_playerModel.ViewingShopModel.ShopDesign);
+            ShowPerimeterDesign(_gameStateModel.ViewingShopModel.ShopDesign);
         }
     }
 
     private void Activate()
     {
-        _playerModel.ViewingShopModelChanged += OnViewingShopModelChanged;
+        _gameStateModel.ViewingShopModelChanged += OnViewingShopModelChanged;
     }
 
     private void OnViewingShopModelChanged(ShopModel newShopModel)

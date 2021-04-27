@@ -4,28 +4,41 @@ using UnityEngine;
 
 public class ShopObjectsMediator : MonoBehaviour
 {
-    private PlayerModel _playerModel;
+    private GameStateModel _gameStateModel;
 
     private readonly Dictionary<Vector2Int, ShopObjectMediatorBase> _shopObjectMediators = new Dictionary<Vector2Int, ShopObjectMediatorBase>();
 
+    private PlacingShopObjectMediatorBase _currentPlacingShopObjectMediator;
+
     private void Awake()
     {
-        _playerModel = PlayerModel.Instance;
+        _gameStateModel = GameStateModel.Instance;
     }
 
     private void Start()
     {
         Activate();
 
-        if (_playerModel.ViewingShopModel != null)
+        if (_gameStateModel.ViewingShopModel != null)
         {
-            DisplayShopObjects(_playerModel.ViewingShopModel.ShopObjects);
+            DisplayShopObjects(_gameStateModel.ViewingShopModel.ShopObjects);
         }
     }
 
     private void Activate()
     {
-        _playerModel.ViewingShopModelChanged += OnViewingShopModelChanged;
+        _gameStateModel.ViewingShopModelChanged += OnViewingShopModelChanged;
+        _gameStateModel.PlacingObjectStateChanged += OnPlacingObjectStateChanged;
+    }
+
+    private void OnPlacingObjectStateChanged(ShopObjectBase shopObjectModel)
+    {
+        switch (shopObjectModel.Type)
+        {
+            case ShopObjectType.Shelf:
+                //todo: create mediator
+                break;
+        }
     }
 
     private void OnViewingShopModelChanged(ShopModel newShopModel)
@@ -39,12 +52,12 @@ public class ShopObjectsMediator : MonoBehaviour
 
         foreach (var kvp in newShopObjectsData)
         {
-            _shopObjectMediators[kvp.Key] = CreateMediator(kvp.Value);
+            _shopObjectMediators[kvp.Key] = CreateShopObjectMediator(kvp.Value);
             _shopObjectMediators[kvp.Key].Mediate();
         }
     }
 
-    private ShopObjectMediatorBase CreateMediator(ShopObjectBase shopObjectModel)
+    private ShopObjectMediatorBase CreateShopObjectMediator(ShopObjectBase shopObjectModel)
     {
         ShopObjectMediatorBase result;
         switch (shopObjectModel.Type)

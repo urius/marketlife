@@ -18,7 +18,7 @@ public abstract class ShopObjectMediatorBase
 
     public void Mediate()
     {
-        _prefabs = GetPrefabs();
+        _prefabs = PrefabsHolder.Instance.GetShopObjectPrefabs(_model.Type, _model.Level);
         _hasProfileSide = _prefabs.Item2 != null;
         CreateView();
     }
@@ -41,6 +41,4 @@ public abstract class ShopObjectMediatorBase
         var scaleXMultiplier = SideHelper.GetScaleXMultiplier(side);
         viewGo.transform.localScale = new Vector3(scaleXMultiplier, 1, 1);
     }
-
-    protected abstract (GameObject, GameObject) GetPrefabs();
 }

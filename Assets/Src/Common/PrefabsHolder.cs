@@ -10,6 +10,8 @@ public class PrefabsHolder : ScriptableObject
     public GameObject HeadPrefab;
     public GameObject HeadProfilePrefab;
 
+    public GameObject WhiteSquarePrefab;
+
     public GameObject FloorPrefab;
     public GameObject WallPrefab;
     public GameObject DoorPrefab;

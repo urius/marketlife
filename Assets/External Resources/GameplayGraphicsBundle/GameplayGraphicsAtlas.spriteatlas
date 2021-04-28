@@ -32,7 +32,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 5804ef6ef86794aa6ac1d44028fafb7e, type: 3}
-    totalSpriteSurfaceArea: 708943
+    totalSpriteSurfaceArea: 713039
     bindAsDefault: 0
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -79,6 +79,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 6cfe0255c4a1e4b81906d252d7fcac2e, type: 3}
   - {fileID: 21300000, guid: 3ad18b75f4a15466787f7319d024b901, type: 3}
   - {fileID: 21300000, guid: 35048cc52746e4dbf91501b00f848e90, type: 3}
+  - {fileID: 21300000, guid: 3bc8ecd53c1c6406f83ba656fc0fe38e, type: 3}
   - {fileID: 21300000, guid: 20338406d34974b87a3675ec7f388702, type: 3}
   - {fileID: 21300000, guid: 13e34456db8d24263b246acd05988e3c, type: 3}
   - {fileID: 21300000, guid: 6b4fc65623bfd4ec3ae79728b2c15a01, type: 3}
@@ -195,6 +196,7 @@ SpriteAtlas:
   - Eye2Base
   - Hair1_Profile
   - FootClothes1_Profile
+  - WhiteSquare
   - Clothes4
   - FootClothes4_Profile
   - Floor5

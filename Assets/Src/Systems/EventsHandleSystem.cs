@@ -3,11 +3,29 @@ using UnityEngine;
 
 public class EventsHandleSystem : MonoBehaviour
 {
+    private Dispatcher _dispatcher;
+    private GameStateModel _gameStateModel;
+
     public void Initialize()
     {
-        var dispatcher = Dispatcher.Instance;
+        _dispatcher = Dispatcher.Instance;
+        _gameStateModel = GameStateModel.Instance;
 
-        dispatcher.UIBottomPanelPlaceShelfClicked += OnUIBottomPanelPlaceShelfClicked;
+        Activate();
+    }
+
+    private void Activate()
+    {
+        _dispatcher.UIBottomPanelPlaceShelfClicked += OnUIBottomPanelPlaceShelfClicked;
+        _dispatcher.MouseCellCoordsUpdated += OnMouseCellCoordsUpdated;
+    }
+
+    private void OnMouseCellCoordsUpdated(Vector2Int newCoords)
+    {
+        if (_gameStateModel.PlacingShopObjectModel != null)
+        {
+            _gameStateModel.PlacingShopObjectModel.Coords = newCoords;
+        }
     }
 
     private void OnUIBottomPanelPlaceShelfClicked(int shelfId)

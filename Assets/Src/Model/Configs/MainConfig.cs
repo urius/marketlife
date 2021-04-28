@@ -14,19 +14,19 @@ public class MainConfig : IShelfsConfig
             if (kvp.Value.unlock_level <= level)
             {
                 var shelfId = int.Parse(kvp.Key.Split('_')[1]);
-                yield return (shelfId, GetShelfConfigById(shelfId));
+                yield return (shelfId, GetShelfConfigByLevelId(shelfId));
             }
         }
     }
 
-    public ShelfConfigDto GetShelfConfigById(int shelfId)
+    public ShelfConfigDto GetShelfConfigByLevelId(int shelfLevelId)
     {
-        return ShelfsConfig[$"s_{shelfId}"];
+        return ShelfsConfig[$"s_{shelfLevelId}"];
     }
 
-    public ShopObjectConfigDto GetCashDeskConfigById(int shelfId)
+    public ShopObjectConfigDto GetCashDeskConfigByLevelId(int cashDeskLevelId)
     {
-        return ShopObjectsConfig[$"cd_{shelfId}"];
+        return ShopObjectsConfig[$"cd_{cashDeskLevelId}"];
     }
 }
 
@@ -47,5 +47,5 @@ public class ShelfConfigDto : ShopObjectConfigDto
 public interface IShelfsConfig
 {
     IEnumerable<(int id, ShelfConfigDto config)> GetShelfConfigsForLevel(int level);
-    ShelfConfigDto GetShelfConfigById(int shelfId);
+    ShelfConfigDto GetShelfConfigByLevelId(int shelfId);
 }

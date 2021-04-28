@@ -13,7 +13,9 @@ public class MainCameraMediator : MonoBehaviour
     private Vector3 _startDragWorldMousePos;
     private Vector3 _deltaWorldMouse;
     private float _cameraZ;
-    private int _framesCounter10;
+    private int _framesCounter3;
+    private Vector3 _lastMousePosition;
+    private Vector3 _newMousePosition;
 
     private void Awake()
     {
@@ -45,19 +47,24 @@ public class MainCameraMediator : MonoBehaviour
 
     private void OnRealtimeUpdate()
     {
+        _lastMousePosition = _newMousePosition;
+        _newMousePosition = Input.mousePosition;
         ProcessCameraMove();
         ProcessMouseCellPositionCalculation();
     }
 
     private void ProcessMouseCellPositionCalculation()
     {
-        _framesCounter10++;
-        if (_framesCounter10 >= 10)
+        if (_lastMousePosition != _newMousePosition)
         {
-            _framesCounter10 = 0;
-            var mouseWorld = GetOnPlaneMouseWorldPoint();
-            var mouseCell = _gridCalculator.WorldToCell(mouseWorld);
-            _mouseCellCoordsProvider.SetMouseCellCoords(mouseCell);
+            _framesCounter3++;
+            if (_framesCounter3 >= 3)
+            {
+                _framesCounter3 = 0;
+                var mouseWorld = GetOnPlaneMouseWorldPoint();
+                var mouseCell = _gridCalculator.WorldToCell(mouseWorld);
+                _mouseCellCoordsProvider.SetMouseCellCoords(mouseCell);
+            }
         }
     }
 
@@ -86,7 +93,7 @@ public class MainCameraMediator : MonoBehaviour
     private Vector3 GetOnPlaneMouseWorldPoint()
     {
         var cameraTransform = _camera.transform;
-        var mousePosition = Input.mousePosition;
+        var mousePosition = _newMousePosition;
         var mouseWorldPoint = _camera.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y));
         var rotationX = Mathf.Deg2Rad * cameraTransform.rotation.eulerAngles.x;
         var distance = (float)(Math.Abs(mouseWorldPoint.z) / Math.Cos(rotationX));

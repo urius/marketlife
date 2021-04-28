@@ -2,9 +2,8 @@ using UnityEngine;
 
 public abstract class ShopObjectMediatorBase
 {
-    protected Transform ParentTransform;
-
-    private readonly ShopObjectBase _model;
+    protected readonly Transform ParentTransform;
+    protected readonly ShopObjectBase Model;
 
     private GameObject _currentViewGo;
     private bool _hasProfileSide;
@@ -13,17 +12,50 @@ public abstract class ShopObjectMediatorBase
     public ShopObjectMediatorBase(Transform parentTransform, ShopObjectBase shelfModel)
     {
         ParentTransform = parentTransform;
-        _model = shelfModel;
+        Model = shelfModel;
     }
 
-    public void Mediate()
+    public virtual void Mediate()
     {
-        _prefabs = PrefabsHolder.Instance.GetShopObjectPrefabs(_model.Type, _model.Level);
+        _prefabs = PrefabsHolder.Instance.GetShopObjectPrefabs(Model.Type, Model.Level);
         _hasProfileSide = _prefabs.Item2 != null;
         CreateView();
+        Activate();
     }
 
-    public virtual void Destroy()
+    public virtual void Unmediate()
+    {
+        Deactivate();
+        DestroyViews();
+    }
+
+    private void CreateView()
+    {
+        var side = Model.Side;
+        var prefab = (_hasProfileSide && SideHelper.IsProfileSide(side)) ? _prefabs.Item2 : _prefabs.Item1;
+        var viewGo = GameObject.Instantiate(prefab, ParentTransform);
+        _currentViewGo = viewGo;
+        UpdatePosition();
+        var scaleXMultiplier = SideHelper.GetScaleXMultiplier(side);
+        viewGo.transform.localScale = new Vector3(scaleXMultiplier, 1, 1);
+    }
+
+    private void Activate()
+    {
+        Model.CoordsChanged += OnCoordsChanged;
+    }
+
+    private void Deactivate()
+    {
+        Model.CoordsChanged -= OnCoordsChanged;
+    }
+
+    private void OnCoordsChanged(Vector2Int oldCoords, Vector2Int newCoords)
+    {
+        UpdatePosition();
+    }
+
+    private void DestroyViews()
     {
         if (_currentViewGo != null)
         {
@@ -31,14 +63,8 @@ public abstract class ShopObjectMediatorBase
         }
     }
 
-    protected virtual void CreateView()
+    private void UpdatePosition()
     {
-        var side = _model.Side;
-        var prefab = (_hasProfileSide && SideHelper.IsProfileSide(side)) ? _prefabs.Item2 : _prefabs.Item1;
-        var viewGo = GameObject.Instantiate(prefab, ParentTransform);
-        _currentViewGo = viewGo;
-        viewGo.transform.position = GridCalculator.Instance.CellToWord(_model.Coords);
-        var scaleXMultiplier = SideHelper.GetScaleXMultiplier(side);
-        viewGo.transform.localScale = new Vector3(scaleXMultiplier, 1, 1);
+        _currentViewGo.transform.position = GridCalculator.Instance.CellToWord(Model.Coords);
     }
 }

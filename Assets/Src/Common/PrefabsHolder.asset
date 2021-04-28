@@ -17,6 +17,8 @@ MonoBehaviour:
     type: 3}
   HeadProfilePrefab: {fileID: 3164207944659733220, guid: b841ee795e37347919b1cda9ed15a70f,
     type: 3}
+  WhiteSquarePrefab: {fileID: 1675221126319874769, guid: 9b686db902736428892f064857ef8083,
+    type: 3}
   FloorPrefab: {fileID: 1675221126319874769, guid: 0161fd5228c06488f8ac900d1259fb2f,
     type: 3}
   WallPrefab: {fileID: 2794988592096314229, guid: a1cf383c968af47f2919b9d89ffd7bc1,

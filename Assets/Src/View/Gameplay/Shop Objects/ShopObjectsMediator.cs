@@ -8,7 +8,7 @@ public class ShopObjectsMediator : MonoBehaviour
 
     private readonly Dictionary<Vector2Int, ShopObjectMediatorBase> _shopObjectMediators = new Dictionary<Vector2Int, ShopObjectMediatorBase>();
 
-    private PlacingShopObjectMediatorBase _currentPlacingShopObjectMediator;
+    private PlacingShopObjectMediator _currentPlacingShopObjectMediator;
 
     private void Awake()
     {
@@ -36,7 +36,8 @@ public class ShopObjectsMediator : MonoBehaviour
         switch (shopObjectModel.Type)
         {
             case ShopObjectType.Shelf:
-                //todo: create mediator
+                _currentPlacingShopObjectMediator = new PlacingShopObjectMediator(transform, shopObjectModel as ShelfModel);
+                _currentPlacingShopObjectMediator.Mediate();
                 break;
         }
     }
@@ -79,7 +80,7 @@ public class ShopObjectsMediator : MonoBehaviour
     {
         foreach (var kvp in _shopObjectMediators)
         {
-            kvp.Value.Destroy();
+            kvp.Value.Unmediate();
         }
         _shopObjectMediators.Clear();
     }

@@ -52,4 +52,32 @@ public class SideHelper
             _ => 225,
         };
     }
+
+    public static int ClampSide(int side, bool twoSidesMode = false)
+    {
+        var result = side;
+        if (result > 4)
+        {
+            result %= 4;
+        }
+        if (side <= 0)
+        {
+            result = result % 4 + 4;
+        }
+
+        if (twoSidesMode)
+        {
+            switch(result)
+            {
+                case 1:
+                    result = 3;
+                    break;
+                case 4:
+                    result = 2;
+                    break;
+            }
+        }
+
+        return result;
+    }
 }

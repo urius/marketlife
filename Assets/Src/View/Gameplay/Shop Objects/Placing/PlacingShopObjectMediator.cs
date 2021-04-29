@@ -5,11 +5,15 @@ public class PlacingShopObjectMediator : ShopObjectMediatorBase
 {
     private readonly SpriteRenderer[] _buildMatrixSquares;
     private readonly GridCalculator _gridCalculator;
+    private readonly GameStateModel _gameStateModel;
+
+    private ShopModel _viewingShopModel;
 
     public PlacingShopObjectMediator(Transform parentTransform, ShopObjectBase shelfModel)
         : base(parentTransform, shelfModel)
     {
         _gridCalculator = GridCalculator.Instance;
+        _gameStateModel = GameStateModel.Instance;
 
         var buildSquaresCount = Model.RotatedBuildMatrix[0].Length * Model.RotatedBuildMatrix.Length;
         _buildMatrixSquares = new SpriteRenderer[buildSquaresCount];
@@ -47,7 +51,7 @@ public class PlacingShopObjectMediator : ShopObjectMediatorBase
     private void Deactivate()
     {
         Model.CoordsChanged -= OnCoordsChanged;
-        Model.SideChanged -= OnSideChanged;      
+        Model.SideChanged -= OnSideChanged;
     }
 
     private void OnCoordsChanged(Vector2Int oldCoords, Vector2Int newCoords)
@@ -62,14 +66,33 @@ public class PlacingShopObjectMediator : ShopObjectMediatorBase
 
     private void UpdateDisplayBuildMatrix()
     {
+        _viewingShopModel = _gameStateModel.ViewingShopModel;
         Model.RotatedBuildMatrix.ForEachElement(UpdateBuildSquare);
     }
 
     private void UpdateBuildSquare(Vector2Int localCoords, int flatIndex, int value)
     {
         var coords = Model.Coords + localCoords;
+        var buildState = _viewingShopModel.GetCellBuildState(coords);
 
         _buildMatrixSquares[flatIndex].transform.position = _gridCalculator.CellToWord(coords);
-        _buildMatrixSquares[flatIndex].color = _buildMatrixSquares[flatIndex].color.SetAlpha(Math.Abs(value) * 0.5f);
+        _buildMatrixSquares[flatIndex].color = GetBuildColor(value, buildState);
+    }
+
+    private Color GetBuildColor(int selfBuildState, int otherBuildState)
+    {
+        if (selfBuildState == 0)
+        {
+            return new Color(0, 0, 0, 0);
+        }
+
+        if (BuildHelper.CanBuild(selfBuildState, otherBuildState))
+        {
+            return new Color(0, 1, 0, 0.5f);
+        }
+        else
+        {
+            return new Color(1, 0, 0, 0.5f);
+        }
     }
 }

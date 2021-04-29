@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,12 +7,55 @@ public class ShopModel
     public readonly string Uid;
     public readonly ShoDesignModel ShopDesign;
     public readonly Dictionary<Vector2Int, ShopObjectBase> ShopObjects;
+    public readonly Dictionary<Vector2Int, (int buildState, ShopObjectBase reference)> Grid;
 
     public ShopModel(string uid, ShoDesignModel shopDesign, Dictionary<Vector2Int, ShopObjectBase> shopObjects)
     {
+        Grid = new Dictionary<Vector2Int, (int buildState, ShopObjectBase reference)>();
+
         Uid = uid;
         ShopDesign = shopDesign;
         ShopObjects = shopObjects;
+
+        RefillGrid();
+    }
+
+    public int GetCellBuildState(Vector2Int cellCoords)
+    {
+        if (cellCoords.x < 0 || cellCoords.y < 0 || cellCoords.x >= ShopDesign.SizeX || cellCoords.y >= ShopDesign.SizeY) return 1;
+
+        if (Grid.TryGetValue(cellCoords, out var cellData))
+        {
+            return cellData.buildState;
+        }
+
+        return 0;
+    }
+
+    private void RefillGrid()
+    {
+        Grid.Clear();
+        foreach (var kvp in ShopObjects)
+        {
+            var shopObject = kvp.Value;
+            var coords = shopObject.Coords;
+            var buildMatrix = shopObject.RotatedBuildMatrix;
+            var width = buildMatrix[0].Length;
+            var pivot = new Vector2Int(width / 2, buildMatrix.Length / 2);
+
+            for (var y = 0; y < buildMatrix.Length; y++)
+            {
+                for (var x = 0; x < width; x++)
+                {
+                    var currentCellCoords = new Vector2Int(x, y) - pivot + coords;
+                    var buildState = buildMatrix[y][x];
+                    if (buildState != 0)
+                    {
+                        Grid[currentCellCoords] = (buildState, shopObject);
+                    }
+                }
+            }
+        }
     }
 }
 

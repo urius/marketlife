@@ -12,7 +12,7 @@ public abstract class ShopObjectBase
     public readonly bool TwoSidesMode;
 
     private Vector2Int _coords;
-    private int _side;
+    private int _side = -1;
     private readonly int[][] _defaultBuildMatrix;
 
     public ShopObjectBase(int level, ShopObjectConfigDto config, Vector2Int coords, int side)
@@ -36,9 +36,9 @@ public abstract class ShopObjectBase
         {
             if (value == _side) return;
             var sideBefore = _side;
-            _side = value;
+            _side = SideHelper.ClampSide(value, TwoSidesMode);
             RotatedBuildMatrix = _defaultBuildMatrix.Rotate(_side - 3);
-            SideChanged(sideBefore, value);
+            SideChanged(sideBefore, _side);
         }
     }
     public Vector2Int Coords

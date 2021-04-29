@@ -39,7 +39,7 @@ public static class MatrixExtensions
 
     private static int[][] RotateRight(int[][] originalMarix)
     {
-        var result = GetZeroMatrix(originalMarix.Length, originalMarix[0].Length);
+        var result = GetZeroMatrix(originalMarix[0].Length, originalMarix.Length);
 
         var width = result[0].Length;
         var maxX = width - 1;
@@ -56,7 +56,7 @@ public static class MatrixExtensions
 
     private static int[][] RotateLeft(int[][] originalMarix)
     {
-        var result = GetZeroMatrix(originalMarix.Length, originalMarix[0].Length);
+        var result = GetZeroMatrix(originalMarix[0].Length, originalMarix.Length);
 
         var width = result[0].Length;
         var maxY = result.Length - 1;

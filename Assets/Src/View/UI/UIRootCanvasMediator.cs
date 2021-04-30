@@ -11,7 +11,7 @@ public class UIRootCanvasMediator : MonoBehaviour
     private void Awake()
     {
         _dispatcher = Dispatcher.Instance;
-        _bottomPanelMediator = new BottomPanelMediator();
+        _bottomPanelMediator = new BottomPanelMediator(_bottomPanelView);
     }
 
     private async void Start()
@@ -21,7 +21,7 @@ public class UIRootCanvasMediator : MonoBehaviour
         _gameViewPanel.PointerDown += OnPointerDown;
         _gameViewPanel.PointerUp += OnPointerUp;
 
-        _bottomPanelMediator.Mediate(_bottomPanelView);
+        _bottomPanelMediator.Mediate();
     }
 
     private void OnPointerDown()

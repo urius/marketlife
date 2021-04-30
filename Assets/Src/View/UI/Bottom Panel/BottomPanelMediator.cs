@@ -1,16 +1,27 @@
+using UnityEngine;
 
-public class BottomPanelMediator : UINotMonoMediatorBase<BottomPanelView>
+public class BottomPanelMediator : UINotMonoMediatorBase
 {
-    private UINotMonoMediatorBase<BottomPanelView> _currentTabMediator;
+    private readonly BottomPanelView _view;
 
-    protected override void OnStart()
+    private UINotMonoMediatorBase _currentTabMediator;
+
+    public BottomPanelMediator(BottomPanelView view)
+        : base(view.transform as RectTransform)
     {
-        _currentTabMediator = new UIBottomPanelShelfsTabMediator();
-        _currentTabMediator.Mediate(View);
+        _view = view;
     }
 
-    protected override void OnStop()
+    public override void Mediate()
     {
+        base.Mediate();
 
+        _currentTabMediator = new UIBottomPanelShelfsTabMediator(_view);
+        _currentTabMediator.Mediate();
+    }
+
+    public override void Unmediate()
+    {
+        base.Unmediate();
     }
 }

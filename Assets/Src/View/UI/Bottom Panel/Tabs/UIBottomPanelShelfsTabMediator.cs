@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIBottomPanelShelfsTabMediator : UINotMonoMediatorBase<BottomPanelView>
+public class UIBottomPanelShelfsTabMediator : UIBottomPanelSubMediatorBase
 {
     private readonly IShelfsConfig _shelfsConfig;
     private readonly PlayerModel _playerModel;
@@ -10,7 +10,8 @@ public class UIBottomPanelShelfsTabMediator : UINotMonoMediatorBase<BottomPanelV
     private readonly Dispatcher _dispatcher;
     private readonly Dictionary<UIBottomPanelScrollItemView, int> _shelfIdsByItem;
 
-    public UIBottomPanelShelfsTabMediator()
+    public UIBottomPanelShelfsTabMediator(BottomPanelView view)
+        : base(view)
     {
         _shelfsConfig = GameConfigManager.Instance.MainConfig;
         _playerModel = PlayerModel.Instance;
@@ -21,10 +22,13 @@ public class UIBottomPanelShelfsTabMediator : UINotMonoMediatorBase<BottomPanelV
         _shelfIdsByItem = new Dictionary<UIBottomPanelScrollItemView, int>();
     }
 
-    protected override void OnStart()
+    public override void Mediate()
     {
+        base.Mediate();
+
         var configsToShow = _shelfsConfig.GetShelfConfigsForLevel(_playerModel.Level);
 
+        View.ScrollBoxView.gameObject.SetActive(true);
         foreach (var shelfConfig in configsToShow)
         {
             var itemGo = GameObject.Instantiate(_prefabsHolder.UIBottomPanelScrollItem, View.ScrollBoxView.Content);
@@ -38,7 +42,7 @@ public class UIBottomPanelShelfsTabMediator : UINotMonoMediatorBase<BottomPanelV
         }
     }
 
-    protected override void OnStop()
+    public override void Unmediate()
     {
         var items = _shelfIdsByItem.Keys;
         foreach (var item in items)
@@ -46,6 +50,9 @@ public class UIBottomPanelShelfsTabMediator : UINotMonoMediatorBase<BottomPanelV
             item.Clicked -= OnItemClicked;
             GameObject.Destroy(item.gameObject);
         }
+        View.ScrollBoxView.gameObject.SetActive(false);
+
+        base.Unmediate();
     }
 
     private void OnItemClicked(UIBottomPanelScrollItemView itemView)

@@ -50,5 +50,5 @@ public enum GameStateName
     Loading,
     Loaded,
     ShopSimulation,
-    ShopBuilding,
+    ShopInterior,
 }

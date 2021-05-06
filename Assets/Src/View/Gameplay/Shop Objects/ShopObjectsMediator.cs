@@ -28,16 +28,29 @@ public class ShopObjectsMediator : MonoBehaviour
     private void Activate()
     {
         _gameStateModel.ViewingShopModelChanged += OnViewingShopModelChanged;
-        _gameStateModel.PlacingObjectStateChanged += OnPlacingObjectStateChanged;
+        _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
     }
 
-    private void OnPlacingObjectStateChanged(ShopObjectBase shopObjectModel)
+    private void OnPlacingStateChanged(PlacingStateName previouseState, PlacingStateName newState)
     {
-        switch (shopObjectModel.Type)
+        switch (newState)
         {
-            case ShopObjectType.Shelf:
-                _currentPlacingShopObjectMediator = new PlacingShopObjectMediator(transform, shopObjectModel as ShelfModel);
-                _currentPlacingShopObjectMediator.Mediate();
+            case PlacingStateName.None:
+                if (_currentPlacingShopObjectMediator != null)
+                {
+                    _currentPlacingShopObjectMediator.Unmediate();
+                    _currentPlacingShopObjectMediator = null;
+                }
+                break;
+            case PlacingStateName.PlacingShopObject:
+                var shopObjectModel = _gameStateModel.PlacingShopObjectModel;
+                switch (shopObjectModel.Type)
+                {
+                    case ShopObjectType.Shelf:
+                        _currentPlacingShopObjectMediator = new PlacingShopObjectMediator(transform, shopObjectModel as ShelfModel);
+                        _currentPlacingShopObjectMediator.Mediate();
+                        break;
+                }
                 break;
         }
     }
@@ -64,7 +77,7 @@ public class ShopObjectsMediator : MonoBehaviour
     {
 #if UNITY_EDITOR
         var viewingShopModel = GameStateModel.Instance.ViewingShopModel;
-        foreach(var kvp in viewingShopModel.Grid)
+        foreach (var kvp in viewingShopModel.Grid)
         {
             var squareGo = GameObject.Instantiate(PrefabsHolder.Instance.WhiteSquarePrefab, transform);
             squareGo.transform.position = GridCalculator.Instance.CellToWord(kvp.Key);

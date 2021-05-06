@@ -32,7 +32,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 46b41057a82fe4010b5245cd9e8b4afa, type: 3}
-    totalSpriteSurfaceArea: 406591
+    totalSpriteSurfaceArea: 422975
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -109,6 +109,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: a9bdf43f37227457b81416a464153092, type: 3}
   - {fileID: 21300000, guid: 5ede8e3feaead4cbcb32399c2978e871, type: 3}
   - {fileID: 21300000, guid: 6c6c824f2307741c48d42415a35b4730, type: 3}
+  - {fileID: 21300000, guid: 9994a06f2eb2e4390bcb8a208cbc0ebe, type: 3}
   - {fileID: 21300000, guid: 9cc07ebfc57794109b7cbb0e1cb10d65, type: 3}
   m_PackedSpriteNamesToIndex:
   - Cheese_1
@@ -182,6 +183,7 @@ SpriteAtlas:
   - Sugar_1
   - Icon_Shelf_4
   - Fanta
+  - Icon_Right
   - sign_paint_wall
   m_RenderDataMap: {}
   m_Tag: InterfaceGraphicsAtlas

@@ -1,10 +1,11 @@
-using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class BottomPanelMediator : UINotMonoMediatorBase
 {
     private readonly BottomPanelView _view;
+    private readonly Dispatcher _dispatcher;
+    private readonly GameStateModel _gameStateModel;
 
     private UINotMonoMediatorBase _currentTabMediator;
 
@@ -12,6 +13,8 @@ public class BottomPanelMediator : UINotMonoMediatorBase
         : base(view.transform as RectTransform)
     {
         _view = view;
+        _dispatcher = Dispatcher.Instance;
+        _gameStateModel = GameStateModel.Instance;
     }
 
     public override async void Mediate()
@@ -23,25 +26,107 @@ public class BottomPanelMediator : UINotMonoMediatorBase
 
         Activate();
 
-        await _view.ShowInteriorModeButtonsAsync();
+        await ShowButtonsForStateAsync(_gameStateModel.GameState);
     }
 
     private void Activate()
     {
         _view.InteriorButtonClicked += OnInteriorButtonClicked;
         _view.InteriorCloseButtonClicked += OnInteriorCloseButtonClicked;
+        _view.FinishPlacingClicked += OnFinishPlacingButtonClicked;
+        _view.RotateRightClicked += OnRotateRightButtonClicked;
+        _view.RotateLeftClicked += OnRotateLeftButtonClicked;
+
+        _gameStateModel.GameStateChanged += OnGameStateChanged;
+        _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
     }
 
-    private async void OnInteriorButtonClicked()
+    private async void OnPlacingStateChanged(PlacingStateName previousState, PlacingStateName newState)
     {
-        await _view.HideSimulationModeButtonsAsync();
-        await _view.ShowInteriorModeButtonsAsync();
+        using (_view.SetBlockedDisposable())
+        {
+            //placing
+            if (previousState == PlacingStateName.None && newState != PlacingStateName.None)
+            {
+                var minimizeTask = _view.MinimizePanelAsync();
+                await HideButtonsForStateAsync(_gameStateModel.GameState);
+                await minimizeTask;
+                switch (newState)
+                {
+                    case PlacingStateName.PlacingShopObject:
+                        await _view.ShowPlacingButtonsAsync();
+                        break;
+                }
+            }
+            //no placing
+            else if (previousState != PlacingStateName.None && newState == PlacingStateName.None)
+            {
+                var maximizeTask = _view.MaximizePanelAsync();
+                await _view.HidePlacingButtonsAsync();
+                await maximizeTask;
+                await ShowButtonsForStateAsync(_gameStateModel.GameState);
+            }
+        }
     }
 
-    private async void OnInteriorCloseButtonClicked()
+    private async void OnGameStateChanged(GameStateName previousState, GameStateName newState)
     {
-        await _view.HideInteriorModeButtonsAsync();
-        await _view.ShowSimulationModeButtonsAsync();
+        using (_view.SetBlockedDisposable())
+        {
+            await HideButtonsForStateAsync(previousState);
+            await ShowButtonsForStateAsync(newState);
+        }
+    }
+
+    private UniTask ShowButtonsForStateAsync(GameStateName newState)
+    {
+        switch (newState)
+        {
+            case GameStateName.ShopInterior:
+                return _view.ShowInteriorModeButtonsAsync();
+            case GameStateName.ShopSimulation:
+                return _view.ShowSimulationModeButtonsAsync();
+        }
+
+        return UniTask.CompletedTask;
+    }
+
+    private UniTask HideButtonsForStateAsync(GameStateName previousState)
+    {
+        switch (previousState)
+        {
+            case GameStateName.ShopSimulation:
+                return _view.HideSimulationModeButtonsAsync();
+            case GameStateName.ShopInterior:
+                return _view.HideInteriorModeButtonsAsync();
+        }
+
+        return UniTask.CompletedTask;
+    }
+
+    private void OnInteriorButtonClicked()
+    {
+        _dispatcher.BottomPanelInteriorClicked();
+    }
+
+    private void OnInteriorCloseButtonClicked()
+    {
+        _dispatcher.BottomPanelInteriorCloseClicked();
+    }
+
+    private void OnRotateRightButtonClicked()
+    {
+        _dispatcher.BottomPanelRotateRightClicked();
+    }
+
+    private void OnRotateLeftButtonClicked()
+    {
+        _dispatcher.BottomPanelRotateLeftClicked();
+    }
+
+    private void OnFinishPlacingButtonClicked()
+    {
+        _dispatcher.BottomPanlelFinishPlacingClicked();
     }
 
     public override void Unmediate()

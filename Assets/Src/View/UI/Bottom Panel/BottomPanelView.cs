@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -16,6 +15,9 @@ public class BottomPanelView : MonoBehaviour
     public event Action InteriorWallsButtonClicked = delegate { };
     public event Action InteriorWindowsButtonClicked = delegate { };
     public event Action InteriorDoorsButtonClicked = delegate { };
+    public event Action FinishPlacingClicked = delegate { };
+    public event Action RotateRightClicked = delegate { };
+    public event Action RotateLeftClicked = delegate { };
 
     private const float DefaultDurationSeconds = 0.15f;
     private const float DefaultDelaySeconds = 0.05f;
@@ -34,22 +36,45 @@ public class BottomPanelView : MonoBehaviour
     [SerializeField] private Button _interiorWallsButton;
     [SerializeField] private Button _interiorWindowsButton;
     [SerializeField] private Button _interiorDoorsButton;
+    [Space(10)]
+    [SerializeField] private Button _buttonFinishPlacing;
+    [SerializeField] private Button _buttonRotateRight;
+    [SerializeField] private Button _buttonRotateLeft;
+    [Space(10)]
+    [SerializeField] private GameObject _blockPanel;
+
 
     private Dictionary<CanvasGroup[], float> _buttonYPositionsByCanvasGroup;
     private float DeltaPositionForAnimation = 40;
     private CanvasGroup[] _simulationModeButtons;
     private CanvasGroup[] _interiorModeButtons;
+    private CanvasGroup[] _placingModeButtons;
 
     public void Awake()
     {
         _simulationModeButtons = new CanvasGroup[] { GetCanvasGroup(_friendsButton), GetCanvasGroup(_warehouseButton), GetCanvasGroup(_interiorButton), GetCanvasGroup(_manageButton) };
         _interiorModeButtons = new CanvasGroup[] { GetCanvasGroup(_interiorCloseButton), GetCanvasGroup(_interiorObjectsButton), GetCanvasGroup(_interiorFloorsButton), GetCanvasGroup(_interiorWallsButton), GetCanvasGroup(_interiorWindowsButton), GetCanvasGroup(_interiorDoorsButton) };
+        _placingModeButtons = new CanvasGroup[] { GetCanvasGroup(_buttonFinishPlacing), GetCanvasGroup(_buttonRotateRight), GetCanvasGroup(_buttonRotateLeft) };
 
-        _buttonYPositionsByCanvasGroup = new Dictionary<CanvasGroup[], float>();
-        _buttonYPositionsByCanvasGroup[_simulationModeButtons] = (_simulationModeButtons[0].transform as RectTransform).anchoredPosition.y;
-        _buttonYPositionsByCanvasGroup[_interiorModeButtons] = (_interiorModeButtons[0].transform as RectTransform).anchoredPosition.y;
+        _buttonYPositionsByCanvasGroup = new Dictionary<CanvasGroup[], float>
+        {
+            [_simulationModeButtons] = (_simulationModeButtons[0].transform as RectTransform).anchoredPosition.y,
+            [_interiorModeButtons] = (_interiorModeButtons[0].transform as RectTransform).anchoredPosition.y,
+            [_placingModeButtons] = (_placingModeButtons[0].transform as RectTransform).anchoredPosition.y
+        };
 
         Activate();
+    }
+
+    public void SetIsBlocked(bool isBlocked)
+    {
+        _blockPanel.SetActive(isBlocked);
+    }
+
+    public IDisposable SetBlockedDisposable()
+    {
+        SetIsBlocked(true);
+        return new DisposableSource(() => SetIsBlocked(false));
     }
 
     public UniTask ShowSimulationModeButtonsAsync()
@@ -70,6 +95,43 @@ public class BottomPanelView : MonoBehaviour
     public UniTask HideInteriorModeButtonsAsync()
     {
         return HideButtonsInternalAsync(_interiorModeButtons);
+    }
+
+    public UniTask ShowPlacingButtonsAsync()
+    {
+        return ShowButtonsInternalAsync(_placingModeButtons);
+    }
+
+    public UniTask HidePlacingButtonsAsync()
+    {
+        return HideButtonsInternalAsync(_placingModeButtons);
+    }
+
+    public UniTask MinimizePanelAsync()
+    {
+        var tcs = new UniTaskCompletionSource();
+
+        var rectTransform = transform as RectTransform;
+        var targetPosition = rectTransform.anchoredPosition;
+        targetPosition.y = -200;
+        LeanTween.move(rectTransform, targetPosition, 0.5f)
+            .setEaseOutCirc()
+            .setOnComplete(() => tcs.TrySetResult());
+
+        return tcs.Task;
+    }
+
+    public UniTask MaximizePanelAsync()
+    {
+        var tcs = new UniTaskCompletionSource();
+
+        var rectTransform = transform as RectTransform;
+        var targetPosition = Vector3.zero;
+        LeanTween.move(rectTransform, targetPosition, 1f)
+            .setEaseOutBounce()
+            .setOnComplete(() => tcs.TrySetResult());
+
+        return tcs.Task;
     }
 
     private UniTask ShowButtonsInternalAsync(CanvasGroup[] canvasGroups)
@@ -147,6 +209,25 @@ public class BottomPanelView : MonoBehaviour
         _interiorWallsButton.AddOnClickListener(OnInteriorWallsButtonClicked);
         _interiorWindowsButton.AddOnClickListener(OnInteriorWindowsButtonClicked);
         _interiorDoorsButton.AddOnClickListener(OnInteriorDoorsButtonClicked);
+
+        _buttonFinishPlacing.AddOnClickListener(OnFinishPlacingButtonClicked);
+        _buttonRotateRight.AddOnClickListener(OnRotateRightButtonClicked);
+        _buttonRotateLeft.AddOnClickListener(OnRotateLeftButtonClicked);
+    }
+
+    private void OnRotateLeftButtonClicked()
+    {
+        RotateLeftClicked();
+    }
+
+    private void OnRotateRightButtonClicked()
+    {
+        RotateRightClicked();
+    }
+
+    private void OnFinishPlacingButtonClicked()
+    {
+        FinishPlacingClicked();
     }
 
     private void OnFriendsButtonClicked()

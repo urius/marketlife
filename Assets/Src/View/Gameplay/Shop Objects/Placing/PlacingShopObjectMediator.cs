@@ -22,16 +22,26 @@ public class PlacingShopObjectMediator : ShopObjectMediatorBase
     public override void Mediate()
     {
         base.Mediate();
-        Activate();
 
         Model.RotatedBuildMatrix.ForEachElement(CreateBuildSquare);
         UpdateDisplayBuildMatrix();
+
+        Activate();
     }
 
     public override void Unmediate()
     {
         Deactivate();
+        DestroyBuildSquares();
         base.Unmediate();
+    }
+
+    private void DestroyBuildSquares()
+    {
+        foreach (var buildSquare in _buildMatrixSquares)
+        {
+            GameObject.Destroy(buildSquare.gameObject);
+        }
     }
 
     private void CreateBuildSquare(Vector2Int localCoords, int flatIndex, int value)

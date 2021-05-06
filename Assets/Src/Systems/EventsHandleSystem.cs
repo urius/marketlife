@@ -18,6 +18,24 @@ public class EventsHandleSystem : MonoBehaviour
     {
         _dispatcher.UIBottomPanelPlaceShelfClicked += OnUIBottomPanelPlaceShelfClicked;
         _dispatcher.MouseCellCoordsUpdated += OnMouseCellCoordsUpdated;
+        _dispatcher.BottomPanelInteriorClicked += BottomPanelInteriorClicked;
+        _dispatcher.BottomPanelInteriorCloseClicked += BottomPanelInteriorCloseClicked;
+        _dispatcher.BottomPanlelFinishPlacingClicked += BottomPanelFinishPlacingClicked;
+    }
+
+    private void BottomPanelFinishPlacingClicked()
+    {
+        _gameStateModel.ResetPlacingState();
+    }
+
+    private void BottomPanelInteriorClicked()
+    {
+        _gameStateModel.SetGameState(GameStateName.ShopInterior);
+    }
+
+    private void BottomPanelInteriorCloseClicked()
+    {
+        _gameStateModel.SetGameState(GameStateName.ShopSimulation);
     }
 
     private void OnMouseCellCoordsUpdated(Vector2Int newCoords)

@@ -107,9 +107,11 @@ public abstract class ShopObjectMediatorBase
 
     private void DestroyViews()
     {
+        DestroyNotDisplayedSideView();
         if (_currentViewGo != null)
         {
             GameObject.Destroy(_currentViewGo);
+            _currentViewGo = null;
         }
     }
 

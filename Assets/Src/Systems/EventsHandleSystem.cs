@@ -21,6 +21,18 @@ public class EventsHandleSystem : MonoBehaviour
         _dispatcher.BottomPanelInteriorClicked += BottomPanelInteriorClicked;
         _dispatcher.BottomPanelInteriorCloseClicked += BottomPanelInteriorCloseClicked;
         _dispatcher.BottomPanlelFinishPlacingClicked += BottomPanelFinishPlacingClicked;
+        _dispatcher.BottomPanelRotateRightClicked += BottomPanelRotateRightClicked;
+        _dispatcher.BottomPanelRotateLeftClicked += BottomPanelRotateLeftClicked;
+    }
+
+    private void BottomPanelRotateLeftClicked()
+    {
+        new RotatePlacingObjectCommand().Execute(false);
+    }
+
+    private void BottomPanelRotateRightClicked()
+    {
+        new RotatePlacingObjectCommand().Execute(true);
     }
 
     private void BottomPanelFinishPlacingClicked()

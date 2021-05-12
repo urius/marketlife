@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class EventsHandleSystem : MonoBehaviour
@@ -16,6 +15,7 @@ public class EventsHandleSystem : MonoBehaviour
 
     private void Activate()
     {
+        _dispatcher.UIGameViewMouseClick += OnUIGameViewMouseClicked;
         _dispatcher.UIBottomPanelPlaceShelfClicked += OnUIBottomPanelPlaceShelfClicked;
         _dispatcher.MouseCellCoordsUpdated += OnMouseCellCoordsUpdated;
         _dispatcher.BottomPanelInteriorClicked += BottomPanelInteriorClicked;
@@ -23,6 +23,14 @@ public class EventsHandleSystem : MonoBehaviour
         _dispatcher.BottomPanlelFinishPlacingClicked += BottomPanelFinishPlacingClicked;
         _dispatcher.BottomPanelRotateRightClicked += BottomPanelRotateRightClicked;
         _dispatcher.BottomPanelRotateLeftClicked += BottomPanelRotateLeftClicked;
+    }
+
+    private void OnUIGameViewMouseClicked()
+    {
+        if (_gameStateModel.PlacingState != PlacingStateName.None)
+        {
+            new PlaceObjectCommand().Execute();
+        }
     }
 
     private void BottomPanelRotateLeftClicked()

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class MatrixExtensions
@@ -22,11 +23,29 @@ public static class MatrixExtensions
         return tempMtx;
     }
 
+    public static IList<T> FlatMap<T>(this int[][] originalMarix, Func<Vector2Int, int, int, T> mapFunc)
+    {
+        var result = new T[originalMarix[0].Length * originalMarix.Length];
+        var flatIndex = 0;
+        var width = originalMarix[0].Length;
+        var pivot = new Vector2Int(width / 2, originalMarix.Length / 2);
+        for (var y = 0; y < originalMarix.Length; y++)
+        {
+            for (var x = 0; x < width; x++)
+            {
+                result[flatIndex] = mapFunc(new Vector2Int(x, y) - pivot, flatIndex, originalMarix[y][x]);
+                flatIndex++;
+            }
+        }
+
+        return result;
+    }
+
     public static void ForEachElement(this int[][] originalMarix, Action<Vector2Int, int, int> callback)
     {
         var flatIndex = 0;
         var width = originalMarix[0].Length;
-        var pivot = new Vector2Int(width/2, originalMarix.Length/2);
+        var pivot = new Vector2Int(width / 2, originalMarix.Length / 2);
         for (var y = 0; y < originalMarix.Length; y++)
         {
             for (var x = 0; x < width; x++)

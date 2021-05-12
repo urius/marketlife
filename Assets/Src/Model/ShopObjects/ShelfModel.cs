@@ -33,4 +33,9 @@ public class ShelfModel : ShopObjectBase
     }
 
     public override ShopObjectType Type => ShopObjectType.Shelf;
+
+    public override ShopObjectBase Clone()
+    {
+        return new ShopObjectModelFactory().CreateShelf(Level, Coords, Side, Products);
+    }
 }

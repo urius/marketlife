@@ -16,5 +16,4 @@ public class MouseCellCoordsProvider
             Dispatcher.Instance.MouseCellCoordsUpdated(newCoords);
         }
     }
-
 }

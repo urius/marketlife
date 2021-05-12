@@ -8,4 +8,9 @@ public class CashDeskModel : ShopObjectBase
     }
 
     public override ShopObjectType Type => ShopObjectType.CashDesk;
+
+    public override ShopObjectBase Clone()
+    {
+        return new ShopObjectModelFactory().CreateCashDesk(Level, Coords, Side);
+    }
 }

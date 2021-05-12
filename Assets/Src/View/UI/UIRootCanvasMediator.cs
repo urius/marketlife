@@ -5,8 +5,14 @@ public class UIRootCanvasMediator : MonoBehaviour
     [SerializeField] private UIGameViewPanel _gameViewPanel;
     [SerializeField] private BottomPanelView _bottomPanelView;
 
+    private const int ClickPositionSensitivity = 30;
+    private const int ClickFramesSensitivity = 30;
+
     private Dispatcher _dispatcher;
     private BottomPanelMediator _bottomPanelMediator;
+
+    private Vector3 _mouseDownPosition;
+    private int _mouseDownFramesCount;
 
     private void Awake()
     {
@@ -26,11 +32,20 @@ public class UIRootCanvasMediator : MonoBehaviour
 
     private void OnPointerDown()
     {
+        _mouseDownPosition = Input.mousePosition;
+        _mouseDownFramesCount = Time.frameCount;
+
         _dispatcher.UIGameViewMouseDown();
     }
 
     private void OnPointerUp()
     {
         _dispatcher.UIGameViewMouseUp();
+
+        if (Vector2.Distance(_mouseDownPosition, Input.mousePosition) <= ClickPositionSensitivity
+            && Time.frameCount - _mouseDownFramesCount <= ClickFramesSensitivity)
+        {
+            _dispatcher.UIGameViewMouseClick();
+        }
     }
 }

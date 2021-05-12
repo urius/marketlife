@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ShopModel
 {
+    public event Action<ShopObjectBase> ShopObjectPlaced = delegate { };
+
     public readonly string Uid;
     public readonly ShoDesignModel ShopDesign;
     public readonly Dictionary<Vector2Int, ShopObjectBase> ShopObjects;
@@ -18,6 +20,34 @@ public class ShopModel
         ShopObjects = shopObjects;
 
         RefillGrid();
+    }
+
+    public void PlaceShopObject(ShopObjectBase shopObject)
+    {
+        ShopObjects[shopObject.Coords] = shopObject;
+        RefillGrid();
+
+        ShopObjectPlaced(shopObject);
+    }
+
+    public bool CanPlaceShopObject(ShopObjectBase shopObject)
+    {
+        var result = true;
+        var matrix = shopObject.RotatedBuildMatrix;
+        var width = matrix[0].Length;
+        var pivot = new Vector2Int(width / 2, matrix.Length / 2);
+        var offsetPoint = shopObject.Coords - pivot;
+        for (var y = 0; y < matrix.Length; y++)
+        {
+            for (var x = 0; x < width; x++)
+            {
+                var worldCellPoint = new Vector2Int(x, y) + offsetPoint;
+                var canBuildOnCell = BuildHelper.CanBuild(matrix[y][x], GetCellBuildState(worldCellPoint));
+                result &= canBuildOnCell;
+            }
+        }
+
+        return result;
     }
 
     public int GetCellBuildState(Vector2Int cellCoords)

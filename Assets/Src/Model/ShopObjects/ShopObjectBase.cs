@@ -55,6 +55,7 @@ public abstract class ShopObjectBase
     public int[][] RotatedBuildMatrix { get; private set; }
 
     public abstract ShopObjectType Type { get; }
+    public abstract ShopObjectBase Clone();
 }
 
 public enum ShopObjectType

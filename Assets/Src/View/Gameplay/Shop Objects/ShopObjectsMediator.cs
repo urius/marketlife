@@ -9,6 +9,7 @@ public class ShopObjectsMediator : MonoBehaviour
     private readonly Dictionary<Vector2Int, ShopObjectMediatorBase> _shopObjectMediators = new Dictionary<Vector2Int, ShopObjectMediatorBase>();
 
     private PlacingShopObjectMediator _currentPlacingShopObjectMediator;
+    private ShopModel _currentShopModel;
 
     private void Awake()
     {
@@ -21,8 +22,31 @@ public class ShopObjectsMediator : MonoBehaviour
 
         if (_gameStateModel.ViewingShopModel != null)
         {
-            DisplayShopObjects(_gameStateModel.ViewingShopModel.ShopObjects);
+            HandleNewShopModel(_gameStateModel.ViewingShopModel);
         }
+    }
+
+    private void HandleNewShopModel(ShopModel viewingShopModel)
+    {
+        ForgetCurrentShopModel();
+
+        _currentShopModel = viewingShopModel;
+        _currentShopModel.ShopObjectPlaced += OnShopObjectPlaced;
+
+        DisplayShopObjects(viewingShopModel.ShopObjects);
+    }
+
+    private void ForgetCurrentShopModel()
+    {
+        if (_currentShopModel != null)
+        {
+            _currentShopModel.ShopObjectPlaced -= OnShopObjectPlaced;
+        }
+    }
+
+    private void OnShopObjectPlaced(ShopObjectBase shopObject)
+    {
+        MediateNewShopObject(shopObject);
     }
 
     private void Activate()
@@ -57,7 +81,7 @@ public class ShopObjectsMediator : MonoBehaviour
 
     private void OnViewingShopModelChanged(ShopModel newShopModel)
     {
-        DisplayShopObjects(newShopModel.ShopObjects);
+        HandleNewShopModel(newShopModel);
     }
 
     private void DisplayShopObjects(Dictionary<Vector2Int, ShopObjectBase> newShopObjectsData)
@@ -66,11 +90,17 @@ public class ShopObjectsMediator : MonoBehaviour
 
         foreach (var kvp in newShopObjectsData)
         {
-            _shopObjectMediators[kvp.Key] = CreateShopObjectMediator(kvp.Value);
-            _shopObjectMediators[kvp.Key].Mediate();
+            MediateNewShopObject(kvp.Value);
         }
 
         DebugDisplayBuildSquares();
+    }
+
+    private void MediateNewShopObject(ShopObjectBase shopObjectModel)
+    {
+        var coords = shopObjectModel.Coords;
+        _shopObjectMediators[coords] = CreateShopObjectMediator(shopObjectModel);
+        _shopObjectMediators[coords].Mediate();
     }
 
     private void DebugDisplayBuildSquares()

@@ -6,6 +6,7 @@ public class Dispatcher
     public Action<ShopModel> PlayerShopLoaded = delegate { };
     public Action UIGameViewMouseDown = delegate { };
     public Action UIGameViewMouseUp = delegate { };
+    public Action UIGameViewMouseClick = delegate { };    
     public Action<int> UIBottomPanelPlaceShelfClicked = delegate { };
     public Action<Vector2Int> MouseCellCoordsUpdated = delegate { };
     public Action BottomPanelInteriorClicked = delegate { };

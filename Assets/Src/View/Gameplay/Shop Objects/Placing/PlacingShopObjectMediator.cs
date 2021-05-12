@@ -8,6 +8,7 @@ public class PlacingShopObjectMediator : ShopObjectMediatorBase
     private readonly GameStateModel _gameStateModel;
 
     private ShopModel _viewingShopModel;
+    private ShopModel _currentViewingShopModel;
 
     public PlacingShopObjectMediator(Transform parentTransform, ShopObjectBase shelfModel)
         : base(parentTransform, shelfModel)
@@ -54,14 +55,25 @@ public class PlacingShopObjectMediator : ShopObjectMediatorBase
 
     private void Activate()
     {
+        _currentViewingShopModel = _gameStateModel.ViewingShopModel;
+
+        _currentViewingShopModel.ShopObjectPlaced += OnShopObjectPlaced;
         Model.CoordsChanged += OnCoordsChanged;
         Model.SideChanged += OnSideChanged;
     }
 
     private void Deactivate()
     {
+        _currentViewingShopModel.ShopObjectPlaced -= OnShopObjectPlaced;
         Model.CoordsChanged -= OnCoordsChanged;
         Model.SideChanged -= OnSideChanged;
+
+        _currentViewingShopModel = null;
+    }
+
+    private void OnShopObjectPlaced(ShopObjectBase shopObjectModel)
+    {
+        UpdateDisplayBuildMatrix();
     }
 
     private void OnCoordsChanged(Vector2Int oldCoords, Vector2Int newCoords)
@@ -98,11 +110,11 @@ public class PlacingShopObjectMediator : ShopObjectMediatorBase
 
         if (BuildHelper.CanBuild(selfBuildState, otherBuildState))
         {
-            return new Color(0, 1, 0, 0.5f);
+            return new Color(0, 1, 0, 0.4f);
         }
         else
         {
-            return new Color(1, 0, 0, 0.5f);
+            return new Color(1, 0, 0, 0.4f);
         }
     }
 }

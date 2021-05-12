@@ -1,31 +1,48 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class UIHintView : MonoBehaviour
 {
     [SerializeField] private HintPositionType _positionType;
-    [SerializeField] private float _maxWidth;
+    public HintPositionType PositionType => _positionType;
+    [SerializeField] private float _maxBGWidth;
+    public float MaxBGWidth => _maxBGWidth;
     [SerializeField] private TMP_Text _text;
     [SerializeField] private RectTransform _bgRect;
     [SerializeField] private RectTransform _arrowRect;
 
     private const int DefaultBodyOffset = 20;
 
-    void Start()
+    public void Start()
     {
-        _text.ForceMeshUpdate();
-        var size = _bgRect.sizeDelta;
-        size.y = _text.textBounds.size.y;
-        _bgRect.sizeDelta = size;
-        //Debug.Log(_bgRect.sizeDelta);
+        RecalculateBounds();
+        SetPositionType(_positionType);
+    }
 
-        SetPositionType(HintPositionType.Left);
+    public void SetParams(string text, HintPositionType positionType, float bgWidth)
+    {
+        _maxBGWidth = bgWidth;
+        _text.text = text;
+
+        RecalculateBounds();
+        SetPositionType(positionType);
+    }
+
+    public void SetText(string text)
+    {
+        _text.text = text;
+        RecalculateBounds();
+    }
+
+    public void SetMaxBGWidth(float width)
+    {
+        _maxBGWidth = width;
+        RecalculateBounds();
     }
 
     public void SetPositionType(HintPositionType positionType)
     {
+        _positionType = positionType;
         switch (positionType)
         {
             case HintPositionType.Up:
@@ -49,6 +66,25 @@ public class UIHintView : MonoBehaviour
                 _bgRect.anchoredPosition = new Vector2(-DefaultBodyOffset, 0);
                 break;
         }
+    }
+
+    private void RecalculateBounds()
+    {
+        var size = _bgRect.sizeDelta;
+        size.x = _maxBGWidth;
+        _bgRect.sizeDelta = size;
+
+        _text.ForceMeshUpdate();
+
+        size = _bgRect.sizeDelta;
+        var textRectTransform = _text.rectTransform;
+        var newBGWidth = _text.textBounds.size.x + textRectTransform.offsetMin.x - textRectTransform.offsetMax.x + 1;
+        if (newBGWidth < _maxBGWidth)
+        {
+            size.x = newBGWidth;
+        }
+        size.y = _text.textBounds.size.y + textRectTransform.offsetMin.y - textRectTransform.offsetMax.y;
+        _bgRect.sizeDelta = size;
     }
 }
 

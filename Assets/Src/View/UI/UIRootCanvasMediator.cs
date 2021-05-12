@@ -4,6 +4,7 @@ public class UIRootCanvasMediator : MonoBehaviour
 {
     [SerializeField] private UIGameViewPanel _gameViewPanel;
     [SerializeField] private BottomPanelView _bottomPanelView;
+    [SerializeField] private Canvas _poolCanvas;
 
     private const int ClickPositionSensitivity = 30;
     private const int ClickFramesSensitivity = 30;
@@ -18,6 +19,8 @@ public class UIRootCanvasMediator : MonoBehaviour
     {
         _dispatcher = Dispatcher.Instance;
         _bottomPanelMediator = new BottomPanelMediator(_bottomPanelView);
+
+        PoolCanvasProvider.Instance.SetupPoolCanvas(_poolCanvas);
     }
 
     private async void Start()

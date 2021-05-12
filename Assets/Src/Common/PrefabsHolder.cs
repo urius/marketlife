@@ -30,7 +30,8 @@ public class PrefabsHolder : ScriptableObject
     public GameObject Shelf5ProfilePrefab;
 
     //Interface
-    public GameObject UIBottomPanelScrollItem;
+    public GameObject UIBottomPanelScrollItemPrefab;
+    public GameObject UIHintPrefab;
 
     public (GameObject, GameObject) GetShopObjectPrefabs(ShopObjectType type, int level)
     {

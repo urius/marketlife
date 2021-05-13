@@ -11,7 +11,7 @@ public class GameConfigManager : ScriptableObject
 
     public MainConfig MainConfig { get; private set; }
 
-    public async UniTask<bool> LoadConfig()
+    public async UniTask<bool> LoadConfigAsync()
     {
         var getConfigOperation = await new WebRequestsSender().GetAsync(_mainConfigUrl);
         if (getConfigOperation.IsSuccess)

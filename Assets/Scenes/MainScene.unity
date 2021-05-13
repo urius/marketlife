@@ -232,6 +232,7 @@ GameObject:
   - component: {fileID: 22182144}
   - component: {fileID: 22182143}
   - component: {fileID: 22182142}
+  - component: {fileID: 22182146}
   m_Layer: 5
   m_Name: button_interior_walls
   m_TagString: Untagged
@@ -353,6 +354,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 22182140}
   m_CullTransparentMesh: 1
+--- !u!114 &22182146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 22182140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7669359c8c3e47a08419f6517e7ef70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hintPositionType: 0
+  _localizationKey: hint_bottom_panel_walls_button
+  _hintContainer: {fileID: 22182141}
+  _positionOffset: {x: 0, y: 28}
+  _maxBGWidth: 220
 --- !u!1 &45715994
 GameObject:
   m_ObjectHideFlags: 0
@@ -1350,6 +1368,7 @@ GameObject:
   - component: {fileID: 276935619}
   - component: {fileID: 276935618}
   - component: {fileID: 276935622}
+  - component: {fileID: 276935623}
   m_Layer: 5
   m_Name: button_interior
   m_TagString: Untagged
@@ -1485,10 +1504,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hintPositionType: 0
-  _localizationKey: hint_interior_button
+  _localizationKey: hint_bottom_panel_interior_button
   _hintContainer: {fileID: 276935617}
   _positionOffset: {x: 0, y: 28}
-  _maxBGWidth: 220
+  _maxBGWidth: 260
+--- !u!114 &276935623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 276935616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 521625b95147a425bb550d793d8da4d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _localizationKey: bottom_panel_interior_button
+  _text: {fileID: 308540863}
+  _tmpText: {fileID: 0}
 --- !u!1 &308540861
 GameObject:
   m_ObjectHideFlags: 0
@@ -2030,6 +2064,7 @@ GameObject:
   - component: {fileID: 464599064}
   - component: {fileID: 464599063}
   - component: {fileID: 464599062}
+  - component: {fileID: 464599066}
   m_Layer: 5
   m_Name: button_warehouse
   m_TagString: Untagged
@@ -2152,6 +2187,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 464599060}
   m_CullTransparentMesh: 1
+--- !u!114 &464599066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 464599060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 521625b95147a425bb550d793d8da4d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _localizationKey: bottom_panel_warehouse_button
+  _text: {fileID: 353011971}
+  _tmpText: {fileID: 0}
 --- !u!1 &497708547
 GameObject:
   m_ObjectHideFlags: 0
@@ -4256,6 +4306,7 @@ GameObject:
   - component: {fileID: 956516444}
   - component: {fileID: 956516443}
   - component: {fileID: 956516442}
+  - component: {fileID: 956516446}
   m_Layer: 5
   m_Name: button_interior_doors
   m_TagString: Untagged
@@ -4377,6 +4428,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 956516440}
   m_CullTransparentMesh: 1
+--- !u!114 &956516446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 956516440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7669359c8c3e47a08419f6517e7ef70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hintPositionType: 0
+  _localizationKey: hint_bottom_panel_doors_button
+  _hintContainer: {fileID: 956516441}
+  _positionOffset: {x: 0, y: 28}
+  _maxBGWidth: 220
 --- !u!1 &963397126
 GameObject:
   m_ObjectHideFlags: 0
@@ -4851,6 +4919,8 @@ MonoBehaviour:
   _prefabsHolder: {fileID: 11400000, guid: ef9b7d8e9f2f24fa5b28642d8858a2d4, type: 2}
   _graphicsManager: {fileID: 11400000, guid: 3c651c81f401b4f6c9adfecf35f97506, type: 2}
   _gameConfigManager: {fileID: 11400000, guid: 602bdf3847c344182bb11d66994c2ec6, type: 2}
+  _localizationManager: {fileID: 11400000, guid: 896d83f0651d245229990a6d40d7740d,
+    type: 2}
 --- !u!114 &1026738519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6791,6 +6861,7 @@ GameObject:
   - component: {fileID: 1505624597}
   - component: {fileID: 1505624596}
   - component: {fileID: 1505624600}
+  - component: {fileID: 1505624601}
   m_Layer: 5
   m_Name: button_manage
   m_TagString: Untagged
@@ -6926,10 +6997,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hintPositionType: 0
-  _localizationKey: hint_manage_button
+  _localizationKey: hint_bottom_panel_manage_button
   _hintContainer: {fileID: 1505624595}
   _positionOffset: {x: 0, y: 28}
-  _maxBGWidth: 220
+  _maxBGWidth: 260
+--- !u!114 &1505624601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1505624594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 521625b95147a425bb550d793d8da4d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _localizationKey: bottom_panel_manage_button
+  _text: {fileID: 1433967821}
+  _tmpText: {fileID: 0}
 --- !u!1 &1518942245
 GameObject:
   m_ObjectHideFlags: 0
@@ -7967,6 +8053,7 @@ GameObject:
   - component: {fileID: 1680389688}
   - component: {fileID: 1680389687}
   - component: {fileID: 1680389686}
+  - component: {fileID: 1680389690}
   m_Layer: 5
   m_Name: button_interior_close
   m_TagString: Untagged
@@ -8088,6 +8175,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1680389684}
   m_CullTransparentMesh: 1
+--- !u!114 &1680389690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1680389684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7669359c8c3e47a08419f6517e7ef70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hintPositionType: 0
+  _localizationKey: hint_bottom_panel_exit_interior_mode_button
+  _hintContainer: {fileID: 1680389685}
+  _positionOffset: {x: 0, y: 28}
+  _maxBGWidth: 220
 --- !u!1 &1684667538
 GameObject:
   m_ObjectHideFlags: 0
@@ -9048,6 +9152,7 @@ GameObject:
   - component: {fileID: 1866777436}
   - component: {fileID: 1866777435}
   - component: {fileID: 1866777434}
+  - component: {fileID: 1866777438}
   m_Layer: 5
   m_Name: button_interior_objects
   m_TagString: Untagged
@@ -9169,6 +9274,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1866777432}
   m_CullTransparentMesh: 1
+--- !u!114 &1866777438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1866777432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7669359c8c3e47a08419f6517e7ef70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hintPositionType: 0
+  _localizationKey: hint_bottom_panel_shop_objects_button
+  _hintContainer: {fileID: 1866777433}
+  _positionOffset: {x: 0, y: 28}
+  _maxBGWidth: 220
 --- !u!4 &1896603186 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6517623011961258257, guid: e93f34136b73f40a79cec747874a3038,
@@ -9285,6 +9407,7 @@ GameObject:
   - component: {fileID: 1952505191}
   - component: {fileID: 1952505190}
   - component: {fileID: 1952505189}
+  - component: {fileID: 1952505193}
   m_Layer: 5
   m_Name: button_interior_windows
   m_TagString: Untagged
@@ -9406,6 +9529,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1952505187}
   m_CullTransparentMesh: 1
+--- !u!114 &1952505193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1952505187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7669359c8c3e47a08419f6517e7ef70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hintPositionType: 0
+  _localizationKey: hint_bottom_panel_windows_button
+  _hintContainer: {fileID: 1952505188}
+  _positionOffset: {x: 0, y: 28}
+  _maxBGWidth: 220
 --- !u!4 &1966526823 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7329594752370575056, guid: b10c69459453641f3a0e725159f8e27f,
@@ -9595,6 +9735,7 @@ GameObject:
   - component: {fileID: 2062358969}
   - component: {fileID: 2062358968}
   - component: {fileID: 2062358967}
+  - component: {fileID: 2062358971}
   m_Layer: 5
   m_Name: button_interior_floors
   m_TagString: Untagged
@@ -9716,6 +9857,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2062358965}
   m_CullTransparentMesh: 1
+--- !u!114 &2062358971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2062358965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7669359c8c3e47a08419f6517e7ef70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hintPositionType: 0
+  _localizationKey: hint_bottom_panel_floors_button
+  _hintContainer: {fileID: 2062358966}
+  _positionOffset: {x: 0, y: 28}
+  _maxBGWidth: 220
 --- !u!1 &2063379713
 GameObject:
   m_ObjectHideFlags: 0
@@ -10177,6 +10335,7 @@ GameObject:
   - component: {fileID: 2147482085}
   - component: {fileID: 2147482084}
   - component: {fileID: 2147482083}
+  - component: {fileID: 2147482087}
   m_Layer: 5
   m_Name: button_friends
   m_TagString: Untagged
@@ -10299,6 +10458,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2147482081}
   m_CullTransparentMesh: 1
+--- !u!114 &2147482087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2147482081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 521625b95147a425bb550d793d8da4d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _localizationKey: bottom_panel_friends_button
+  _text: {fileID: 1054934998}
+  _tmpText: {fileID: 0}
 --- !u!1001 &257862921188895168
 PrefabInstance:
   m_ObjectHideFlags: 0

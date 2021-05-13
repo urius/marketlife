@@ -8,6 +8,7 @@ public class InitScript : MonoBehaviour
     [SerializeField] private PrefabsHolder _prefabsHolder;
     [SerializeField] private GraphicsManager _graphicsManager;
     [SerializeField] private GameConfigManager _gameConfigManager;
+    [SerializeField] private LocalizationManager _localizationManager;
 
     private PlayerModel _playerModel;
 

@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d69a926c86a0439c8e3bb8071072b09, type: 3}
   m_Name: GameConfigManager
   m_EditorClassIdentifier: 
-  _mainConfigUrl: http://shoplife.01sh.ru/GameConfigs/MainConfig.json
+  _mainConfigUrl: https://devman.ru/marketVK/unity/GameConfigs/MainConfig.json

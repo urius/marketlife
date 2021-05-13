@@ -1,0 +1,14 @@
+{
+	"GameplayAtlasVersion":2,
+	"InterfaceAtlasVersion":1,
+	"ShelfsConfig":{
+        "s_1":{"price":"6g", "part_volume":2000, "parts_num":2, "unlock_level":4, "build_matrix":[[0,0,0],[0,1,0],[-1,-1,-1]]},
+        "s_2":{"price":"2000", "part_volume":2000, "parts_num":1, "unlock_level":2, "build_matrix":[[0,0,0],[0,1,0],[-1,-1,-1]]},
+        "s_3":{"price":"400", "part_volume":1000, "parts_num":1, "unlock_level":1, "build_matrix":[[0,0,0],[0,1,0],[-1,-1,-1]]},
+        "s_4":{"price":"8000", "part_volume":2000, "parts_num":2, "unlock_level":10, "build_matrix":[[0,0,0],[0,1,0],[-1,-1,-1]]},
+        "s_5":{"price":"4000", "part_volume":3000, "parts_num":1, "unlock_level":7, "build_matrix":[[0,0,0],[0,1,0],[-1,-1,-1]]}            
+    },
+    "ShopObjectsConfig":{
+        "cd_1":{"price":"15g", "two_sides_mode":true, "unlock_level":1, "build_matrix":[[0,0,0,0,0],[-1,-1,-1,-1,-1],[-1,1,1,1,-1],[-1,-1,-1,-1,-1],[0,0,0,0,0]]}
+    }
+}

@@ -21,7 +21,8 @@ public class HintViewManager
         _hintView.gameObject.SetActive(true);
 
         _hintView.transform.SetParent(parentTransform, false);
-        _hintView.SetParams(localizationKey, positionType, maxHintBGWidth);
+        var text = LocalizationManager.Instance.GetLocalization(localizationKey);
+        _hintView.SetParams(text, positionType, maxHintBGWidth);
         (_hintView.transform as RectTransform).anchoredPosition = positionOffset;
     }
 

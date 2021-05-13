@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a6c20930b964615a7eee45faf80c0b, type: 3}
   m_Name: AssetBundlesLoader
   m_EditorClassIdentifier: 
-  _assetBundlesURL: http://shoplife.01sh.ru/AssetBundles
+  _assetBundlesURL: https://devman.ru/marketVK/unity/AssetBundles

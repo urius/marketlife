@@ -1,0 +1,7 @@
+ManifestFileVersion: 0
+CRC: 3789488433
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: graphicsgameplay
+      Dependencies: {}

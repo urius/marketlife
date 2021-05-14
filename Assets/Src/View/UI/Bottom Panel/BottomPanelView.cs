@@ -43,12 +43,13 @@ public class BottomPanelView : MonoBehaviour
     [Space(10)]
     [SerializeField] private GameObject _blockPanel;
 
-
+    private bool _isBlocked = false;
     private Dictionary<CanvasGroup[], float> _buttonYPositionsByCanvasGroup;
     private float DeltaPositionForAnimation = 40;
     private CanvasGroup[] _simulationModeButtons;
     private CanvasGroup[] _interiorModeButtons;
     private CanvasGroup[] _placingModeButtons;
+    private UIHintableView[] _allHintableViews;
 
     public void Awake()
     {
@@ -63,12 +64,17 @@ public class BottomPanelView : MonoBehaviour
             [_placingModeButtons] = (_placingModeButtons[0].transform as RectTransform).anchoredPosition.y
         };
 
+        _allHintableViews = GetComponentsInChildren<UIHintableView>(true);
+
         Activate();
     }
 
     public void SetIsBlocked(bool isBlocked)
     {
-        _blockPanel.SetActive(isBlocked);
+        _isBlocked = isBlocked;
+        _blockPanel.SetActive(_isBlocked);
+
+        Array.ForEach(_allHintableViews, v => v.SetEnabled(!_isBlocked));
     }
 
     public IDisposable SetBlockedDisposable()
@@ -217,62 +223,70 @@ public class BottomPanelView : MonoBehaviour
 
     private void OnRotateLeftButtonClicked()
     {
-        RotateLeftClicked();
+        InvokeActionIfNotBlocked(RotateLeftClicked);
     }
 
     private void OnRotateRightButtonClicked()
     {
-        RotateRightClicked();
+        InvokeActionIfNotBlocked(RotateRightClicked);
     }
 
     private void OnFinishPlacingButtonClicked()
     {
-        FinishPlacingClicked();
+        InvokeActionIfNotBlocked(FinishPlacingClicked);
     }
 
     private void OnFriendsButtonClicked()
     {
-        FriendsButtonClicked();
+        InvokeActionIfNotBlocked(FriendsButtonClicked);
     }
 
     private void OnWarehouseButtonClicked()
     {
-        WarehouseButtonClicked();
+        InvokeActionIfNotBlocked(WarehouseButtonClicked);
     }
 
     private void OnInteriorButtonClicked()
     {
-        InteriorButtonClicked();
+        InvokeActionIfNotBlocked(InteriorButtonClicked);
     }
 
     private void OnManageButtonClicked()
     {
-        ManageButtonClicked();
+        InvokeActionIfNotBlocked(ManageButtonClicked);
     }
 
     private void OnInteriorCloseButtonClicked()
     {
-        InteriorCloseButtonClicked();
+        InvokeActionIfNotBlocked(InteriorCloseButtonClicked);
     }
 
     private void OnInteriorObjectsButtonClicked()
     {
-        InteriorObjectsButtonClicked();
+        InvokeActionIfNotBlocked(InteriorObjectsButtonClicked);
     }
 
     private void OnInteriorWallsButtonClicked()
     {
-        InteriorWallsButtonClicked();
+        InvokeActionIfNotBlocked(InteriorWallsButtonClicked);
     }
 
     private void OnInteriorWindowsButtonClicked()
     {
-        InteriorWindowsButtonClicked();
+        InvokeActionIfNotBlocked(InteriorWindowsButtonClicked);
     }
 
     private void OnInteriorDoorsButtonClicked()
     {
-        InteriorDoorsButtonClicked();
+        InvokeActionIfNotBlocked(InteriorDoorsButtonClicked);
+    }
+
+    private void InvokeActionIfNotBlocked(Action action)
+    {
+        if (_isBlocked == false)
+        {
+            action();
+        }
     }
 
     private CanvasGroup GetCanvasGroup(Button button)

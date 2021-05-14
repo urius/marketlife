@@ -28,11 +28,10 @@ public class UIBottomPanelShelfsTabMediator : UIBottomPanelSubMediatorBase
 
         var configsToShow = _shelfsConfig.GetShelfConfigsForLevel(_playerModel.Level);
 
-        View.ScrollBoxView.gameObject.SetActive(true);
+        ShowScrollBox();
         foreach (var shelfConfig in configsToShow)
         {
-            var itemGo = GameObject.Instantiate(_prefabsHolder.UIBottomPanelScrollItemPrefab, View.ScrollBoxView.Content);
-            var itemView = itemGo.GetComponent<UIBottomPanelScrollItemView>();
+            var itemView = GetOrCreateScrollBoxItem();
             itemView.SetImage(_spritesProvider.GetShelfIcon(shelfConfig.id));
             itemView.SetPrice(Price.FromString(shelfConfig.config.price));
 
@@ -48,9 +47,10 @@ public class UIBottomPanelShelfsTabMediator : UIBottomPanelSubMediatorBase
         foreach (var item in items)
         {
             item.Clicked -= OnItemClicked;
-            GameObject.Destroy(item.gameObject);
+            ReturnOrDestroyScrollBoxItem(item);
         }
-        View.ScrollBoxView.gameObject.SetActive(false);
+
+        HideScrollBox();
 
         base.Unmediate();
     }

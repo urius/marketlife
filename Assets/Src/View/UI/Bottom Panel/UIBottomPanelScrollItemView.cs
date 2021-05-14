@@ -19,6 +19,8 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
 
     public void SetPrice(Price price)
     {
+        _priceLabel.gameObject.SetActive(true);
+
         _priceLabel.SetType(price.IsGold);
         _priceLabel.Value = price.Value;
     }
@@ -26,10 +28,17 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
     public void SetImage(Sprite sprite)
     {
         _imageSprite.sprite = sprite;
+        _imageSprite.gameObject.SetActive(true);
     }
 
     private void OnButtonClick()
     {
         Clicked(this);
+    }
+
+    internal void Reset()
+    {
+        _priceLabel.gameObject.SetActive(false);
+        _imageSprite.gameObject.SetActive(false);
     }
 }

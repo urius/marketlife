@@ -5,8 +5,6 @@ public class UIHintView : MonoBehaviour
 {
     [SerializeField] private HintPositionType _positionType;
     public HintPositionType PositionType => _positionType;
-    [SerializeField] private float _maxBGWidth;
-    public float MaxBGWidth => _maxBGWidth;
     [SerializeField] private TMP_Text _text;
     [SerializeField] private RectTransform _bgRect;
     [SerializeField] private RectTransform _arrowRect;
@@ -19,9 +17,8 @@ public class UIHintView : MonoBehaviour
         SetPositionType(_positionType);
     }
 
-    public void SetParams(string text, HintPositionType positionType, float bgWidth)
+    public void SetParams(string text, HintPositionType positionType)
     {
-        _maxBGWidth = bgWidth;
         _text.text = text;
 
         RecalculateBounds();
@@ -31,12 +28,6 @@ public class UIHintView : MonoBehaviour
     public void SetText(string text)
     {
         _text.text = text;
-        RecalculateBounds();
-    }
-
-    public void SetMaxBGWidth(float width)
-    {
-        _maxBGWidth = width;
         RecalculateBounds();
     }
 
@@ -70,19 +61,16 @@ public class UIHintView : MonoBehaviour
 
     private void RecalculateBounds()
     {
+        _text.enableWordWrapping = false;
+
         var size = _bgRect.sizeDelta;
-        size.x = _maxBGWidth;
         _bgRect.sizeDelta = size;
 
         _text.ForceMeshUpdate();
 
         size = _bgRect.sizeDelta;
         var textRectTransform = _text.rectTransform;
-        var newBGWidth = _text.textBounds.size.x + textRectTransform.offsetMin.x - textRectTransform.offsetMax.x + 1;
-        if (newBGWidth < _maxBGWidth)
-        {
-            size.x = newBGWidth;
-        }
+        size.x = _text.textBounds.size.x + textRectTransform.offsetMin.x - textRectTransform.offsetMax.x + 1;
         size.y = _text.textBounds.size.y + textRectTransform.offsetMin.y - textRectTransform.offsetMax.y;
         _bgRect.sizeDelta = size;
     }

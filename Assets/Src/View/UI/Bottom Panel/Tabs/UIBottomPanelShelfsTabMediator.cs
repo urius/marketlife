@@ -1,13 +1,12 @@
 using System.Collections.Generic;
-using UnityEngine;
 
 public class UIBottomPanelShelfsTabMediator : UIBottomPanelSubMediatorBase
 {
     private readonly IShelfsConfig _shelfsConfig;
     private readonly PlayerModel _playerModel;
-    private readonly PrefabsHolder _prefabsHolder;
     private readonly SpritesProvider _spritesProvider;
     private readonly Dispatcher _dispatcher;
+    private readonly LocalizationManager _localizationManager;
     private readonly Dictionary<UIBottomPanelScrollItemView, int> _shelfIdsByItem;
 
     public UIBottomPanelShelfsTabMediator(BottomPanelView view)
@@ -15,9 +14,9 @@ public class UIBottomPanelShelfsTabMediator : UIBottomPanelSubMediatorBase
     {
         _shelfsConfig = GameConfigManager.Instance.MainConfig;
         _playerModel = PlayerModel.Instance;
-        _prefabsHolder = PrefabsHolder.Instance;
         _spritesProvider = SpritesProvider.Instance;
         _dispatcher = Dispatcher.Instance;
+        _localizationManager = LocalizationManager.Instance;
 
         _shelfIdsByItem = new Dictionary<UIBottomPanelScrollItemView, int>();
     }
@@ -26,33 +25,52 @@ public class UIBottomPanelShelfsTabMediator : UIBottomPanelSubMediatorBase
     {
         base.Mediate();
 
-        var configsToShow = _shelfsConfig.GetShelfConfigsForLevel(_playerModel.Level);
-
         ShowScrollBox();
+
+        var configsToShow = _shelfsConfig.GetShelfConfigsForLevel(_playerModel.Level);
         foreach (var shelfConfig in configsToShow)
         {
             var itemView = GetOrCreateScrollBoxItem();
-            itemView.SetImage(_spritesProvider.GetShelfIcon(shelfConfig.id));
-            itemView.SetPrice(Price.FromString(shelfConfig.config.price));
-
             _shelfIdsByItem.Add(itemView, shelfConfig.id);
-
-            itemView.Clicked += OnItemClicked;
+            SetupItem(itemView, shelfConfig);
+            ActivateItem(itemView);
         }
     }
 
     public override void Unmediate()
     {
-        var items = _shelfIdsByItem.Keys;
-        foreach (var item in items)
+        var itemViews = _shelfIdsByItem.Keys;
+        foreach (var itemView in itemViews)
         {
-            item.Clicked -= OnItemClicked;
-            ReturnOrDestroyScrollBoxItem(item);
+            DeactivateItem(itemView);
+            ReturnOrDestroyScrollBoxItem(itemView);
         }
 
         HideScrollBox();
 
         base.Unmediate();
+    }
+
+    private void SetupItem(UIBottomPanelScrollItemView itemView, (int id, ShelfConfigDto config) shelfConfigData)
+    {
+        var config = shelfConfigData.config;
+        itemView.SetImage(_spritesProvider.GetShelfIcon(shelfConfigData.id));
+        itemView.SetPrice(Price.FromString(config.price));
+
+        var shelfName = _localizationManager.GetLocalization($"{LocalizationKeys.NameShopObjectPrefix}s_{shelfConfigData.id}");
+        var hintDescriptionRaw = _localizationManager.GetLocalization(LocalizationKeys.HintBottomPanelShelfDescription);
+        var hintDescription = string.Format(hintDescriptionRaw, shelfName, config.part_volume * config.parts_num, config.parts_num);
+        itemView.SetupHint(hintDescription);
+    }
+
+    private void ActivateItem(UIBottomPanelScrollItemView itemView)
+    {
+        itemView.Clicked += OnItemClicked;
+    }
+
+    private void DeactivateItem(UIBottomPanelScrollItemView itemView)
+    {
+        itemView.Clicked -= OnItemClicked;
     }
 
     private void OnItemClicked(UIBottomPanelScrollItemView itemView)

@@ -1,14 +1,14 @@
-using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class UIHintableView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    public string DisplayText;
+
     [SerializeField] private HintPositionType _hintPositionType;
     [SerializeField] private string _localizationKey;
     [SerializeField] private RectTransform _hintContainer;
     [SerializeField] private Vector2 _positionOffset;
-    [SerializeField] private float _maxBGWidth = 220;
 
     private bool _isEnabled = true;
     private bool _isShowing = false;
@@ -29,6 +29,7 @@ public class UIHintableView : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             Show();
         }
     }
+
     public void OnPointerExit(PointerEventData eventData)
     {
         if (_isEnabled)
@@ -39,7 +40,14 @@ public class UIHintableView : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     private void Show()
     {
-        HintViewManager.Instance.Show(transform, _hintPositionType, _localizationKey, _maxBGWidth, _positionOffset);
+        if (string.IsNullOrEmpty(DisplayText) == false)
+        {
+            HintViewManager.Instance.ShowText(transform, _hintPositionType, DisplayText, _positionOffset);
+        }
+        else
+        {
+            HintViewManager.Instance.ShowLocalizable(transform, _hintPositionType, _localizationKey, _positionOffset);
+        }
         _isShowing = true;
     }
 

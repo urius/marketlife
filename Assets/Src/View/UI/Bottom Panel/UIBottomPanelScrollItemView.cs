@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +9,7 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
     [SerializeField] private UIPriceLabelView _priceLabel;
     [SerializeField] private Image _imageSprite;
     [SerializeField] private Button _button;
+    [SerializeField] private UIHintableView _hintableView;
 
     public void Awake()
     {
@@ -31,6 +30,12 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
         _imageSprite.gameObject.SetActive(true);
     }
 
+    public void SetupHint(string hintText)
+    {
+        _hintableView.DisplayText = hintText;
+        _hintableView.SetEnabled(true);
+    }
+
     private void OnButtonClick()
     {
         Clicked(this);
@@ -40,5 +45,6 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
     {
         _priceLabel.gameObject.SetActive(false);
         _imageSprite.gameObject.SetActive(false);
+        _hintableView.SetEnabled(false);
     }
 }

@@ -1,8 +1,7 @@
 using System;
 using System.Threading.Tasks;
-using UnityEngine;
 
-public class GameStateModel : MonoBehaviour
+public class GameStateModel
 {
     private static Lazy<GameStateModel> _instance = new Lazy<GameStateModel>();
     public static GameStateModel Instance => _instance.Value;

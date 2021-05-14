@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HintViewManager
@@ -10,7 +8,13 @@ public class HintViewManager
 
     public UIHintView _hintView;
 
-    public void Show(Transform parentTransform, HintPositionType positionType, string localizationKey, float maxHintBGWidth, Vector2 positionOffset)
+    public void ShowLocalizable(Transform parentTransform, HintPositionType positionType, string localizationKey, Vector2 positionOffset)
+    {
+        var text = LocalizationManager.Instance.GetLocalization(localizationKey);
+        ShowText(parentTransform, positionType, text, positionOffset);
+    }
+
+    public void ShowText(Transform parentTransform, HintPositionType positionType, string text, Vector2 positionOffset)
     {
         if (_hintView == null)
         {
@@ -21,8 +25,7 @@ public class HintViewManager
         _hintView.gameObject.SetActive(true);
 
         _hintView.transform.SetParent(parentTransform, false);
-        var text = LocalizationManager.Instance.GetLocalization(localizationKey);
-        _hintView.SetParams(text, positionType, maxHintBGWidth);
+        _hintView.SetParams(text, positionType);
         (_hintView.transform as RectTransform).anchoredPosition = positionOffset;
     }
 

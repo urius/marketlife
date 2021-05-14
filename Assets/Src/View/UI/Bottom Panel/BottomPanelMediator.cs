@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -6,8 +8,9 @@ public class BottomPanelMediator : UINotMonoMediatorBase
     private readonly BottomPanelView _view;
     private readonly Dispatcher _dispatcher;
     private readonly GameStateModel _gameStateModel;
+    private readonly Dictionary<GameStateName, UIBottomPanelSubMediatorBase> _lastTabMediatorForState = new Dictionary<GameStateName, UIBottomPanelSubMediatorBase>();
 
-    private UINotMonoMediatorBase _currentTabMediator;
+    private UIBottomPanelSubMediatorBase _currentTabMediator;
 
     public BottomPanelMediator(BottomPanelView view)
         : base(view.transform as RectTransform)
@@ -21,12 +24,35 @@ public class BottomPanelMediator : UINotMonoMediatorBase
     {
         base.Mediate();
 
-        _currentTabMediator = new UIBottomPanelShelfsTabMediator(_view);
-        _currentTabMediator.Mediate();
-
         Activate();
 
-        await ShowButtonsForStateAsync(_gameStateModel.GameState);
+        _currentTabMediator = GetTabMediatorForGameState(_gameStateModel.GameState);
+        _currentTabMediator?.Mediate();
+
+        await ShowTopButtonsForStateAsync(_gameStateModel.GameState);
+    }
+
+    private UIBottomPanelSubMediatorBase GetTabMediatorForGameState(GameStateName gameState)
+    {
+        UIBottomPanelSubMediatorBase result = null;
+        if (_lastTabMediatorForState.ContainsKey(gameState))
+        {
+            result = _lastTabMediatorForState[gameState];
+        }
+        else
+        {
+            switch (gameState)
+            {
+                case GameStateName.ShopInterior:
+                    result = new UIBottomPanelShelfsTabMediator(_view);
+                    break;
+                case GameStateName.ShopSimulation:
+                    //TODO: default simulationMediator (friends?)
+                    break;
+            }
+        }
+
+        return result;
     }
 
     private void Activate()
@@ -49,7 +75,7 @@ public class BottomPanelMediator : UINotMonoMediatorBase
             if (previousState == PlacingStateName.None && newState != PlacingStateName.None)
             {
                 var minimizeTask = _view.MinimizePanelAsync();
-                await HideButtonsForStateAsync(_gameStateModel.GameState);
+                await HideTopButtonsForStateAsync(_gameStateModel.GameState);
                 await minimizeTask;
                 switch (newState)
                 {
@@ -64,21 +90,27 @@ public class BottomPanelMediator : UINotMonoMediatorBase
                 var maximizeTask = _view.MaximizePanelAsync();
                 await _view.HidePlacingButtonsAsync();
                 await maximizeTask;
-                await ShowButtonsForStateAsync(_gameStateModel.GameState);
+                await ShowTopButtonsForStateAsync(_gameStateModel.GameState);
             }
         }
     }
 
     private async void OnGameStateChanged(GameStateName previousState, GameStateName newState)
     {
-        using (_view.SetBlockedDisposable())
+        _currentTabMediator?.Unmediate();
+        _currentTabMediator = GetTabMediatorForGameState(_gameStateModel.GameState);
+        _currentTabMediator?.Mediate();
+        if (newState == GameStateName.ShopSimulation || newState == GameStateName.ShopInterior)
         {
-            await HideButtonsForStateAsync(previousState);
-            await ShowButtonsForStateAsync(newState);
+            using (_view.SetBlockedDisposable())
+            {
+                await HideTopButtonsForStateAsync(previousState);
+                await ShowTopButtonsForStateAsync(newState);
+            }
         }
     }
 
-    private UniTask ShowButtonsForStateAsync(GameStateName newState)
+    private UniTask ShowTopButtonsForStateAsync(GameStateName newState)
     {
         switch (newState)
         {
@@ -91,7 +123,7 @@ public class BottomPanelMediator : UINotMonoMediatorBase
         return UniTask.CompletedTask;
     }
 
-    private UniTask HideButtonsForStateAsync(GameStateName previousState)
+    private UniTask HideTopButtonsForStateAsync(GameStateName previousState)
     {
         switch (previousState)
         {
@@ -127,10 +159,5 @@ public class BottomPanelMediator : UINotMonoMediatorBase
     private void OnFinishPlacingButtonClicked()
     {
         _dispatcher.BottomPanlelFinishPlacingClicked();
-    }
-
-    public override void Unmediate()
-    {
-        base.Unmediate();
     }
 }

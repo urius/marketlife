@@ -43,13 +43,22 @@ public class BottomPanelView : MonoBehaviour
     [Space(10)]
     [SerializeField] private GameObject _blockPanel;
 
+    private const float DeltaPositionForAnimation = 40;
+
     private bool _isBlocked = false;
     private Dictionary<CanvasGroup[], float> _buttonYPositionsByCanvasGroup;
-    private float DeltaPositionForAnimation = 40;
     private CanvasGroup[] _simulationModeButtons;
     private CanvasGroup[] _interiorModeButtons;
     private CanvasGroup[] _placingModeButtons;
     private UIHintableView[] _allHintableViews;
+
+    public Button FriendsButton => _friendsButton;
+    public Button WarehouseButton => _warehouseButton;
+    public Button InteriorObjectsButton => _interiorObjectsButton;
+    public Button InteriorFloorsButton => _interiorFloorsButton;
+    public Button InteriorWallsButton => _interiorWallsButton;
+    public Button InteriorWindowsButton => _interiorWindowsButton;
+    public Button InteriorDoorsButton => _interiorDoorsButton;
 
     public void Awake()
     {

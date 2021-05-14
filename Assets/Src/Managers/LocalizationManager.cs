@@ -48,14 +48,8 @@ public class LocalizationManager : ScriptableObject
     }
 }
 
-public class LocalizationDto
+public class LocalizationKeys
 {
-    public string hint_bottom_panel_interior_button;
-    public string hint_bottom_panel_manage_button;
-    public string hint_bottom_panel_exit_interior_node_button;
-    public string hint_bottom_panel_floors_button;
-    public string hint_bottom_panel_doors_button;
-    public string hint_bottom_panel_shop_objects_button;
-    public string hint_bottom_panel_walls_button;
-    public string hint_bottom_panel_windows_button;
+    public static string HintBottomPanelShelfDescription = "hint_bottom_panel_shelf_description";
+    public static string NameShopObjectPrefix = "name_shop_object_";    
 }

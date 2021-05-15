@@ -8,6 +8,7 @@ public class Dispatcher
     public Action UIGameViewMouseUp = delegate { };
     public Action UIGameViewMouseClick = delegate { };    
     public Action<int> UIBottomPanelPlaceShelfClicked = delegate { };
+    public Action<int> UIBottomPanelPlaceFloorClicked = delegate { };
     public Action<Vector2Int> MouseCellCoordsUpdated = delegate { };
     public Action BottomPanelInteriorClicked = delegate { };
     public Action BottomPanelInteriorCloseClicked = delegate { };

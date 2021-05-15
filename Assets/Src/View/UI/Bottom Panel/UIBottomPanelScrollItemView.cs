@@ -8,12 +8,18 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
 
     [SerializeField] private UIPriceLabelView _priceLabel;
     [SerializeField] private Image _imageSprite;
+    [SerializeField] private RectTransform _imageRectTransform;
     [SerializeField] private Button _button;
     [SerializeField] private UIHintableView _hintableView;
 
     public void Awake()
     {
         _button.onClick.AddListener(OnButtonClick);
+    }
+
+    public void SetupIconSize(float size)
+    {
+        _imageRectTransform.sizeDelta = new Vector2(size, size);
     }
 
     public void SetPrice(Price price)
@@ -36,15 +42,16 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
         _hintableView.SetEnabled(true);
     }
 
-    private void OnButtonClick()
-    {
-        Clicked(this);
-    }
-
-    internal void Reset()
+    public void Reset()
     {
         _priceLabel.gameObject.SetActive(false);
         _imageSprite.gameObject.SetActive(false);
         _hintableView.SetEnabled(false);
+        _imageRectTransform.sizeDelta = new Vector2(130, 130);
+    }
+
+    private void OnButtonClick()
+    {
+        Clicked(this);
     }
 }

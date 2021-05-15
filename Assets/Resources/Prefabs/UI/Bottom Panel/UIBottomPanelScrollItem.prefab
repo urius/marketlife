@@ -175,6 +175,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _priceLabel: {fileID: 2709383430078441133}
   _imageSprite: {fileID: 1640520106508245027}
+  _imageRectTransform: {fileID: 5985492634508149724}
   _button: {fileID: 875298349472462323}
   _hintableView: {fileID: 8014121438027112666}
 --- !u!114 &875298350171009049
@@ -214,7 +215,6 @@ MonoBehaviour:
   _localizationKey: test_key
   _hintContainer: {fileID: 875298350171009048}
   _positionOffset: {x: 0, y: 80}
-  _maxBGWidth: 800
 --- !u!1 &1249440560447766356
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,6 +12,7 @@ public class BottomPanelView : MonoBehaviour
     public event Action ManageButtonClicked = delegate { };
     public event Action InteriorCloseButtonClicked = delegate { };
     public event Action InteriorObjectsButtonClicked = delegate { };
+    public event Action InteriorFloorsButtonClicked = delegate { };    
     public event Action InteriorWallsButtonClicked = delegate { };
     public event Action InteriorWindowsButtonClicked = delegate { };
     public event Action InteriorDoorsButtonClicked = delegate { };
@@ -221,6 +222,7 @@ public class BottomPanelView : MonoBehaviour
 
         _interiorCloseButton.AddOnClickListener(OnInteriorCloseButtonClicked);
         _interiorObjectsButton.AddOnClickListener(OnInteriorObjectsButtonClicked);
+        _interiorFloorsButton.AddOnClickListener(OnInteriorFloorsButtonClicked);
         _interiorWallsButton.AddOnClickListener(OnInteriorWallsButtonClicked);
         _interiorWindowsButton.AddOnClickListener(OnInteriorWindowsButtonClicked);
         _interiorDoorsButton.AddOnClickListener(OnInteriorDoorsButtonClicked);
@@ -273,6 +275,11 @@ public class BottomPanelView : MonoBehaviour
     private void OnInteriorObjectsButtonClicked()
     {
         InvokeActionIfNotBlocked(InteriorObjectsButtonClicked);
+    }
+
+    private void OnInteriorFloorsButtonClicked()
+    {
+        InvokeActionIfNotBlocked(InteriorFloorsButtonClicked);
     }
 
     private void OnInteriorWallsButtonClicked()

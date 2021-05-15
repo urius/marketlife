@@ -38,6 +38,26 @@ public class SpritesProvider
         return GetSprite(SpriteAtlasId.InterfaceAtlas, $"Icon_Shelf_{shelfId}");
     }
 
+    public Sprite GetFloorIcon(int numericId)
+    {
+        return GetSprite(SpriteAtlasId.InterfaceAtlas, $"Floor{numericId}");
+    }
+
+    public Sprite GetWallIcon(int numericId)
+    {
+        return GetSprite(SpriteAtlasId.InterfaceAtlas, $"Wall{numericId}");
+    }
+
+    public Sprite GetWindowIcon(int numericId)
+    {
+        return GetSprite(SpriteAtlasId.InterfaceAtlas, $"Window{numericId}");
+    }
+
+    public Sprite GetDoorIcon(int numericId)
+    {
+        return GetSprite(SpriteAtlasId.InterfaceAtlas, $"Door{numericId}");
+    }
+
     public Sprite GetGoldIcon()
     {
         return GetSprite(SpriteAtlasId.InterfaceAtlas, "icon_crystal");

@@ -14,9 +14,9 @@ public static class DtoExtensions
         return new ShopModel(dto.data.uid, designModel, shopObjects);
     }
 
-    private static Dictionary<Vector2Int, ShopObjectBase> ToObjectsModel(string objects)
+    private static Dictionary<Vector2Int, ShopObjectModelBase> ToObjectsModel(string objects)
     {
-        var result = new Dictionary<Vector2Int, ShopObjectBase>();
+        var result = new Dictionary<Vector2Int, ShopObjectModelBase>();
         var objectsConvertedDto = JsonConvert.DeserializeObject<Dictionary<string, string>>(objects);
 
         foreach (var kvp in objectsConvertedDto)
@@ -29,7 +29,7 @@ public static class DtoExtensions
         return result;
     }
 
-    private static ShopObjectBase CreateShopObject(Vector2Int coords, string[] paramsStr)
+    private static ShopObjectModelBase CreateShopObject(Vector2Int coords, string[] paramsStr)
     {
         var splitted1StParam = paramsStr[0].Split('_');
         var typeId = splitted1StParam[0];
@@ -38,7 +38,7 @@ public static class DtoExtensions
         var side = SideHelper.GetSideFromAngle(angle);
         var objectParamsShort = paramsStr[2];
 
-        ShopObjectBase result = typeId switch
+        ShopObjectModelBase result = typeId switch
         {
             "s" => new ShopObjectModelFactory().CreateShelf(numericId, coords, side, ToProducts(objectParamsShort)),
             "cd" => new ShopObjectModelFactory().CreateCashDesk(numericId, coords, side),

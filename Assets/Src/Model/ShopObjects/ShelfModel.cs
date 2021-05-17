@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class ShelfModel : ShopObjectBase
+public class ShelfModel : ShopObjectModelBase
 {
     public event Action<int, ProductModel> ProductUpdated = delegate { };
 
@@ -34,7 +34,7 @@ public class ShelfModel : ShopObjectBase
 
     public override ShopObjectType Type => ShopObjectType.Shelf;
 
-    public override ShopObjectBase Clone()
+    public override ShopObjectModelBase Clone()
     {
         return new ShopObjectModelFactory().CreateShelf(NumericId, Coords, Side, Products);
     }

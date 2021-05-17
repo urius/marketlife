@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 
 public abstract class UIBottomPanelInteriorTabMediatorBase<T> : UIBottomPanelSubMediatorBase
-    where T : PlacableItemConfigDto
+    where T : PlaceableItemConfigDto
 {
     private readonly PlayerModel _playerModel;
     private readonly Dictionary<UIBottomPanelScrollItemView, int> _IdsByItem;

@@ -15,7 +15,7 @@ public class GameStateModel
 
     public GameStateName GameState { get; private set; } = GameStateName.Initializing;
     public PlacingStateName PlacingState { get; private set; } = PlacingStateName.None;
-    public ShopObjectBase PlacingShopObjectModel { get; private set; }
+    public ShopObjectModelBase PlacingShopObjectModel { get; private set; }
     public ShopModel ViewingShopModel { get; private set; }
 
     public void SetGameState(GameStateName newState)
@@ -38,7 +38,7 @@ public class GameStateModel
         SetPlacingState(PlacingStateName.None);
     }
 
-    public void SetPlacingObject(ShopObjectBase placingObjectModel)
+    public void SetPlacingObject(ShopObjectModelBase placingObjectModel)
     {
         PlacingShopObjectModel = placingObjectModel;
         SetPlacingState(PlacingStateName.PlacingShopObject);

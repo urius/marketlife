@@ -44,7 +44,7 @@ public class ShopObjectsMediator : MonoBehaviour
         }
     }
 
-    private void OnShopObjectPlaced(ShopObjectBase shopObject)
+    private void OnShopObjectPlaced(ShopObjectModelBase shopObject)
     {
         MediateNewShopObject(shopObject);
     }
@@ -84,7 +84,7 @@ public class ShopObjectsMediator : MonoBehaviour
         HandleNewShopModel(newShopModel);
     }
 
-    private void DisplayShopObjects(Dictionary<Vector2Int, ShopObjectBase> newShopObjectsData)
+    private void DisplayShopObjects(Dictionary<Vector2Int, ShopObjectModelBase> newShopObjectsData)
     {
         ClearCurrentObjects();
 
@@ -96,7 +96,7 @@ public class ShopObjectsMediator : MonoBehaviour
         DebugDisplayBuildSquares();
     }
 
-    private void MediateNewShopObject(ShopObjectBase shopObjectModel)
+    private void MediateNewShopObject(ShopObjectModelBase shopObjectModel)
     {
         var coords = shopObjectModel.Coords;
         _shopObjectMediators[coords] = CreateShopObjectMediator(shopObjectModel);
@@ -118,7 +118,7 @@ public class ShopObjectsMediator : MonoBehaviour
 #endif
     }
 
-    private ShopObjectMediatorBase CreateShopObjectMediator(ShopObjectBase shopObjectModel)
+    private ShopObjectMediatorBase CreateShopObjectMediator(ShopObjectModelBase shopObjectModel)
     {
         ShopObjectMediatorBase result;
         switch (shopObjectModel.Type)

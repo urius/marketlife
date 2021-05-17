@@ -3,7 +3,7 @@ using UnityEngine;
 public abstract class ShopObjectMediatorBase
 {
     protected readonly Transform ParentTransform;
-    protected readonly ShopObjectBase Model;
+    protected readonly ShopObjectModelBase Model;
 
     private readonly bool _hasProfileSide;
     private readonly (GameObject, GameObject) _prefabs;
@@ -12,10 +12,10 @@ public abstract class ShopObjectMediatorBase
     private GameObject _defaultSideViewGo;
     private GameObject _profileSideViewGo;
 
-    public ShopObjectMediatorBase(Transform parentTransform, ShopObjectBase shelfModel)
+    public ShopObjectMediatorBase(Transform parentTransform, ShopObjectModelBase model)
     {
         ParentTransform = parentTransform;
-        Model = shelfModel;
+        Model = model;
 
         _prefabs = PrefabsHolder.Instance.GetShopObjectPrefabs(Model.Type, Model.NumericId);
         _hasProfileSide = _prefabs.Item2 != null;

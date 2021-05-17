@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class ShopModel
 {
-    public event Action<ShopObjectBase> ShopObjectPlaced = delegate { };
+    public event Action<ShopObjectModelBase> ShopObjectPlaced = delegate { };
 
     public readonly string Uid;
     public readonly ShoDesignModel ShopDesign;
-    public readonly Dictionary<Vector2Int, ShopObjectBase> ShopObjects;
-    public readonly Dictionary<Vector2Int, (int buildState, ShopObjectBase reference)> Grid;
+    public readonly Dictionary<Vector2Int, ShopObjectModelBase> ShopObjects;
+    public readonly Dictionary<Vector2Int, (int buildState, ShopObjectModelBase reference)> Grid;
 
-    public ShopModel(string uid, ShoDesignModel shopDesign, Dictionary<Vector2Int, ShopObjectBase> shopObjects)
+    public ShopModel(string uid, ShoDesignModel shopDesign, Dictionary<Vector2Int, ShopObjectModelBase> shopObjects)
     {
-        Grid = new Dictionary<Vector2Int, (int buildState, ShopObjectBase reference)>();
+        Grid = new Dictionary<Vector2Int, (int buildState, ShopObjectModelBase reference)>();
 
         Uid = uid;
         ShopDesign = shopDesign;
@@ -22,7 +22,7 @@ public class ShopModel
         RefillGrid();
     }
 
-    public void PlaceShopObject(ShopObjectBase shopObject)
+    public void PlaceShopObject(ShopObjectModelBase shopObject)
     {
         ShopObjects[shopObject.Coords] = shopObject;
         RefillGrid();
@@ -30,7 +30,7 @@ public class ShopModel
         ShopObjectPlaced(shopObject);
     }
 
-    public bool CanPlaceShopObject(ShopObjectBase shopObject)
+    public bool CanPlaceShopObject(ShopObjectModelBase shopObject)
     {
         var result = true;
         var matrix = shopObject.RotatedBuildMatrix;

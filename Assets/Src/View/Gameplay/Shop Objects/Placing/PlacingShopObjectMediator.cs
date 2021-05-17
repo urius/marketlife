@@ -10,7 +10,7 @@ public class PlacingShopObjectMediator : ShopObjectMediatorBase
     private ShopModel _viewingShopModel;
     private ShopModel _currentViewingShopModel;
 
-    public PlacingShopObjectMediator(Transform parentTransform, ShopObjectBase shelfModel)
+    public PlacingShopObjectMediator(Transform parentTransform, ShopObjectModelBase shelfModel)
         : base(parentTransform, shelfModel)
     {
         _gridCalculator = GridCalculator.Instance;
@@ -71,7 +71,7 @@ public class PlacingShopObjectMediator : ShopObjectMediatorBase
         _currentViewingShopModel = null;
     }
 
-    private void OnShopObjectPlaced(ShopObjectBase shopObjectModel)
+    private void OnShopObjectPlaced(ShopObjectModelBase shopObjectModel)
     {
         UpdateDisplayBuildMatrix();
     }

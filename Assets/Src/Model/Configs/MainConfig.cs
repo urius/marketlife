@@ -67,7 +67,7 @@ public class MainConfig : IShelfsConfig, IFloorsConfig, IWallsConfig, IWindowsCo
     }
 
     private IEnumerable<(int id, T config)> GetConfigsForLevel<T>(Dictionary<string, T> configsDictionary, int level)
-        where T : PlacableItemConfigDto
+        where T : PlaceableItemConfigDto
     {
         foreach (var kvp in configsDictionary)
         {
@@ -80,13 +80,13 @@ public class MainConfig : IShelfsConfig, IFloorsConfig, IWallsConfig, IWindowsCo
     }
 }
 
-public class PlacableItemConfigDto
+public class PlaceableItemConfigDto
 {
     public string price;
     public int unlock_level;
 }
 
-public class ShopObjectConfigDto : PlacableItemConfigDto
+public class ShopObjectConfigDto : PlaceableItemConfigDto
 {
     public bool two_sides_mode;
     public int[][] build_matrix;
@@ -98,7 +98,7 @@ public class ShelfConfigDto : ShopObjectConfigDto
     public int parts_num;
 }
 
-public class ShopDecorationConfigDto : PlacableItemConfigDto
+public class ShopDecorationConfigDto : PlaceableItemConfigDto
 {
 }
 

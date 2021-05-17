@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public abstract class ShopObjectBase
+public abstract class ShopObjectModelBase
 {
     public event Action<int, int> SideChanged = delegate { };
     public event Action<Vector2Int, Vector2Int> CoordsChanged = delegate { };
@@ -15,7 +15,7 @@ public abstract class ShopObjectBase
     private int _side = -1;
     private readonly int[][] _defaultBuildMatrix;
 
-    public ShopObjectBase(int numericId, ShopObjectConfigDto config, Vector2Int coords, int side)
+    public ShopObjectModelBase(int numericId, ShopObjectConfigDto config, Vector2Int coords, int side)
     {
         NumericId = numericId;
 
@@ -55,7 +55,7 @@ public abstract class ShopObjectBase
     public int[][] RotatedBuildMatrix { get; private set; }
 
     public abstract ShopObjectType Type { get; }
-    public abstract ShopObjectBase Clone();
+    public abstract ShopObjectModelBase Clone();
 }
 
 public enum ShopObjectType

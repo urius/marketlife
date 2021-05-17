@@ -4,7 +4,7 @@ public struct ShopObjectModelFactory
 {
     public ShelfModel CreateShelf(int levelId, Vector2Int coords, int side = 3, ProductModel[] products = null)
     {
-        var config = GameConfigManager.Instance.MainConfig.GetShelfConfigByLevelId(levelId);
+        var config = GameConfigManager.Instance.MainConfig.GetShelfConfigByNumericId(levelId);
         var result = new ShelfModel(levelId, config, coords, side);
         if(products != null)
         {
@@ -19,7 +19,7 @@ public struct ShopObjectModelFactory
 
     public CashDeskModel CreateCashDesk(int levelId, Vector2Int coords, int side = 3)
     {
-        var config = GameConfigManager.Instance.MainConfig.GetCashDeskConfigByLevelId(levelId);
+        var config = GameConfigManager.Instance.MainConfig.GetCashDeskConfigByNumericId(levelId);
         var result = new CashDeskModel(levelId, config, coords, side);
         return result;
     }

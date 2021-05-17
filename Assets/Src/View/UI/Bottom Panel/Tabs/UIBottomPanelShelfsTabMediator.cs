@@ -33,7 +33,7 @@ public class UIBottomPanelShelfsTabMediator : UIBottomPanelInteriorTabMediatorBa
         itemView.SetupHint(hintDescription);
     }
 
-    protected override void ProcessClick(int id)
+    protected override void HandleClick(int id)
     {
         _dispatcher.UIBottomPanelPlaceShelfClicked(id);
     }

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-public class MainConfig : IShelfsConfig, IFloorsConfig
+public class MainConfig : IShelfsConfig, IFloorsConfig, IWallsConfig, IWindowsConfig, IDoorsConfig
 {
     public int GameplayAtlasVersion;
     public int InterfaceAtlasVersion;
@@ -16,14 +16,14 @@ public class MainConfig : IShelfsConfig, IFloorsConfig
         return GetConfigsForLevel(ShelfsConfig, level);
     }
 
-    public ShelfConfigDto GetShelfConfigByLevelId(int shelfLevelId)
+    public ShelfConfigDto GetShelfConfigByNumericId(int numericId)
     {
-        return ShelfsConfig[$"s_{shelfLevelId}"];
+        return ShelfsConfig[$"s_{numericId}"];
     }
 
-    public ShopObjectConfigDto GetCashDeskConfigByLevelId(int cashDeskLevelId)
+    public ShopObjectConfigDto GetCashDeskConfigByNumericId(int cashDeskNumericId)
     {
-        return ShopObjectsConfig[$"cd_{cashDeskLevelId}"];
+        return ShopObjectsConfig[$"cd_{cashDeskNumericId}"];
     }
 
     public IEnumerable<(int id, ShopDecorationConfigDto config)> GetFloorsConfigsForLevel(int level)
@@ -31,9 +31,9 @@ public class MainConfig : IShelfsConfig, IFloorsConfig
         return GetConfigsForLevel(FloorsConfig, level);
     }
 
-    public ShopDecorationConfigDto GetFloorConfigByLevelId(int floorLevelId)
+    public ShopDecorationConfigDto GetFloorConfigByNumericId(int floorNumericId)
     {
-        return FloorsConfig[$"f_{floorLevelId}"];
+        return FloorsConfig[$"f_{floorNumericId}"];
     }
 
     public IEnumerable<(int id, ShopDecorationConfigDto config)> GetWallsConfigsForLevel(int level)
@@ -41,9 +41,9 @@ public class MainConfig : IShelfsConfig, IFloorsConfig
         return GetConfigsForLevel(WallsConfig, level);
     }
 
-    public ShopDecorationConfigDto GetWallConfigByLevelId(int wallLevelId)
+    public ShopDecorationConfigDto GetWallConfigByNumericId(int wallNumericId)
     {
-        return WallsConfig[$"w_{wallLevelId}"];
+        return WallsConfig[$"w_{wallNumericId}"];
     }
 
     public IEnumerable<(int id, ShopDecorationConfigDto config)> GetWindowsConfigsForLevel(int level)
@@ -51,9 +51,9 @@ public class MainConfig : IShelfsConfig, IFloorsConfig
         return GetConfigsForLevel(WindowsConfig, level);
     }
 
-    public ShopDecorationConfigDto GetWindowConfigByLevelId(int windowLevelId)
+    public ShopDecorationConfigDto GetWindowConfigByNumericId(int windowNumericId)
     {
-        return WindowsConfig[$"wnd_{windowLevelId}"];
+        return WindowsConfig[$"wnd_{windowNumericId}"];
     }
 
     public IEnumerable<(int id, ShopDecorationConfigDto config)> GetDoorsConfigsForLevel(int level)
@@ -61,9 +61,9 @@ public class MainConfig : IShelfsConfig, IFloorsConfig
         return GetConfigsForLevel(DoorsConfig, level);
     }
 
-    public ShopDecorationConfigDto GetDoorConfigByLevelId(int doorLevelId)
+    public ShopDecorationConfigDto GetDoorConfigByNumericId(int doorNumericId)
     {
-        return DoorsConfig[$"d_{doorLevelId}"];
+        return DoorsConfig[$"d_{doorNumericId}"];
     }
 
     private IEnumerable<(int id, T config)> GetConfigsForLevel<T>(Dictionary<string, T> configsDictionary, int level)
@@ -105,29 +105,29 @@ public class ShopDecorationConfigDto : PlacableItemConfigDto
 public interface IShelfsConfig
 {
     IEnumerable<(int id, ShelfConfigDto config)> GetShelfConfigsForLevel(int level);
-    ShelfConfigDto GetShelfConfigByLevelId(int shelfId);
+    ShelfConfigDto GetShelfConfigByNumericId(int shelfId);
 }
 
 public interface IFloorsConfig
 {
     IEnumerable<(int id, ShopDecorationConfigDto config)> GetFloorsConfigsForLevel(int level);
-    ShopDecorationConfigDto GetFloorConfigByLevelId(int levelId);
+    ShopDecorationConfigDto GetFloorConfigByNumericId(int levelId);
 }
 
 public interface IWallsConfig
 {
     IEnumerable<(int id, ShopDecorationConfigDto config)> GetWallsConfigsForLevel(int level);
-    ShopDecorationConfigDto GetWallConfigByLevelId(int levelId);
+    ShopDecorationConfigDto GetWallConfigByNumericId(int levelId);
 }
 
 public interface IWindowsConfig
 {
     IEnumerable<(int id, ShopDecorationConfigDto config)> GetWindowsConfigsForLevel(int level);
-    ShopDecorationConfigDto GetWwindowConfigByLevelId(int levelId);
+    ShopDecorationConfigDto GetWindowConfigByNumericId(int levelId);
 }
 
 public interface IDoorsConfig
 {
-    IEnumerable<(int id, ShopDecorationConfigDto config)> GetWindowsConfigsForLevel(int level);
-    ShopDecorationConfigDto GetWwindowConfigByLevelId(int levelId);
+    IEnumerable<(int id, ShopDecorationConfigDto config)> GetDoorsConfigsForLevel(int level);
+    ShopDecorationConfigDto GetDoorConfigByNumericId(int levelId);
 }

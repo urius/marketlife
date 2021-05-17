@@ -46,7 +46,7 @@ public abstract class UIBottomPanelInteriorTabMediatorBase<T> : UIBottomPanelSub
 
     abstract protected IEnumerable<(int id, T config)> GetConfigsForLevel(int level);
     abstract protected void SetupItem(UIBottomPanelScrollItemView itemView, (int id, T config) configData);
-    abstract protected void ProcessClick(int id);
+    abstract protected void HandleClick(int id);
 
     private void ActivateItem(UIBottomPanelScrollItemView itemView)
     {
@@ -61,6 +61,6 @@ public abstract class UIBottomPanelInteriorTabMediatorBase<T> : UIBottomPanelSub
     private void OnItemClicked(UIBottomPanelScrollItemView itemView)
     {
         var id = _IdsByItem[itemView];
-        ProcessClick(id);
+        HandleClick(id);
     }
 }

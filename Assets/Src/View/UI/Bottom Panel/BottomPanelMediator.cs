@@ -60,6 +60,9 @@ public class BottomPanelMediator : UINotMonoMediatorBase
         _view.InteriorCloseButtonClicked += OnInteriorCloseButtonClicked;
         _view.InteriorObjectsButtonClicked += OnInteriorObjectsButtonClicked;
         _view.InteriorFloorsButtonClicked += OnInteriorFloorsButtonClicked;
+        _view.InteriorWallsButtonClicked += OnInteriorWallsButtonClicked;
+        _view.InteriorWindowsButtonClicked += OnInteriorWindowsButtonClicked;
+        _view.InteriorDoorsButtonClicked += OnInteriorDoorsButtonClicked;
         _view.FinishPlacingClicked += OnFinishPlacingButtonClicked;
         _view.RotateRightClicked += OnRotateRightButtonClicked;
         _view.RotateLeftClicked += OnRotateLeftButtonClicked;
@@ -159,6 +162,21 @@ public class BottomPanelMediator : UINotMonoMediatorBase
     {
         SwowTab(new UIBottomPanelFloorsTabMediator(_view));
     }
+
+    private void OnInteriorWallsButtonClicked()
+    {
+        SwowTab(new UIBottomPanelWallsTabMediator(_view));
+    }
+    
+    private void OnInteriorWindowsButtonClicked()
+    {
+        SwowTab(new UIBottomPanelWindowsTabMediator(_view));
+    }
+
+    private void OnInteriorDoorsButtonClicked()
+    {
+        SwowTab(new UIBottomPanelDoorsTabMediator(_view));
+    }    
 
     private void OnInteriorCloseButtonClicked()
     {

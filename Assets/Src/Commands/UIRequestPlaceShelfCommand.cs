@@ -2,7 +2,7 @@ public struct UIRequestPlaceShelfCommand
 {
     public void Execute(int shelfLevelId)
     {
-        var shelfConfig = GameConfigManager.Instance.MainConfig.GetShelfConfigByLevelId(shelfLevelId);
+        var shelfConfig = GameConfigManager.Instance.MainConfig.GetShelfConfigByNumericId(shelfLevelId);
         var gameStateModel = GameStateModel.Instance;
 
         if (shelfConfig.price != null)// TODO check price properly

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +7,7 @@ public class FloorMediator : MonoBehaviour
     private GridCalculator _gridCalculator;
     private SpritesProvider _spritesProvider;
     private PlacingShopDecorationMediator _currentPlacingShopDecorationMediator;
+    private ShopModel _activeShopModel;
 
     private readonly Dictionary<Vector2Int, SpriteRenderer> _floorSprites = new Dictionary<Vector2Int, SpriteRenderer>();
 
@@ -24,6 +24,7 @@ public class FloorMediator : MonoBehaviour
 
         if (_gameStateModel.ViewingShopModel != null)
         {
+            ActivateForShopModel(_gameStateModel.ViewingShopModel);
             ShowFloors(_gameStateModel.ViewingShopModel.ShopDesign.Floors);
         }
     }
@@ -32,6 +33,24 @@ public class FloorMediator : MonoBehaviour
     {
         _gameStateModel.ViewingShopModelChanged += OnViewingShopModelChanged;
         _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
+    }
+
+    private void ActivateForShopModel(ShopModel viewingShopModel)
+    {
+        _activeShopModel = viewingShopModel;
+
+        _activeShopModel.ShopDesign.FloorChanged += OnFloorChanged;
+    }
+
+    private void DeactivateCurrentShopModel()
+    {
+        if (_activeShopModel == null) return;
+        _activeShopModel.ShopDesign.FloorChanged -= OnFloorChanged;
+    }
+
+    private void OnFloorChanged(Vector2Int cellCoords, int numericId)
+    {
+        _floorSprites[cellCoords].sprite = _spritesProvider.GetFloorSprite(numericId);
     }
 
     private void OnPlacingStateChanged(PlacingStateName previousState, PlacingStateName newState)
@@ -54,6 +73,8 @@ public class FloorMediator : MonoBehaviour
 
     private void OnViewingShopModelChanged(ShopModel newShopModel)
     {
+        DeactivateCurrentShopModel();
+        ActivateForShopModel(newShopModel);
         ShowFloors(newShopModel.ShopDesign.Floors);
     }
 

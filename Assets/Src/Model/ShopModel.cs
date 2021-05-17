@@ -50,6 +50,17 @@ public class ShopModel
         return result;
     }
 
+    public bool TryPlaceFloor(Vector2Int cellCoords, int floorNumericId)
+    {
+        var canPlace = ShopDesign.CanPlaceFloor(cellCoords, floorNumericId);
+        if (canPlace)
+        {
+            ShopDesign.PlaceFloor(cellCoords, floorNumericId);
+        }
+
+        return canPlace;
+    }
+
     public bool CanPlaceFloor(Vector2Int cellCoords, int placingDecorationNumericId)
     {
         return ShopDesign.CanPlaceFloor(cellCoords, placingDecorationNumericId);
@@ -96,6 +107,8 @@ public class ShopModel
 
 public class ShoDesignModel
 {
+    public event Action<Vector2Int, int> FloorChanged = delegate { };
+
     public int SizeX;
     public int SizeY;
 
@@ -126,6 +139,13 @@ public class ShoDesignModel
             && cellCoords.x < SizeX
             && cellCoords.y < SizeY
             && Floors[cellCoords] != placingDecorationNumericId;
+    }
+
+    public void PlaceFloor(Vector2Int cellCoords, int floorNumericId)
+    {
+        Floors[cellCoords] = floorNumericId;
+
+        FloorChanged(cellCoords, floorNumericId);
     }
 }
 

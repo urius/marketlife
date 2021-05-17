@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlacingShopDecorationMediator
@@ -24,8 +25,10 @@ public class PlacingShopDecorationMediator
 
     public void Mediate()
     {
-        _dispatcher.MouseCellCoordsUpdated += OnMouseCellCoordsUpdated;
         _currentShopModel = GameStateModel.Instance.ViewingShopModel;
+
+        _dispatcher.MouseCellCoordsUpdated += OnMouseCellCoordsUpdated;
+        _currentShopModel.ShopDesign.FloorChanged += OnFloorChanged;
 
         switch (_gameStateModel.PlacingState)
         {
@@ -43,9 +46,15 @@ public class PlacingShopDecorationMediator
     public void Unmediate()
     {
         _dispatcher.MouseCellCoordsUpdated -= OnMouseCellCoordsUpdated;
+        _currentShopModel.ShopDesign.FloorChanged -= OnFloorChanged;
 
         GameObject.Destroy(_currentPlacingSprite.gameObject);
         _currentPlacingSprite = null;
+    }
+
+    private void OnFloorChanged(Vector2Int cellCoords, int numericId)
+    {
+        UpdateBuildAvailability(cellCoords);
     }
 
     private void OnMouseCellCoordsUpdated(Vector2Int cellCoords)

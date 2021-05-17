@@ -17,7 +17,7 @@ public abstract class ShopObjectMediatorBase
         ParentTransform = parentTransform;
         Model = shelfModel;
 
-        _prefabs = PrefabsHolder.Instance.GetShopObjectPrefabs(Model.Type, Model.Level);
+        _prefabs = PrefabsHolder.Instance.GetShopObjectPrefabs(Model.Type, Model.NumericId);
         _hasProfileSide = _prefabs.Item2 != null;
     }
 

@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class CashDeskModel : ShopObjectBase
 {
-    public CashDeskModel(int level, ShopObjectConfigDto cashDeskConfigDto, Vector2Int coords, int side = 3, string paramsShort = null)
-        : base(level, cashDeskConfigDto, coords, side)
+    public CashDeskModel(int numericId, ShopObjectConfigDto cashDeskConfigDto, Vector2Int coords, int side = 3, string paramsShort = null)
+        : base(numericId, cashDeskConfigDto, coords, side)
     {
     }
 
@@ -11,6 +11,6 @@ public class CashDeskModel : ShopObjectBase
 
     public override ShopObjectBase Clone()
     {
-        return new ShopObjectModelFactory().CreateCashDesk(Level, Coords, Side);
+        return new ShopObjectModelFactory().CreateCashDesk(NumericId, Coords, Side);
     }
 }

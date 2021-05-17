@@ -1,14 +1,14 @@
 public struct UIRequestPlaceShelfCommand
 {
-    public void Execute(int shelfLevelId)
+    public void Execute(int shelfNumericId)
     {
-        var shelfConfig = GameConfigManager.Instance.MainConfig.GetShelfConfigByNumericId(shelfLevelId);
+        var shelfConfig = GameConfigManager.Instance.MainConfig.GetShelfConfigByNumericId(shelfNumericId);
         var gameStateModel = GameStateModel.Instance;
 
         if (shelfConfig.price != null)// TODO check price properly
         {
             var mouseCellCoords = MouseCellCoordsProvider.Instance.MouseCellCoords;
-            var model = new ShopObjectModelFactory().CreateShelf(shelfLevelId, mouseCellCoords);
+            var model = new ShopObjectModelFactory().CreateShelf(shelfNumericId, mouseCellCoords);
             gameStateModel.SetPlacingObject(model);
         }
     }

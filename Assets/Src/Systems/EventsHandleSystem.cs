@@ -66,8 +66,8 @@ public class EventsHandleSystem : MonoBehaviour
         }
     }
 
-    private void OnUIBottomPanelPlaceShelfClicked(int shelfId)
+    private void OnUIBottomPanelPlaceShelfClicked(int shelfNumericId)
     {
-        new UIRequestPlaceShelfCommand().Execute(shelfId);
+        new UIRequestPlaceShelfCommand().Execute(shelfNumericId);
     }
 }

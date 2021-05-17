@@ -2,10 +2,10 @@ using UnityEngine;
 
 public struct ShopObjectModelFactory
 {
-    public ShelfModel CreateShelf(int levelId, Vector2Int coords, int side = 3, ProductModel[] products = null)
+    public ShelfModel CreateShelf(int numericId, Vector2Int coords, int side = 3, ProductModel[] products = null)
     {
-        var config = GameConfigManager.Instance.MainConfig.GetShelfConfigByNumericId(levelId);
-        var result = new ShelfModel(levelId, config, coords, side);
+        var config = GameConfigManager.Instance.MainConfig.GetShelfConfigByNumericId(numericId);
+        var result = new ShelfModel(numericId, config, coords, side);
         if(products != null)
         {
             for(var i = 0; i< products.Length; i++)
@@ -17,10 +17,10 @@ public struct ShopObjectModelFactory
         return result;
     }
 
-    public CashDeskModel CreateCashDesk(int levelId, Vector2Int coords, int side = 3)
+    public CashDeskModel CreateCashDesk(int numericId, Vector2Int coords, int side = 3)
     {
-        var config = GameConfigManager.Instance.MainConfig.GetCashDeskConfigByNumericId(levelId);
-        var result = new CashDeskModel(levelId, config, coords, side);
+        var config = GameConfigManager.Instance.MainConfig.GetCashDeskConfigByNumericId(numericId);
+        var result = new CashDeskModel(numericId, config, coords, side);
         return result;
     }
 }

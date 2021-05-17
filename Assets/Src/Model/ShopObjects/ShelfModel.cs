@@ -10,8 +10,8 @@ public class ShelfModel : ShopObjectBase
 
     public ProductModel[] Products;
 
-    public ShelfModel(int level, ShelfConfigDto shelfConfig, Vector2Int coords, int side = 3)
-        : base(level, shelfConfig, coords, side)
+    public ShelfModel(int numericId, ShelfConfigDto shelfConfig, Vector2Int coords, int side = 3)
+        : base(numericId, shelfConfig, coords, side)
     {
         PartVolume = shelfConfig.part_volume;
         PartsCount = shelfConfig.parts_num;
@@ -36,6 +36,6 @@ public class ShelfModel : ShopObjectBase
 
     public override ShopObjectBase Clone()
     {
-        return new ShopObjectModelFactory().CreateShelf(Level, Coords, Side, Products);
+        return new ShopObjectModelFactory().CreateShelf(NumericId, Coords, Side, Products);
     }
 }

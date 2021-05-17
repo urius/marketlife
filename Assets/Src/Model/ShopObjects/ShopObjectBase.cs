@@ -6,7 +6,7 @@ public abstract class ShopObjectBase
     public event Action<int, int> SideChanged = delegate { };
     public event Action<Vector2Int, Vector2Int> CoordsChanged = delegate { };
 
-    public readonly int Level;
+    public readonly int NumericId;
     public readonly Price Price;
     public readonly int UnlockLevel;
     public readonly bool TwoSidesMode;
@@ -15,9 +15,9 @@ public abstract class ShopObjectBase
     private int _side = -1;
     private readonly int[][] _defaultBuildMatrix;
 
-    public ShopObjectBase(int level, ShopObjectConfigDto config, Vector2Int coords, int side)
+    public ShopObjectBase(int numericId, ShopObjectConfigDto config, Vector2Int coords, int side)
     {
-        Level = level;
+        NumericId = numericId;
 
         Price = Price.FromString(config.price);
         _defaultBuildMatrix = config.build_matrix;

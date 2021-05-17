@@ -56,6 +56,9 @@ TagManager:
   - name: '[ object temp ]'
     uniqueID: 3105408067
     locked: 0
+  - name: Placing
+    uniqueID: 2765621921
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

@@ -15,6 +15,7 @@ public class GameStateModel
 
     public GameStateName GameState { get; private set; } = GameStateName.Initializing;
     public PlacingStateName PlacingState { get; private set; } = PlacingStateName.None;
+    public int PlacingDecorationNumericId { get; private set; }
     public ShopObjectModelBase PlacingShopObjectModel { get; private set; }
     public ShopModel ViewingShopModel { get; private set; }
 
@@ -35,6 +36,7 @@ public class GameStateModel
     public void ResetPlacingState()
     {
         PlacingShopObjectModel = null;
+        PlacingDecorationNumericId = 0;
         SetPlacingState(PlacingStateName.None);
     }
 
@@ -42,6 +44,30 @@ public class GameStateModel
     {
         PlacingShopObjectModel = placingObjectModel;
         SetPlacingState(PlacingStateName.PlacingShopObject);
+    }
+
+    public void SetPlacingFloor(int numericId)
+    {
+        PlacingDecorationNumericId = numericId;
+        SetPlacingState(PlacingStateName.PlacingFloor);
+    }
+
+    public void SetPlacingWall(int numericId)
+    {
+        PlacingDecorationNumericId = numericId;
+        SetPlacingState(PlacingStateName.PlacingWall);
+    }
+
+    public void SetPlacingWindow(int numericId)
+    {
+        PlacingDecorationNumericId = numericId;
+        SetPlacingState(PlacingStateName.PlacingWindow);
+    }
+
+    public void SetPlacingDoor(int numericId)
+    {
+        PlacingDecorationNumericId = numericId;
+        SetPlacingState(PlacingStateName.PlacingDoor);
     }
 
     public void SetViewingShopModel(ShopModel shopModel)

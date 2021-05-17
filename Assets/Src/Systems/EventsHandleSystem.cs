@@ -17,6 +17,7 @@ public class EventsHandleSystem : MonoBehaviour
     {
         _dispatcher.UIGameViewMouseClick += OnUIGameViewMouseClicked;
         _dispatcher.UIBottomPanelPlaceShelfClicked += OnUIBottomPanelPlaceShelfClicked;
+        _dispatcher.UIBottomPanelPlaceFloorClicked += OnUIBottomPanelPlaceFloorClicked;
         _dispatcher.MouseCellCoordsUpdated += OnMouseCellCoordsUpdated;
         _dispatcher.BottomPanelInteriorClicked += BottomPanelInteriorClicked;
         _dispatcher.BottomPanelInteriorCloseClicked += BottomPanelInteriorCloseClicked;
@@ -69,5 +70,10 @@ public class EventsHandleSystem : MonoBehaviour
     private void OnUIBottomPanelPlaceShelfClicked(int shelfNumericId)
     {
         new UIRequestPlaceShelfCommand().Execute(shelfNumericId);
+    }
+
+    private void OnUIBottomPanelPlaceFloorClicked(int floorNumericId)
+    {
+        new UIRequestPlacingDecorationCommand().Execute(ShopDecorationObjectType.Floor, floorNumericId);
     }
 }

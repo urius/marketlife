@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +7,7 @@ public class FloorMediator : MonoBehaviour
     private GameStateModel _gameStateModel;
     private GridCalculator _gridCalculator;
     private SpritesProvider _spritesProvider;
+    private PlacingShopDecorationMediator _currentPlacingShopDecorationMediator;
 
     private readonly Dictionary<Vector2Int, SpriteRenderer> _floorSprites = new Dictionary<Vector2Int, SpriteRenderer>();
 
@@ -29,6 +31,25 @@ public class FloorMediator : MonoBehaviour
     private void Activate()
     {
         _gameStateModel.ViewingShopModelChanged += OnViewingShopModelChanged;
+        _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
+    }
+
+    private void OnPlacingStateChanged(PlacingStateName previousState, PlacingStateName newState)
+    {
+        switch (newState)
+        {
+            case PlacingStateName.None:
+                if (_currentPlacingShopDecorationMediator != null)
+                {
+                    _currentPlacingShopDecorationMediator.Unmediate();
+                    _currentPlacingShopDecorationMediator = null;
+                }
+                break;
+            case PlacingStateName.PlacingFloor:
+                _currentPlacingShopDecorationMediator = new PlacingShopDecorationMediator(transform);
+                _currentPlacingShopDecorationMediator.Mediate();
+                break;
+        }
     }
 
     private void OnViewingShopModelChanged(ShopModel newShopModel)
@@ -38,18 +59,19 @@ public class FloorMediator : MonoBehaviour
 
     private void ShowFloors(Dictionary<Vector2Int, int> floorsDataNew)
     {
+        var viewsFactory = new ViewsFactory();
         foreach (var kvp in floorsDataNew)
         {
             if (!_floorSprites.ContainsKey(kvp.Key))
             {
-                var floorGo = Instantiate(PrefabsHolder.Instance.FloorPrefab, transform);
-                var spriteRenderer = floorGo.GetComponent<SpriteRenderer>();
-                floorGo.transform.position = _gridCalculator.CellToWord(kvp.Key);
-
-                _floorSprites[kvp.Key] = spriteRenderer;
+                var floorSprite = viewsFactory.CreateFloor(transform, kvp.Value);
+                floorSprite.transform.position = _gridCalculator.CellToWord(kvp.Key);
+                _floorSprites[kvp.Key] = floorSprite;
             }
-
-            _floorSprites[kvp.Key].sprite = _spritesProvider.GetFloorSprite(kvp.Value);
+            else
+            {
+                _floorSprites[kvp.Key].sprite = _spritesProvider.GetFloorSprite(kvp.Value);
+            }
         }
 
         var keysToRemove = new List<Vector2Int>();

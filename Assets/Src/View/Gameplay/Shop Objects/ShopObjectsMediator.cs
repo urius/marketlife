@@ -55,7 +55,7 @@ public class ShopObjectsMediator : MonoBehaviour
         _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
     }
 
-    private void OnPlacingStateChanged(PlacingStateName previouseState, PlacingStateName newState)
+    private void OnPlacingStateChanged(PlacingStateName previousState, PlacingStateName newState)
     {
         switch (newState)
         {
@@ -106,6 +106,8 @@ public class ShopObjectsMediator : MonoBehaviour
     private void DebugDisplayBuildSquares()
     {
 #if UNITY_EDITOR
+        return;
+
         var viewingShopModel = GameStateModel.Instance.ViewingShopModel;
         foreach (var kvp in viewingShopModel.Grid)
         {

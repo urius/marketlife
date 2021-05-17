@@ -50,6 +50,7 @@ public class BottomPanelMediator : UINotMonoMediatorBase
                     break;
             }
         }
+        _lastTabMediatorForState[gameState] = result;
 
         return result;
     }

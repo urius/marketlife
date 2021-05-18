@@ -18,6 +18,9 @@ public class EventsHandleSystem : MonoBehaviour
         _dispatcher.UIGameViewMouseClick += OnUIGameViewMouseClicked;
         _dispatcher.UIBottomPanelPlaceShelfClicked += OnUIBottomPanelPlaceShelfClicked;
         _dispatcher.UIBottomPanelPlaceFloorClicked += OnUIBottomPanelPlaceFloorClicked;
+        _dispatcher.UIBottomPanelPlaceWallClicked += OnUIBottomPanelPlaceWallClicked;
+        _dispatcher.UIBottomPanelPlaceWindowClicked += OnUIBottomPanelPlaceWindowClicked;
+        _dispatcher.UIBottomPanelPlaceDoorClicked += OnUIBottomPanelPlaceDoorClicked;
         _dispatcher.MouseCellCoordsUpdated += OnMouseCellCoordsUpdated;
         _dispatcher.BottomPanelInteriorClicked += BottomPanelInteriorClicked;
         _dispatcher.BottomPanelInteriorCloseClicked += BottomPanelInteriorCloseClicked;
@@ -75,5 +78,20 @@ public class EventsHandleSystem : MonoBehaviour
     private void OnUIBottomPanelPlaceFloorClicked(int floorNumericId)
     {
         new UIRequestPlacingDecorationCommand().Execute(ShopDecorationObjectType.Floor, floorNumericId);
+    }
+
+    private void OnUIBottomPanelPlaceWallClicked(int wallNumericId)
+    {
+        new UIRequestPlacingDecorationCommand().Execute(ShopDecorationObjectType.Wall, wallNumericId);
+    }
+
+    private void OnUIBottomPanelPlaceWindowClicked(int windowNumericId)
+    {
+        new UIRequestPlacingDecorationCommand().Execute(ShopDecorationObjectType.Window, windowNumericId);
+    }
+
+    private void OnUIBottomPanelPlaceDoorClicked(int doorNumericId)
+    {
+        new UIRequestPlacingDecorationCommand().Execute(ShopDecorationObjectType.Door, doorNumericId);
     }
 }

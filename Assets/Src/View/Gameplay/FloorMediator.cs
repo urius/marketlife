@@ -35,9 +35,9 @@ public class FloorMediator : MonoBehaviour
         _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
     }
 
-    private void ActivateForShopModel(ShopModel viewingShopModel)
+    private void ActivateForShopModel(ShopModel shopModel)
     {
-        _activeShopModel = viewingShopModel;
+        _activeShopModel = shopModel;
 
         _activeShopModel.ShopDesign.FloorChanged += OnFloorChanged;
     }

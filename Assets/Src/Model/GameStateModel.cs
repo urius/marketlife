@@ -18,6 +18,7 @@ public class GameStateModel
     public int PlacingDecorationNumericId { get; private set; }
     public ShopObjectModelBase PlacingShopObjectModel { get; private set; }
     public ShopModel ViewingShopModel { get; private set; }
+    public ShopModel PlayerShopModel { get; private set; }
 
     public void SetGameState(GameStateName newState)
     {
@@ -74,6 +75,15 @@ public class GameStateModel
     {
         ViewingShopModel = shopModel;
         ViewingShopModelChanged(ViewingShopModel);
+    }
+
+    public void SetPlayerShopModel(ShopModel shopModel)
+    {
+        if (PlayerShopModel != null)
+        {
+            throw new InvalidOperationException("GameStateModel.SetPlayerShopModel(): PlayerShopModel already setup");
+        }
+        PlayerShopModel = shopModel;
     }
 
     private void SetPlacingState(PlacingStateName newState)

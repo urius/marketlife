@@ -7,6 +7,9 @@ public class WallView : AbstractWallView
 
     private SpritesProvider _spritesProvider;
 
+    public Color WallColor { get { return _spriteRenderer.color; } set { _spriteRenderer.color = value; } }
+    public Color WindowColor { get { return _windowSpriteRenderer.color; } set { _windowSpriteRenderer.color = value; } }
+
     public void Awake()
     {
         _spritesProvider = SpritesProvider.Instance;

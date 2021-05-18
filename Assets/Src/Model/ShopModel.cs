@@ -7,19 +7,41 @@ public class ShopModel
     public event Action<ShopObjectModelBase> ShopObjectPlaced = delegate { };
 
     public readonly string Uid;
+    public readonly ShopProgressModel ProgressModel;
     public readonly ShoDesignModel ShopDesign;
     public readonly Dictionary<Vector2Int, ShopObjectModelBase> ShopObjects;
     public readonly Dictionary<Vector2Int, (int buildState, ShopObjectModelBase reference)> Grid;
 
-    public ShopModel(string uid, ShoDesignModel shopDesign, Dictionary<Vector2Int, ShopObjectModelBase> shopObjects)
+    public ShopModel(string uid, ShoDesignModel shopDesign, Dictionary<Vector2Int, ShopObjectModelBase> shopObjects, ShopProgressModel progressModel)
     {
         Grid = new Dictionary<Vector2Int, (int buildState, ShopObjectModelBase reference)>();
 
         Uid = uid;
         ShopDesign = shopDesign;
         ShopObjects = shopObjects;
+        ProgressModel = progressModel;
 
         RefillGrid();
+    }
+
+    public bool CanSpendMoney(string price)
+    {
+        return CanSpendMoney(Price.FromString(price));
+    }
+
+    public bool CanSpendMoney(Price price)
+    {
+        return price.IsGold ? ProgressModel.CanSpendGold(price.Value) : ProgressModel.CanSpendCash(price.Value);
+    }
+
+    public bool TrySpendMoney(string price)
+    {
+        return TrySpendMoney(Price.FromString(price));
+    }
+
+    public bool TrySpendMoney(Price price)
+    {
+        return price.IsGold ? ProgressModel.TrySpendGold(price.Value) : ProgressModel.TrySpendCash(price.Value);
     }
 
     public void PlaceShopObject(ShopObjectModelBase shopObject)
@@ -66,6 +88,22 @@ public class ShopModel
         return ShopDesign.CanPlaceFloor(cellCoords, placingDecorationNumericId);
     }
 
+    public bool TryPlaceWall(Vector2Int cellCoords, int floorNumericId)
+    {
+        var canPlace = ShopDesign.CanPlaceWall(cellCoords, floorNumericId);
+        if (canPlace)
+        {
+            ShopDesign.PlaceWall(cellCoords, floorNumericId);
+        }
+
+        return canPlace;
+    }
+
+    public bool CanPlaceWall(Vector2Int cellCoords, int placingDecorationNumericId)
+    {
+        return ShopDesign.CanPlaceWall(cellCoords, placingDecorationNumericId);
+    }
+
     public int GetCellBuildState(Vector2Int cellCoords)
     {
         if (cellCoords.x < 0 || cellCoords.y < 0 || cellCoords.x >= ShopDesign.SizeX || cellCoords.y >= ShopDesign.SizeY) return 1;
@@ -108,6 +146,7 @@ public class ShopModel
 public class ShoDesignModel
 {
     public event Action<Vector2Int, int> FloorChanged = delegate { };
+    public event Action<Vector2Int, int> WallChanged = delegate { };
 
     public int SizeX;
     public int SizeY;
@@ -141,11 +180,123 @@ public class ShoDesignModel
             && Floors[cellCoords] != placingDecorationNumericId;
     }
 
+    public bool CanPlaceWall(Vector2Int cellCoords, int placingDecorationNumericId)
+    {
+        return ((cellCoords.x == -1 && cellCoords.y >= 0 && cellCoords.y < SizeY)
+            || (cellCoords.y == -1 && cellCoords.x >= 0 && cellCoords.x < SizeX))
+            && Walls[cellCoords] != placingDecorationNumericId;
+    }
+
     public void PlaceFloor(Vector2Int cellCoords, int floorNumericId)
     {
         Floors[cellCoords] = floorNumericId;
-
         FloorChanged(cellCoords, floorNumericId);
+    }
+
+    public void PlaceWall(Vector2Int cellCoords, int wallNumericId)
+    {
+        Walls[cellCoords] = wallNumericId;
+        WallChanged(cellCoords, wallNumericId);
+    }
+}
+
+public class ShopProgressModel
+{
+    public event Action<int, int> CashChanged = delegate { };
+    public event Action<int, int> GoldChanged = delegate { };
+    public event Action<int, int> ExpChanged = delegate { };
+    public event Action<int, int> LevelChanged = delegate { };
+
+    public int Cash => Decode(_cashEncoded);
+    public int Gold => Decode(_goldEncoded);
+    public int ExpAmount => Decode(_expEncoded);
+    public int Level => Decode(_levelEncoded);
+
+    private string _cashEncoded;
+    private string _goldEncoded;
+    private string _expEncoded;
+    private string _levelEncoded;
+
+    public ShopProgressModel(int cash, int gold, int expAmount, int level)
+    {
+        _cashEncoded = Encode(cash);
+        _goldEncoded = Encode(gold);
+        _expEncoded = Encode(expAmount);
+        _levelEncoded = Encode(level);
+    }
+
+    public void SetCash(int newValue)
+    {
+        var valueBefore = Cash;
+        _cashEncoded = Encode(newValue);
+        CashChanged(valueBefore, newValue);
+    }
+
+    public bool CanSpendCash(int spendAmount)
+    {
+        var currentValue = Cash;
+        return currentValue >= spendAmount;
+    }
+
+    public bool TrySpendCash(int spendAmount)
+    {
+        var currentValue = Cash;
+        if (currentValue >= spendAmount)
+        {
+            currentValue -= spendAmount;
+            SetCash(currentValue);
+            return true;
+        }
+        return false;
+    }
+
+    public void SetGold(int newValue)
+    {
+        var valueBefore = Gold;
+        _goldEncoded = Encode(newValue);
+        GoldChanged(valueBefore, newValue);
+    }
+
+    public bool CanSpendGold(int spendAmount)
+    {
+        var currentValue = Gold;
+        return currentValue >= spendAmount;
+    }
+
+    public bool TrySpendGold(int spendAmount)
+    {
+        var currentValue = Gold;
+        if (currentValue >= spendAmount)
+        {
+            currentValue -= spendAmount;
+            SetGold(currentValue);
+            return true;
+        }
+        return false;
+    }
+
+    public void SetExp(int newValue)
+    {
+        var valueBefore = ExpAmount;
+        _expEncoded = Encode(newValue);
+        ExpChanged(valueBefore, newValue);
+    }
+
+    public void SetLevel(int newValue)
+    {
+        var valueBefore = Level;
+        _levelEncoded = Encode(newValue);
+        LevelChanged(valueBefore, newValue);
+    }
+
+    private string Encode(int input)
+    {
+        return Base64Helper.Base64Encode(input.ToString());
+    }
+
+    private int Decode(string base64Input)
+    {
+        return int.Parse(Base64Helper.Base64Decode(base64Input));
     }
 }
 

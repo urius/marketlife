@@ -10,8 +10,18 @@ public static class DtoExtensions
     {
         var designModel = ToDesignModel(dto.data.design);
         var shopObjects = ToObjectsModel(dto.data.objects);
+        var shopProgress = ToProgressModel(dto.data);
 
-        return new ShopModel(dto.data.uid, designModel, shopObjects);
+        return new ShopModel(dto.data.uid, designModel, shopObjects, shopProgress);
+    }
+
+    private static ShopProgressModel ToProgressModel(GetDataResponseDataDto data)
+    {
+        return new ShopProgressModel(
+            int.Parse(data.cash),
+            int.Parse(data.gold),
+            int.Parse(data.exp),
+            int.Parse(data.level));
     }
 
     private static Dictionary<Vector2Int, ShopObjectModelBase> ToObjectsModel(string objects)

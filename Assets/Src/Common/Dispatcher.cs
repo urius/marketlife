@@ -17,7 +17,8 @@ public class Dispatcher
     public Action BottomPanelInteriorCloseClicked = delegate { };
     public Action BottomPanlelFinishPlacingClicked = delegate { };
     public Action BottomPanelRotateRightClicked = delegate { };
-    public Action BottomPanelRotateLeftClicked = delegate { };    
+    public Action BottomPanelRotateLeftClicked = delegate { };
+    public Action NotifyNotEnoughtMoney = delegate { };    
 
     private static Lazy<Dispatcher> _instance = new Lazy<Dispatcher>();
     public static Dispatcher Instance => _instance.Value;

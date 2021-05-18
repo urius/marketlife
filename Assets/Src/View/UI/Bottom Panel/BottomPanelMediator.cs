@@ -77,7 +77,7 @@ public class BottomPanelMediator : UINotMonoMediatorBase
         using (_view.SetBlockedDisposable())
         {
             //placing
-            if (previousState == PlacingStateName.None && newState != PlacingStateName.None)
+            if (newState != PlacingStateName.None && previousState == PlacingStateName.None)
             {
                 var minimizeTask = _view.MinimizePanelAsync();
                 await HideTopButtonsForStateAsync(_gameStateModel.GameState);
@@ -85,12 +85,18 @@ public class BottomPanelMediator : UINotMonoMediatorBase
                 switch (newState)
                 {
                     case PlacingStateName.PlacingShopObject:
-                        await _view.ShowPlacingButtonsAsync();
+                        await _view.ShowPlacingButtonsAsync(PlacingModeType.ShopObject);
+                        break;
+                    case PlacingStateName.PlacingFloor:
+                    case PlacingStateName.PlacingWall:
+                    case PlacingStateName.PlacingWindow:
+                    case PlacingStateName.PlacingDoor:
+                        await _view.ShowPlacingButtonsAsync(PlacingModeType.ShopDecoration);
                         break;
                 }
             }
             //no placing
-            else if (previousState != PlacingStateName.None && newState == PlacingStateName.None)
+            else if (newState == PlacingStateName.None && previousState != PlacingStateName.None)
             {
                 var maximizeTask = _view.MaximizePanelAsync();
                 await _view.HidePlacingButtonsAsync();

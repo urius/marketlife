@@ -12,7 +12,7 @@ public class BottomPanelView : MonoBehaviour
     public event Action ManageButtonClicked = delegate { };
     public event Action InteriorCloseButtonClicked = delegate { };
     public event Action InteriorObjectsButtonClicked = delegate { };
-    public event Action InteriorFloorsButtonClicked = delegate { };    
+    public event Action InteriorFloorsButtonClicked = delegate { };
     public event Action InteriorWallsButtonClicked = delegate { };
     public event Action InteriorWindowsButtonClicked = delegate { };
     public event Action InteriorDoorsButtonClicked = delegate { };
@@ -50,7 +50,9 @@ public class BottomPanelView : MonoBehaviour
     private Dictionary<CanvasGroup[], float> _buttonYPositionsByCanvasGroup;
     private CanvasGroup[] _simulationModeButtons;
     private CanvasGroup[] _interiorModeButtons;
-    private CanvasGroup[] _placingModeButtons;
+    private CanvasGroup[] _allPlacingModeButtons;
+    private CanvasGroup[] _placingShopObjectModeButtons;
+    private CanvasGroup[] _placingDecorationModeButtons;
     private UIHintableView[] _allHintableViews;
 
     public Button FriendsButton => _friendsButton;
@@ -65,13 +67,17 @@ public class BottomPanelView : MonoBehaviour
     {
         _simulationModeButtons = new CanvasGroup[] { GetCanvasGroup(_friendsButton), GetCanvasGroup(_warehouseButton), GetCanvasGroup(_interiorButton), GetCanvasGroup(_manageButton) };
         _interiorModeButtons = new CanvasGroup[] { GetCanvasGroup(_interiorCloseButton), GetCanvasGroup(_interiorObjectsButton), GetCanvasGroup(_interiorFloorsButton), GetCanvasGroup(_interiorWallsButton), GetCanvasGroup(_interiorWindowsButton), GetCanvasGroup(_interiorDoorsButton) };
-        _placingModeButtons = new CanvasGroup[] { GetCanvasGroup(_buttonFinishPlacing), GetCanvasGroup(_buttonRotateRight), GetCanvasGroup(_buttonRotateLeft) };
+        _allPlacingModeButtons = new CanvasGroup[] { GetCanvasGroup(_buttonFinishPlacing), GetCanvasGroup(_buttonRotateRight), GetCanvasGroup(_buttonRotateLeft) };
+        _placingShopObjectModeButtons = new CanvasGroup[] { GetCanvasGroup(_buttonFinishPlacing), GetCanvasGroup(_buttonRotateRight), GetCanvasGroup(_buttonRotateLeft) };
+        _placingDecorationModeButtons = new CanvasGroup[] { GetCanvasGroup(_buttonFinishPlacing) };
 
         _buttonYPositionsByCanvasGroup = new Dictionary<CanvasGroup[], float>
         {
             [_simulationModeButtons] = (_simulationModeButtons[0].transform as RectTransform).anchoredPosition.y,
             [_interiorModeButtons] = (_interiorModeButtons[0].transform as RectTransform).anchoredPosition.y,
-            [_placingModeButtons] = (_placingModeButtons[0].transform as RectTransform).anchoredPosition.y
+            [_allPlacingModeButtons] = (_allPlacingModeButtons[0].transform as RectTransform).anchoredPosition.y,
+            [_placingShopObjectModeButtons] = (_placingShopObjectModeButtons[0].transform as RectTransform).anchoredPosition.y,
+            [_placingDecorationModeButtons] = (_placingDecorationModeButtons[0].transform as RectTransform).anchoredPosition.y,
         };
 
         _allHintableViews = GetComponentsInChildren<UIHintableView>(true);
@@ -95,7 +101,7 @@ public class BottomPanelView : MonoBehaviour
 
     public UniTask ShowSimulationModeButtonsAsync()
     {
-        return ShowButtonsInternalAsync(_simulationModeButtons);
+        return ShowButtonsInternalAsync(_simulationModeButtons, false);
     }
 
     public UniTask ShowInteriorModeButtonsAsync()
@@ -105,7 +111,7 @@ public class BottomPanelView : MonoBehaviour
 
     public UniTask HideSimulationModeButtonsAsync()
     {
-        return HideButtonsInternalAsync(_simulationModeButtons);
+        return HideButtonsInternalAsync(_simulationModeButtons, withDelays: false);
     }
 
     public UniTask HideInteriorModeButtonsAsync()
@@ -113,14 +119,19 @@ public class BottomPanelView : MonoBehaviour
         return HideButtonsInternalAsync(_interiorModeButtons);
     }
 
-    public UniTask ShowPlacingButtonsAsync()
+    public UniTask ShowPlacingButtonsAsync(PlacingModeType placingModeType)
     {
-        return ShowButtonsInternalAsync(_placingModeButtons);
+        return placingModeType switch
+        {
+            PlacingModeType.ShopObject => ShowButtonsInternalAsync(_placingShopObjectModeButtons),
+            PlacingModeType.ShopDecoration => ShowButtonsInternalAsync(_placingDecorationModeButtons),
+            _ => UniTask.CompletedTask,
+        };
     }
 
     public UniTask HidePlacingButtonsAsync()
     {
-        return HideButtonsInternalAsync(_placingModeButtons);
+        return HideButtonsInternalAsync(_allPlacingModeButtons);
     }
 
     public UniTask MinimizePanelAsync()
@@ -150,7 +161,7 @@ public class BottomPanelView : MonoBehaviour
         return tcs.Task;
     }
 
-    private UniTask ShowButtonsInternalAsync(CanvasGroup[] canvasGroups)
+    private UniTask ShowButtonsInternalAsync(CanvasGroup[] canvasGroups, bool withDelays = true)
     {
         var resultTsc = new UniTaskCompletionSource();
         foreach (var canvasGroup in canvasGroups)
@@ -163,7 +174,7 @@ public class BottomPanelView : MonoBehaviour
         var startPos = _buttonYPositionsByCanvasGroup[canvasGroups];
         for (var i = 0; i < canvasGroups.Length; i++)
         {
-            var delay = i * DefaultDelaySeconds;
+            var delay = withDelays ? i * DefaultDelaySeconds : 0;
 
             var rectTransform = canvasGroups[i].transform as RectTransform;
             var v = rectTransform.anchoredPosition;
@@ -180,7 +191,7 @@ public class BottomPanelView : MonoBehaviour
         return resultTsc.Task;
     }
 
-    private UniTask HideButtonsInternalAsync(CanvasGroup[] canvasGroups)
+    private UniTask HideButtonsInternalAsync(CanvasGroup[] canvasGroups, bool withDelays = true)
     {
         var resultTsc = new UniTaskCompletionSource();
         void OnLastTweenComplete()
@@ -194,21 +205,21 @@ public class BottomPanelView : MonoBehaviour
         }
 
         var targetPos = _buttonYPositionsByCanvasGroup[canvasGroups] + DeltaPositionForAnimation;
+        LTDescr tweenDescription = null;
         for (var i = 0; i < canvasGroups.Length; i++)
         {
-            var delay = i * DefaultDelaySeconds;
+            if (canvasGroups[i].gameObject.activeSelf == false) continue;
+
+            var delay = withDelays ? i * DefaultDelaySeconds : 0;
             canvasGroups[i].interactable = false;
 
             var rectTransform = canvasGroups[i].transform as RectTransform;
             var v = rectTransform.anchoredPosition;
             LeanTween.move(rectTransform, new Vector2(v.x, targetPos), DefaultDurationSeconds).setDelay(delay).setEaseInQuad();
 
-            var tweenDescr = LeanTween.alphaCanvas(canvasGroups[i], 0, DefaultDurationSeconds).setDelay(delay);
-            if (i == canvasGroups.Length - 1)
-            {
-                tweenDescr.setOnComplete(OnLastTweenComplete);
-            }
+            tweenDescription = LeanTween.alphaCanvas(canvasGroups[i], 0, DefaultDurationSeconds).setDelay(delay);
         }
+        tweenDescription?.setOnComplete(OnLastTweenComplete);
 
         return resultTsc.Task;
     }
@@ -309,4 +320,10 @@ public class BottomPanelView : MonoBehaviour
     {
         return button.GetComponent<CanvasGroup>();
     }
+}
+
+public enum PlacingModeType
+{
+    ShopObject,
+    ShopDecoration,
 }

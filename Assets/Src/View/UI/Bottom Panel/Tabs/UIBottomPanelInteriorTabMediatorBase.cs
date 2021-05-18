@@ -38,6 +38,7 @@ public abstract class UIBottomPanelInteriorTabMediatorBase<T> : UIBottomPanelSub
             DeactivateItem(itemView);
             ReturnOrDestroyScrollBoxItem(itemView);
         }
+        _IdsByItem.Clear();
 
         HideScrollBox();
 

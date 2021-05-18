@@ -6,7 +6,7 @@ public class WallsMediator : MonoBehaviour
     private GameStateModel _gameStateModel;
     private GridCalculator _gridCalculator;
     private SpritesProvider _spritesProvider;
-    private PlacingShopDecorationMediator _currentPlacingShopDecorationMediator;
+    private PlacingWallMediator _currentPlacingWallMediator;
     private ShopModel _activeShopModel;
     private readonly Dictionary<Vector2Int, SpriteRenderer> _wallViews = new Dictionary<Vector2Int, SpriteRenderer>();
     private readonly Dictionary<Vector2Int, DoorView> _doorViews = new Dictionary<Vector2Int, DoorView>();
@@ -40,15 +40,15 @@ public class WallsMediator : MonoBehaviour
         switch (newState)
         {
             case PlacingStateName.None:
-                if (_currentPlacingShopDecorationMediator != null)
+                if (_currentPlacingWallMediator != null)
                 {
-                    _currentPlacingShopDecorationMediator.Unmediate();
-                    _currentPlacingShopDecorationMediator = null;
+                    _currentPlacingWallMediator.Unmediate();
+                    _currentPlacingWallMediator = null;
                 }
                 break;
             case PlacingStateName.PlacingWall:
-                _currentPlacingShopDecorationMediator = new PlacingShopDecorationMediator(transform);
-                _currentPlacingShopDecorationMediator.Mediate();
+                _currentPlacingWallMediator = new PlacingWallMediator(transform);
+                _currentPlacingWallMediator.Mediate();
                 break;
         }
     }

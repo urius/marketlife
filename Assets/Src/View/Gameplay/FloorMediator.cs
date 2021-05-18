@@ -6,7 +6,7 @@ public class FloorMediator : MonoBehaviour
     private GameStateModel _gameStateModel;
     private GridCalculator _gridCalculator;
     private SpritesProvider _spritesProvider;
-    private PlacingShopDecorationMediator _currentPlacingShopDecorationMediator;
+    private PlacingFloorMediator _currentPlacingFloorMediator;
     private ShopModel _activeShopModel;
 
     private readonly Dictionary<Vector2Int, SpriteRenderer> _floorSprites = new Dictionary<Vector2Int, SpriteRenderer>();
@@ -58,15 +58,15 @@ public class FloorMediator : MonoBehaviour
         switch (newState)
         {
             case PlacingStateName.None:
-                if (_currentPlacingShopDecorationMediator != null)
+                if (_currentPlacingFloorMediator != null)
                 {
-                    _currentPlacingShopDecorationMediator.Unmediate();
-                    _currentPlacingShopDecorationMediator = null;
+                    _currentPlacingFloorMediator.Unmediate();
+                    _currentPlacingFloorMediator = null;
                 }
                 break;
             case PlacingStateName.PlacingFloor:
-                _currentPlacingShopDecorationMediator = new PlacingShopDecorationMediator(transform);
-                _currentPlacingShopDecorationMediator.Mediate();
+                _currentPlacingFloorMediator = new PlacingFloorMediator(transform);
+                _currentPlacingFloorMediator.Mediate();
                 break;
         }
     }

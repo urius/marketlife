@@ -1,11 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//TODO: rename to PerimeterMediator
-public class WallsMediator : MonoBehaviour
+public class PerimeterMediator : MonoBehaviour
 {
     private GameStateModel _gameStateModel;
-    private GridCalculator _gridCalculator;
     private SpritesProvider _spritesProvider;
     private IMediator _currentPlacingWallMediator;
     private ShopModel _activeShopModel;
@@ -16,7 +14,6 @@ public class WallsMediator : MonoBehaviour
     private void Awake()
     {
         _gameStateModel = GameStateModel.Instance;
-        _gridCalculator = GridCalculator.Instance;
         _spritesProvider = SpritesProvider.Instance;
     }
 
@@ -188,4 +185,5 @@ public class WallsMediator : MonoBehaviour
         }
         _doorViews.Clear();
     }
+
 }

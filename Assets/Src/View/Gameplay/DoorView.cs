@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DoorView : AbstractWallView
+public class DoorView : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer _spriteRenderer;
 

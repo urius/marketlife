@@ -14,6 +14,18 @@ public class UIBottomPanelDoorsTabMediator : UIBottomPanelInteriorTabMediatorBas
         _dispatcher = Dispatcher.Instance;
     }
 
+    public override void Mediate()
+    {
+        base.Mediate();
+        View.SetDecorationButtonSelected(View.InteriorDoorsButton);
+    }
+
+    public override void Unmediate()
+    {
+        View.SetDecorationButtonUnselected(View.InteriorDoorsButton);
+        base.Unmediate();
+    }
+
     protected override IEnumerable<(int id, ShopDecorationConfigDto config)> GetConfigsForLevel(int level)
     {
         return doorsConfig.GetDoorsConfigsForLevel(level);

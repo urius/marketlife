@@ -129,6 +129,16 @@ public class BottomPanelView : MonoBehaviour
         };
     }
 
+    public void SetDecorationButtonSelected(Button buttonToDisable)
+    {
+        buttonToDisable.interactable = false;
+    }
+
+    public void SetDecorationButtonUnselected(Button buttonToDisable)
+    {
+        buttonToDisable.interactable = true;
+    }
+
     public UniTask HidePlacingButtonsAsync()
     {
         return HideButtonsInternalAsync(_allPlacingModeButtons);

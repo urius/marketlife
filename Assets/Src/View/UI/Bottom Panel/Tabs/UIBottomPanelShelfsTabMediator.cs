@@ -16,6 +16,18 @@ public class UIBottomPanelShelfsTabMediator : UIBottomPanelInteriorTabMediatorBa
         _localizationManager = LocalizationManager.Instance;
     }
 
+    public override void Mediate()
+    {
+        base.Mediate();
+        View.SetDecorationButtonSelected(View.InteriorObjectsButton);
+    }
+
+    public override void Unmediate()
+    {
+        View.SetDecorationButtonUnselected(View.InteriorObjectsButton);
+        base.Unmediate();
+    }
+
     protected override IEnumerable<(int id, ShelfConfigDto config)> GetConfigsForLevel(int level)
     {
         return _shelfsConfig.GetShelfConfigsForLevel(level);

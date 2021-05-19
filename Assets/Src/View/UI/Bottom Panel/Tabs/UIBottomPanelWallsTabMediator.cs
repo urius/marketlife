@@ -14,6 +14,18 @@ public class UIBottomPanelWallsTabMediator : UIBottomPanelInteriorTabMediatorBas
         _dispatcher = Dispatcher.Instance;
     }
 
+    public override void Mediate()
+    {
+        base.Mediate();
+        View.SetDecorationButtonSelected(View.InteriorWallsButton);
+    }
+
+    public override void Unmediate()
+    {
+        View.SetDecorationButtonUnselected(View.InteriorWallsButton);
+        base.Unmediate();
+    }
+
     protected override IEnumerable<(int id, ShopDecorationConfigDto config)> GetConfigsForLevel(int level)
     {
         return _wallsConfig.GetWallsConfigsForLevel(level);

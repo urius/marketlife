@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlacingFloorMediator
+public class PlacingFloorMediator : IMediator
 {
     protected readonly Transform ParentTransform;
 

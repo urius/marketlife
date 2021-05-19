@@ -2,6 +2,21 @@ using UnityEngine;
 
 public class WallsHelper
 {
+    public static void PlaceAsWallLike(Transform transform, Vector2Int cellCoords)
+    {
+        var gridCalculator = GridCalculator.Instance;
+        var irRight = cellCoords.y == -1;
+        transform.position = irRight ? gridCalculator.GetCellLeftCorner(cellCoords) : gridCalculator.GetCellRightCorner(cellCoords);
+        if (irRight)
+        {
+            ToRightState(transform);
+        }
+        else
+        {
+            ToLeftState(transform);
+        }
+    }
+
     public static void ToRightState(Transform transform)
     {
         var euler = transform.eulerAngles;

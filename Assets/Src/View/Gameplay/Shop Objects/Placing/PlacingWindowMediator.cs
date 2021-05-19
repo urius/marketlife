@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlacingWallMediator : IMediator
+public class PlacingWindowMediator : IMediator
 {
     protected readonly Transform ParentTransform;
 
@@ -9,10 +9,10 @@ public class PlacingWallMediator : IMediator
     private readonly MouseCellCoordsProvider _mouseCellCoordsProvider;
     private readonly GridCalculator _gridCalculator;
 
-    private (SpriteRenderer sprite, Transform transform) _currentPlacingObjectContext;
+    private (Transform transform, SpriteRenderer sprite) _currentPlacingObjectContext;
     private ShopModel _currentShopModel;
 
-    public PlacingWallMediator(Transform parentTransform)
+    public PlacingWindowMediator(Transform parentTransform)
     {
         ParentTransform = parentTransform;
 
@@ -27,13 +27,13 @@ public class PlacingWallMediator : IMediator
         _currentShopModel = GameStateModel.Instance.ViewingShopModel;
 
         _dispatcher.MouseCellCoordsUpdated += OnMouseCellCoordsUpdated;
-        _currentShopModel.ShopDesign.WallChanged += OnWallChanged;
+        _currentShopModel.ShopDesign.WindowChanged += OnWindowChanged;
 
-        var sprite = new ViewsFactory().CreateWall(ParentTransform, _gameStateModel.PlacingDecorationNumericId);
+        _currentPlacingObjectContext = new ViewsFactory().CreateWindow(ParentTransform, _gameStateModel.PlacingDecorationNumericId);
+        var sprite = _currentPlacingObjectContext.sprite;
         sprite.color = sprite.color.SetAlpha(0.7f);
         sprite.sortingLayerName = SortingLayers.Placing;
-        WallsHelper.ToLeftState(sprite.transform);
-        _currentPlacingObjectContext = (sprite, sprite.transform);
+        WallsHelper.ToLeftState(_currentPlacingObjectContext.transform);
 
         UpdatePosition(_mouseCellCoordsProvider.MouseCellCoords);
         UpdateOrientation(_mouseCellCoordsProvider.MouseCellCoords);
@@ -43,13 +43,13 @@ public class PlacingWallMediator : IMediator
     public void Unmediate()
     {
         _dispatcher.MouseCellCoordsUpdated -= OnMouseCellCoordsUpdated;
-        _currentShopModel.ShopDesign.WallChanged -= OnWallChanged;
+        _currentShopModel.ShopDesign.WindowChanged -= OnWindowChanged;
 
         GameObject.Destroy(_currentPlacingObjectContext.transform.gameObject);
         _currentPlacingObjectContext = default;
     }
 
-    private void OnWallChanged(Vector2Int cellCoords, int numericId)
+    private void OnWindowChanged(Vector2Int cellCoords, int numericId)
     {
         UpdateBuildAvailability(cellCoords);
     }
@@ -76,14 +76,15 @@ public class PlacingWallMediator : IMediator
 
     private void UpdatePosition(Vector2Int cellCoords)
     {
-        var isRightWall = cellCoords.y < cellCoords.x;
-        _currentPlacingObjectContext.transform.position = isRightWall ? _gridCalculator.GetCellLeftCorner(cellCoords) : _gridCalculator.GetCellRightCorner(cellCoords); ;
+        var isRight = cellCoords.y < cellCoords.x;
+        _currentPlacingObjectContext.transform.position = isRight ? _gridCalculator.GetCellLeftCorner(cellCoords) : _gridCalculator.GetCellRightCorner(cellCoords); ;
     }
 
     private void UpdateBuildAvailability(Vector2Int mouseCellCoords)
     {
-        _currentPlacingObjectContext.sprite.color = _currentShopModel.CanPlaceWall(mouseCellCoords, _gameStateModel.PlacingDecorationNumericId)
+        _currentPlacingObjectContext.sprite.color = _currentShopModel.CanPlaceWindow(mouseCellCoords, _gameStateModel.PlacingDecorationNumericId)
                     ? _currentPlacingObjectContext.sprite.color.SetRGB(0.5f, 1f, 0.5f)
                     : _currentPlacingObjectContext.sprite.color.SetRGB(1f, 0.5f, 0.5f);
     }
+
 }

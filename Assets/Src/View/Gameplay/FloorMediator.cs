@@ -6,7 +6,7 @@ public class FloorMediator : MonoBehaviour
     private GameStateModel _gameStateModel;
     private GridCalculator _gridCalculator;
     private SpritesProvider _spritesProvider;
-    private PlacingFloorMediator _currentPlacingFloorMediator;
+    private IMediator _currentPlacingFloorMediator;
     private ShopModel _activeShopModel;
 
     private readonly Dictionary<Vector2Int, SpriteRenderer> _floorSprites = new Dictionary<Vector2Int, SpriteRenderer>();

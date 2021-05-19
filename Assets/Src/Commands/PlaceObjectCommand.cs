@@ -25,6 +25,12 @@ public struct PlaceObjectCommand
                     //TODO animate money spend
                 }
                 break;
+            case PlacingStateName.PlacingWindow:
+                if (gameStateModel.ViewingShopModel.TryPlaceWindow(mouseCellCoords, gameStateModel.PlacingDecorationNumericId))
+                {
+                    //TODO animate money spend
+                }
+                break;
         }
     }
 }

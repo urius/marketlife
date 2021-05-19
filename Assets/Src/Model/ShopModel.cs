@@ -72,6 +72,11 @@ public class ShopModel
         return result;
     }
 
+    public bool CanPlaceFloor(Vector2Int cellCoords, int numericId)
+    {
+        return ShopDesign.CanPlaceFloor(cellCoords, numericId);
+    }
+
     public bool TryPlaceFloor(Vector2Int cellCoords, int floorNumericId)
     {
         var canPlace = ShopDesign.CanPlaceFloor(cellCoords, floorNumericId);
@@ -83,9 +88,9 @@ public class ShopModel
         return canPlace;
     }
 
-    public bool CanPlaceFloor(Vector2Int cellCoords, int placingDecorationNumericId)
+    public bool CanPlaceWall(Vector2Int cellCoords, int numericId)
     {
-        return ShopDesign.CanPlaceFloor(cellCoords, placingDecorationNumericId);
+        return ShopDesign.CanPlaceWall(cellCoords, numericId);
     }
 
     public bool TryPlaceWall(Vector2Int cellCoords, int floorNumericId)
@@ -99,9 +104,20 @@ public class ShopModel
         return canPlace;
     }
 
-    public bool CanPlaceWall(Vector2Int cellCoords, int placingDecorationNumericId)
+    public bool CanPlaceWindow(Vector2Int cellCoords, int numericId)
     {
-        return ShopDesign.CanPlaceWall(cellCoords, placingDecorationNumericId);
+        return ShopDesign.CanPlaceWindow(cellCoords, numericId);
+    }
+
+    public bool TryPlaceWindow(Vector2Int cellCoords, int floorNumericId)
+    {
+        var canPlace = ShopDesign.CanPlaceWindow(cellCoords, floorNumericId);
+        if (canPlace)
+        {
+            ShopDesign.PlaceWindow(cellCoords, floorNumericId);
+        }
+
+        return canPlace;
     }
 
     public int GetCellBuildState(Vector2Int cellCoords)
@@ -147,6 +163,7 @@ public class ShoDesignModel
 {
     public event Action<Vector2Int, int> FloorChanged = delegate { };
     public event Action<Vector2Int, int> WallChanged = delegate { };
+    public event Action<Vector2Int, int> WindowChanged = delegate { };
 
     public int SizeX;
     public int SizeY;
@@ -182,9 +199,14 @@ public class ShoDesignModel
 
     public bool CanPlaceWall(Vector2Int cellCoords, int placingDecorationNumericId)
     {
-        return ((cellCoords.x == -1 && cellCoords.y >= 0 && cellCoords.y < SizeY)
-            || (cellCoords.y == -1 && cellCoords.x >= 0 && cellCoords.x < SizeX))
+        return IsWallCoords(cellCoords)
             && Walls[cellCoords] != placingDecorationNumericId;
+    }
+
+    public bool CanPlaceWindow(Vector2Int cellCoords, int placingDecorationNumericId)
+    {
+        return IsWallCoords(cellCoords)
+            && (!Windows.ContainsKey(cellCoords) || Windows[cellCoords] != placingDecorationNumericId);
     }
 
     public void PlaceFloor(Vector2Int cellCoords, int floorNumericId)
@@ -198,6 +220,19 @@ public class ShoDesignModel
         Walls[cellCoords] = wallNumericId;
         WallChanged(cellCoords, wallNumericId);
     }
+
+    public void PlaceWindow(Vector2Int cellCoords, int windowNumericId)
+    {
+        Windows[cellCoords] = windowNumericId;
+        WindowChanged(cellCoords, windowNumericId);
+    }
+
+    private bool IsWallCoords(Vector2Int cellCoords)
+    {
+        return (cellCoords.x == -1 && cellCoords.y >= 0 && cellCoords.y < SizeY)
+            || (cellCoords.y == -1 && cellCoords.x >= 0 && cellCoords.x < SizeX);
+    }
+
 }
 
 public class ShopProgressModel

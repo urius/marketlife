@@ -23,6 +23,8 @@ MonoBehaviour:
     type: 3}
   WallPrefab: {fileID: 2794988592096314229, guid: a1cf383c968af47f2919b9d89ffd7bc1,
     type: 3}
+  WindowPrefab: {fileID: 2794988592096314229, guid: 598d2a741cbc4467f856c2ac47898e88,
+    type: 3}
   DoorPrefab: {fileID: 7378489907865605839, guid: aa5295e8118a447988d8480635ec2a8d,
     type: 3}
   CashDesk1Prefab: {fileID: 6641321208875300283, guid: 92a4f788eb6fa43d197e37dc5340d867,

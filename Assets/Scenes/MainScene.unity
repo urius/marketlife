@@ -366,11 +366,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7669359c8c3e47a08419f6517e7ef70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DisplayText: 
   _hintPositionType: 0
   _localizationKey: hint_bottom_panel_walls_button
   _hintContainer: {fileID: 22182141}
   _positionOffset: {x: 0, y: 28}
-  _maxBGWidth: 220
 --- !u!1 &45715994
 GameObject:
   m_ObjectHideFlags: 0
@@ -1503,11 +1503,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7669359c8c3e47a08419f6517e7ef70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DisplayText: 
   _hintPositionType: 0
   _localizationKey: hint_bottom_panel_interior_button
   _hintContainer: {fileID: 276935617}
   _positionOffset: {x: 0, y: 28}
-  _maxBGWidth: 260
 --- !u!114 &276935623
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4440,11 +4440,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7669359c8c3e47a08419f6517e7ef70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DisplayText: 
   _hintPositionType: 0
   _localizationKey: hint_bottom_panel_doors_button
   _hintContainer: {fileID: 956516441}
   _positionOffset: {x: 0, y: 28}
-  _maxBGWidth: 220
 --- !u!1 &963397126
 GameObject:
   m_ObjectHideFlags: 0
@@ -4913,7 +4913,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2305d6f2e27f140248f718ab79b80e4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _debugUid: 340800365
+  _debugUid: 48982
   _assetBundlesLoader: {fileID: 11400000, guid: fbf27b609d1b04c23bbb3665f6bf7a19,
     type: 2}
   _prefabsHolder: {fileID: 11400000, guid: ef9b7d8e9f2f24fa5b28642d8858a2d4, type: 2}
@@ -6996,11 +6996,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7669359c8c3e47a08419f6517e7ef70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DisplayText: 
   _hintPositionType: 0
   _localizationKey: hint_bottom_panel_manage_button
   _hintContainer: {fileID: 1505624595}
   _positionOffset: {x: 0, y: 28}
-  _maxBGWidth: 260
 --- !u!114 &1505624601
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8187,11 +8187,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7669359c8c3e47a08419f6517e7ef70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DisplayText: 
   _hintPositionType: 0
   _localizationKey: hint_bottom_panel_exit_interior_mode_button
   _hintContainer: {fileID: 1680389685}
   _positionOffset: {x: 0, y: 28}
-  _maxBGWidth: 220
 --- !u!1 &1684667538
 GameObject:
   m_ObjectHideFlags: 0
@@ -9286,11 +9286,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7669359c8c3e47a08419f6517e7ef70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DisplayText: 
   _hintPositionType: 0
   _localizationKey: hint_bottom_panel_shop_objects_button
   _hintContainer: {fileID: 1866777433}
   _positionOffset: {x: 0, y: 28}
-  _maxBGWidth: 220
 --- !u!4 &1896603186 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6517623011961258257, guid: e93f34136b73f40a79cec747874a3038,
@@ -9541,11 +9541,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7669359c8c3e47a08419f6517e7ef70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DisplayText: 
   _hintPositionType: 0
   _localizationKey: hint_bottom_panel_windows_button
   _hintContainer: {fileID: 1952505188}
   _positionOffset: {x: 0, y: 28}
-  _maxBGWidth: 220
 --- !u!4 &1966526823 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7329594752370575056, guid: b10c69459453641f3a0e725159f8e27f,
@@ -9869,11 +9869,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7669359c8c3e47a08419f6517e7ef70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DisplayText: 
   _hintPositionType: 0
   _localizationKey: hint_bottom_panel_floors_button
   _hintContainer: {fileID: 2062358966}
   _positionOffset: {x: 0, y: 28}
-  _maxBGWidth: 220
 --- !u!1 &2063379713
 GameObject:
   m_ObjectHideFlags: 0

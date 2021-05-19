@@ -19,6 +19,20 @@ public struct UIRequestPlacingDecorationCommand
                     gameStateModel.SetPlacingWall(numericId);
                 }
                 break;
+            case ShopDecorationObjectType.Window:
+                var windowConfig = GameConfigManager.Instance.MainConfig.GetWindowConfigByNumericId(numericId);
+                if (gameStateModel.PlayerShopModel.CanSpendMoney(windowConfig.price))
+                {
+                    gameStateModel.SetPlacingWindow(numericId);
+                }
+                break;
+            case ShopDecorationObjectType.Door:
+                var doorConfig = GameConfigManager.Instance.MainConfig.GetDoorConfigByNumericId(numericId);
+                if (gameStateModel.PlayerShopModel.CanSpendMoney(doorConfig.price))
+                {
+                    gameStateModel.SetPlacingDoor(numericId);
+                }
+                break;
         }
     }
 }

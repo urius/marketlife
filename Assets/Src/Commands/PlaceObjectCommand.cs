@@ -31,6 +31,12 @@ public struct PlaceObjectCommand
                     //TODO animate money spend
                 }
                 break;
+            case PlacingStateName.PlacingDoor:
+                if (gameStateModel.ViewingShopModel.TryPlaceDoor(mouseCellCoords, gameStateModel.PlacingDecorationNumericId))
+                {
+                    //TODO animate money spend
+                }
+                break;
         }
     }
 }

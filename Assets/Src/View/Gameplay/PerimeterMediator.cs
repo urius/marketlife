@@ -53,6 +53,10 @@ public class PerimeterMediator : MonoBehaviour
                 _currentPlacingWallMediator = new PlacingWindowMediator(transform);
                 _currentPlacingWallMediator.Mediate();
                 break;
+            case PlacingStateName.PlacingDoor:
+                _currentPlacingWallMediator = new PlacingDoorMediator(transform);
+                _currentPlacingWallMediator.Mediate();
+                break;
         }
     }
 
@@ -69,6 +73,7 @@ public class PerimeterMediator : MonoBehaviour
 
         _activeShopModel.ShopDesign.WallChanged += OnWallChanged;
         _activeShopModel.ShopDesign.WindowChanged += OnWindowChanged;
+        _activeShopModel.ShopDesign.DoorChanged += OnDoorChanged;
     }
 
     private void DeactivateCurrentShopModel()
@@ -76,6 +81,7 @@ public class PerimeterMediator : MonoBehaviour
         if (_activeShopModel == null) return;
         _activeShopModel.ShopDesign.WallChanged -= OnWallChanged;
         _activeShopModel.ShopDesign.WindowChanged -= OnWindowChanged;
+        _activeShopModel.ShopDesign.DoorChanged -= OnDoorChanged;
     }
 
     private void OnWallChanged(Vector2Int cellCords, int numericId)
@@ -94,6 +100,20 @@ public class PerimeterMediator : MonoBehaviour
             var windowView = new ViewsFactory().CreateWindow(transform, numericId);
             WallsHelper.PlaceAsWallLike(windowView.transform, cellCords);
             _windowViews[cellCords] = windowView;
+        }
+    }
+
+    private void OnDoorChanged(Vector2Int cellCords, int numericId)
+    {
+        if (_doorViews.ContainsKey(cellCords))
+        {
+            _doorViews[cellCords].SetDoorId(numericId);
+        }
+        else
+        {
+            var doorView = new ViewsFactory().CreateDoor(transform, numericId);
+            WallsHelper.PlaceAsWallLike(doorView.transform, cellCords);
+            _doorViews[cellCords] = doorView;
         }
     }
 

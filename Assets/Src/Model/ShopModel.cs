@@ -120,6 +120,22 @@ public class ShopModel
         return canPlace;
     }
 
+    public bool CanPlaceDoor(Vector2Int cellCoords, int numericId)
+    {
+        return ShopDesign.CanPlaceDoor(cellCoords, numericId);
+    }
+
+    public bool TryPlaceDoor(Vector2Int cellCoords, int numericId)
+    {
+        var canPlace = ShopDesign.CanPlaceDoor(cellCoords, numericId);
+        if (canPlace)
+        {
+            ShopDesign.PlaceDoor(cellCoords, numericId);
+        }
+
+        return canPlace;
+    }
+
     public int GetCellBuildState(Vector2Int cellCoords)
     {
         if (cellCoords.x < 0 || cellCoords.y < 0 || cellCoords.x >= ShopDesign.SizeX || cellCoords.y >= ShopDesign.SizeY) return 1;
@@ -164,6 +180,7 @@ public class ShoDesignModel
     public event Action<Vector2Int, int> FloorChanged = delegate { };
     public event Action<Vector2Int, int> WallChanged = delegate { };
     public event Action<Vector2Int, int> WindowChanged = delegate { };
+    public event Action<Vector2Int, int> DoorChanged = delegate { };
 
     public int SizeX;
     public int SizeY;
@@ -197,22 +214,16 @@ public class ShoDesignModel
             && Floors[cellCoords] != placingDecorationNumericId;
     }
 
-    public bool CanPlaceWall(Vector2Int cellCoords, int placingDecorationNumericId)
-    {
-        return IsWallCoords(cellCoords)
-            && Walls[cellCoords] != placingDecorationNumericId;
-    }
-
-    public bool CanPlaceWindow(Vector2Int cellCoords, int placingDecorationNumericId)
-    {
-        return IsWallCoords(cellCoords)
-            && (!Windows.ContainsKey(cellCoords) || Windows[cellCoords] != placingDecorationNumericId);
-    }
-
     public void PlaceFloor(Vector2Int cellCoords, int floorNumericId)
     {
         Floors[cellCoords] = floorNumericId;
         FloorChanged(cellCoords, floorNumericId);
+    }
+
+    public bool CanPlaceWall(Vector2Int cellCoords, int placingDecorationNumericId)
+    {
+        return IsWallCoords(cellCoords)
+            && Walls[cellCoords] != placingDecorationNumericId;
     }
 
     public void PlaceWall(Vector2Int cellCoords, int wallNumericId)
@@ -221,10 +232,30 @@ public class ShoDesignModel
         WallChanged(cellCoords, wallNumericId);
     }
 
+    public bool CanPlaceWindow(Vector2Int cellCoords, int placingDecorationNumericId)
+    {
+        return IsWallCoords(cellCoords)
+            && !Doors.ContainsKey(cellCoords)
+            && (!Windows.ContainsKey(cellCoords) || Windows[cellCoords] != placingDecorationNumericId);
+    }
+
     public void PlaceWindow(Vector2Int cellCoords, int windowNumericId)
     {
         Windows[cellCoords] = windowNumericId;
         WindowChanged(cellCoords, windowNumericId);
+    }
+
+    public bool CanPlaceDoor(Vector2Int cellCoords, int placingDecorationNumericId)
+    {
+        return IsWallCoords(cellCoords)
+            && !Windows.ContainsKey(cellCoords)
+            && (!Doors.ContainsKey(cellCoords) || Doors[cellCoords] != placingDecorationNumericId);
+    }
+
+    public void PlaceDoor(Vector2Int cellCoords, int doorNumericId)
+    {
+        Doors[cellCoords] = doorNumericId;
+        DoorChanged(cellCoords, doorNumericId);
     }
 
     private bool IsWallCoords(Vector2Int cellCoords)
@@ -232,7 +263,6 @@ public class ShoDesignModel
         return (cellCoords.x == -1 && cellCoords.y >= 0 && cellCoords.y < SizeY)
             || (cellCoords.y == -1 && cellCoords.x >= 0 && cellCoords.x < SizeX);
     }
-
 }
 
 public class ShopProgressModel

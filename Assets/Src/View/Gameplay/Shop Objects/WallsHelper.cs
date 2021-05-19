@@ -5,7 +5,7 @@ public class WallsHelper
     public static void PlaceAsWallLike(Transform transform, Vector2Int cellCoords)
     {
         var gridCalculator = GridCalculator.Instance;
-        var irRight = cellCoords.y == -1;
+        var irRight = cellCoords.y < cellCoords.x;
         transform.position = irRight ? gridCalculator.GetCellLeftCorner(cellCoords) : gridCalculator.GetCellRightCorner(cellCoords);
         if (irRight)
         {

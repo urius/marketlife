@@ -7,7 +7,6 @@ public class PlacingWallMediator : IMediator
     private readonly GameStateModel _gameStateModel;
     private readonly Dispatcher _dispatcher;
     private readonly MouseCellCoordsProvider _mouseCellCoordsProvider;
-    private readonly GridCalculator _gridCalculator;
 
     private (SpriteRenderer sprite, Transform transform) _currentPlacingObjectContext;
     private ShopModel _currentShopModel;
@@ -19,7 +18,6 @@ public class PlacingWallMediator : IMediator
         _gameStateModel = GameStateModel.Instance;
         _dispatcher = Dispatcher.Instance;
         _mouseCellCoordsProvider = MouseCellCoordsProvider.Instance;
-        _gridCalculator = GridCalculator.Instance;
     }
 
     public void Mediate()
@@ -36,7 +34,6 @@ public class PlacingWallMediator : IMediator
         _currentPlacingObjectContext = (sprite, sprite.transform);
 
         UpdatePosition(_mouseCellCoordsProvider.MouseCellCoords);
-        UpdateOrientation(_mouseCellCoordsProvider.MouseCellCoords);
         UpdateBuildAvailability(_mouseCellCoordsProvider.MouseCellCoords);
     }
 
@@ -57,27 +54,12 @@ public class PlacingWallMediator : IMediator
     private void OnMouseCellCoordsUpdated(Vector2Int cellCoords)
     {
         UpdatePosition(cellCoords);
-        UpdateOrientation(cellCoords);
         UpdateBuildAvailability(cellCoords);
-    }
-
-    private void UpdateOrientation(Vector2Int cellCoords)
-    {
-        var isRight = cellCoords.y < cellCoords.x;
-        if (isRight)
-        {
-            WallsHelper.ToRightState(_currentPlacingObjectContext.transform);
-        }
-        else
-        {
-            WallsHelper.ToLeftState(_currentPlacingObjectContext.transform);
-        }
     }
 
     private void UpdatePosition(Vector2Int cellCoords)
     {
-        var isRightWall = cellCoords.y < cellCoords.x;
-        _currentPlacingObjectContext.transform.position = isRightWall ? _gridCalculator.GetCellLeftCorner(cellCoords) : _gridCalculator.GetCellRightCorner(cellCoords); ;
+        WallsHelper.PlaceAsWallLike(_currentPlacingObjectContext.transform, cellCoords);
     }
 
     private void UpdateBuildAvailability(Vector2Int mouseCellCoords)

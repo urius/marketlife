@@ -32,12 +32,13 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 46b41057a82fe4010b5245cd9e8b4afa, type: 3}
-    totalSpriteSurfaceArea: 516926
+    totalSpriteSurfaceArea: 534396
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 21300000, guid: 666a752063454439a9a093e762e4bea1, type: 3}
   - {fileID: 21300000, guid: 616e25307c0194520af83c418eb12825, type: 3}
   - {fileID: 21300000, guid: 54f67570dcfd34652ba626fdbf313f67, type: 3}
   - {fileID: 21300000, guid: d2e7ad703dd104593b845b5c074bd85a, type: 3}
@@ -66,6 +67,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 648591e4a592e4cbea1d4b8887ec39b4, type: 3}
   - {fileID: 21300000, guid: 64fb61f4d09ea48aba1aaefe877693b2, type: 3}
   - {fileID: 21300000, guid: e4917145357b346368689e03b8fd5f63, type: 3}
+  - {fileID: 21300000, guid: fb735965bef5647d18ab054ecaac82b3, type: 3}
   - {fileID: 21300000, guid: cda34d852c13a441db360bbe0f7bc4eb, type: 3}
   - {fileID: 21300000, guid: 31d0f5c5ba76b452386bd539c3381363, type: 3}
   - {fileID: 21300000, guid: 049e44d5b1fa54ca7b9f8b8dd77d28c3, type: 3}
@@ -73,6 +75,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 06d9d1264270a4210bb4ca0fd6c7d154, type: 3}
   - {fileID: 21300000, guid: 4d3b5426f52d24adca302976becfcb22, type: 3}
   - {fileID: 21300000, guid: 60b61d8679a134f98bf14fc6c1e8e793, type: 3}
+  - {fileID: 21300000, guid: 2d72e9c6ef8b94a0381855d8eedf4bdd, type: 3}
   - {fileID: 21300000, guid: e21aa5e651b464aeeb2bc1078c8e3c92, type: 3}
   - {fileID: 21300000, guid: 3161ea07e77f7418fa88d4848ce3f165, type: 3}
   - {fileID: 21300000, guid: ab4285177a9f744d296a988d92022b18, type: 3}
@@ -93,8 +96,10 @@ SpriteAtlas:
   - {fileID: 21300000, guid: f59ca50a261b248c8937898c4e4e3c84, type: 3}
   - {fileID: 21300000, guid: 7aaef51a3d35f4bc68284b32f42f839b, type: 3}
   - {fileID: 21300000, guid: fc376e1ae26844693b4c5985f66410f0, type: 3}
+  - {fileID: 21300000, guid: 0b104c3a210fa4e5a887802a73a203f9, type: 3}
   - {fileID: 21300000, guid: 0376dcaa29ea041dca0831e29332670c, type: 3}
   - {fileID: 21300000, guid: 288ad3fad7fda4d19b158dab317a88f0, type: 3}
+  - {fileID: 21300000, guid: 29eb170b0e7ad42eb97645738622e48c, type: 3}
   - {fileID: 21300000, guid: afac811b41f2448718fb7a74d7a6dbaa, type: 3}
   - {fileID: 21300000, guid: e1df045b6dee045ef9befbcf22f212b5, type: 3}
   - {fileID: 21300000, guid: 1c6bd57b301c845a2bbd582c348e108a, type: 3}
@@ -129,6 +134,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 8bd3716f39a974116b9b24631773f5e9, type: 3}
   - {fileID: 21300000, guid: 9cc07ebfc57794109b7cbb0e1cb10d65, type: 3}
   m_PackedSpriteNamesToIndex:
+  - skin_add_money_button
   - Cheese_1
   - sign_windows
   - Peppers_1
@@ -157,6 +163,7 @@ SpriteAtlas:
   - Wall7
   - Icon_Down2
   - Wall8
+  - icon_star_big
   - Icon_next1
   - Water_1
   - bottom_panel
@@ -164,6 +171,7 @@ SpriteAtlas:
   - Sushi
   - Wall5
   - Bread_1
+  - icon_mood
   - Orange
   - icon_dollar
   - ICON_Volume
@@ -184,8 +192,10 @@ SpriteAtlas:
   - Door2
   - Hamburger
   - Floor2
+  - skin_top_rating_button
   - button_1_long_orange
   - Icon_Shelf_5
+  - top_bar_bg
   - Wall6
   - Beer
   - Cake

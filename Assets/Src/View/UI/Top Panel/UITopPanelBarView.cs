@@ -1,0 +1,126 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class UITopPanelBarView : MonoBehaviour
+{
+    public event Action OnClick = delegate { };
+
+    [SerializeField] private TMP_Text _text;
+    [SerializeField] private Button _button;
+    [SerializeField] private RectTransform _icon;
+
+    private const float AnimationInDurationSec = 0.4f;
+    private const float AnimationOutDurationSec = 0.6f;
+
+    private RectTransform _buttonRectTransform;
+
+    private Vector2 _iconDefaultAnchoredPosition;
+    private Vector3 _iconDefaultRotation;
+    private Vector2 _buttonDefaultAnchoredPosition;
+    private bool _isAnimationInProgress;
+
+    private void Awake()
+    {
+        _iconDefaultAnchoredPosition = _icon.anchoredPosition;
+        _iconDefaultRotation = _icon.eulerAngles;
+        _buttonRectTransform = _button.transform as RectTransform;
+        _buttonDefaultAnchoredPosition = _buttonRectTransform.anchoredPosition;
+
+        _button.onClick.AddListener(OnButtonClick);
+    }
+
+    public UniTask HideButtonAsync()
+    {
+        if (_button == null) return UniTask.CompletedTask;
+        var tcs = new UniTaskCompletionSource();
+        _button.interactable = false;
+        var targetPos = _buttonRectTransform.anchoredPosition;
+        targetPos.y = 0;
+        LeanTween.move(_buttonRectTransform, targetPos, AnimationInDurationSec)
+            .setOnComplete(() => tcs.TrySetResult());
+
+        return tcs.Task;
+    }
+
+    public UniTask ShowButtonAsync()
+    {
+        if (_button == null) return UniTask.CompletedTask;
+        var tcs = new UniTaskCompletionSource();
+        _button.interactable = true;
+        LeanTween.move(_buttonRectTransform, _buttonDefaultAnchoredPosition, AnimationOutDurationSec)
+            .setEaseOutBounce()
+            .setOnComplete(() => tcs.TrySetResult());
+
+        return tcs.Task;
+    }
+
+    public async UniTask JumpIconAsync()
+    {
+        if (_isAnimationInProgress) return;
+        _isAnimationInProgress = true;
+
+        var targetPos = _icon.anchoredPosition;
+        targetPos.y = 35;
+        var (task, tweenDescription) = LeanTweenHelper.MoveAsync(_icon, targetPos, AnimationInDurationSec);
+        tweenDescription.setEaseOutQuad();
+        await task;
+
+        var (task2, tweenDescription2) = LeanTweenHelper.MoveAsync(_icon, _iconDefaultAnchoredPosition, 2 * AnimationInDurationSec);
+        tweenDescription2.setEaseOutBounce();
+        await task2;
+
+        _isAnimationInProgress = false;
+    }
+
+    public async UniTask RotateIconAsync()
+    {
+        if (_isAnimationInProgress) return;
+        _isAnimationInProgress = true;
+
+        var (task, tweenDescription) = RotateZAsync(_icon.gameObject, _iconDefaultRotation.z + 60, AnimationInDurationSec);
+        tweenDescription.setEaseOutQuad();
+        await task;
+
+        var(task2, tweenDescription2) = RotateZAsync(_icon.gameObject, _iconDefaultRotation.z, 2 * AnimationInDurationSec);
+        tweenDescription2.setEaseOutBounce();
+        await task2;
+
+        _isAnimationInProgress = false;
+    }
+
+    public async UniTask JumpAndSaltoIconAsync()
+    {
+        if (_isAnimationInProgress) return;
+
+        var jumpTask = JumpIconAsync();
+
+        var (rotateTask1, tweenDescription1) = RotateZAsync(_icon.gameObject, _iconDefaultRotation.z + 180, 0.5f * AnimationOutDurationSec);
+        await rotateTask1;
+
+        var (rotateTask2, tweenDescription2) = RotateZAsync(_icon.gameObject, _iconDefaultRotation.z + 360, 0.5f * AnimationOutDurationSec);
+        await rotateTask2;
+        await jumpTask;
+
+        _icon.eulerAngles = _iconDefaultRotation;
+        _isAnimationInProgress = false;
+    }
+
+    private (UniTask task, LTDescr tweenDescription) RotateZAsync(GameObject gameObject, float to, float duration)
+    {
+        var tcs = new UniTaskCompletionSource();
+        var tweenDescription = LeanTween.rotateZ(gameObject, to, duration)
+            .setOnComplete(() => tcs.TrySetResult());
+
+        return (tcs.Task, tweenDescription);
+    }
+
+    private async void OnButtonClick()
+    {
+        OnClick();
+    }
+}

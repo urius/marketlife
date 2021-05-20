@@ -24,4 +24,14 @@ public class LeanTweenHelper
             
         return tcs.Task;
     }
+
+    public static (UniTask task, LTDescr tweenDescription) MoveAsync(RectTransform rectTransform, Vector3 to, float duration)
+    {
+        var tcs = new UniTaskCompletionSource();
+        var tweenDescription = LeanTween.move(rectTransform, to, duration)
+            .setEaseOutBounce()
+            .setOnComplete(() => tcs.TrySetResult());
+
+        return (tcs.Task, tweenDescription);
+    }
 }

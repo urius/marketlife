@@ -54,11 +54,14 @@ public class UITopPanelBarView : MonoBehaviour
     {
         _iconDefaultAnchoredPosition = _icon.anchoredPosition;
         _iconDefaultRotation = _icon.eulerAngles;
-        _buttonRectTransform = _button.transform as RectTransform;
-        _buttonDefaultAnchoredPosition = _buttonRectTransform.anchoredPosition;
         _startTextColor = _text.color;
 
-        _button.onClick.AddListener(OnButtonClick);
+        if(_button != null)
+        {
+            _buttonRectTransform = _button.transform as RectTransform;
+            _buttonDefaultAnchoredPosition = _buttonRectTransform.anchoredPosition;
+            _button.onClick.AddListener(OnButtonClick);
+        }
     }
 
     public UniTask HideButtonAsync()

@@ -1,15 +1,29 @@
 ManifestFileVersion: 0
-CRC: 1062207687
+CRC: 1581580519
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 02d057888dad75ef39ff51119495efce
+    Hash: d9797adfd23cdbd7cda1b78ebf97e0eb
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 3dbb92f992534c06c4e322444b68580f
+    Hash: ba23c2e8f8b3f5319028008a25497317
 HashAppended: 0
 ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
 - Class: 28
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 198
+  Script: {instanceID: 0}
+- Class: 199
   Script: {instanceID: 0}
 - Class: 213
   Script: {instanceID: 0}
@@ -35,6 +49,7 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_2.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_long_orange.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_long_crimson.png
+- Assets/External Resources/InterfaceGraphicsBundle/TopPanel/skin_add_money_button.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/icon_crystal.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/sign_paint_floor.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/ToothBrushes_1.png
@@ -43,6 +58,7 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/ToothPaste.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Banana.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Peppers_1.png
+- Assets/External Resources/InterfaceGraphicsBundle/TopPanel/top_bar_bg.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall5.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Doors/Door2.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/button_1_small_green.png
@@ -52,8 +68,8 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall3.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Orange.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/sign_rotate_left.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Sausage_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall6.png
+- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Sausage_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Candy_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/Icon_Up3.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall2.png
@@ -62,6 +78,7 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/InterfaceGraphicsAtlas.spriteatlas
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/Icon_Play1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Cake.png
+- Assets/External Resources/InterfaceGraphicsBundle/PS_Stars.prefab
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Perfume_2.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Pizza_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/LimeOn.png
@@ -70,15 +87,17 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/button_1_small_orange.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Chips.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Juice_1.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/icon_mood.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/Icon_Dlassification.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/sign_windows.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Cola.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Bread_1.png
+- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Cola.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/bottom_panel_item_skin.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/sign_cube.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/ICON_Volume.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_4.png
+- Assets/External Resources/Materials/ParticleStar.mat
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/TV.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/sign_build.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Floors/Floor3.png
@@ -93,6 +112,7 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/Common/Icon_Back1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Cheese_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Floors/Floor5.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/icon_star_big.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/button_1_small_blue.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/price_label.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/bottom_panel.png
@@ -101,8 +121,9 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_3.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Sushi.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/hint_skin.png
+- Assets/External Resources/InterfaceGraphicsBundle/TopPanel/skin_top_rating_button.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Doors/Door1.png
+- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Perfumes_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall8.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Lipsticks_1.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Perfumes_1.png
 Dependencies: []

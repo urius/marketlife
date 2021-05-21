@@ -1,10 +1,13 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "PrefabsHolder", menuName = "Scriptable Objects/Holders/PrefabsHolder")]
 public class PrefabsHolder : ScriptableObject
 {
     public static PrefabsHolder Instance { get; private set; }
+
+    public const string PSStarsName = "PS_Stars";
 
     public GameObject Human;
     public GameObject HeadPrefab;
@@ -33,6 +36,9 @@ public class PrefabsHolder : ScriptableObject
     //Interface
     public GameObject UIBottomPanelScrollItemPrefab;
     public GameObject UIHintPrefab;
+
+    //remote
+    private Dictionary<string, GameObject> _remotePrefabs = new Dictionary<string, GameObject>();
 
     public (GameObject, GameObject) GetShopObjectPrefabs(ShopObjectType type, int level)
     {
@@ -64,6 +70,16 @@ public class PrefabsHolder : ScriptableObject
             1 => (CashDesk1Prefab, null),
             _ => throw new ArgumentOutOfRangeException(nameof(level), $"GetShelfPrefabs: Unsupported cashdesk level {level}"),
         };
+    }
+
+    public void SetupRemotePrefab(string name, GameObject prefab)
+    {
+        _remotePrefabs[name] = prefab;
+    }
+
+    public GameObject GetRemotePrefab(string name)
+    {
+        return _remotePrefabs[name];
     }
 
     private void OnEnable()

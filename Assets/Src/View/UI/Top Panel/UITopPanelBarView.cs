@@ -96,15 +96,25 @@ public class UITopPanelBarView : MonoBehaviour
     public async UniTask JumpAndSaltoIconAsync()
     {
         if (_isAnimationInProgress) return;
+        _isAnimationInProgress = true;
 
-        var jumpTask = JumpIconAsync();
+        var targetPos = _icon.anchoredPosition;
+        targetPos.y = 35;
+        var (jumpTask1, jumpDescription1) = LeanTweenHelper.MoveAsync(_icon, targetPos, AnimationInDurationSec);
+        jumpDescription1.setEaseOutQuad();
 
-        var (rotateTask1, tweenDescription1) = RotateZAsync(_icon.gameObject, _iconDefaultRotation.z + 180, 0.5f * AnimationOutDurationSec);
+        var (rotateTask1, rotateDescription1) = RotateZAsync(_icon.gameObject, _iconDefaultRotation.z + 180, 0.5f * AnimationOutDurationSec);
+        //rotateDescription1.setDelay(0.1f);        
         await rotateTask1;
-
-        var (rotateTask2, tweenDescription2) = RotateZAsync(_icon.gameObject, _iconDefaultRotation.z + 360, 0.5f * AnimationOutDurationSec);
+        var (rotateTask2, rotateDescription2) = RotateZAsync(_icon.gameObject, _iconDefaultRotation.z + 360, 0.5f * AnimationOutDurationSec);
         await rotateTask2;
-        await jumpTask;
+
+        await jumpTask1;
+
+        var (jumpTask2, jumpDescription2) = LeanTweenHelper.MoveAsync(_icon, _iconDefaultAnchoredPosition, 2 * AnimationInDurationSec);
+        jumpDescription2.setDelay(0.2f);
+        jumpDescription2.setEaseOutBounce();
+        await jumpTask2;
 
         _icon.eulerAngles = _iconDefaultRotation;
         _isAnimationInProgress = false;
@@ -119,8 +129,10 @@ public class UITopPanelBarView : MonoBehaviour
         return (tcs.Task, tweenDescription);
     }
 
-    private async void OnButtonClick()
+    private void OnButtonClick()
     {
         OnClick();
+
+        JumpAndSaltoIconAsync();
     }
 }

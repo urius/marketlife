@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -22,7 +20,35 @@ public class UITopPanelBarView : MonoBehaviour
     private Vector2 _iconDefaultAnchoredPosition;
     private Vector3 _iconDefaultRotation;
     private Vector2 _buttonDefaultAnchoredPosition;
+    private Color _startTextColor;
     private bool _isAnimationInProgress;
+    private int _amount;
+
+    public int Amount
+    {
+        get => _amount;
+        set
+        {
+            _amount = value;
+            _text.text = string.Format("{0:n0}", value);
+        }
+    }
+
+    public UniTask SetAmountAnimatedAsync(int targetAmount)
+    {
+        var animateIconTask = (targetAmount > _amount) ? JumpIconAsync() : RotateIconAsync();
+        
+        _text.color = (targetAmount > _amount) ? Color.green : Color.yellow;
+        var tsc = new UniTaskCompletionSource();
+        LeanTween.cancel(_text.gameObject);
+        var changeTextDuration = 3 * AnimationInDurationSec;
+        LeanTween.value(_text.gameObject, f => Amount = (int)f, _amount, targetAmount, changeTextDuration)
+            .setEaseInOutSine()
+            .setOnComplete(() => tsc.TrySetResult());
+        LeanTween.value(_text.gameObject, c => _text.color = c, _text.color, _startTextColor, changeTextDuration)
+            .setEaseInOutSine();
+        return UniTask.WhenAll(tsc.Task, animateIconTask);
+    }
 
     private void Awake()
     {
@@ -30,6 +56,7 @@ public class UITopPanelBarView : MonoBehaviour
         _iconDefaultRotation = _icon.eulerAngles;
         _buttonRectTransform = _button.transform as RectTransform;
         _buttonDefaultAnchoredPosition = _buttonRectTransform.anchoredPosition;
+        _startTextColor = _text.color;
 
         _button.onClick.AddListener(OnButtonClick);
     }
@@ -86,7 +113,7 @@ public class UITopPanelBarView : MonoBehaviour
         tweenDescription.setEaseOutQuad();
         await task;
 
-        var(task2, tweenDescription2) = RotateZAsync(_icon.gameObject, _iconDefaultRotation.z, 2 * AnimationInDurationSec);
+        var (task2, tweenDescription2) = RotateZAsync(_icon.gameObject, _iconDefaultRotation.z, 2 * AnimationInDurationSec);
         tweenDescription2.setEaseOutBounce();
         await task2;
 
@@ -132,7 +159,5 @@ public class UITopPanelBarView : MonoBehaviour
     private void OnButtonClick()
     {
         OnClick();
-
-        JumpAndSaltoIconAsync();
     }
 }

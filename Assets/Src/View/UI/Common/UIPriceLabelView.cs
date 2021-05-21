@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,12 +8,6 @@ public class UIPriceLabelView : MonoBehaviour
     [SerializeField] private Image _image;
 
     private int _amount;
-    private NumberFormatInfo _numberFormatInfo;
-
-    public void Awake()
-    {
-        _numberFormatInfo = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
-    }
 
     public void SetType(bool isGold)
     {
@@ -29,7 +20,7 @@ public class UIPriceLabelView : MonoBehaviour
         set
         {
             _amount = value;
-            _text.text = $"{value.ToString("# ### ##0", _numberFormatInfo)}";
+            _text.text = string.Format("{0:n0}", value);
         }
     }
 }

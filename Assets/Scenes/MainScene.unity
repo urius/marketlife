@@ -3158,6 +3158,7 @@ GameObject:
   - component: {fileID: 577158543}
   - component: {fileID: 577158542}
   - component: {fileID: 577158541}
+  - component: {fileID: 577158544}
   m_Layer: 5
   m_Name: '[ top_panel_canvas ]'
   m_TagString: Untagged
@@ -3249,6 +3250,22 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &577158544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 577158539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81b2464fb59bb478397b3b11186549a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _crystalsBarView: {fileID: 1455293540}
+  _cashBarView: {fileID: 879704270}
+  _expBarView: {fileID: 1052364687}
+  _moodBarView: {fileID: 1678544583}
 --- !u!1 &596442077
 GameObject:
   m_ObjectHideFlags: 0

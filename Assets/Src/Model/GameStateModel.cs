@@ -9,6 +9,7 @@ public class GameStateModel
     public event Action<GameStateName, GameStateName> GameStateChanged = delegate { };
     public event Action<PlacingStateName, PlacingStateName> PlacingStateChanged = delegate { };
     public event Action<ShopModel> ViewingShopModelChanged = delegate { };
+    public event Action PlayerShopModelWasSet = delegate { };
 
     private TaskCompletionSource<bool> _dataLoadedTcs = new TaskCompletionSource<bool>();
     public Task GameDataLoadedTask => _dataLoadedTcs.Task;
@@ -84,6 +85,7 @@ public class GameStateModel
             throw new InvalidOperationException("GameStateModel.SetPlayerShopModel(): PlayerShopModel already setup");
         }
         PlayerShopModel = shopModel;
+        PlayerShopModelWasSet();
     }
 
     private void SetPlacingState(PlacingStateName newState)

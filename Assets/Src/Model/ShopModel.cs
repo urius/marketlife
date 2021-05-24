@@ -167,6 +167,10 @@ public class ShopModel
                     var buildState = buildMatrix[y][x];
                     if (buildState != 0)
                     {
+                        if (Grid.ContainsKey(currentCellCoords) && Grid[currentCellCoords].buildState > 0)
+                        {
+                            continue;
+                        }
                         Grid[currentCellCoords] = (buildState, shopObject);
                     }
                 }

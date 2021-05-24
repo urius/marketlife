@@ -32,7 +32,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 46b41057a82fe4010b5245cd9e8b4afa, type: 3}
-    totalSpriteSurfaceArea: 534396
+    totalSpriteSurfaceArea: 556413
     bindAsDefault: 0
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -116,6 +116,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: c4e0aadcd94964d22adfbf154396e970, type: 3}
   - {fileID: 21300000, guid: 69c92ddcdd12841ff91598943692f0fd, type: 3}
   - {fileID: 21300000, guid: 060ac0ecae44448819c4be17493d1ef5, type: 3}
+  - {fileID: 21300000, guid: a2ad2cec45d444918ac7dd670e9e5d44, type: 3}
   - {fileID: 21300000, guid: a56735fcf4bef4f9091f25446ad512ec, type: 3}
   - {fileID: 21300000, guid: ae46a12dd16874664a541e6cb3d37583, type: 3}
   - {fileID: 21300000, guid: 298bee2dbf79a4ae58df9f6fe4f45827, type: 3}
@@ -166,7 +167,7 @@ SpriteAtlas:
   - icon_star_big
   - Icon_next1
   - Water_1
-  - bottom_panel
+  - bottom_panel_bg_simulation_mode
   - MilkBottles
   - Sushi
   - Wall5
@@ -212,6 +213,7 @@ SpriteAtlas:
   - Juice_2
   - Floor5
   - icon_crystal
+  - bottom_panel_bg_interior_mode
   - bottom_panel_item_skin
   - Perfume_2
   - Cream_1

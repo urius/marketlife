@@ -43,6 +43,10 @@ public class BottomPanelView : MonoBehaviour
     [SerializeField] private Button _buttonRotateLeft;
     [Space(10)]
     [SerializeField] private GameObject _blockPanel;
+    [Space(10)]
+    [SerializeField] private Image _bgImage;
+    [SerializeField] private Sprite _bgSimulationModeSprite;
+    [SerializeField] private Sprite _bgInteriorModeSprite;
 
     private const float DeltaPositionForAnimation = 40;
 
@@ -97,6 +101,16 @@ public class BottomPanelView : MonoBehaviour
     {
         SetIsBlocked(true);
         return new DisposableSource(() => SetIsBlocked(false));
+    }
+
+    public void ShowSimulationModeBG()
+    {
+        _bgImage.sprite = _bgSimulationModeSprite;
+    }
+
+    public void ShowInteriorModeBG()
+    {
+        _bgImage.sprite = _bgInteriorModeSprite;
     }
 
     public UniTask ShowSimulationModeButtonsAsync()

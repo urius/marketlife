@@ -1574,6 +1574,11 @@ MonoBehaviour:
   _buttonRotateRight: {fileID: 1763159818}
   _buttonRotateLeft: {fileID: 1033999370}
   _blockPanel: {fileID: 1325939148}
+  _bgImage: {fileID: 444361752}
+  _bgSimulationModeSprite: {fileID: 21300000, guid: 049e44d5b1fa54ca7b9f8b8dd77d28c3,
+    type: 3}
+  _bgInteriorModeSprite: {fileID: 21300000, guid: a2ad2cec45d444918ac7dd670e9e5d44,
+    type: 3}
 --- !u!1 &204937621
 GameObject:
   m_ObjectHideFlags: 0

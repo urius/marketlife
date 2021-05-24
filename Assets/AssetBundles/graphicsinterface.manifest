@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1581580519
+CRC: 1006526693
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: d9797adfd23cdbd7cda1b78ebf97e0eb
+    Hash: 39bb455f80d771d8dec32a113f36bbd8
   TypeTreeHash:
     serializedVersion: 2
     Hash: ba23c2e8f8b3f5319028008a25497317
@@ -32,7 +32,7 @@ ClassTypes:
 SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_long_green.png
-- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/button_1_small_red.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_small_red.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_long_blue.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/Icon_next1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Water_1.png
@@ -43,7 +43,7 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Windows/Window2.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/sign_paint_wall.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Juice_2.png
-- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/sign_rotate_right.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/sign_rotate_right.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/Icon_Role.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Floors/Floor2.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_2.png
@@ -61,13 +61,13 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/TopPanel/top_bar_bg.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall5.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Doors/Door2.png
-- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/button_1_small_green.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_small_green.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall1.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/icon_dollar.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Beer.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall3.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Orange.png
-- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/sign_rotate_left.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/sign_rotate_left.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall6.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Sausage_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Candy_1.png
@@ -84,7 +84,7 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/LimeOn.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Sugar_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/sign_doors.png
-- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/button_1_small_orange.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_small_orange.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Chips.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Juice_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/icon_mood.png
@@ -113,9 +113,10 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Cheese_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Floors/Floor5.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/icon_star_big.png
-- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/button_1_small_blue.png
+- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/bottom_panel_bg_interior_mode.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_small_blue.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/price_label.png
-- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/bottom_panel.png
+- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/bottom_panel_bg_simulation_mode.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/ICON_Mute.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Eggs_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_3.png

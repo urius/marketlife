@@ -28,7 +28,7 @@ public class BottomPanelMediator : UINotMonoMediatorBase
         _currentTabMediator = GetTabMediatorForGameState(_gameStateModel.GameState);
         _currentTabMediator?.Mediate();
 
-        await ShowTopButtonsForStateAsync(_gameStateModel.GameState);
+        await ShowBgAndTopButtonsForStateAsync(_gameStateModel.GameState);
     }
 
     private UIBottomPanelSubMediatorBase GetTabMediatorForGameState(GameStateName gameState)
@@ -101,7 +101,7 @@ public class BottomPanelMediator : UINotMonoMediatorBase
                 var maximizeTask = _view.MaximizePanelAsync();
                 await _view.HidePlacingButtonsAsync();
                 await maximizeTask;
-                await ShowTopButtonsForStateAsync(_gameStateModel.GameState);
+                await ShowBgAndTopButtonsForStateAsync(_gameStateModel.GameState);
             }
         }
     }
@@ -116,18 +116,20 @@ public class BottomPanelMediator : UINotMonoMediatorBase
             using (_view.SetBlockedDisposable())
             {
                 await HideTopButtonsForStateAsync(previousState);
-                await ShowTopButtonsForStateAsync(newState);
+                await ShowBgAndTopButtonsForStateAsync(newState);
             }
         }
     }
 
-    private UniTask ShowTopButtonsForStateAsync(GameStateName newState)
+    private UniTask ShowBgAndTopButtonsForStateAsync(GameStateName newState)
     {
         switch (newState)
         {
             case GameStateName.ShopInterior:
+                _view.ShowInteriorModeBG();
                 return _view.ShowInteriorModeButtonsAsync();
             case GameStateName.ShopSimulation:
+                _view.ShowSimulationModeBG();
                 return _view.ShowSimulationModeButtonsAsync();
         }
 

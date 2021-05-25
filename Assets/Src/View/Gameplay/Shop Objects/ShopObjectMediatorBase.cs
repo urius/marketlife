@@ -6,15 +6,11 @@ public abstract class ShopObjectMediatorBase
     protected readonly ShopObjectModelBase Model;
 
     private readonly bool _hasProfileSide;
-    private readonly Dispatcher _dispatcher;
-    private readonly MouseCellCoordsProvider _mouseCellCoordsProvider;
-    private readonly GameStateModel _gameStateModel;
     private readonly (GameObject, GameObject) _prefabs;
 
     private ShopObjectViewBase _currentView;
     private ShopObjectViewBase _defaultSideView;
     private ShopObjectViewBase _profileSideView;
-    private Vector2Int _hoveredMouseCellCoords;
 
     public ShopObjectMediatorBase(Transform parentTransform, ShopObjectModelBase model)
     {
@@ -23,10 +19,6 @@ public abstract class ShopObjectMediatorBase
 
         _prefabs = PrefabsHolder.Instance.GetShopObjectPrefabs(Model.Type, Model.NumericId);
         _hasProfileSide = _prefabs.Item2 != null;
-
-        _dispatcher = Dispatcher.Instance;
-        _mouseCellCoordsProvider = MouseCellCoordsProvider.Instance;
-        _gameStateModel = GameStateModel.Instance;
     }
 
     public virtual void Mediate()
@@ -84,43 +76,26 @@ public abstract class ShopObjectMediatorBase
 
     private void Activate()
     {
-        _dispatcher.MouseCellCoordsUpdated += OnMouseCellCoordsUpdated;
         Model.CoordsChanged += OnCoordsChanged;
         Model.SideChanged += OnSideChanged;
-        Model.Hovered += OnHovered;
+        Model.HighlightStateChanged += OnHighlightStateChanged;
     }
 
     private void Deactivate()
     {
-        _dispatcher.MouseCellCoordsUpdated -= OnMouseCellCoordsUpdated;
         Model.CoordsChanged -= OnCoordsChanged;
         Model.SideChanged -= OnSideChanged;
-        Model.Hovered -= OnHovered;
+        Model.HighlightStateChanged -= OnHighlightStateChanged;
     }
 
-    private void OnHovered()
+    private void OnHighlightStateChanged(bool isHighlighted)
     {
-        if (_gameStateModel.PlacingState == PlacingStateName.None)
-        {
-            SetIsHovered(true);
-        }
+        SetIsHighlighted(isHighlighted);
     }
 
-    private void OnMouseCellCoordsUpdated(Vector2Int newCoords)
+    private void SetIsHighlighted(bool isHovered)
     {
-        if (_hoveredMouseCellCoords != newCoords)
-        {
-            SetIsHovered(false);
-        }
-    }
-
-    private void SetIsHovered(bool isHovered)
-    {
-        if (isHovered)
-        {
-            _hoveredMouseCellCoords = _mouseCellCoordsProvider.MouseCellCoords;
-        }
-        _currentView.SetAllSpritesAlpha(isHovered ? 0.5f : 1);
+        _currentView.SetAllSpritesColor(isHovered ? Color.green : Color.white);
     }
 
     private void OnSideChanged(int previousSide, int newSide)
@@ -135,6 +110,7 @@ public abstract class ShopObjectMediatorBase
             _currentView.gameObject.SetActive(false);
         }
         _currentView = GetOrCreatRotatedView(Model.Side);
+        SetIsHighlighted(Model.IsHighlighted);
         UpdatePosition();
     }
 

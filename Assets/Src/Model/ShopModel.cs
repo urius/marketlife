@@ -5,6 +5,7 @@ using UnityEngine;
 public class ShopModel
 {
     public event Action<ShopObjectModelBase> ShopObjectPlaced = delegate { };
+    public event Action ShopModelChanged = delegate { };
 
     public readonly string Uid;
     public readonly ShopProgressModel ProgressModel;
@@ -70,6 +71,33 @@ public class ShopModel
         }
 
         return result;
+    }
+
+    public bool CanRotateShopObject(ShopObjectModelBase shopObject, int deltaSide)
+    {
+        var result = false;
+        if (RemoveFromGrid(shopObject, true) > 0)
+        {
+            var originalSide = shopObject.Side;
+            shopObject.Side += deltaSide;
+            result = CanPlaceShopObject(shopObject);
+            shopObject.Side = originalSide;
+            AddToGrid(shopObject);
+        }
+        return result;
+    }
+
+    public void RotateShopObject(ShopObjectModelBase shopObject, int deltaSide)
+    {
+        if (RemoveFromGrid(shopObject, true) > 0)
+        {
+            shopObject.Side += deltaSide;
+            RefillGrid();
+        }
+        else
+        {
+            throw new InvalidOperationException($"RotateShopObject: object {shopObject.Type} failed to remove from grid, coords: {shopObject.Coords}");
+        }
     }
 
     public bool CanPlaceFloor(Vector2Int cellCoords, int numericId)
@@ -154,28 +182,75 @@ public class ShopModel
         foreach (var kvp in ShopObjects)
         {
             var shopObject = kvp.Value;
-            var coords = shopObject.Coords;
-            var buildMatrix = shopObject.RotatedBuildMatrix;
-            var width = buildMatrix[0].Length;
-            var pivot = new Vector2Int(width / 2, buildMatrix.Length / 2);
+            AddToGrid(shopObject, true);
+        }
+        ShopModelChanged();
+    }
 
-            for (var y = 0; y < buildMatrix.Length; y++)
+    private void AddToGrid(ShopObjectModelBase shopObject, bool isSilent = false)
+    {
+        var coords = shopObject.Coords;
+        var buildMatrix = shopObject.RotatedBuildMatrix;
+        var width = buildMatrix[0].Length;
+        var pivot = new Vector2Int(width / 2, buildMatrix.Length / 2);
+
+        for (var y = 0; y < buildMatrix.Length; y++)
+        {
+            for (var x = 0; x < width; x++)
             {
-                for (var x = 0; x < width; x++)
+                var currentCellCoords = new Vector2Int(x, y) - pivot + coords;
+                var buildState = buildMatrix[y][x];
+                if (buildState != 0)
                 {
-                    var currentCellCoords = new Vector2Int(x, y) - pivot + coords;
-                    var buildState = buildMatrix[y][x];
-                    if (buildState != 0)
+                    if (Grid.ContainsKey(currentCellCoords) && Grid[currentCellCoords].buildState > 0)
                     {
-                        if (Grid.ContainsKey(currentCellCoords) && Grid[currentCellCoords].buildState > 0)
+                        continue;
+                    }
+                    Grid[currentCellCoords] = (buildState, shopObject);
+                }
+            }
+        }
+
+        if (isSilent == false)
+        {
+            ShopModelChanged();
+        }
+    }
+
+    private int RemoveFromGrid(ShopObjectModelBase shopObject, bool isSilent = false)
+    {
+        var result = 0;
+        var coords = shopObject.Coords;
+        var buildMatrix = shopObject.RotatedBuildMatrix;
+        var width = buildMatrix[0].Length;
+        var pivot = new Vector2Int(width / 2, buildMatrix.Length / 2);
+
+        for (var y = 0; y < buildMatrix.Length; y++)
+        {
+            for (var x = 0; x < width; x++)
+            {
+                var currentCellCoords = new Vector2Int(x, y) - pivot + coords;
+                var buildState = buildMatrix[y][x];
+                if (buildState != 0)
+                {
+                    if (Grid.TryGetValue(currentCellCoords, out var shopObjectInfo))
+                    {
+                        if (shopObjectInfo.buildState != 0 && shopObjectInfo.reference == shopObject)
                         {
-                            continue;
+                            Grid.Remove(currentCellCoords);
+                            result++;
                         }
-                        Grid[currentCellCoords] = (buildState, shopObject);
                     }
                 }
             }
         }
+
+        if (isSilent == false && result > 0)
+        {
+            ShopModelChanged();
+        }
+
+        return result;
     }
 }
 

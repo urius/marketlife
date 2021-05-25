@@ -459,6 +459,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 114dbda9be6a64c8883d222cbeb9cd9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _allSprites:
+  - {fileID: 7658229692861737502}
+  - {fileID: 4218703514709834425}
+  - {fileID: 4218703515441289815}
+  - {fileID: 7658229692443914768}
+  - {fileID: 7658229693678346046}
+  - {fileID: 7658229692330892303}
+  - {fileID: 4218703514739293323}
   _productFloors:
   - ProductPlaceholders:
     - {fileID: 4218703514709834424}

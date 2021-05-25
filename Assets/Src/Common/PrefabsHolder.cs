@@ -36,6 +36,7 @@ public class PrefabsHolder : ScriptableObject
     //Interface
     public GameObject UIBottomPanelScrollItemPrefab;
     public GameObject UIHintPrefab;
+    public GameObject UIShelfActionsPrefab;
 
     //remote
     private Dictionary<string, GameObject> _remotePrefabs = new Dictionary<string, GameObject>();

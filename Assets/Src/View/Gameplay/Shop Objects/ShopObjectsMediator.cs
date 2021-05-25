@@ -11,6 +11,8 @@ public class ShopObjectsMediator : MonoBehaviour
     private PlacingShopObjectMediator _currentPlacingShopObjectMediator;
     private ShopModel _currentShopModel;
 
+    private readonly List<GameObject> _debugSquaresList = new List<GameObject>();
+
     private void Awake()
     {
         _gameStateModel = GameStateModel.Instance;
@@ -32,6 +34,7 @@ public class ShopObjectsMediator : MonoBehaviour
 
         _currentShopModel = viewingShopModel;
         _currentShopModel.ShopObjectPlaced += OnShopObjectPlaced;
+        _currentShopModel.ShopModelChanged += OnShopModelChanged;
 
         DisplayShopObjects(viewingShopModel.ShopObjects);
     }
@@ -41,6 +44,7 @@ public class ShopObjectsMediator : MonoBehaviour
         if (_currentShopModel != null)
         {
             _currentShopModel.ShopObjectPlaced -= OnShopObjectPlaced;
+            _currentShopModel.ShopModelChanged -= OnShopModelChanged;
         }
     }
 
@@ -103,15 +107,30 @@ public class ShopObjectsMediator : MonoBehaviour
         _shopObjectMediators[coords].Mediate();
     }
 
+    private void OnShopModelChanged()
+    {
+
+#if UNITY_EDITOR
+        DebugDisplayBuildSquares();
+#endif
+    }
+
     private void DebugDisplayBuildSquares()
     {
 #if UNITY_EDITOR
-        return;
+        //return;
+
+        foreach (var squareGo in _debugSquaresList)
+        {
+            GameObject.Destroy(squareGo);
+        }
+        _debugSquaresList.Clear();
 
         var viewingShopModel = GameStateModel.Instance.ViewingShopModel;
         foreach (var kvp in viewingShopModel.Grid)
         {
             var squareGo = GameObject.Instantiate(PrefabsHolder.Instance.WhiteSquarePrefab, transform);
+            _debugSquaresList.Add(squareGo);
             squareGo.transform.position = GridCalculator.Instance.CellToWord(kvp.Key);
             var sr = squareGo.GetComponent<SpriteRenderer>();
             var buildState = kvp.Value.buildState;

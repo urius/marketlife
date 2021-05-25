@@ -53,3 +53,5 @@ MonoBehaviour:
     type: 3}
   UIHintPrefab: {fileID: 7042431327963569682, guid: 0f4ec624a6e5a4274a5aafd6c3fb6e18,
     type: 3}
+  UIShelfActionsPrefab: {fileID: 6049905846877215710, guid: 558d635435e7d4364ac5de6f55c77231,
+    type: 3}

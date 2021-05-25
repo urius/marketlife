@@ -5,6 +5,7 @@ public abstract class ShopObjectModelBase
 {
     public event Action<int, int> SideChanged = delegate { };
     public event Action<Vector2Int, Vector2Int> CoordsChanged = delegate { };
+    public event Action<bool> HighlightStateChanged = delegate { };
 
     public readonly int NumericId;
     public readonly Price Price;
@@ -53,9 +54,16 @@ public abstract class ShopObjectModelBase
         }
     }
     public int[][] RotatedBuildMatrix { get; private set; }
+    public bool IsHighlighted { get; private set; }
 
     public abstract ShopObjectType Type { get; }
     public abstract ShopObjectModelBase Clone();
+
+    public void TriggerHighlighted(bool isHighlighted)
+    {
+        IsHighlighted = isHighlighted;
+        HighlightStateChanged(isHighlighted);
+    }
 }
 
 public enum ShopObjectType

@@ -4,6 +4,7 @@ public struct UIRequestPlaceShelfCommand
     {
         var shelfConfig = GameConfigManager.Instance.MainConfig.GetShelfConfigByNumericId(shelfNumericId);
         var gameStateModel = GameStateModel.Instance;
+        Dispatcher.Instance.RequestForceMouseCellPositionUpdate();
 
         if (shelfConfig.price != null)// TODO check price properly
         {

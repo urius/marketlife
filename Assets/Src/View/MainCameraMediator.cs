@@ -16,6 +16,8 @@ public class MainCameraMediator : MonoBehaviour
     private int _framesCounter3;
     private Vector3 _previousMousePosition;
     private Vector3 _currentMousePosition;
+    private bool _needToUpdateMouseCellPosition;
+    private bool _needToForceUpdateMouseCellPosition;
 
     private void Awake()
     {
@@ -31,13 +33,32 @@ public class MainCameraMediator : MonoBehaviour
 
         _dispatcher.UIGameViewMouseDown += OnGameViewMouseDown;
         _dispatcher.UIGameViewMouseUp += OnGameViewMouseUp;
+        _dispatcher.UIGameViewMouseEnter += OnGameViewMouseEnter;
+        _dispatcher.UIGameViewMouseExit += OnGameViewMouseExit;
+        _dispatcher.RequestForceMouseCellPositionUpdate += OnRequestForceMouseCellPositionUpdate;
+
         _updatesProvider.RealtimeUpdate += OnRealtimeUpdate;
+    }
+
+    private void OnRequestForceMouseCellPositionUpdate()
+    {
+        _needToForceUpdateMouseCellPosition = true;
+    }
+
+    private void OnGameViewMouseEnter()
+    {
+        _needToUpdateMouseCellPosition = true;
+    }
+
+    private void OnGameViewMouseExit()
+    {
+        _needToUpdateMouseCellPosition = false;
     }
 
     private void OnGameViewMouseDown()
     {
         _mouseDownWorldPosition = GetOnPlaneMouseWorldPoint();
-        _isMouseDown = true;      
+        _isMouseDown = true;
     }
 
     private void OnGameViewMouseUp()
@@ -55,11 +76,12 @@ public class MainCameraMediator : MonoBehaviour
 
     private void ProcessMouseCellPositionCalculation()
     {
-        if (_previousMousePosition != _currentMousePosition)
+        if (_previousMousePosition != _currentMousePosition || _needToForceUpdateMouseCellPosition)
         {
             _framesCounter3++;
-            if (_framesCounter3 >= 3)
+            if (_framesCounter3 >= 3 && (_needToUpdateMouseCellPosition || _needToForceUpdateMouseCellPosition))
             {
+                _needToForceUpdateMouseCellPosition = false;
                 _framesCounter3 = 0;
                 var mouseWorld = GetOnPlaneMouseWorldPoint();
                 var mouseCell = _gridCalculator.WorldToCell(mouseWorld);

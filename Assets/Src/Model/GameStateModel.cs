@@ -10,16 +10,19 @@ public class GameStateModel
     public event Action<PlacingStateName, PlacingStateName> PlacingStateChanged = delegate { };
     public event Action<ShopModel> ViewingShopModelChanged = delegate { };
     public event Action PlayerShopModelWasSet = delegate { };
+    public event Action HighlightShopObjectChanged = delegate { };
 
     private TaskCompletionSource<bool> _dataLoadedTcs = new TaskCompletionSource<bool>();
-    public Task GameDataLoadedTask => _dataLoadedTcs.Task;
 
+
+    public Task GameDataLoadedTask => _dataLoadedTcs.Task;
     public GameStateName GameState { get; private set; } = GameStateName.Initializing;
     public PlacingStateName PlacingState { get; private set; } = PlacingStateName.None;
     public int PlacingDecorationNumericId { get; private set; }
     public ShopObjectModelBase PlacingShopObjectModel { get; private set; }
     public ShopModel ViewingShopModel { get; private set; }
     public ShopModel PlayerShopModel { get; private set; }
+    public ShopObjectModelBase HighlightedShopObject { get; private set; }
 
     public void SetGameState(GameStateName newState)
     {
@@ -86,6 +89,22 @@ public class GameStateModel
         }
         PlayerShopModel = shopModel;
         PlayerShopModelWasSet();
+    }
+
+    public void SetHighlightedShopObject(ShopObjectModelBase shopObjectModel)
+    {
+        if (HighlightedShopObject != null)
+        {
+            HighlightedShopObject.TriggerHighlighted(false);
+        }
+
+        HighlightedShopObject = shopObjectModel;
+
+        if (HighlightedShopObject != null)
+        {
+            HighlightedShopObject.TriggerHighlighted(true);
+        }
+        HighlightShopObjectChanged();
     }
 
     private void SetPlacingState(PlacingStateName newState)

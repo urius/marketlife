@@ -32,7 +32,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 46b41057a82fe4010b5245cd9e8b4afa, type: 3}
-    totalSpriteSurfaceArea: 556413
+    totalSpriteSurfaceArea: 559060
     bindAsDefault: 0
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -102,6 +102,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 29eb170b0e7ad42eb97645738622e48c, type: 3}
   - {fileID: 21300000, guid: afac811b41f2448718fb7a74d7a6dbaa, type: 3}
   - {fileID: 21300000, guid: e1df045b6dee045ef9befbcf22f212b5, type: 3}
+  - {fileID: 21300000, guid: 0137ae5b191d24f3195eeb886b45add7, type: 3}
   - {fileID: 21300000, guid: 1c6bd57b301c845a2bbd582c348e108a, type: 3}
   - {fileID: 21300000, guid: 666d2aab7cffd4f39a63eb1931b30396, type: 3}
   - {fileID: 21300000, guid: c5af3edb4c9714d4fb439ce7536f0b38, type: 3}
@@ -131,6 +132,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: a9bdf43f37227457b81416a464153092, type: 3}
   - {fileID: 21300000, guid: 5ede8e3feaead4cbcb32399c2978e871, type: 3}
   - {fileID: 21300000, guid: 6c6c824f2307741c48d42415a35b4730, type: 3}
+  - {fileID: 21300000, guid: ced31b5f804bf45cc917941955e3697e, type: 3}
   - {fileID: 21300000, guid: 9994a06f2eb2e4390bcb8a208cbc0ebe, type: 3}
   - {fileID: 21300000, guid: 8bd3716f39a974116b9b24631773f5e9, type: 3}
   - {fileID: 21300000, guid: 9cc07ebfc57794109b7cbb0e1cb10d65, type: 3}
@@ -199,6 +201,7 @@ SpriteAtlas:
   - top_bar_bg
   - Wall6
   - Beer
+  - sign_4arrows
   - Cake
   - TV
   - Icon_Back1
@@ -228,6 +231,7 @@ SpriteAtlas:
   - Sugar_1
   - Icon_Shelf_4
   - Fanta
+  - sign_cross
   - Icon_Right
   - Wall4
   - sign_paint_wall

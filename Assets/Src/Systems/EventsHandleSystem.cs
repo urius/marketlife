@@ -21,12 +21,24 @@ public class EventsHandleSystem : MonoBehaviour
         _dispatcher.UIBottomPanelPlaceWallClicked += OnUIBottomPanelPlaceWallClicked;
         _dispatcher.UIBottomPanelPlaceWindowClicked += OnUIBottomPanelPlaceWindowClicked;
         _dispatcher.UIBottomPanelPlaceDoorClicked += OnUIBottomPanelPlaceDoorClicked;
+        _dispatcher.UIActionsRotateRightClicked += OnUIActionsRotateRightClicked;
+        _dispatcher.UIActionsRotateLeftClicked += OnUIActionsRotateLeftClicked;
         _dispatcher.MouseCellCoordsUpdated += OnMouseCellCoordsUpdated;
         _dispatcher.BottomPanelInteriorClicked += BottomPanelInteriorClicked;
         _dispatcher.BottomPanelInteriorCloseClicked += BottomPanelInteriorCloseClicked;
         _dispatcher.BottomPanlelFinishPlacingClicked += BottomPanelFinishPlacingClicked;
         _dispatcher.BottomPanelRotateRightClicked += BottomPanelRotateRightClicked;
         _dispatcher.BottomPanelRotateLeftClicked += BottomPanelRotateLeftClicked;
+    }
+
+    private void OnUIActionsRotateRightClicked()
+    {
+        new RotatePlacedObjectCommand().Execute(_gameStateModel.HighlightedShopObject, 1);
+    }
+
+    private void OnUIActionsRotateLeftClicked()
+    {
+        new RotatePlacedObjectCommand().Execute(_gameStateModel.HighlightedShopObject, -1);
     }
 
     private void OnUIGameViewMouseClicked()
@@ -64,6 +76,20 @@ public class EventsHandleSystem : MonoBehaviour
 
     private void OnMouseCellCoordsUpdated(Vector2Int newCoords)
     {
+        if (_gameStateModel.PlacingState == PlacingStateName.None
+            && _gameStateModel.ViewingShopModel.Grid.TryGetValue(newCoords, out var shopObjectData)
+             && shopObjectData.buildState > 0)
+        {
+            if (_gameStateModel.HighlightedShopObject != shopObjectData.reference)
+            {
+                _gameStateModel.SetHighlightedShopObject(shopObjectData.reference);
+            }
+        }
+        else
+        {
+            _gameStateModel.SetHighlightedShopObject(null);
+        }
+
         if (_gameStateModel.PlacingShopObjectModel != null)
         {
             _gameStateModel.PlacingShopObjectModel.Coords = newCoords;

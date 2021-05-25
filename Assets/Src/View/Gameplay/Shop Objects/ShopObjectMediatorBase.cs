@@ -6,11 +6,15 @@ public abstract class ShopObjectMediatorBase
     protected readonly ShopObjectModelBase Model;
 
     private readonly bool _hasProfileSide;
+    private readonly Dispatcher _dispatcher;
+    private readonly MouseCellCoordsProvider _mouseCellCoordsProvider;
+    private readonly GameStateModel _gameStateModel;
     private readonly (GameObject, GameObject) _prefabs;
 
-    private GameObject _currentViewGo;
-    private GameObject _defaultSideViewGo;
-    private GameObject _profileSideViewGo;
+    private ShopObjectViewBase _currentView;
+    private ShopObjectViewBase _defaultSideView;
+    private ShopObjectViewBase _profileSideView;
+    private Vector2Int _hoveredMouseCellCoords;
 
     public ShopObjectMediatorBase(Transform parentTransform, ShopObjectModelBase model)
     {
@@ -19,6 +23,10 @@ public abstract class ShopObjectMediatorBase
 
         _prefabs = PrefabsHolder.Instance.GetShopObjectPrefabs(Model.Type, Model.NumericId);
         _hasProfileSide = _prefabs.Item2 != null;
+
+        _dispatcher = Dispatcher.Instance;
+        _mouseCellCoordsProvider = MouseCellCoordsProvider.Instance;
+        _gameStateModel = GameStateModel.Instance;
     }
 
     public virtual void Mediate()
@@ -35,38 +43,39 @@ public abstract class ShopObjectMediatorBase
 
     protected void DestroyNotDisplayedSideView()
     {
-        if (_currentViewGo != _defaultSideViewGo && _defaultSideViewGo != null)
+        if (_currentView != _defaultSideView && _defaultSideView != null)
         {
-            GameObject.Destroy(_defaultSideViewGo);
-            _defaultSideViewGo = null;
+            GameObject.Destroy(_defaultSideView.gameObject);
+            _defaultSideView = null;
         }
-        if (_currentViewGo != _profileSideViewGo && _profileSideViewGo != null)
+        if (_currentView != _profileSideView && _profileSideView != null)
         {
-            GameObject.Destroy(_profileSideViewGo);
-            _profileSideViewGo = null;
+            GameObject.Destroy(_profileSideView.gameObject);
+            _profileSideView = null;
         }
     }
 
-    private GameObject GetOrCreatRotatedView(int side)
+    private ShopObjectViewBase GetOrCreatRotatedView(int side)
     {
-        GameObject result;
+        ShopObjectViewBase result;
         var isProfileSide = _hasProfileSide && SideHelper.IsProfileSide(side);
-        result = isProfileSide ? _profileSideViewGo : _defaultSideViewGo;
+        result = isProfileSide ? _profileSideView : _defaultSideView;
         if (result == null)
         {
             var prefab = isProfileSide ? _prefabs.Item2 : _prefabs.Item1;
-            result = GameObject.Instantiate(prefab, ParentTransform);
+            var go = GameObject.Instantiate(prefab, ParentTransform);
+            result = go.GetComponent<ShopObjectViewBase>();
             if (isProfileSide)
             {
-                _profileSideViewGo = result;
+                _profileSideView = result;
             }
             else
             {
-                _defaultSideViewGo = result;
+                _defaultSideView = result;
             }
         }
 
-        result.SetActive(true);
+        result.gameObject.SetActive(true);
         var scaleXMultiplier = SideHelper.GetScaleXMultiplier(side);
         result.transform.localScale = new Vector3(scaleXMultiplier, 1, 1);
 
@@ -75,14 +84,43 @@ public abstract class ShopObjectMediatorBase
 
     private void Activate()
     {
+        _dispatcher.MouseCellCoordsUpdated += OnMouseCellCoordsUpdated;
         Model.CoordsChanged += OnCoordsChanged;
         Model.SideChanged += OnSideChanged;
+        Model.Hovered += OnHovered;
     }
 
     private void Deactivate()
     {
+        _dispatcher.MouseCellCoordsUpdated -= OnMouseCellCoordsUpdated;
         Model.CoordsChanged -= OnCoordsChanged;
         Model.SideChanged -= OnSideChanged;
+        Model.Hovered -= OnHovered;
+    }
+
+    private void OnHovered()
+    {
+        if (_gameStateModel.PlacingState == PlacingStateName.None)
+        {
+            SetIsHovered(true);
+        }
+    }
+
+    private void OnMouseCellCoordsUpdated(Vector2Int newCoords)
+    {
+        if (_hoveredMouseCellCoords != newCoords)
+        {
+            SetIsHovered(false);
+        }
+    }
+
+    private void SetIsHovered(bool isHovered)
+    {
+        if (isHovered)
+        {
+            _hoveredMouseCellCoords = _mouseCellCoordsProvider.MouseCellCoords;
+        }
+        _currentView.SetAllSpritesAlpha(isHovered ? 0.5f : 1);
     }
 
     private void OnSideChanged(int previousSide, int newSide)
@@ -92,11 +130,11 @@ public abstract class ShopObjectMediatorBase
 
     private void UpdateView()
     {
-        if (_currentViewGo != null)
+        if (_currentView != null)
         {
-            _currentViewGo.SetActive(false);
+            _currentView.gameObject.SetActive(false);
         }
-        _currentViewGo = GetOrCreatRotatedView(Model.Side);
+        _currentView = GetOrCreatRotatedView(Model.Side);
         UpdatePosition();
     }
 
@@ -108,15 +146,15 @@ public abstract class ShopObjectMediatorBase
     private void DestroyViews()
     {
         DestroyNotDisplayedSideView();
-        if (_currentViewGo != null)
+        if (_currentView != null)
         {
-            GameObject.Destroy(_currentViewGo);
-            _currentViewGo = null;
+            GameObject.Destroy(_currentView.gameObject);
+            _currentView = null;
         }
     }
 
     private void UpdatePosition()
     {
-        _currentViewGo.transform.position = GridCalculator.Instance.CellToWord(Model.Coords);
+        _currentView.transform.position = GridCalculator.Instance.CellToWord(Model.Coords);
     }
 }

@@ -14,6 +14,8 @@ public class InitScript : MonoBehaviour
 
     private void Awake()
     {
+        Application.targetFrameRate = 50;
+
         _playerModel = PlayerModel.Instance;
     }
 

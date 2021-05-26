@@ -45,15 +45,15 @@ public class PerimeterMediator : MonoBehaviour
                     _currentPlacingWallMediator = null;
                 }
                 break;
-            case PlacingStateName.PlacingWall:
+            case PlacingStateName.PlacingNewWall:
                 _currentPlacingWallMediator = new PlacingWallMediator(transform);
                 _currentPlacingWallMediator.Mediate();
                 break;
-            case PlacingStateName.PlacingWindow:
+            case PlacingStateName.PlacingNewWindow:
                 _currentPlacingWallMediator = new PlacingWindowMediator(transform);
                 _currentPlacingWallMediator.Mediate();
                 break;
-            case PlacingStateName.PlacingDoor:
+            case PlacingStateName.PlacingNewDoor:
                 _currentPlacingWallMediator = new PlacingDoorMediator(transform);
                 _currentPlacingWallMediator.Mediate();
                 break;

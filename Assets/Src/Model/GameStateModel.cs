@@ -13,8 +13,6 @@ public class GameStateModel
     public event Action HighlightShopObjectChanged = delegate { };
 
     private TaskCompletionSource<bool> _dataLoadedTcs = new TaskCompletionSource<bool>();
-
-
     public Task GameDataLoadedTask => _dataLoadedTcs.Task;
     public GameStateName GameState { get; private set; } = GameStateName.Initializing;
     public PlacingStateName PlacingState { get; private set; } = PlacingStateName.None;
@@ -45,34 +43,34 @@ public class GameStateModel
         SetPlacingState(PlacingStateName.None);
     }
 
-    public void SetPlacingObject(ShopObjectModelBase placingObjectModel)
+    public void SetPlacingObject(ShopObjectModelBase placingObjectModel, bool isNew = true)
     {
         PlacingShopObjectModel = placingObjectModel;
-        SetPlacingState(PlacingStateName.PlacingShopObject);
+        SetPlacingState(isNew ? PlacingStateName.PlacingNewShopObject : PlacingStateName.MovingShopObject);
     }
 
     public void SetPlacingFloor(int numericId)
     {
         PlacingDecorationNumericId = numericId;
-        SetPlacingState(PlacingStateName.PlacingFloor);
+        SetPlacingState(PlacingStateName.PlacingNewFloor);
     }
 
     public void SetPlacingWall(int numericId)
     {
         PlacingDecorationNumericId = numericId;
-        SetPlacingState(PlacingStateName.PlacingWall);
+        SetPlacingState(PlacingStateName.PlacingNewWall);
     }
 
-    public void SetPlacingWindow(int numericId)
+    public void SetPlacingWindow(int numericId, bool isNew = true)
     {
         PlacingDecorationNumericId = numericId;
-        SetPlacingState(PlacingStateName.PlacingWindow);
+        SetPlacingState(isNew ? PlacingStateName.PlacingNewWindow : PlacingStateName.MovingWindow);
     }
 
-    public void SetPlacingDoor(int numericId)
+    public void SetPlacingDoor(int numericId, bool isNew = true)
     {
         PlacingDecorationNumericId = numericId;
-        SetPlacingState(PlacingStateName.PlacingDoor);
+        SetPlacingState(isNew ? PlacingStateName.PlacingNewDoor : PlacingStateName.MovingDoor);
     }
 
     public void SetViewingShopModel(ShopModel shopModel)
@@ -128,9 +126,12 @@ public enum GameStateName
 public enum PlacingStateName
 {
     None,
-    PlacingShopObject,
-    PlacingFloor,
-    PlacingWall,
-    PlacingWindow,
-    PlacingDoor,
+    PlacingNewShopObject,
+    MovingShopObject,
+    PlacingNewFloor,
+    PlacingNewWall,
+    PlacingNewWindow,
+    MovingWindow,
+    PlacingNewDoor,
+    MovingDoor,
 }

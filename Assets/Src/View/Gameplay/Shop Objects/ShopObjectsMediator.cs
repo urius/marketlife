@@ -34,6 +34,7 @@ public class ShopObjectsMediator : MonoBehaviour
 
         _currentShopModel = viewingShopModel;
         _currentShopModel.ShopObjectPlaced += OnShopObjectPlaced;
+        _currentShopModel.ShopObjectRemoved += OnShopObjectRemoved;
         _currentShopModel.ShopModelChanged += OnShopModelChanged;
 
         DisplayShopObjects(viewingShopModel.ShopObjects);
@@ -44,8 +45,15 @@ public class ShopObjectsMediator : MonoBehaviour
         if (_currentShopModel != null)
         {
             _currentShopModel.ShopObjectPlaced -= OnShopObjectPlaced;
+            _currentShopModel.ShopObjectRemoved -= OnShopObjectRemoved;
             _currentShopModel.ShopModelChanged -= OnShopModelChanged;
         }
+    }
+
+    private void OnShopObjectRemoved(ShopObjectModelBase shopObjectModel)
+    {
+        _shopObjectMediators[shopObjectModel.Coords].Unmediate();
+        _shopObjectMediators.Remove(shopObjectModel.Coords);
     }
 
     private void OnShopObjectPlaced(ShopObjectModelBase shopObject)
@@ -70,15 +78,10 @@ public class ShopObjectsMediator : MonoBehaviour
                     _currentPlacingShopObjectMediator = null;
                 }
                 break;
-            case PlacingStateName.PlacingShopObject:
-                var shopObjectModel = _gameStateModel.PlacingShopObjectModel;
-                switch (shopObjectModel.Type)
-                {
-                    case ShopObjectType.Shelf:
-                        _currentPlacingShopObjectMediator = new PlacingShopObjectMediator(transform, shopObjectModel as ShelfModel);
-                        _currentPlacingShopObjectMediator.Mediate();
-                        break;
-                }
+            case PlacingStateName.PlacingNewShopObject:
+            case PlacingStateName.MovingShopObject:
+                _currentPlacingShopObjectMediator = new PlacingShopObjectMediator(transform, _gameStateModel.PlacingShopObjectModel);
+                _currentPlacingShopObjectMediator.Mediate();
                 break;
         }
     }
@@ -118,7 +121,7 @@ public class ShopObjectsMediator : MonoBehaviour
     private void DebugDisplayBuildSquares()
     {
 #if UNITY_EDITOR
-        //return;
+        return;
 
         foreach (var squareGo in _debugSquaresList)
         {

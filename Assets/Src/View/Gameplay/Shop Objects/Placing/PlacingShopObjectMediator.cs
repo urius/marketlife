@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class PlacingShopObjectMediator : ShopObjectMediatorBase
@@ -8,10 +7,9 @@ public class PlacingShopObjectMediator : ShopObjectMediatorBase
     private readonly GameStateModel _gameStateModel;
 
     private ShopModel _viewingShopModel;
-    private ShopModel _currentViewingShopModel;
 
-    public PlacingShopObjectMediator(Transform parentTransform, ShopObjectModelBase shelfModel)
-        : base(parentTransform, shelfModel)
+    public PlacingShopObjectMediator(Transform parentTransform, ShopObjectModelBase shopObjectModel)
+        : base(parentTransform, shopObjectModel)
     {
         _gridCalculator = GridCalculator.Instance;
         _gameStateModel = GameStateModel.Instance;
@@ -25,9 +23,8 @@ public class PlacingShopObjectMediator : ShopObjectMediatorBase
         base.Mediate();
 
         Model.RotatedBuildMatrix.ForEachElement(CreateBuildSquare);
-        UpdateDisplayBuildMatrix();
-
         Activate();
+        UpdateDisplayBuildMatrix();
     }
 
     public override void Unmediate()
@@ -55,20 +52,20 @@ public class PlacingShopObjectMediator : ShopObjectMediatorBase
 
     private void Activate()
     {
-        _currentViewingShopModel = _gameStateModel.ViewingShopModel;
+        _viewingShopModel = _gameStateModel.ViewingShopModel;
 
-        _currentViewingShopModel.ShopObjectPlaced += OnShopObjectPlaced;
+        _viewingShopModel.ShopObjectPlaced += OnShopObjectPlaced;
         Model.CoordsChanged += OnCoordsChanged;
         Model.SideChanged += OnSideChanged;
     }
 
     private void Deactivate()
     {
-        _currentViewingShopModel.ShopObjectPlaced -= OnShopObjectPlaced;
+        _viewingShopModel.ShopObjectPlaced -= OnShopObjectPlaced;
         Model.CoordsChanged -= OnCoordsChanged;
         Model.SideChanged -= OnSideChanged;
 
-        _currentViewingShopModel = null;
+        _viewingShopModel = null;
     }
 
     private void OnShopObjectPlaced(ShopObjectModelBase shopObjectModel)
@@ -88,7 +85,6 @@ public class PlacingShopObjectMediator : ShopObjectMediatorBase
 
     private void UpdateDisplayBuildMatrix()
     {
-        _viewingShopModel = _gameStateModel.ViewingShopModel;
         Model.RotatedBuildMatrix.ForEachElement(UpdateBuildSquare);
     }
 

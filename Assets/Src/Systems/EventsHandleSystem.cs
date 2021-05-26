@@ -23,12 +23,18 @@ public class EventsHandleSystem : MonoBehaviour
         _dispatcher.UIBottomPanelPlaceDoorClicked += OnUIBottomPanelPlaceDoorClicked;
         _dispatcher.UIActionsRotateRightClicked += OnUIActionsRotateRightClicked;
         _dispatcher.UIActionsRotateLeftClicked += OnUIActionsRotateLeftClicked;
+        _dispatcher.UIActionsMoveClicked += OnUIActionsMoveClicked;
         _dispatcher.MouseCellCoordsUpdated += OnMouseCellCoordsUpdated;
         _dispatcher.BottomPanelInteriorClicked += BottomPanelInteriorClicked;
         _dispatcher.BottomPanelInteriorCloseClicked += BottomPanelInteriorCloseClicked;
         _dispatcher.BottomPanlelFinishPlacingClicked += BottomPanelFinishPlacingClicked;
         _dispatcher.BottomPanelRotateRightClicked += BottomPanelRotateRightClicked;
         _dispatcher.BottomPanelRotateLeftClicked += BottomPanelRotateLeftClicked;
+    }
+
+    private void OnUIActionsMoveClicked()
+    {
+        new StartMovingHighlightedObjectCommand().Execute();
     }
 
     private void OnUIActionsRotateRightClicked()

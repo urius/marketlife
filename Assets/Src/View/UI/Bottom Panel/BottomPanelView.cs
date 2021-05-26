@@ -56,6 +56,7 @@ public class BottomPanelView : MonoBehaviour
     private CanvasGroup[] _interiorModeButtons;
     private CanvasGroup[] _allPlacingModeButtons;
     private CanvasGroup[] _placingShopObjectModeButtons;
+    private CanvasGroup[] _movingShopObjectModeButtons;
     private CanvasGroup[] _placingDecorationModeButtons;
     private UIHintableView[] _allHintableViews;
 
@@ -73,6 +74,7 @@ public class BottomPanelView : MonoBehaviour
         _interiorModeButtons = new CanvasGroup[] { GetCanvasGroup(_interiorCloseButton), GetCanvasGroup(_interiorObjectsButton), GetCanvasGroup(_interiorFloorsButton), GetCanvasGroup(_interiorWallsButton), GetCanvasGroup(_interiorWindowsButton), GetCanvasGroup(_interiorDoorsButton) };
         _allPlacingModeButtons = new CanvasGroup[] { GetCanvasGroup(_buttonFinishPlacing), GetCanvasGroup(_buttonRotateRight), GetCanvasGroup(_buttonRotateLeft) };
         _placingShopObjectModeButtons = new CanvasGroup[] { GetCanvasGroup(_buttonFinishPlacing), GetCanvasGroup(_buttonRotateRight), GetCanvasGroup(_buttonRotateLeft) };
+        _movingShopObjectModeButtons = new CanvasGroup[] { GetCanvasGroup(_buttonRotateRight), GetCanvasGroup(_buttonRotateLeft) };
         _placingDecorationModeButtons = new CanvasGroup[] { GetCanvasGroup(_buttonFinishPlacing) };
 
         _buttonYPositionsByCanvasGroup = new Dictionary<CanvasGroup[], float>
@@ -81,6 +83,7 @@ public class BottomPanelView : MonoBehaviour
             [_interiorModeButtons] = (_interiorModeButtons[0].transform as RectTransform).anchoredPosition.y,
             [_allPlacingModeButtons] = (_allPlacingModeButtons[0].transform as RectTransform).anchoredPosition.y,
             [_placingShopObjectModeButtons] = (_placingShopObjectModeButtons[0].transform as RectTransform).anchoredPosition.y,
+            [_movingShopObjectModeButtons] = (_movingShopObjectModeButtons[0].transform as RectTransform).anchoredPosition.y,
             [_placingDecorationModeButtons] = (_placingDecorationModeButtons[0].transform as RectTransform).anchoredPosition.y,
         };
 
@@ -137,8 +140,9 @@ public class BottomPanelView : MonoBehaviour
     {
         return placingModeType switch
         {
-            PlacingModeType.ShopObject => ShowButtonsInternalAsync(_placingShopObjectModeButtons),
-            PlacingModeType.ShopDecoration => ShowButtonsInternalAsync(_placingDecorationModeButtons),
+            PlacingModeType.NewShopObject => ShowButtonsInternalAsync(_placingShopObjectModeButtons, withDelays: false),
+            PlacingModeType.MovingShopObject => ShowButtonsInternalAsync(_movingShopObjectModeButtons, withDelays: false),
+            PlacingModeType.ShopDecoration => ShowButtonsInternalAsync(_placingDecorationModeButtons, withDelays: false),
             _ => UniTask.CompletedTask,
         };
     }
@@ -348,6 +352,7 @@ public class BottomPanelView : MonoBehaviour
 
 public enum PlacingModeType
 {
-    ShopObject,
+    NewShopObject,
+    MovingShopObject,
     ShopDecoration,
 }

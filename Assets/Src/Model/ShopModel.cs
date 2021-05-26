@@ -5,6 +5,7 @@ using UnityEngine;
 public class ShopModel
 {
     public event Action<ShopObjectModelBase> ShopObjectPlaced = delegate { };
+    public event Action<ShopObjectModelBase> ShopObjectRemoved = delegate { };
     public event Action ShopModelChanged = delegate { };
 
     public readonly string Uid;
@@ -45,14 +46,6 @@ public class ShopModel
         return price.IsGold ? ProgressModel.TrySpendGold(price.Value) : ProgressModel.TrySpendCash(price.Value);
     }
 
-    public void PlaceShopObject(ShopObjectModelBase shopObject)
-    {
-        ShopObjects[shopObject.Coords] = shopObject;
-        RefillGrid();
-
-        ShopObjectPlaced(shopObject);
-    }
-
     public bool CanPlaceShopObject(ShopObjectModelBase shopObject)
     {
         var result = true;
@@ -73,6 +66,14 @@ public class ShopModel
         return result;
     }
 
+    public void PlaceShopObject(ShopObjectModelBase shopObject)
+    {
+        ShopObjects[shopObject.Coords] = shopObject;
+        RefillGrid();
+
+        ShopObjectPlaced(shopObject);
+    }
+
     public bool CanRotateShopObject(ShopObjectModelBase shopObject, int deltaSide)
     {
         var result = false;
@@ -87,6 +88,20 @@ public class ShopModel
         return result;
     }
 
+    public void RemoveShopObject(ShopObjectModelBase shopObject)
+    {
+        if (ShopObjects[shopObject.Coords] == shopObject)
+        {
+            ShopObjects.Remove(shopObject.Coords);
+            RefillGrid();
+            ShopObjectRemoved(shopObject);
+        }
+        else
+        {
+            throw new InvalidOperationException($"RemoveShopObject: object {shopObject.Type} with coords {shopObject.Coords} is not placed on shop ${Uid}");
+        }
+    }
+
     public void RotateShopObject(ShopObjectModelBase shopObject, int deltaSide)
     {
         if (RemoveFromGrid(shopObject, true) > 0)
@@ -96,7 +111,7 @@ public class ShopModel
         }
         else
         {
-            throw new InvalidOperationException($"RotateShopObject: object {shopObject.Type} failed to remove from grid, coords: {shopObject.Coords}");
+            throw new InvalidOperationException($"RotateShopObject: object {shopObject.Type} failed to remove from grid, coords: {shopObject.Coords}, shop uid: ${Uid}");
         }
     }
 

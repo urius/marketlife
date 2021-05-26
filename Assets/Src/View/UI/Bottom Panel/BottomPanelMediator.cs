@@ -84,13 +84,16 @@ public class BottomPanelMediator : UINotMonoMediatorBase
                 await minimizeTask;
                 switch (newState)
                 {
-                    case PlacingStateName.PlacingShopObject:
-                        await _view.ShowPlacingButtonsAsync(PlacingModeType.ShopObject);
+                    case PlacingStateName.PlacingNewShopObject:
+                        await _view.ShowPlacingButtonsAsync(PlacingModeType.NewShopObject);
                         break;
-                    case PlacingStateName.PlacingFloor:
-                    case PlacingStateName.PlacingWall:
-                    case PlacingStateName.PlacingWindow:
-                    case PlacingStateName.PlacingDoor:
+                    case PlacingStateName.MovingShopObject:
+                        await _view.ShowPlacingButtonsAsync(PlacingModeType.MovingShopObject);
+                        break;
+                    case PlacingStateName.PlacingNewFloor:
+                    case PlacingStateName.PlacingNewWall:
+                    case PlacingStateName.PlacingNewWindow:
+                    case PlacingStateName.PlacingNewDoor:
                         await _view.ShowPlacingButtonsAsync(PlacingModeType.ShopDecoration);
                         break;
                 }

@@ -64,7 +64,7 @@ public class FloorMediator : MonoBehaviour
                     _currentPlacingFloorMediator = null;
                 }
                 break;
-            case PlacingStateName.PlacingFloor:
+            case PlacingStateName.PlacingNewFloor:
                 _currentPlacingFloorMediator = new PlacingFloorMediator(transform);
                 _currentPlacingFloorMediator.Mediate();
                 break;

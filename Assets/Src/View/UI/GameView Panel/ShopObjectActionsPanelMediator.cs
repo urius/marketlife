@@ -40,13 +40,13 @@ public class ShopObjectActionsPanelMediator : IMediator
 
     private void Activate()
     {
-        _gameStateModel.HighlightShopObjectChanged += OnHighlightShopObjectChanged;
+        _gameStateModel.HighlightStateChanged += OnHighlightStateChanged;
         _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
     }
 
     private void Deactivate()
     {
-        _gameStateModel.HighlightShopObjectChanged -= OnHighlightShopObjectChanged;
+        _gameStateModel.HighlightStateChanged -= OnHighlightStateChanged;
         _gameStateModel.PlacingStateChanged -= OnPlacingStateChanged;
     }
 
@@ -55,7 +55,7 @@ public class ShopObjectActionsPanelMediator : IMediator
         Update();
     }
 
-    private void OnHighlightShopObjectChanged()
+    private void OnHighlightStateChanged()
     {
         Update();
     }
@@ -68,30 +68,14 @@ public class ShopObjectActionsPanelMediator : IMediator
             return;
         }
 
-        if (_gameStateModel.HighlightedShopObject != null)
+        if (_gameStateModel.HighlightState.IsHighlighted)
         {
             ShowActionsView();
-
-            var worldPoint = _gridCalculator.CellToWord(_mouseCellCoordsProvider.MouseCellCoords);
-            var screenPoint = _screenCalculator.WorldToScreenPoint(worldPoint);
-            if (_screenCalculator.ScreenPointToWroldPointInRectangle(_contentTransform, screenPoint, out var position))
-            {
-                _actionsView.transform.position = position;
-            }
-
-            switch (_gameStateModel.HighlightedShopObject.Type)
-            {
-                case ShopObjectType.Shelf:
-                    _actionsView.SetupButtons();
-                    break;
-                case ShopObjectType.CashDesk:
-                    _actionsView.SetupButtons(showRemoveButton: false);
-                    break;
-            }
+            SetupActionsView();
 
             UnsubscribeFromActionsView(_actionsView);
             await _actionsView.AppearAsync();
-            if (_gameStateModel.HighlightedShopObject != null)
+            if (_gameStateModel.HighlightState.IsHighlighted)
             {
                 SubscribeForActionsView(_actionsView);
             }
@@ -106,6 +90,27 @@ public class ShopObjectActionsPanelMediator : IMediator
         }
     }
 
+    private void SetupActionsView()
+    {
+        var highlightedShopObject = _gameStateModel.HighlightState.HighlightedShopObject;
+        if (highlightedShopObject != null)
+        {
+            switch (highlightedShopObject.Type)
+            {
+                case ShopObjectType.Shelf:
+                    _actionsView.SetupButtons();
+                    break;
+                case ShopObjectType.CashDesk:
+                    _actionsView.SetupButtons(showRemoveButton: false);
+                    break;
+            }
+        }
+        else
+        {
+            _actionsView.SetupButtons(showRotateButtons: false);
+        }
+    }
+
     private void ShowActionsView()
     {
         if (_actionsView == null)
@@ -116,6 +121,12 @@ public class ShopObjectActionsPanelMediator : IMediator
         else
         {
             _actionsView.transform.SetParent(_contentTransform);
+        }
+        var worldPoint = _gridCalculator.CellToWord(_mouseCellCoordsProvider.MouseCellCoords);
+        var screenPoint = _screenCalculator.WorldToScreenPoint(worldPoint);
+        if (_screenCalculator.ScreenPointToWroldPointInRectangle(_contentTransform, screenPoint, out var position))
+        {
+            _actionsView.transform.position = position;
         }
         _isShown = true;
     }

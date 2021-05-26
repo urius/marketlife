@@ -7,6 +7,7 @@ public class PerimeterMediator : MonoBehaviour
     private SpritesProvider _spritesProvider;
     private IMediator _currentPlacingWallMediator;
     private ShopModel _activeShopModel;
+    private SpriteRenderer _highlightedSpriteRenderer;
     private readonly Dictionary<Vector2Int, SpriteRenderer> _wallViews = new Dictionary<Vector2Int, SpriteRenderer>();
     private readonly Dictionary<Vector2Int, (Transform transform, SpriteRenderer spriteRenderer)> _windowViews = new Dictionary<Vector2Int, (Transform transform, SpriteRenderer sprite)>();
     private readonly Dictionary<Vector2Int, DoorView> _doorViews = new Dictionary<Vector2Int, DoorView>();
@@ -32,6 +33,49 @@ public class PerimeterMediator : MonoBehaviour
     {
         _gameStateModel.ViewingShopModelChanged += OnViewingShopModelChanged;
         _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
+        _gameStateModel.HighlightStateChanged += OnHighlightStateChanged;
+    }
+
+    private void OnHighlightStateChanged()
+    {
+        UpdateHighlight();
+    }
+
+    private void UpdateHighlight()
+    {
+        if (_gameStateModel.HighlightState.IsHighlightedDecoration)
+        {
+            HighlightDecorationOn(_gameStateModel.HighlightState.HighlightedDecorationCoords);
+        }
+        else
+        {
+            DisableCurrentHighlight();
+        }
+    }
+
+    private void HighlightDecorationOn(Vector2Int coords)
+    {
+        DisableCurrentHighlight();
+
+        if (_windowViews.TryGetValue(coords, out var windowView))
+        {
+            _highlightedSpriteRenderer = windowView.spriteRenderer;
+        }
+        else if (_doorViews.TryGetValue(coords, out var doorView))
+        {
+            _highlightedSpriteRenderer = doorView.SpriteRenderer;
+        }
+
+        _highlightedSpriteRenderer.color = Color.green;
+    }
+
+    private void DisableCurrentHighlight()
+    {
+        if (_highlightedSpriteRenderer != null)
+        {
+            _highlightedSpriteRenderer.color = Color.white;
+            _highlightedSpriteRenderer = null;
+        }
     }
 
     private void OnPlacingStateChanged(PlacingStateName previousState, PlacingStateName newState)
@@ -44,16 +88,19 @@ public class PerimeterMediator : MonoBehaviour
                     _currentPlacingWallMediator.Unmediate();
                     _currentPlacingWallMediator = null;
                 }
+                UpdateHighlight();
                 break;
             case PlacingStateName.PlacingNewWall:
                 _currentPlacingWallMediator = new PlacingWallMediator(transform);
                 _currentPlacingWallMediator.Mediate();
                 break;
             case PlacingStateName.PlacingNewWindow:
+            case PlacingStateName.MovingWindow:
                 _currentPlacingWallMediator = new PlacingWindowMediator(transform);
                 _currentPlacingWallMediator.Mediate();
                 break;
             case PlacingStateName.PlacingNewDoor:
+            case PlacingStateName.MovingDoor:
                 _currentPlacingWallMediator = new PlacingDoorMediator(transform);
                 _currentPlacingWallMediator.Mediate();
                 break;
@@ -91,29 +138,49 @@ public class PerimeterMediator : MonoBehaviour
 
     private void OnWindowChanged(Vector2Int cellCords, int numericId)
     {
-        if (_windowViews.ContainsKey(cellCords))
+        if (numericId > 0)
         {
-            _windowViews[cellCords].spriteRenderer.sprite = _spritesProvider.GetWindowSprite(numericId);
+            if (_windowViews.ContainsKey(cellCords))
+            {
+                _windowViews[cellCords].spriteRenderer.sprite = _spritesProvider.GetWindowSprite(numericId);
+            }
+            else
+            {
+                var windowView = new ViewsFactory().CreateWindow(transform, numericId);
+                WallsHelper.PlaceAsWallLike(windowView.transform, cellCords);
+                _windowViews[cellCords] = windowView;
+            }
         }
-        else
+        else if (_windowViews.TryGetValue(cellCords, out var windowView))
         {
-            var windowView = new ViewsFactory().CreateWindow(transform, numericId);
-            WallsHelper.PlaceAsWallLike(windowView.transform, cellCords);
-            _windowViews[cellCords] = windowView;
+            Destroy(windowView.transform.gameObject);
+            _windowViews.Remove(cellCords);
         }
     }
 
     private void OnDoorChanged(Vector2Int cellCords, int numericId)
     {
-        if (_doorViews.ContainsKey(cellCords))
+        if (numericId > 0)
         {
-            _doorViews[cellCords].SetDoorId(numericId);
+            if (_doorViews.ContainsKey(cellCords))
+            {
+                _doorViews[cellCords].SetDoorId(numericId);
+            }
+            else
+            {
+                var doorView = new ViewsFactory().CreateDoor(transform, numericId);
+                WallsHelper.PlaceAsWallLike(doorView.transform, cellCords);
+                _doorViews[cellCords] = doorView;
+            }
         }
-        else
+        else if (_doorViews.TryGetValue(cellCords, out var doorView))
         {
-            var doorView = new ViewsFactory().CreateDoor(transform, numericId);
-            WallsHelper.PlaceAsWallLike(doorView.transform, cellCords);
-            _doorViews[cellCords] = doorView;
+            Destroy(doorView.transform.gameObject);
+            _doorViews.Remove(cellCords);
+            if (_wallViews.TryGetValue(cellCords, out var wallView))
+            {
+                wallView.gameObject.SetActive(true);
+            }
         }
     }
 
@@ -205,5 +272,4 @@ public class PerimeterMediator : MonoBehaviour
         }
         _doorViews.Clear();
     }
-
 }

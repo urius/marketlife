@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class EventsHandleSystem : MonoBehaviour
@@ -30,6 +31,8 @@ public class EventsHandleSystem : MonoBehaviour
         _dispatcher.BottomPanlelFinishPlacingClicked += BottomPanelFinishPlacingClicked;
         _dispatcher.BottomPanelRotateRightClicked += BottomPanelRotateRightClicked;
         _dispatcher.BottomPanelRotateLeftClicked += BottomPanelRotateLeftClicked;
+
+        _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
     }
 
     private void OnUIActionsMoveClicked()
@@ -39,12 +42,12 @@ public class EventsHandleSystem : MonoBehaviour
 
     private void OnUIActionsRotateRightClicked()
     {
-        new RotatePlacedObjectCommand().Execute(_gameStateModel.HighlightedShopObject, 1);
+        new RotateHighlightedObjectCommand().Execute(1);
     }
 
     private void OnUIActionsRotateLeftClicked()
     {
-        new RotatePlacedObjectCommand().Execute(_gameStateModel.HighlightedShopObject, -1);
+        new RotateHighlightedObjectCommand().Execute(-1);
     }
 
     private void OnUIGameViewMouseClicked()
@@ -82,23 +85,23 @@ public class EventsHandleSystem : MonoBehaviour
 
     private void OnMouseCellCoordsUpdated(Vector2Int newCoords)
     {
-        if (_gameStateModel.PlacingState == PlacingStateName.None
-            && _gameStateModel.ViewingShopModel.Grid.TryGetValue(newCoords, out var shopObjectData)
-             && shopObjectData.buildState > 0)
+        if (_gameStateModel.PlacingState == PlacingStateName.None)
         {
-            if (_gameStateModel.HighlightedShopObject != shopObjectData.reference)
-            {
-                _gameStateModel.SetHighlightedShopObject(shopObjectData.reference);
-            }
-        }
-        else
-        {
-            _gameStateModel.SetHighlightedShopObject(null);
+            new ProcessHighlightCommand().Execute(newCoords);
         }
 
         if (_gameStateModel.PlacingShopObjectModel != null)
         {
             _gameStateModel.PlacingShopObjectModel.Coords = newCoords;
+        }
+    }
+
+    private void OnPlacingStateChanged(PlacingStateName previous, PlacingStateName currentState)
+    {
+        if (currentState == PlacingStateName.None)
+        {
+            var mouseCoords = MouseCellCoordsProvider.Instance.MouseCellCoords;
+            new ProcessHighlightCommand().Execute(mouseCoords);
         }
     }
 

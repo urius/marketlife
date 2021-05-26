@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using UnityEngine;
 
 public class GameStateModel
 {
@@ -10,7 +11,7 @@ public class GameStateModel
     public event Action<PlacingStateName, PlacingStateName> PlacingStateChanged = delegate { };
     public event Action<ShopModel> ViewingShopModelChanged = delegate { };
     public event Action PlayerShopModelWasSet = delegate { };
-    public event Action HighlightShopObjectChanged = delegate { };
+    public event Action HighlightStateChanged = delegate { };
 
     private TaskCompletionSource<bool> _dataLoadedTcs = new TaskCompletionSource<bool>();
     public Task GameDataLoadedTask => _dataLoadedTcs.Task;
@@ -20,7 +21,7 @@ public class GameStateModel
     public ShopObjectModelBase PlacingShopObjectModel { get; private set; }
     public ShopModel ViewingShopModel { get; private set; }
     public ShopModel PlayerShopModel { get; private set; }
-    public ShopObjectModelBase HighlightedShopObject { get; private set; }
+    public HighlightState HighlightState { get; private set; } = HighlightState.Default;
 
     public void SetGameState(GameStateName newState)
     {
@@ -89,20 +90,55 @@ public class GameStateModel
         PlayerShopModelWasSet();
     }
 
+    public void ResetHighlightedState(bool isSilent = false)
+    {
+        if (HighlightState.IsHighlighted == false) return;
+
+        if (HighlightState.HighlightedShopObject != null)
+        {
+            HighlightState.HighlightedShopObject.TriggerHighlighted(false);
+        }
+
+        HighlightState = HighlightState.Default;
+        if (isSilent == false)
+        {
+            HighlightStateChanged();
+        }
+    }
+
     public void SetHighlightedShopObject(ShopObjectModelBase shopObjectModel)
     {
-        if (HighlightedShopObject != null)
+        if (HighlightState.IsHighlighted && HighlightState.HighlightedShopObject == shopObjectModel)
         {
-            HighlightedShopObject.TriggerHighlighted(false);
+            return;
+        }
+        if (HighlightState.HighlightedShopObject != null)
+        {
+            HighlightState.HighlightedShopObject.TriggerHighlighted(false);
         }
 
-        HighlightedShopObject = shopObjectModel;
-
-        if (HighlightedShopObject != null)
+        HighlightState = new HighlightState()
         {
-            HighlightedShopObject.TriggerHighlighted(true);
-        }
-        HighlightShopObjectChanged();
+            IsHighlighted = true,
+            HighlightedDecorationCoords = Vector2Int.zero,
+            HighlightedShopObject = shopObjectModel,
+        };
+        shopObjectModel.TriggerHighlighted(true);
+
+        HighlightStateChanged();
+    }
+
+    public void SetHighlightedDecorationOn(Vector2Int coords)
+    {
+        ResetHighlightedState(isSilent: true);
+        HighlightState = new HighlightState()
+        {
+            IsHighlighted = true,
+            HighlightedDecorationCoords = coords,
+            HighlightedShopObject = null,
+        };
+
+        HighlightStateChanged();
     }
 
     private void SetPlacingState(PlacingStateName newState)
@@ -111,6 +147,22 @@ public class GameStateModel
         PlacingState = newState;
         PlacingStateChanged(previousState, newState);
     }
+}
+
+public struct HighlightState
+{
+    public bool IsHighlighted;
+    public Vector2Int HighlightedDecorationCoords;
+    public ShopObjectModelBase HighlightedShopObject;
+
+    public static HighlightState Default => new HighlightState()
+    {
+        IsHighlighted = false,
+        HighlightedDecorationCoords = Vector2Int.zero,
+        HighlightedShopObject = null
+    };
+
+    public bool IsHighlightedDecoration => IsHighlighted == true && HighlightedDecorationCoords != Vector2Int.zero;
 }
 
 public enum GameStateName

@@ -3,6 +3,7 @@ using UnityEngine;
 public class DoorView : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer _spriteRenderer;
+    public SpriteRenderer SpriteRenderer => _spriteRenderer;
 
     private SpritesProvider _spritesProvider;
 

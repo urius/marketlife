@@ -3,8 +3,9 @@ public struct UIRequestPlacingDecorationCommand
     public void Execute(ShopDecorationObjectType decorationType, int numericId)
     {
         var gameStateModel = GameStateModel.Instance;
-        Dispatcher.Instance.RequestForceMouseCellPositionUpdate();
+        if (gameStateModel.PlacingState != PlacingStateName.None) return;
 
+        Dispatcher.Instance.RequestForceMouseCellPositionUpdate();
         switch (decorationType)
         {
             case ShopDecorationObjectType.Floor:

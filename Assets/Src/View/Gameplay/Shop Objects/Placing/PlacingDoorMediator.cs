@@ -39,7 +39,7 @@ public class PlacingDoorMediator : IMediator
     public void Unmediate()
     {
         _dispatcher.MouseCellCoordsUpdated -= OnMouseCellCoordsUpdated;
-        _currentShopModel.ShopDesign.WindowChanged -= OnDoorChanged;
+        _currentShopModel.ShopDesign.DoorChanged -= OnDoorChanged;
 
         GameObject.Destroy(_currentPlacingDoor.transform.gameObject);
         _currentPlacingDoor = default;
@@ -47,7 +47,10 @@ public class PlacingDoorMediator : IMediator
 
     private void OnDoorChanged(Vector2Int cellCoords, int numericId)
     {
-        UpdateBuildAvailability(cellCoords);
+        if (numericId > 0)
+        {
+            UpdateBuildAvailability(cellCoords);
+        }
     }
 
     private void OnMouseCellCoordsUpdated(Vector2Int cellCoords)
@@ -67,5 +70,4 @@ public class PlacingDoorMediator : IMediator
                     ? _currentPlacingDoor.Color.SetRGB(0.5f, 1f, 0.5f)
                     : _currentPlacingDoor.Color.SetRGB(1f, 0.5f, 0.5f);
     }
-
 }

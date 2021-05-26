@@ -115,6 +115,18 @@ public class ShopModel
         }
     }
 
+    public bool TryPlaceDecoration(ShopDecorationObjectType decorationType, Vector2Int coords, int numericId)
+    {
+        return decorationType switch
+        {
+            ShopDecorationObjectType.Floor => TryPlaceFloor(coords, numericId),
+            ShopDecorationObjectType.Wall => TryPlaceWall(coords, numericId),
+            ShopDecorationObjectType.Window => TryPlaceWindow(coords, numericId),
+            ShopDecorationObjectType.Door => TryPlaceDoor(coords, numericId),
+            _ => false,
+        };
+    }
+
     public bool CanPlaceFloor(Vector2Int cellCoords, int numericId)
     {
         return ShopDesign.CanPlaceFloor(cellCoords, numericId);
@@ -339,6 +351,16 @@ public class ShoDesignModel
         WindowChanged(cellCoords, windowNumericId);
     }
 
+    public bool RemoveWindow(Vector2Int cellCoords)
+    {
+        if (Windows.Remove(cellCoords))
+        {
+            WindowChanged(cellCoords, 0);
+            return true;
+        }
+        return false;
+    }
+
     public bool CanPlaceDoor(Vector2Int cellCoords, int placingDecorationNumericId)
     {
         return IsWallCoords(cellCoords)
@@ -350,6 +372,44 @@ public class ShoDesignModel
     {
         Doors[cellCoords] = doorNumericId;
         DoorChanged(cellCoords, doorNumericId);
+    }
+
+    public bool RemoveDoor(Vector2Int cellCoords)
+    {
+        if (Doors.Remove(cellCoords))
+        {
+            DoorChanged(cellCoords, 0);
+            return true;
+        }
+        return false;
+    }
+
+    public ShopDecorationObjectType GetDecorationType(Vector2Int coords)
+    {
+        if (Doors.ContainsKey(coords))
+        {
+            return ShopDecorationObjectType.Door;
+        }
+        else if (Windows.ContainsKey(coords))
+        {
+            return ShopDecorationObjectType.Window;
+        }
+        else if (Walls.ContainsKey(coords))
+        {
+            return ShopDecorationObjectType.Wall;
+        }
+        else if (Floors.ContainsKey(coords))
+        {
+            return ShopDecorationObjectType.Floor;
+        }
+
+        return ShopDecorationObjectType.Undefined;
+    }
+
+    public bool IsHighlightableDecorationOn(Vector2Int coords)
+    {
+        var type = GetDecorationType(coords);
+        return type == ShopDecorationObjectType.Window || type == ShopDecorationObjectType.Door;
     }
 
     private bool IsWallCoords(Vector2Int cellCoords)

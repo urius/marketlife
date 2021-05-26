@@ -167,6 +167,7 @@ public class BottomPanelView : MonoBehaviour
         var tcs = new UniTaskCompletionSource();
 
         var rectTransform = transform as RectTransform;
+        LeanTween.cancel(rectTransform);
         var targetPosition = rectTransform.anchoredPosition;
         targetPosition.y = -200;
         LeanTween.move(rectTransform, targetPosition, 0.5f)
@@ -181,6 +182,7 @@ public class BottomPanelView : MonoBehaviour
         var tcs = new UniTaskCompletionSource();
 
         var rectTransform = transform as RectTransform;
+        LeanTween.cancel(rectTransform);
         var targetPosition = Vector3.zero;
         LeanTween.move(rectTransform, targetPosition, 1f)
             .setEaseOutBounce()
@@ -200,6 +202,7 @@ public class BottomPanelView : MonoBehaviour
         }
 
         var startPos = _buttonYPositionsByCanvasGroup[canvasGroups];
+        LTDescr tweenDescription = null;
         for (var i = 0; i < canvasGroups.Length; i++)
         {
             var delay = withDelays ? i * DefaultDelaySeconds : 0;
@@ -209,11 +212,15 @@ public class BottomPanelView : MonoBehaviour
             rectTransform.anchoredPosition = new Vector2(v.x, startPos + DeltaPositionForAnimation);
             LeanTween.move(rectTransform, new Vector2(v.x, startPos), DefaultDurationSeconds).setDelay(delay).setEaseOutQuad();
 
-            var tweenDescr = LeanTween.alphaCanvas(canvasGroups[i], 1, DefaultDurationSeconds).setDelay(delay);
-            if (i == canvasGroups.Length - 1)
-            {
-                tweenDescr.setOnComplete(() => resultTsc.TrySetResult());
-            }
+            tweenDescription = LeanTween.alphaCanvas(canvasGroups[i], 1, DefaultDurationSeconds).setDelay(delay);
+        }
+        if (tweenDescription != null)
+        {
+            tweenDescription?.setOnComplete(() => resultTsc.TrySetResult());
+        }
+        else
+        {
+            resultTsc.TrySetResult();
         }
 
         return resultTsc.Task;
@@ -247,7 +254,14 @@ public class BottomPanelView : MonoBehaviour
 
             tweenDescription = LeanTween.alphaCanvas(canvasGroups[i], 0, DefaultDurationSeconds).setDelay(delay);
         }
-        tweenDescription?.setOnComplete(OnLastTweenComplete);
+        if (tweenDescription != null)
+        {
+            tweenDescription?.setOnComplete(OnLastTweenComplete);
+        }
+        else
+        {
+            resultTsc.TrySetResult();
+        }
 
         return resultTsc.Task;
     }

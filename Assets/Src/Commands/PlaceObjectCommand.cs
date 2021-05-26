@@ -1,4 +1,4 @@
-using System;
+using UnityEngine;
 
 public struct PlaceObjectCommand
 {
@@ -15,28 +15,22 @@ public struct PlaceObjectCommand
                 PlaceMovingShopObject();
                 break;
             case PlacingStateName.PlacingNewFloor:
-                if (gameStateModel.ViewingShopModel.TryPlaceFloor(mouseCellCoords, gameStateModel.PlacingDecorationNumericId))
-                {
-                    //TODO animate money spend
-                }
+                PlaceNewDecoration(mouseCellCoords, ShopDecorationObjectType.Floor, gameStateModel.PlacingDecorationNumericId);
                 break;
             case PlacingStateName.PlacingNewWall:
-                if (gameStateModel.ViewingShopModel.TryPlaceWall(mouseCellCoords, gameStateModel.PlacingDecorationNumericId))
-                {
-                    //TODO animate money spend
-                }
+                PlaceNewDecoration(mouseCellCoords, ShopDecorationObjectType.Wall, gameStateModel.PlacingDecorationNumericId);
                 break;
             case PlacingStateName.PlacingNewWindow:
-                if (gameStateModel.ViewingShopModel.TryPlaceWindow(mouseCellCoords, gameStateModel.PlacingDecorationNumericId))
-                {
-                    //TODO animate money spend
-                }
+                PlaceNewDecoration(mouseCellCoords, ShopDecorationObjectType.Window, gameStateModel.PlacingDecorationNumericId);
+                break;
+            case PlacingStateName.MovingWindow:
+                PlaceMovingDecoration(mouseCellCoords, ShopDecorationObjectType.Window, gameStateModel.PlacingDecorationNumericId);
                 break;
             case PlacingStateName.PlacingNewDoor:
-                if (gameStateModel.ViewingShopModel.TryPlaceDoor(mouseCellCoords, gameStateModel.PlacingDecorationNumericId))
-                {
-                    //TODO animate money spend
-                }
+                PlaceNewDecoration(mouseCellCoords, ShopDecorationObjectType.Door, gameStateModel.PlacingDecorationNumericId);
+                break;
+            case PlacingStateName.MovingDoor:
+                PlaceMovingDecoration(mouseCellCoords, ShopDecorationObjectType.Door, gameStateModel.PlacingDecorationNumericId);
                 break;
         }
     }
@@ -61,6 +55,24 @@ public struct PlaceObjectCommand
         if (gameStateModel.ViewingShopModel.CanPlaceShopObject(shopObject))
         {
             gameStateModel.ViewingShopModel.PlaceShopObject(shopObject);
+            gameStateModel.ResetPlacingState();
+        }
+    }
+
+    private void PlaceNewDecoration(Vector2Int coords, ShopDecorationObjectType decorationType, int numericId)
+    {
+        var gameStateModel = GameStateModel.Instance;
+        if (gameStateModel.ViewingShopModel.TryPlaceDecoration(decorationType, coords, numericId))
+        {
+            //TODO animate money spend
+        }
+    }
+
+    private void PlaceMovingDecoration(Vector2Int coords, ShopDecorationObjectType decorationType, int numericId)
+    {
+        var gameStateModel = GameStateModel.Instance;
+        if (gameStateModel.ViewingShopModel.TryPlaceDecoration(decorationType, coords, numericId))
+        {
             gameStateModel.ResetPlacingState();
         }
     }

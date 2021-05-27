@@ -22,6 +22,9 @@ public class Dispatcher
     public Action UIActionsMoveClicked = delegate { };
     public Action UIActionsRemoveClicked = delegate { };
 
+    public Action UIRequestBlinkGold = delegate { };
+    public Action UIRequestBlinkCash = delegate { };    
+
     public Action<Vector2Int> MouseCellCoordsUpdated = delegate { };
     public Action RequestForceMouseCellPositionUpdate = delegate { };
     

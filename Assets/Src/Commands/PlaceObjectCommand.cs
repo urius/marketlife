@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public struct PlaceObjectCommand
@@ -38,23 +39,32 @@ public struct PlaceObjectCommand
     private void PlaceNewShopObject()
     {
         var gameStateModel = GameStateModel.Instance;
-        //todo: check enought money
-        if (gameStateModel.ViewingShopModel.CanPlaceShopObject(gameStateModel.PlacingShopObjectModel))
+        var shopModel = gameStateModel.ViewingShopModel;
+        var shopObject = gameStateModel.PlacingShopObjectModel;
+
+        if (shopModel.CanPlaceShopObject(shopObject))
         {
-            var clonedShopObject = gameStateModel.PlacingShopObjectModel.Clone();
-            gameStateModel.ViewingShopModel.PlaceShopObject(clonedShopObject);
+            if (TrySpendMoneyOrBlink(shopObject.Price))
+            {
+                var clonedShopObject = gameStateModel.PlacingShopObjectModel.Clone();
+                shopModel.PlaceShopObject(clonedShopObject);
+            }
+            else
+            {
+                gameStateModel.ResetPlacingState();
+            }
         }
     }
 
     private void PlaceMovingShopObject()
     {
         var gameStateModel = GameStateModel.Instance;
-        //todo: check enought money
+        var shopModel = gameStateModel.ViewingShopModel;
 
         var shopObject = gameStateModel.PlacingShopObjectModel;
-        if (gameStateModel.ViewingShopModel.CanPlaceShopObject(shopObject))
+        if (shopModel.CanPlaceShopObject(shopObject))
         {
-            gameStateModel.ViewingShopModel.PlaceShopObject(shopObject);
+            shopModel.PlaceShopObject(shopObject);
             gameStateModel.ResetPlacingState();
         }
     }
@@ -62,18 +72,53 @@ public struct PlaceObjectCommand
     private void PlaceNewDecoration(Vector2Int coords, ShopDecorationObjectType decorationType, int numericId)
     {
         var gameStateModel = GameStateModel.Instance;
-        if (gameStateModel.ViewingShopModel.TryPlaceDecoration(decorationType, coords, numericId))
+        var shopModel = gameStateModel.ViewingShopModel;
+        var mainConfig = GameConfigManager.Instance.MainConfig;
+        var decorationConfig = mainConfig.GetDecorationConfigBuNumericId(decorationType, numericId);
+
+        if (shopModel.CanPlaceDecoration(decorationType, coords, numericId))
         {
-            //TODO animate money spend
+            if (TrySpendMoneyOrBlink(Price.FromString(decorationConfig.price)))
+            {
+                shopModel.TryPlaceDecoration(decorationType, coords, numericId);
+            }
+            else
+            {
+                gameStateModel.ResetPlacingState();
+            }
         }
     }
 
     private void PlaceMovingDecoration(Vector2Int coords, ShopDecorationObjectType decorationType, int numericId)
     {
         var gameStateModel = GameStateModel.Instance;
-        if (gameStateModel.ViewingShopModel.TryPlaceDecoration(decorationType, coords, numericId))
+        var shopModel = gameStateModel.ViewingShopModel;
+
+        if (shopModel.TryPlaceDecoration(decorationType, coords, numericId))
         {
             gameStateModel.ResetPlacingState();
+        }
+    }
+
+    private bool TrySpendMoneyOrBlink(Price price)
+    {
+        var gameStateModel = GameStateModel.Instance;
+        var shopModel = gameStateModel.ViewingShopModel;
+        if (shopModel.TrySpendMoney(price))
+        {
+            return true;
+        }
+        else
+        {
+            if (price.IsGold)
+            {
+                Dispatcher.Instance.UIRequestBlinkGold();
+            }
+            else
+            {
+                Dispatcher.Instance.UIRequestBlinkCash();
+            }
+            return false;
         }
     }
 }

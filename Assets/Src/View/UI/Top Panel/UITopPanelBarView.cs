@@ -37,7 +37,7 @@ public class UITopPanelBarView : MonoBehaviour
     public UniTask SetAmountAnimatedAsync(int targetAmount)
     {
         var animateIconTask = (targetAmount > _amount) ? JumpIconAsync() : RotateIconAsync();
-        
+
         _text.color = (targetAmount > _amount) ? Color.green : Color.yellow;
         var tsc = new UniTaskCompletionSource();
         LeanTween.cancel(_text.gameObject);
@@ -56,7 +56,7 @@ public class UITopPanelBarView : MonoBehaviour
         _iconDefaultRotation = _icon.eulerAngles;
         _startTextColor = _text.color;
 
-        if(_button != null)
+        if (_button != null)
         {
             _buttonRectTransform = _button.transform as RectTransform;
             _buttonDefaultAnchoredPosition = _buttonRectTransform.anchoredPosition;
@@ -123,6 +123,16 @@ public class UITopPanelBarView : MonoBehaviour
         _isAnimationInProgress = false;
     }
 
+    public async UniTask BlinkAmountAsync()
+    {
+        LeanTween.cancel(_text.gameObject);
+        for (var i = 0; i < 3; i++)
+        {
+            await ChangeAmountColorAsync(Color.white, Color.red, 0.1f);
+            await ChangeAmountColorAsync(Color.red, Color.white, 0.2f);
+        }
+    }
+
     public async UniTask JumpAndSaltoIconAsync()
     {
         if (_isAnimationInProgress) return;
@@ -148,6 +158,19 @@ public class UITopPanelBarView : MonoBehaviour
 
         _icon.eulerAngles = _iconDefaultRotation;
         _isAnimationInProgress = false;
+    }
+
+    private UniTask ChangeAmountColorAsync(Color from, Color to, float duration)
+    {
+        var tsc = new UniTaskCompletionSource();
+        LeanTween.value(_text.gameObject, UpdateTextColor, from, to, duration)
+            .setOnComplete(() => tsc.TrySetResult());
+        return tsc.Task;
+    }
+
+    private void UpdateTextColor(Color color)
+    {
+        _text.color = color;
     }
 
     private (UniTask task, LTDescr tweenDescription) RotateZAsync(GameObject gameObject, float to, float duration)

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 public class MainConfig : IShelfsConfig, IFloorsConfig, IWallsConfig, IWindowsConfig, IDoorsConfig
@@ -29,6 +30,23 @@ public class MainConfig : IShelfsConfig, IFloorsConfig, IWallsConfig, IWindowsCo
     public IEnumerable<(int id, ShopDecorationConfigDto config)> GetFloorsConfigsForLevel(int level)
     {
         return GetConfigsForLevel(FloorsConfig, level);
+    }
+
+    public ShopDecorationConfigDto GetDecorationConfigBuNumericId(ShopDecorationObjectType decorationType, int numericId)
+    {
+        switch (decorationType)
+        {
+            case ShopDecorationObjectType.Floor:
+                return GetFloorConfigByNumericId(numericId);
+            case ShopDecorationObjectType.Wall:
+                return GetWallConfigByNumericId(numericId);
+            case ShopDecorationObjectType.Window:
+                return GetWindowConfigByNumericId(numericId);
+            case ShopDecorationObjectType.Door:
+                return GetDoorConfigByNumericId(numericId);
+            default:
+                throw new ArgumentException($"GetDecorationConfigBuNumericId: unsupported {nameof(ShopDecorationObjectType)} '{decorationType}'");
+        }
     }
 
     public ShopDecorationConfigDto GetFloorConfigByNumericId(int floorNumericId)

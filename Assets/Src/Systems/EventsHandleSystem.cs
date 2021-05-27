@@ -103,6 +103,10 @@ public class EventsHandleSystem : MonoBehaviour
             var mouseCoords = MouseCellCoordsProvider.Instance.MouseCellCoords;
             new ProcessHighlightCommand().Execute(mouseCoords);
         }
+        else
+        {
+            _gameStateModel.ResetHighlightedState();
+        }
     }
 
     private void OnUIBottomPanelPlaceShelfClicked(int shelfNumericId)

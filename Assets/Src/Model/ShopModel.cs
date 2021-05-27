@@ -115,6 +115,18 @@ public class ShopModel
         }
     }
 
+    public bool CanPlaceDecoration(ShopDecorationObjectType decorationType, Vector2Int coords, int numericId)
+    {
+        return decorationType switch
+        {
+            ShopDecorationObjectType.Floor => CanPlaceFloor(coords, numericId),
+            ShopDecorationObjectType.Wall => CanPlaceWall(coords, numericId),
+            ShopDecorationObjectType.Window => CanPlaceWindow(coords, numericId),
+            ShopDecorationObjectType.Door => CanPlaceDoor(coords, numericId),
+            _ => false,
+        };
+    }
+
     public bool TryPlaceDecoration(ShopDecorationObjectType decorationType, Vector2Int coords, int numericId)
     {
         return decorationType switch

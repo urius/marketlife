@@ -10,11 +10,13 @@ public class UITopPanelMediator : MonoBehaviour
     [SerializeField] private UITopPanelBarView _moodBarView;
 
     private GameStateModel _gameStateModel;
+    private Dispatcher _dispatcher;
     private ShopModel _playerShopModel;
 
     private void Awake()
     {
         _gameStateModel = GameStateModel.Instance;
+        _dispatcher = Dispatcher.Instance;
     }
 
     public void Start()
@@ -50,7 +52,31 @@ public class UITopPanelMediator : MonoBehaviour
 
     private void Activate()
     {
+        _dispatcher.UIRequestBlinkCash += OnUIRequestBlinkCash;
+        _dispatcher.UIRequestBlinkGold += OnUIRequestBlinkGold;
 
+        _playerShopModel.ProgressModel.CashChanged += OnCashChanged;
+        _playerShopModel.ProgressModel.GoldChanged += OnGoldChanged;
+    }
+
+    private void OnCashChanged(int previousValue, int currentValue)
+    {
+        _cashBarView.SetAmountAnimatedAsync(currentValue);
+    }
+
+    private void OnGoldChanged(int previousValue, int currentValue)
+    {
+        _crystalsBarView.SetAmountAnimatedAsync(currentValue);
+    }
+
+    private async void OnUIRequestBlinkGold()
+    {
+        await _crystalsBarView.BlinkAmountAsync();
+    }
+
+    private async void OnUIRequestBlinkCash()
+    {
+        await _cashBarView.BlinkAmountAsync();
     }
 
     private UniTask ShowNewLevelAnimationAsync()

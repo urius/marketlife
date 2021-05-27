@@ -5,6 +5,8 @@ public class Dispatcher
 {
     public Action<ShopModel> PlayerShopLoaded = delegate { };
 
+    public Action<Vector3> CameraMoved = delegate { };
+
     public Action UIGameViewMouseDown = delegate { };
     public Action UIGameViewMouseUp = delegate { };
     public Action UIGameViewMouseClick = delegate { };
@@ -23,7 +25,9 @@ public class Dispatcher
     public Action UIActionsRemoveClicked = delegate { };
 
     public Action UIRequestBlinkGold = delegate { };
-    public Action UIRequestBlinkCash = delegate { };    
+    public Action UIRequestBlinkCash = delegate { };
+    public Action<Vector2, bool, int> UIRequestFlyingPrice = delegate { };
+    public Action<Vector2, string> UIRequestFlyingText = delegate { };    
 
     public Action<Vector2Int> MouseCellCoordsUpdated = delegate { };
     public Action RequestForceMouseCellPositionUpdate = delegate { };

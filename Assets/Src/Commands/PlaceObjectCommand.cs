@@ -41,18 +41,30 @@ public struct PlaceObjectCommand
         var gameStateModel = GameStateModel.Instance;
         var shopModel = gameStateModel.ViewingShopModel;
         var shopObject = gameStateModel.PlacingShopObjectModel;
+        var screenCalculator = ScreenCalculator.Instance;
+        var dispatcher = Dispatcher.Instance;
+        var localiationManager = LocalizationManager.Instance;
 
+        var screenCoords = screenCalculator.CellToScreenPoint(shopObject.Coords);
         if (shopModel.CanPlaceShopObject(shopObject))
         {
-            if (TrySpendMoneyOrBlink(shopObject.Price))
+            var price = shopObject.Price;
+            if (TrySpendMoneyOrBlink(price))
             {
+                dispatcher.UIRequestFlyingPrice(screenCoords, price.IsGold, -price.Value);
+
                 var clonedShopObject = gameStateModel.PlacingShopObjectModel.Clone();
                 shopModel.PlaceShopObject(clonedShopObject);
             }
             else
             {
                 gameStateModel.ResetPlacingState();
+                dispatcher.UIRequestFlyingText(screenCoords, localiationManager.GetLocalization(LocalizationKeys.FlyingTextInsufficientFunds));
             }
+        }
+        else
+        {
+            dispatcher.UIRequestFlyingText(screenCoords, localiationManager.GetLocalization(LocalizationKeys.FlyingTextWrongPlace));
         }
     }
 
@@ -74,18 +86,30 @@ public struct PlaceObjectCommand
         var gameStateModel = GameStateModel.Instance;
         var shopModel = gameStateModel.ViewingShopModel;
         var mainConfig = GameConfigManager.Instance.MainConfig;
+        var screenCalculator = ScreenCalculator.Instance;
         var decorationConfig = mainConfig.GetDecorationConfigBuNumericId(decorationType, numericId);
+        var dispatcher = Dispatcher.Instance;
+        var localiationManager = LocalizationManager.Instance;
 
+        var screenCoords = screenCalculator.CellToScreenPoint(coords);
         if (shopModel.CanPlaceDecoration(decorationType, coords, numericId))
         {
-            if (TrySpendMoneyOrBlink(Price.FromString(decorationConfig.price)))
+            var price = Price.FromString(decorationConfig.price);
+            if (TrySpendMoneyOrBlink(price))
             {
+                dispatcher.UIRequestFlyingPrice(screenCoords, price.IsGold, -price.Value);
+
                 shopModel.TryPlaceDecoration(decorationType, coords, numericId);
             }
             else
             {
                 gameStateModel.ResetPlacingState();
+                dispatcher.UIRequestFlyingText(screenCoords, localiationManager.GetLocalization(LocalizationKeys.FlyingTextInsufficientFunds));
             }
+        }
+        else
+        {
+            dispatcher.UIRequestFlyingText(screenCoords, localiationManager.GetLocalization(LocalizationKeys.FlyingTextWrongPlace));
         }
     }
 

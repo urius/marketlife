@@ -52,4 +52,6 @@ public class LocalizationKeys
 {
     public static string HintBottomPanelShelfDescription = "hint_bottom_panel_shelf_description";
     public static string NameShopObjectPrefix = "name_shop_object_";    
+    public static string FlyingTextInsufficientFunds = "flying_text_insufficient_funds";
+    public static string FlyingTextWrongPlace = "flying_text_wrong_place";
 }

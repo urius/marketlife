@@ -7,7 +7,6 @@ public class ShopObjectActionsPanelMediator : IMediator
     private readonly Dispatcher _dispatcher;
     private readonly GameStateModel _gameStateModel;
     private readonly MouseCellCoordsProvider _mouseCellCoordsProvider;
-    private readonly GridCalculator _gridCalculator;
     private readonly ScreenCalculator _screenCalculator;
     private readonly PrefabsHolder _prefabsHolder;
     private readonly PoolCanvasProvider _poolCanvasProvider;
@@ -22,7 +21,6 @@ public class ShopObjectActionsPanelMediator : IMediator
         _dispatcher = Dispatcher.Instance;
         _gameStateModel = GameStateModel.Instance;
         _mouseCellCoordsProvider = MouseCellCoordsProvider.Instance;
-        _gridCalculator = GridCalculator.Instance;
         _screenCalculator = ScreenCalculator.Instance;
         _prefabsHolder = PrefabsHolder.Instance;
         _poolCanvasProvider = PoolCanvasProvider.Instance;
@@ -122,9 +120,8 @@ public class ShopObjectActionsPanelMediator : IMediator
         {
             _actionsView.transform.SetParent(_contentTransform);
         }
-        var worldPoint = _gridCalculator.CellToWord(_mouseCellCoordsProvider.MouseCellCoords);
-        var screenPoint = _screenCalculator.WorldToScreenPoint(worldPoint);
-        if (_screenCalculator.ScreenPointToWroldPointInRectangle(_contentTransform, screenPoint, out var position))
+        var screenPoint = _screenCalculator.CellToScreenPoint(_mouseCellCoordsProvider.MouseCellCoords);
+        if (_screenCalculator.ScreenPointToWorldPointInRectangle(_contentTransform, screenPoint, out var position))
         {
             _actionsView.transform.position = position;
         }

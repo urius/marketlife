@@ -110,18 +110,11 @@ public class MainCameraMediator : MonoBehaviour
         var newCameraPos = _camera.transform.position - _deltaWorldMouse;
         newCameraPos.z = _cameraZ;
         _camera.transform.position = newCameraPos;
+        _dispatcher.CameraMoved(_deltaWorldMouse);
     }
 
     private Vector3 GetOnPlaneMouseWorldPoint()
     {
-        var cameraTransform = _camera.transform;
-        var mousePosition = _currentMousePosition;
-        var mouseWorldPoint = _camera.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y));
-        var rotationX = Mathf.Deg2Rad * cameraTransform.rotation.eulerAngles.x;
-        var distance = (float)(Math.Abs(mouseWorldPoint.z) / Math.Cos(rotationX));
-
-        var result = mouseWorldPoint + cameraTransform.forward * distance;
-
-        return result;
+        return _gridCalculator.ScreenPointToPlaneWorldPoint(_camera, _currentMousePosition);
     }
 }

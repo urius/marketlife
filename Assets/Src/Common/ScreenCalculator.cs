@@ -18,10 +18,15 @@ public class ScreenCalculator
         return GetCamera().ScreenToWorldPoint(screenPoint);
     }
 
-
-    public bool ScreenPointToWroldPointInRectangle(RectTransform rect, Vector2 screenPoint, out Vector3 worldPoint)
+    public bool ScreenPointToWorldPointInRectangle(RectTransform rect, Vector2 screenPoint, out Vector3 worldPoint)
     {
         return RectTransformUtility.ScreenPointToWorldPointInRectangle(rect, screenPoint, GetCamera(), out worldPoint);
+    }
+
+    public Vector3 CellToScreenPoint(Vector2Int cellCoords)
+    {
+        var worldPoint = GridCalculator.Instance.CellToWord(cellCoords);
+        return WorldToScreenPoint(worldPoint);
     }
 
     private Camera GetCamera()

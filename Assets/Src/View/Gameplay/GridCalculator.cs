@@ -39,4 +39,16 @@ public class GridCalculator
         result.x += _cellSize * 0.5f;
         return result;
     }
+
+    public Vector3 ScreenPointToPlaneWorldPoint(Camera camera, Vector2 screenPoint)
+    {
+        var cameraTransform = camera.transform;
+        var mouseWorldPoint = camera.ScreenToWorldPoint(new Vector3(screenPoint.x, screenPoint.y));
+        var rotationX = Mathf.Deg2Rad * cameraTransform.rotation.eulerAngles.x;
+        var distance = (float)(Math.Abs(mouseWorldPoint.z) / Math.Cos(rotationX));
+
+        var result = mouseWorldPoint + cameraTransform.forward * distance;
+
+        return result;
+    }
 }

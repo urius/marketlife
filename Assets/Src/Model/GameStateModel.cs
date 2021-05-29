@@ -12,6 +12,8 @@ public class GameStateModel
     public event Action<ShopModel> ViewingShopModelChanged = delegate { };
     public event Action PlayerShopModelWasSet = delegate { };
     public event Action HighlightStateChanged = delegate { };
+    public event Action PopupShown = delegate { };
+    public event Action PopupRemoved = delegate { };
 
     private TaskCompletionSource<bool> _dataLoadedTcs = new TaskCompletionSource<bool>();
     public Task GameDataLoadedTask => _dataLoadedTcs.Task;
@@ -22,6 +24,7 @@ public class GameStateModel
     public ShopModel ViewingShopModel { get; private set; }
     public ShopModel PlayerShopModel { get; private set; }
     public HighlightState HighlightState { get; private set; } = HighlightState.Default;
+    public PopupViewModelBase ShowingPopupModel { get; private set; }
 
     public void SetGameState(GameStateName newState)
     {
@@ -35,6 +38,22 @@ public class GameStateModel
         var previousState = GameState;
         GameState = newState;
         GameStateChanged(previousState, newState);
+    }
+
+    public void ShowPopup(PopupViewModelBase popupModel)
+    {
+        RemoveCurrentPopupIfNeeded();
+        ShowingPopupModel = popupModel;
+        PopupShown();
+    }
+
+    public void RemoveCurrentPopupIfNeeded()
+    {
+        if (ShowingPopupModel != null)
+        {
+            ShowingPopupModel = null;
+            PopupRemoved();
+        }
     }
 
     public void ResetPlacingState()

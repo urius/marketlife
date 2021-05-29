@@ -469,6 +469,11 @@ public class ShopProgressModel
         return currentValue >= spendAmount;
     }
 
+    public void AddCash(int amount)
+    {
+        TrySpendCash(-amount);
+    }
+
     public bool TrySpendCash(int spendAmount)
     {
         var currentValue = Cash;
@@ -492,6 +497,11 @@ public class ShopProgressModel
     {
         var currentValue = Gold;
         return currentValue >= spendAmount;
+    }
+
+    public void AddGold(int amount)
+    {
+        TrySpendGold(-amount);
     }
 
     public bool TrySpendGold(int spendAmount)

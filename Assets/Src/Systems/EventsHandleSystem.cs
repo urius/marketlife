@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class EventsHandleSystem : MonoBehaviour
@@ -25,6 +24,8 @@ public class EventsHandleSystem : MonoBehaviour
         _dispatcher.UIActionsRotateRightClicked += OnUIActionsRotateRightClicked;
         _dispatcher.UIActionsRotateLeftClicked += OnUIActionsRotateLeftClicked;
         _dispatcher.UIActionsMoveClicked += OnUIActionsMoveClicked;
+        _dispatcher.UIActionsRemoveClicked += OnUIActionsRemoveClicked;
+        _dispatcher.UIRemovePopupResult += OnUIRemovePopupResult;
         _dispatcher.MouseCellCoordsUpdated += OnMouseCellCoordsUpdated;
         _dispatcher.BottomPanelInteriorClicked += BottomPanelInteriorClicked;
         _dispatcher.BottomPanelInteriorCloseClicked += BottomPanelInteriorCloseClicked;
@@ -33,6 +34,16 @@ public class EventsHandleSystem : MonoBehaviour
         _dispatcher.BottomPanelRotateLeftClicked += BottomPanelRotateLeftClicked;
 
         _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
+    }
+
+    private void OnUIRemovePopupResult(bool result)
+    {
+        new HandleRemovePopupResult().Execute(result);
+    }
+
+    private void OnUIActionsRemoveClicked()
+    {
+        new RequestRemovePopupCommand().Execute();
     }
 
     private void OnUIActionsMoveClicked()

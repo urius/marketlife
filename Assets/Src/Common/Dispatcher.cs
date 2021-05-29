@@ -23,6 +23,7 @@ public class Dispatcher
     public Action UIActionsRotateLeftClicked = delegate { };
     public Action UIActionsMoveClicked = delegate { };
     public Action UIActionsRemoveClicked = delegate { };
+    public Action<bool> UIRemovePopupResult = delegate { };
 
     public Action UIRequestBlinkGold = delegate { };
     public Action UIRequestBlinkCash = delegate { };

@@ -59,3 +59,5 @@ MonoBehaviour:
     type: 3}
   UIFlyingTextPrefab: {fileID: 7789236709652670622, guid: f8bfa3ccff47149fa97cd5339a4dd82b,
     type: 3}
+  UITextPopupPrefab: {fileID: 7037023643119392150, guid: 0a89ac3325c7b4f8893ec25a88c8c731,
+    type: 3}

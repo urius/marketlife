@@ -68,6 +68,26 @@ public class SpritesProvider
         return GetSprite(SpriteAtlasId.InterfaceAtlas, "icon_dollar");
     }
 
+    public Sprite GetBlueButtonSprite()
+    {
+        return GetSprite(SpriteAtlasId.InterfaceAtlas, "button_1_long_blue");
+    }
+
+    public Sprite GetCrimsonButtonSprite()
+    {
+        return GetSprite(SpriteAtlasId.InterfaceAtlas, "button_1_long_crimson");
+    }
+
+    public Sprite GetGreenButtonSprite()
+    {
+        return GetSprite(SpriteAtlasId.InterfaceAtlas, "button_1_long_green");
+    }
+
+    public Sprite GetOrangeButtonSprite()
+    {
+        return GetSprite(SpriteAtlasId.InterfaceAtlas, "button_1_long_orange");
+    }   
+
     private Sprite GetSprite(SpriteAtlasId gameplayAtlas, string name)
     {
         if (_graphicsManager == null)

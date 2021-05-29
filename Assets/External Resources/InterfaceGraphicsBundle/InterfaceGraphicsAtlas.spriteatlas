@@ -32,7 +32,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 46b41057a82fe4010b5245cd9e8b4afa, type: 3}
-    totalSpriteSurfaceArea: 559060
+    totalSpriteSurfaceArea: 595217
     bindAsDefault: 0
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -50,6 +50,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: bc3106c14ddfc451cb17dbaf5889285c, type: 3}
   - {fileID: 21300000, guid: 918670d1bceec4cceb8282040d4f72a7, type: 3}
   - {fileID: 21300000, guid: 0a79d0d13d0694a58849f83f8879f169, type: 3}
+  - {fileID: 21300000, guid: 72a72af10eaa24eb5bfafe181d14f9ac, type: 3}
   - {fileID: 21300000, guid: bf963e02a32544b8fa517606d749ca29, type: 3}
   - {fileID: 21300000, guid: 742722429a021491f9af9a98628524c5, type: 3}
   - {fileID: 21300000, guid: ed347672ec4ad41ffb84217e5144acdc, type: 3}
@@ -57,10 +58,12 @@ SpriteAtlas:
   - {fileID: 21300000, guid: adb788d29559f4c858092acd11f95c40, type: 3}
   - {fileID: 21300000, guid: 9ad1d113978e94c4d9d9d9a20882466c, type: 3}
   - {fileID: 21300000, guid: 523c1d134aa9c453895d41a9ae7e8b80, type: 3}
+  - {fileID: 21300000, guid: 1a8906235a76048078f220d0c8e9b813, type: 3}
   - {fileID: 21300000, guid: 8d444b5392fef4240ba261583b447348, type: 3}
   - {fileID: 21300000, guid: 8e1d6873f23dc405b9520e4ed9cdf2f4, type: 3}
   - {fileID: 21300000, guid: 99e4d3b3131284fb390e1730c8bb969e, type: 3}
   - {fileID: 21300000, guid: 48dabf54da5ad464b81880ebbdafcc97, type: 3}
+  - {fileID: 21300000, guid: 873fb87419f414aba878b2a83ca87eca, type: 3}
   - {fileID: 21300000, guid: 62dd0884dfc6a4b919b25990d561aa26, type: 3}
   - {fileID: 21300000, guid: 696f9aa4e2979411dba59e1a7edd4d42, type: 3}
   - {fileID: 21300000, guid: ac386cd459ea94c5d9cea66a636e32dc, type: 3}
@@ -97,6 +100,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 7aaef51a3d35f4bc68284b32f42f839b, type: 3}
   - {fileID: 21300000, guid: fc376e1ae26844693b4c5985f66410f0, type: 3}
   - {fileID: 21300000, guid: 0b104c3a210fa4e5a887802a73a203f9, type: 3}
+  - {fileID: 21300000, guid: e1e1f17ab004e4ce3963afd10c495d59, type: 3}
   - {fileID: 21300000, guid: 0376dcaa29ea041dca0831e29332670c, type: 3}
   - {fileID: 21300000, guid: 288ad3fad7fda4d19b158dab317a88f0, type: 3}
   - {fileID: 21300000, guid: 29eb170b0e7ad42eb97645738622e48c, type: 3}
@@ -149,6 +153,7 @@ SpriteAtlas:
   - Lipsticks_1
   - Notebook
   - Eggs_1
+  - content_skin_1
   - Icon_Role
   - Icon_Up3
   - Window1
@@ -156,10 +161,12 @@ SpriteAtlas:
   - Icon_Shelf_1
   - sign_rotate_left
   - Cola
+  - window_caption
   - Sausage_1
   - Icon_AddPerson
   - hint_skin
   - Door1
+  - content_skin_2
   - sign_rotate_right
   - ToothPaste
   - sign_cube
@@ -196,6 +203,7 @@ SpriteAtlas:
   - Hamburger
   - Floor2
   - skin_top_rating_button
+  - popup_content_inner
   - button_1_long_orange
   - Icon_Shelf_5
   - top_bar_bg

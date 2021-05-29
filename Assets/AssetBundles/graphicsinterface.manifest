@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 578598139
+CRC: 4075785006
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 955f95ad982e837823410b624cde525a
+    Hash: 6e907342710adeb8c1299abcbbe1a0d2
   TypeTreeHash:
     serializedVersion: 2
     Hash: ba23c2e8f8b3f5319028008a25497317
@@ -48,6 +48,7 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Floors/Floor2.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_2.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_long_orange.png
+- Assets/External Resources/InterfaceGraphicsBundle/Popups/popup_content_inner.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/sign_cross.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_long_crimson.png
 - Assets/External Resources/InterfaceGraphicsBundle/TopPanel/skin_add_money_button.png
@@ -62,8 +63,10 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/TopPanel/top_bar_bg.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall5.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Doors/Door2.png
+- Assets/External Resources/InterfaceGraphicsBundle/Popups/content_skin_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_small_green.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall1.png
+- Assets/External Resources/InterfaceGraphicsBundle/Popups/content_skin_2.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/icon_dollar.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Beer.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall3.png
@@ -96,8 +99,9 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Cola.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/bottom_panel_item_skin.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/sign_cube.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/ICON_Volume.png
+- Assets/External Resources/InterfaceGraphicsBundle/Popups/window_caption.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_1.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/ICON_Volume.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_4.png
 - Assets/External Resources/Materials/ParticleStar.mat
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/TV.png

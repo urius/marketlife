@@ -1,12 +1,13 @@
-public class RemoveShopObjectPopupViewModel : PopupViewModelBase, ISellPriceModel
+public class RemoveShopObjectPopupViewModel : PopupViewModelBase, IConfirmRemoveObjectPopupViewModel
 {
-    public RemoveShopObjectPopupViewModel(ShopObjectModelBase shopObjectModel)
+    public RemoveShopObjectPopupViewModel(ShopObjectModelBase shopObjectModel, int sellPrice)
     {
         ShopObjectModel = shopObjectModel;
+        SellPrice = sellPrice;
     }
 
-    public ShopObjectModelBase ShopObjectModel { get; private set; }
-    public int SellPrice => ShopObjectModel.SellPrice;
+    public ShopObjectModelBase ShopObjectModel { get; }
+    public int SellPrice { get; }
 
-    public override PopupType PopupType => PopupType.RemoveShopObjectPopup;
+    public override PopupType PopupType => PopupType.ConfirmRemoveObject;
 }

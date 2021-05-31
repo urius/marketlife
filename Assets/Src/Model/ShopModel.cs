@@ -26,6 +26,11 @@ public class ShopModel
         RefillGrid();
     }
 
+    public int GetSellPrice(Price originalPrice)
+    {
+        return originalPrice.IsGold ? originalPrice.Value * 1000 : (int)(originalPrice.Value * 0.5f);
+    }
+
     public bool CanSpendMoney(string price)
     {
         return CanSpendMoney(Price.FromString(price));
@@ -135,6 +140,17 @@ public class ShopModel
             ShopDecorationObjectType.Wall => TryPlaceWall(coords, numericId),
             ShopDecorationObjectType.Window => TryPlaceWindow(coords, numericId),
             ShopDecorationObjectType.Door => TryPlaceDoor(coords, numericId),
+            _ => false,
+        };
+    }
+
+    public bool TryRemoveDecoration(Vector2Int coords)
+    {
+        var decorationType = ShopDesign.GetDecorationType(coords);
+        return decorationType switch
+        {
+            ShopDecorationObjectType.Window => ShopDesign.RemoveWindow(coords),
+            ShopDecorationObjectType.Door => ShopDesign.RemoveDoor(coords),
             _ => false,
         };
     }

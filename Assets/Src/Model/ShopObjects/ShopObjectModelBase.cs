@@ -29,8 +29,6 @@ public abstract class ShopObjectModelBase
         Coords = coords;
     }
 
-    public int SellPrice => Price.IsGold ? Price.Value * 1000 : (int)(Price.Value * 0.5f);
-
     public int Angle => SideHelper.ConvertSideToAngle(_side);
     public int Side
     {

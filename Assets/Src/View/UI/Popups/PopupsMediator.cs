@@ -30,8 +30,8 @@ public class PopupsMediator : IMediator
     {
         switch (_gameStateModel.ShowingPopupModel.PopupType)
         {
-            case PopupType.RemoveShopObjectPopup:
-                _currentPopupMediator = new RemoveShopObjectPopupMediator(_contentTransform);
+            case PopupType.ConfirmRemoveObject:
+                _currentPopupMediator = new UIConfirmRemoveObjectPopupMediator(_contentTransform);
                 break;
         };
         _currentPopupMediator.Mediate();

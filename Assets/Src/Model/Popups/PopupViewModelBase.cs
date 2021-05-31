@@ -6,5 +6,5 @@ public abstract class PopupViewModelBase
 public enum PopupType
 {
     Unknown,
-    RemoveShopObjectPopup,
+    ConfirmRemoveObject,
 }

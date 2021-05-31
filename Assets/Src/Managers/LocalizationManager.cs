@@ -54,6 +54,7 @@ public class LocalizationKeys
     public static string NameShopObjectPrefix = "name_shop_object_";
     public static string FlyingTextInsufficientFunds = "flying_text_insufficient_funds";
     public static string FlyingTextWrongPlace = "flying_text_wrong_place";
+    public static string FlyingTextCantSellLastDoor = "flying_text_cant_sell_last_door";
     public static string CommonYes = "common_yes";
     public static string CommonNo = "common_no";
     public static string PopupRemoveObjectTitle = "popup_remove_object_title";

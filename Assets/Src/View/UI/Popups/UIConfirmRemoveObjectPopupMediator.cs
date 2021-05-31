@@ -1,22 +1,22 @@
 using UnityEngine;
 
-public class RemoveShopObjectPopupMediator : IMediator
+public class UIConfirmRemoveObjectPopupMediator : IMediator
 {
     private readonly RectTransform _contentTransform;
     private readonly Dispatcher _dispatcher;
-    private readonly ISellPriceModel _popupModel;
+    private readonly IConfirmRemoveObjectPopupViewModel _popupModel;
     private readonly PrefabsHolder _prefabsHolder;
     private readonly SpritesProvider _spritesProvider;
     private readonly LocalizationManager _loc;
 
     private UITextPopupView _popupView;
 
-    public RemoveShopObjectPopupMediator(RectTransform contentTransform)
+    public UIConfirmRemoveObjectPopupMediator(RectTransform contentTransform)
     {
         _contentTransform = contentTransform;
 
         _dispatcher = Dispatcher.Instance;
-        _popupModel = GameStateModel.Instance.ShowingPopupModel as ISellPriceModel;
+        _popupModel = GameStateModel.Instance.ShowingPopupModel as IConfirmRemoveObjectPopupViewModel;
         _prefabsHolder = PrefabsHolder.Instance;
         _spritesProvider = SpritesProvider.Instance;
         _loc = LocalizationManager.Instance;

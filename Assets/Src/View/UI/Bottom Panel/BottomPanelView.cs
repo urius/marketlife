@@ -2,10 +2,13 @@ using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class BottomPanelView : MonoBehaviour
+public class BottomPanelView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    public event Action PointerEnter = delegate { };
+    public event Action PointerExit = delegate { };    
     public event Action FriendsButtonClicked = delegate { };
     public event Action WarehouseButtonClicked = delegate { };
     public event Action InteriorButtonClicked = delegate { };
@@ -361,6 +364,16 @@ public class BottomPanelView : MonoBehaviour
     private CanvasGroup GetCanvasGroup(Button button)
     {
         return button.GetComponent<CanvasGroup>();
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        PointerEnter();
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        PointerExit();
     }
 }
 

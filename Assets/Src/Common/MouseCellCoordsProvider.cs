@@ -8,9 +8,9 @@ public class MouseCellCoordsProvider
 
     public Vector2Int MouseCellCoords { get; private set; }
 
-    public void SetMouseCellCoords(Vector2Int newCoords)
+    public void SetMouseCellCoords(Vector2Int newCoords, bool forceUpdate = false)
     {
-        if (newCoords != MouseCellCoords)
+        if (newCoords != MouseCellCoords || forceUpdate)
         {
             MouseCellCoords = newCoords;
             Dispatcher.Instance.MouseCellCoordsUpdated(newCoords);

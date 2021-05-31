@@ -5,6 +5,12 @@ public struct ProcessHighlightCommand
     public void Execute(Vector2Int coords)
     {
         var gameStateModel = GameStateModel.Instance;
+
+        if (gameStateModel.PlacingState != PlacingStateName.None)
+        {
+            return;
+        }
+
         var shopModel = gameStateModel.ViewingShopModel;
         if (shopModel.Grid.TryGetValue(coords, out var shopObjectData)
              && shopObjectData.buildState > 0)

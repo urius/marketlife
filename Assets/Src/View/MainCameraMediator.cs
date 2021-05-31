@@ -81,11 +81,11 @@ public class MainCameraMediator : MonoBehaviour
             _framesCounter3++;
             if (_framesCounter3 >= 3 && (_needToUpdateMouseCellPosition || _needToForceUpdateMouseCellPosition))
             {
-                _needToForceUpdateMouseCellPosition = false;
                 _framesCounter3 = 0;
                 var mouseWorld = GetOnPlaneMouseWorldPoint();
                 var mouseCell = _gridCalculator.WorldToCell(mouseWorld);
-                _mouseCellCoordsProvider.SetMouseCellCoords(mouseCell);
+                _mouseCellCoordsProvider.SetMouseCellCoords(mouseCell, _needToForceUpdateMouseCellPosition);
+                _needToForceUpdateMouseCellPosition = false;
             }
         }
     }

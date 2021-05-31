@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -57,6 +58,8 @@ public class BottomPanelMediator : UINotMonoMediatorBase
 
     private void Activate()
     {
+        _view.PointerEnter += OnBottomPanelPointerEnter;
+        _view.PointerExit += OnBottomPanelPointerExit;
         _view.InteriorButtonClicked += OnInteriorButtonClicked;
         _view.InteriorCloseButtonClicked += OnInteriorCloseButtonClicked;
         _view.InteriorObjectsButtonClicked += OnInteriorObjectsButtonClicked;
@@ -70,6 +73,16 @@ public class BottomPanelMediator : UINotMonoMediatorBase
 
         _gameStateModel.GameStateChanged += OnGameStateChanged;
         _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
+    }
+
+    private void OnBottomPanelPointerEnter()
+    {
+        _dispatcher.UIBottomPanelPointerEnter();
+    }
+
+    private void OnBottomPanelPointerExit()
+    {
+        _dispatcher.UIBottomPanelPointerExit();
     }
 
     private async void OnPlacingStateChanged(PlacingStateName previousState, PlacingStateName newState)
@@ -179,7 +192,7 @@ public class BottomPanelMediator : UINotMonoMediatorBase
     {
         SwowTab(new UIBottomPanelWallsTabMediator(_view));
     }
-    
+
     private void OnInteriorWindowsButtonClicked()
     {
         SwowTab(new UIBottomPanelWindowsTabMediator(_view));
@@ -188,7 +201,7 @@ public class BottomPanelMediator : UINotMonoMediatorBase
     private void OnInteriorDoorsButtonClicked()
     {
         SwowTab(new UIBottomPanelDoorsTabMediator(_view));
-    }    
+    }
 
     private void OnInteriorCloseButtonClicked()
     {

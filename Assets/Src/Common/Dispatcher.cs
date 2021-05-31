@@ -12,6 +12,8 @@ public class Dispatcher
     public Action UIGameViewMouseClick = delegate { };
     public Action UIGameViewMouseEnter = delegate { };
     public Action UIGameViewMouseExit = delegate { };
+    public Action UIBottomPanelPointerEnter = delegate { };    
+    public Action UIBottomPanelPointerExit = delegate { };
 
     public Action<int> UIBottomPanelPlaceShelfClicked = delegate { };
     public Action<int> UIBottomPanelPlaceFloorClicked = delegate { };

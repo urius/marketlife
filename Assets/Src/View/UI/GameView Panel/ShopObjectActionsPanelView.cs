@@ -10,7 +10,6 @@ public class ShopObjectActionsPanelView : MonoBehaviour
     public event Action MoveClicked = delegate { };
     public event Action RotateLeftClicked = delegate { };
     public event Action RemoveClicked = delegate { };
-    public event Action PointerExit = delegate { };
 
     private const float AppearAnimationDuration = 0.3f;
 

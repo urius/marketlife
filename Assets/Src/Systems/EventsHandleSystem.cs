@@ -16,6 +16,8 @@ public class EventsHandleSystem : MonoBehaviour
     private void Activate()
     {
         _dispatcher.UIGameViewMouseClick += OnUIGameViewMouseClicked;
+        _dispatcher.UIBottomPanelPointerEnter += OnUIBottomPanelPointerEnter;
+        _dispatcher.UIBottomPanelPointerExit += OnUIBottomPanelPointerExit;
         _dispatcher.UIBottomPanelPlaceShelfClicked += OnUIBottomPanelPlaceShelfClicked;
         _dispatcher.UIBottomPanelPlaceFloorClicked += OnUIBottomPanelPlaceFloorClicked;
         _dispatcher.UIBottomPanelPlaceWallClicked += OnUIBottomPanelPlaceWallClicked;
@@ -34,6 +36,16 @@ public class EventsHandleSystem : MonoBehaviour
         _dispatcher.BottomPanelRotateLeftClicked += BottomPanelRotateLeftClicked;
 
         _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
+    }
+
+    private void OnUIBottomPanelPointerEnter()
+    {
+        _gameStateModel.ResetHighlightedState();
+    }
+
+    private void OnUIBottomPanelPointerExit()
+    {
+        _dispatcher.RequestForceMouseCellPositionUpdate();
     }
 
     private void OnUIRemovePopupResult(bool result)
@@ -96,10 +108,7 @@ public class EventsHandleSystem : MonoBehaviour
 
     private void OnMouseCellCoordsUpdated(Vector2Int newCoords)
     {
-        if (_gameStateModel.PlacingState == PlacingStateName.None)
-        {
-            new ProcessHighlightCommand().Execute(newCoords);
-        }
+        new ProcessHighlightCommand().Execute(newCoords);
 
         if (_gameStateModel.PlacingShopObjectModel != null)
         {

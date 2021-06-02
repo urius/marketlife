@@ -5025,12 +5025,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _contentTransform: {fileID: 1380841330}
   _viewportTransform: {fileID: 793997755}
-  _gridLayoutGroup: {fileID: 1380841332}
+  _gridLayoutGroup: {fileID: 0}
   _scrollRect: {fileID: 963397128}
   _scrollLeft: {fileID: 1619139875}
   _rewindLeft: {fileID: 2104944339}
   _scrollRight: {fileID: 869404179}
   _rewindRight: {fileID: 1518942247}
+  _slotWidth: 168
 --- !u!1 &869404177
 GameObject:
   m_ObjectHideFlags: 0
@@ -7783,8 +7784,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1380841330}
-  - component: {fileID: 1380841331}
-  - component: {fileID: 1380841332}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -7806,49 +7805,11 @@ RectTransform:
   m_Father: {fileID: 793997755}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00000012499179, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 200}
-  m_Pivot: {x: 0, y: 1}
---- !u!114 &1380841331
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1380841329}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalFit: 1
-  m_VerticalFit: 0
---- !u!114 &1380841332
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1380841329}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 0
-  m_StartCorner: 0
-  m_StartAxis: 0
-  m_CellSize: {x: 168, y: 200}
-  m_Spacing: {x: 0, y: 0}
-  m_Constraint: 2
-  m_ConstraintCount: 1
+  m_Pivot: {x: 0, y: 0}
 --- !u!1 &1390251507
 GameObject:
   m_ObjectHideFlags: 0
@@ -7945,7 +7906,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0

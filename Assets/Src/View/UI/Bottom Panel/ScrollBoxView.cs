@@ -19,6 +19,8 @@ public class ScrollBoxView : MonoBehaviour
     [SerializeField] private Button _rewindLeft;
     [SerializeField] private Button _scrollRight;
     [SerializeField] private Button _rewindRight;
+    [SerializeField] private float _slotWidth;
+    public float SlotWidth => _slotWidth;
 
     private float _viewportWidth;
     private float _cellWidth;
@@ -40,6 +42,20 @@ public class ScrollBoxView : MonoBehaviour
     {
         itemTransform.parent = _contentTransform;
         //_items.Add(itemTransform);
+    }
+
+    public void SetContentWidth(float width)
+    {
+        var size = _contentTransform.sizeDelta;
+        size.x = width;
+        _contentTransform.sizeDelta = size;
+    }
+
+    public void SetContentPosition(float position)
+    {
+        var pos = _contentTransform.anchoredPosition;
+        pos.x = position;
+        _contentTransform.anchoredPosition = pos;
     }
 
     public void OnDragEnded()

@@ -11,16 +11,19 @@ public class UIBottomPanelSubMediatorBase : UINotMonoMediatorBase
     private readonly PoolCanvasProvider _poolCanvasProvider;
     private readonly Queue<UIBottomPanelScrollItemView> _cachedScrollBoxItems = new Queue<UIBottomPanelScrollItemView>();
 
+    private readonly float _slotWidth;
+
     public UIBottomPanelSubMediatorBase(BottomPanelView view)
         : base(view.transform as RectTransform)
     {
         View = view;
+        _slotWidth = View.ScrollBoxView.SlotWidth;
 
         _prefabsHolder = PrefabsHolder.Instance;
         _poolCanvasProvider = PoolCanvasProvider.Instance;
     }
 
-    protected UIBottomPanelScrollItemView GetOrCreateScrollBoxItem()
+    protected UIBottomPanelScrollItemView GetOrCreateScrollBoxItemAt(int index)
     {
         if (_cachedScrollBoxItems.Count <= 0)
         {
@@ -32,6 +35,7 @@ public class UIBottomPanelSubMediatorBase : UINotMonoMediatorBase
         var result = _cachedScrollBoxItems.Dequeue();
         result.Reset();
         result.transform.SetParent(View.ScrollBoxView.Content);
+        result.SetAnchoredPosition(new Vector2(_slotWidth * (0.5f + index), 0));
         //result.gameObject.SetActive(true);
 
         return result;
@@ -42,7 +46,8 @@ public class UIBottomPanelSubMediatorBase : UINotMonoMediatorBase
         if (_cachedScrollBoxItems.Count >= CacheSize)
         {
             GameObject.Destroy(scrollBoxItem.gameObject);
-        } else
+        }
+        else
         {
             //scrollBoxItem.gameObject.SetActive(false);
             scrollBoxItem.transform.SetParent(_poolCanvasProvider.PoolCanvasTransform);

@@ -12,8 +12,12 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
     [SerializeField] private Button _button;
     [SerializeField] private UIHintableView _hintableView;
 
+    private RectTransform _rectTransform;
+
     public void Awake()
     {
+        _rectTransform = transform as RectTransform;
+
         _button.onClick.AddListener(OnButtonClick);
     }
 
@@ -48,6 +52,11 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
         _imageSprite.gameObject.SetActive(false);
         _hintableView.SetEnabled(false);
         _imageRectTransform.sizeDelta = new Vector2(130, 130);
+    }
+
+    public void SetAnchoredPosition(Vector2 position)
+    {
+        _rectTransform.anchoredPosition = position;
     }
 
     private void OnButtonClick()

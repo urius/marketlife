@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -8,9 +7,9 @@ public class BottomPanelMediator : UINotMonoMediatorBase
     private readonly BottomPanelView _view;
     private readonly Dispatcher _dispatcher;
     private readonly GameStateModel _gameStateModel;
-    private readonly Dictionary<GameStateName, UIBottomPanelSubMediatorBase> _lastTabMediatorForState = new Dictionary<GameStateName, UIBottomPanelSubMediatorBase>();
+    private readonly Dictionary<GameStateName, IMediator> _lastTabMediatorForState = new Dictionary<GameStateName, IMediator>();
 
-    private UIBottomPanelSubMediatorBase _currentTabMediator;
+    private IMediator _currentTabMediator;
 
     public BottomPanelMediator(BottomPanelView view)
         : base(view.transform as RectTransform)
@@ -32,9 +31,9 @@ public class BottomPanelMediator : UINotMonoMediatorBase
         await ShowBgAndTopButtonsForStateAsync(_gameStateModel.GameState);
     }
 
-    private UIBottomPanelSubMediatorBase GetTabMediatorForGameState(GameStateName gameState)
+    private IMediator GetTabMediatorForGameState(GameStateName gameState)
     {
-        UIBottomPanelSubMediatorBase result = null;
+        IMediator result = null;
         if (_lastTabMediatorForState.ContainsKey(gameState))
         {
             result = _lastTabMediatorForState[gameState];
@@ -165,7 +164,7 @@ public class BottomPanelMediator : UINotMonoMediatorBase
         return UniTask.CompletedTask;
     }
 
-    private void SwowTab(UIBottomPanelSubMediatorBase tabMediator)
+    private void SwowTab(IMediator tabMediator)
     {
         _currentTabMediator.Unmediate();
         _currentTabMediator = tabMediator;

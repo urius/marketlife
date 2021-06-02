@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class UINotMonoMediatorBase
+public abstract class UINotMonoMediatorBase : IMediator
 {
     protected readonly RectTransform ContentTransform;
 

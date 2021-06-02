@@ -1,12 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
-public abstract class UIBottomPanelScrollItemsTabMediatorBase<TViewModel> : UIBottomPanelSubMediatorBase
+public abstract class UIBottomPanelScrollItemsTabMediatorBase<TViewModel> : UINotMonoMediatorBase
 {
+    protected readonly BottomPanelView View;
+
     private const int MaxDisplayedAmount = 8;
 
     private readonly UpdatesProvider _updatesProvider;
+    private readonly ViewsCache _viewsCache;
     private readonly ScrollBoxView _scrollBoxView;
     private readonly LinkedList<(UIBottomPanelScrollItemView View, TViewModel ViewModel)> _items;
 
@@ -14,11 +18,16 @@ public abstract class UIBottomPanelScrollItemsTabMediatorBase<TViewModel> : UIBo
     private int _shownIndexFrom = 0;
     private int _shownIndexTo = -1;
     private float _lastContentPosition;
+    private readonly float _slotWidth;
 
     public UIBottomPanelScrollItemsTabMediatorBase(BottomPanelView view)
-        : base(view)
+        : base(view.transform as RectTransform)
     {
         _updatesProvider = UpdatesProvider.Instance;
+        _viewsCache = ViewsCache.Instance;
+
+        View = view;
+        _slotWidth = View.ScrollBoxView.SlotWidth;
         _scrollBoxView = view.ScrollBoxView;
 
         _items = new LinkedList<(UIBottomPanelScrollItemView, TViewModel)>();
@@ -54,6 +63,31 @@ public abstract class UIBottomPanelScrollItemsTabMediatorBase<TViewModel> : UIBo
         HideScrollBox();
 
         base.Unmediate();
+    }
+
+    protected UIBottomPanelScrollItemView GetOrCreateScrollBoxItemAt(int index)
+    {
+        var result = _viewsCache.GetOrCreateScrollBoxItem();
+        result.Reset();
+        result.transform.SetParent(View.ScrollBoxView.Content);
+        result.SetAnchoredPosition(new Vector2(_slotWidth * (0.5f + index), 0));
+
+        return result;
+    }
+
+    protected void ReturnOrDestroyScrollBoxItem(UIBottomPanelScrollItemView scrollBoxItem)
+    {
+        _viewsCache.ReturnOrDestroyScrollBoxItem(scrollBoxItem);
+    }
+
+    protected void ShowScrollBox()
+    {
+        View.ScrollBoxView.gameObject.SetActive(true);
+    }
+
+    protected void HideScrollBox()
+    {
+        View.ScrollBoxView.gameObject.SetActive(false);
     }
 
     private void Activate()

@@ -7,11 +7,8 @@ public struct UIRequestPlaceShelfCommand
         if (gameStateModel.PlacingState != PlacingStateName.None) return;
 
         Dispatcher.Instance.RequestForceMouseCellPositionUpdate();
-        if (shelfConfig.price != null)// TODO check price properly
-        {
-            var mouseCellCoords = MouseCellCoordsProvider.Instance.MouseCellCoords;
-            var model = new ShopObjectModelFactory().CreateShelf(shelfNumericId, mouseCellCoords);
-            gameStateModel.SetPlacingObject(model);
-        }
+        var mouseCellCoords = MouseCellCoordsProvider.Instance.MouseCellCoords;
+        var model = new ShopObjectModelFactory().CreateShelf(shelfNumericId, mouseCellCoords);
+        gameStateModel.SetPlacingObject(model);
     }
 }

@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 
-public class UIBottomPanelShelfsTabMediator : UIBottomPanelInteriorTabMediatorBase<ShelfConfigDto>
+public class UIBottomPanelShelfsTabMediator : UIBottomPanelInteriorTabMediatorBase<ItemConfig<ShelfConfigDto>>
 {
     private readonly IShelfsConfig _shelfsConfig;
     private readonly SpritesProvider _spritesProvider;
     private readonly Dispatcher _dispatcher;
     private readonly LocalizationManager _localizationManager;
+    private readonly ShopModel _playerShopModel;
 
     public UIBottomPanelShelfsTabMediator(BottomPanelView view)
         : base(view)
@@ -14,6 +15,7 @@ public class UIBottomPanelShelfsTabMediator : UIBottomPanelInteriorTabMediatorBa
         _spritesProvider = SpritesProvider.Instance;
         _dispatcher = Dispatcher.Instance;
         _localizationManager = LocalizationManager.Instance;
+        _playerShopModel = GameStateModel.Instance.PlayerShopModel;
     }
 
     public override void Mediate()
@@ -28,25 +30,25 @@ public class UIBottomPanelShelfsTabMediator : UIBottomPanelInteriorTabMediatorBa
         base.Unmediate();
     }
 
-    protected override IEnumerable<(int id, ShelfConfigDto config)> GetConfigsForLevel(int level)
+    protected override IEnumerable<ItemConfig<ShelfConfigDto>> GetViewModelsToShow()
     {
-        return _shelfsConfig.GetShelfConfigsForLevel(level);
+        return _shelfsConfig.GetShelfConfigsForLevel(_playerShopModel.ProgressModel.Level);
     }
 
-    protected override void SetupItem(UIBottomPanelScrollItemView itemView, (int id, ShelfConfigDto config) shelfConfigData)
+    protected override void SetupItem(UIBottomPanelScrollItemView itemView, ItemConfig<ShelfConfigDto> viewModel)
     {
-        var config = shelfConfigData.config;
-        itemView.SetImage(_spritesProvider.GetShelfIcon(shelfConfigData.id));
-        itemView.SetPrice(Price.FromString(config.price));
+        var configDto = viewModel.ConfigDto;
+        itemView.SetImage(_spritesProvider.GetShelfIcon(viewModel.NumericId));
+        itemView.SetPrice(Price.FromString(configDto.price));
 
-        var shelfName = _localizationManager.GetLocalization($"{LocalizationKeys.NameShopObjectPrefix}s_{shelfConfigData.id}");
+        var shelfName = _localizationManager.GetLocalization($"{LocalizationKeys.NameShopObjectPrefix}s_{viewModel.NumericId}");
         var hintDescriptionRaw = _localizationManager.GetLocalization(LocalizationKeys.HintBottomPanelShelfDescription);
-        var hintDescription = string.Format(hintDescriptionRaw, shelfName, config.part_volume * config.parts_num, config.parts_num);
+        var hintDescription = string.Format(hintDescriptionRaw, shelfName, configDto.part_volume * configDto.parts_num, configDto.parts_num);
         itemView.SetupHint(hintDescription);
     }
 
-    protected override void HandleClick(int id)
+    protected override void HandleClick(ItemConfig<ShelfConfigDto> viewModel)
     {
-        _dispatcher.UIBottomPanelPlaceShelfClicked(id);
+        _dispatcher.UIBottomPanelPlaceShelfClicked(viewModel.NumericId);
     }
 }

@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 
-public class UIBottomPanelWindowsTabMediator : UIBottomPanelInteriorTabMediatorBase<ShopDecorationConfigDto>
+public class UIBottomPanelWindowsTabMediator : UIBottomPanelInteriorTabMediatorBase<ItemConfig<ShopDecorationConfigDto>>
 {
     private readonly IWindowsConfig _windowsConfig;
     private readonly SpritesProvider _spritesProvider;
     private readonly Dispatcher _dispatcher;
+    private readonly ShopModel _playerShopModel;
 
     public UIBottomPanelWindowsTabMediator(BottomPanelView view)
         : base(view)
@@ -12,6 +13,7 @@ public class UIBottomPanelWindowsTabMediator : UIBottomPanelInteriorTabMediatorB
         _windowsConfig = GameConfigManager.Instance.MainConfig;
         _spritesProvider = SpritesProvider.Instance;
         _dispatcher = Dispatcher.Instance;
+        _playerShopModel = GameStateModel.Instance.PlayerShopModel;
     }
 
     public override void Mediate()
@@ -26,21 +28,21 @@ public class UIBottomPanelWindowsTabMediator : UIBottomPanelInteriorTabMediatorB
         base.Unmediate();
     }
 
-    protected override IEnumerable<(int id, ShopDecorationConfigDto config)> GetConfigsForLevel(int level)
+    protected override IEnumerable<ItemConfig<ShopDecorationConfigDto>> GetViewModelsToShow()
     {
-        return _windowsConfig.GetWindowsConfigsForLevel(level);
+        return _windowsConfig.GetWindowsConfigsForLevel(_playerShopModel.ProgressModel.Level);
     }
 
-    protected override void SetupItem(UIBottomPanelScrollItemView itemView, (int id, ShopDecorationConfigDto config) configData)
+    protected override void SetupItem(UIBottomPanelScrollItemView itemView, ItemConfig<ShopDecorationConfigDto> configData)
     {
-        var config = configData.config;
+        var configDto = configData.ConfigDto;
         itemView.SetupIconSize(80);
-        itemView.SetImage(_spritesProvider.GetWindowIcon(configData.id));
-        itemView.SetPrice(Price.FromString(config.price));
+        itemView.SetImage(_spritesProvider.GetWindowIcon(configData.NumericId));
+        itemView.SetPrice(Price.FromString(configDto.price));
     }
 
-    protected override void HandleClick(int id)
+    protected override void HandleClick(ItemConfig<ShopDecorationConfigDto> viewModel)
     {
-        _dispatcher.UIBottomPanelPlaceWindowClicked(id);
+        _dispatcher.UIBottomPanelPlaceWindowClicked(viewModel.NumericId);
     }
 }

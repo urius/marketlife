@@ -94,7 +94,7 @@ public struct PlaceObjectCommand
         var screenCoords = screenCalculator.CellToScreenPoint(coords);
         if (shopModel.CanPlaceDecoration(decorationType, coords, numericId))
         {
-            var price = Price.FromString(decorationConfig.price);
+            var price = decorationConfig.Price;
             if (TrySpendMoneyOrBlink(price))
             {
                 dispatcher.UIRequestFlyingPrice(screenCoords, price.IsGold, -price.Value);

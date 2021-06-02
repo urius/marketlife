@@ -30,7 +30,7 @@ public struct RequestRemovePopupCommand
                 {
                     var config = GameConfigManager.Instance.MainConfig;
                     int numericId = -1;
-                    switch(decorationType)
+                    switch (decorationType)
                     {
                         case ShopDecorationObjectType.Door:
                             numericId = shopDesign.Doors[coords];
@@ -39,8 +39,7 @@ public struct RequestRemovePopupCommand
                             numericId = shopDesign.Windows[coords];
                             break;
                     }
-                    var decorationConfig = config.GetDecorationConfigBuNumericId(decorationType, numericId);
-                    var originalPrice = Price.FromString(decorationConfig.price);
+                    var originalPrice = config.GetDecorationConfigBuNumericId(decorationType, numericId).Price;
                     gameStateModel.ShowPopup(new RemoveShopDecorationPopupViewModel(coords, shopModel.GetSellPrice(originalPrice)));
                 }
             }

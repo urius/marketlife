@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 
-public class UIBottomPanelDoorsTabMediator : UIBottomPanelInteriorTabMediatorBase<ShopDecorationConfigDto>
+public class UIBottomPanelDoorsTabMediator : UIBottomPanelInteriorTabMediatorBase<ItemConfig<ShopDecorationConfigDto>>
 {
     private readonly IDoorsConfig doorsConfig;
     private readonly SpritesProvider _spritesProvider;
     private readonly Dispatcher _dispatcher;
+    private readonly ShopModel _playerShopModel;
 
     public UIBottomPanelDoorsTabMediator(BottomPanelView view)
         : base(view)
@@ -12,6 +13,7 @@ public class UIBottomPanelDoorsTabMediator : UIBottomPanelInteriorTabMediatorBas
         doorsConfig = GameConfigManager.Instance.MainConfig;
         _spritesProvider = SpritesProvider.Instance;
         _dispatcher = Dispatcher.Instance;
+        _playerShopModel = GameStateModel.Instance.PlayerShopModel;
     }
 
     public override void Mediate()
@@ -26,21 +28,21 @@ public class UIBottomPanelDoorsTabMediator : UIBottomPanelInteriorTabMediatorBas
         base.Unmediate();
     }
 
-    protected override IEnumerable<(int id, ShopDecorationConfigDto config)> GetConfigsForLevel(int level)
+    protected override IEnumerable<ItemConfig<ShopDecorationConfigDto>> GetViewModelsToShow()
     {
-        return doorsConfig.GetDoorsConfigsForLevel(level);
+        return doorsConfig.GetDoorsConfigsForLevel(_playerShopModel.ProgressModel.Level);
     }
 
-    protected override void SetupItem(UIBottomPanelScrollItemView itemView, (int id, ShopDecorationConfigDto config) configData)
+    protected override void SetupItem(UIBottomPanelScrollItemView itemView, ItemConfig<ShopDecorationConfigDto> viewModel)
     {
-        var config = configData.config;
+        var config = viewModel.ConfigDto;
         itemView.SetupIconSize(110);
-        itemView.SetImage(_spritesProvider.GetDoorIcon(configData.id));
+        itemView.SetImage(_spritesProvider.GetDoorIcon(viewModel.NumericId));
         itemView.SetPrice(Price.FromString(config.price));
     }
 
-    protected override void HandleClick(int id)
+    protected override void HandleClick(ItemConfig<ShopDecorationConfigDto> viewModel)
     {
-        _dispatcher.UIBottomPanelPlaceDoorClicked(id);
+        _dispatcher.UIBottomPanelPlaceDoorClicked(viewModel.NumericId);
     }
 }

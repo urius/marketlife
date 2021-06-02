@@ -16,14 +16,14 @@ public abstract class ShopObjectModelBase
     private int _side = -1;
     private readonly int[][] _defaultBuildMatrix;
 
-    public ShopObjectModelBase(int numericId, ShopObjectConfigDto config, Vector2Int coords, int side)
+    public ShopObjectModelBase(int numericId, ShopObjectConfigDto configDto, Vector2Int coords, int side)
     {
         NumericId = numericId;
 
-        Price = Price.FromString(config.price);
-        _defaultBuildMatrix = config.build_matrix;
-        UnlockLevel = config.unlock_level;
-        TwoSidesMode = config.two_sides_mode;
+        Price = Price.FromString(configDto.price);
+        _defaultBuildMatrix = configDto.build_matrix;
+        UnlockLevel = configDto.unlock_level;
+        TwoSidesMode = configDto.two_sides_mode;
 
         Side = side;
         Coords = coords;

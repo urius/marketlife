@@ -10,28 +10,28 @@ public struct UIRequestPlacingDecorationCommand
         {
             case ShopDecorationObjectType.Floor:
                 var floorConfig = GameConfigManager.Instance.MainConfig.GetFloorConfigByNumericId(numericId);
-                if (CheckCanSpendOrBlink(floorConfig.price))
+                if (CheckCanSpendOrBlink(floorConfig.Price))
                 {
                     gameStateModel.SetPlacingFloor(numericId);
                 }
                 break;
             case ShopDecorationObjectType.Wall:
                 var wallConfig = GameConfigManager.Instance.MainConfig.GetWallConfigByNumericId(numericId);
-                if (CheckCanSpendOrBlink(wallConfig.price))
+                if (CheckCanSpendOrBlink(wallConfig.Price))
                 {
                     gameStateModel.SetPlacingWall(numericId);
                 }
                 break;
             case ShopDecorationObjectType.Window:
                 var windowConfig = GameConfigManager.Instance.MainConfig.GetWindowConfigByNumericId(numericId);
-                if (CheckCanSpendOrBlink(windowConfig.price))
+                if (CheckCanSpendOrBlink(windowConfig.Price))
                 {
                     gameStateModel.SetPlacingWindow(numericId);
                 }
                 break;
             case ShopDecorationObjectType.Door:
                 var doorConfig = GameConfigManager.Instance.MainConfig.GetDoorConfigByNumericId(numericId);
-                if (CheckCanSpendOrBlink(doorConfig.price))
+                if (CheckCanSpendOrBlink(doorConfig.Price))
                 {
                     gameStateModel.SetPlacingDoor(numericId);
                 }
@@ -39,7 +39,7 @@ public struct UIRequestPlacingDecorationCommand
         }
     }
 
-    private bool CheckCanSpendOrBlink(string price)
+    private bool CheckCanSpendOrBlink(Price price)
     {
         var gameStateModel = GameStateModel.Instance;
         if (gameStateModel.PlayerShopModel.CanSpendMoney(price))
@@ -48,7 +48,7 @@ public struct UIRequestPlacingDecorationCommand
         }
         else
         {
-            if (Price.FromString(price).IsGold)
+            if (price.IsGold)
             {
                 Dispatcher.Instance.UIRequestBlinkGold();
             }

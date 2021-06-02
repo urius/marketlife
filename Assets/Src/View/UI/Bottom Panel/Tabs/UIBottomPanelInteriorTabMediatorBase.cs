@@ -1,17 +1,15 @@
 using System.Collections.Generic;
+using System.Linq;
 
-public abstract class UIBottomPanelInteriorTabMediatorBase<T> : UIBottomPanelSubMediatorBase
-    where T : PlaceableItemConfigDto
+public abstract class UIBottomPanelInteriorTabMediatorBase<TViewModel> : UIBottomPanelSubMediatorBase
 {
-    private readonly PlayerModel _playerModel;
-    private readonly Dictionary<UIBottomPanelScrollItemView, int> _IdsByItem;
+    private readonly Dictionary<UIBottomPanelScrollItemView, TViewModel> _viewModelsByItem;
+    private TViewModel[] _viewModels;
 
     public UIBottomPanelInteriorTabMediatorBase(BottomPanelView view)
         : base(view)
     {
-        _playerModel = PlayerModel.Instance;
-
-        _IdsByItem = new Dictionary<UIBottomPanelScrollItemView, int>();
+        _viewModelsByItem = new Dictionary<UIBottomPanelScrollItemView, TViewModel>();
     }
 
     public override void Mediate()
@@ -20,11 +18,14 @@ public abstract class UIBottomPanelInteriorTabMediatorBase<T> : UIBottomPanelSub
 
         ShowScrollBox();
 
-        var configsToShow = GetConfigsForLevel(_playerModel.Level);
-        foreach (var config in configsToShow)
+        _viewModels = GetViewModelsToShow().ToArray();
+        UIBottomPanelScrollItemView itemView;
+
+        for (var i = 0; i < _viewModels.Length; i++)
         {
-            var itemView = GetOrCreateScrollBoxItem();
-            _IdsByItem.Add(itemView, config.id);
+            var config = _viewModels[i];
+            itemView = GetOrCreateScrollBoxItem();
+            _viewModelsByItem.Add(itemView, config);
             SetupItem(itemView, config);
             ActivateItem(itemView);
         }
@@ -32,22 +33,22 @@ public abstract class UIBottomPanelInteriorTabMediatorBase<T> : UIBottomPanelSub
 
     public override void Unmediate()
     {
-        var itemViews = _IdsByItem.Keys;
+        var itemViews = _viewModelsByItem.Keys;
         foreach (var itemView in itemViews)
         {
             DeactivateItem(itemView);
             ReturnOrDestroyScrollBoxItem(itemView);
         }
-        _IdsByItem.Clear();
+        _viewModelsByItem.Clear();
 
         HideScrollBox();
 
         base.Unmediate();
     }
 
-    abstract protected IEnumerable<(int id, T config)> GetConfigsForLevel(int level);
-    abstract protected void SetupItem(UIBottomPanelScrollItemView itemView, (int id, T config) configData);
-    abstract protected void HandleClick(int id);
+    abstract protected IEnumerable<TViewModel> GetViewModelsToShow();
+    abstract protected void SetupItem(UIBottomPanelScrollItemView itemView, TViewModel viewModel);
+    abstract protected void HandleClick(TViewModel viewModel);
 
     private void ActivateItem(UIBottomPanelScrollItemView itemView)
     {
@@ -61,7 +62,7 @@ public abstract class UIBottomPanelInteriorTabMediatorBase<T> : UIBottomPanelSub
 
     private void OnItemClicked(UIBottomPanelScrollItemView itemView)
     {
-        var id = _IdsByItem[itemView];
-        HandleClick(id);
+        var viewModel = _viewModelsByItem[itemView];
+        HandleClick(viewModel);
     }
 }

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-public class UIBottomPanelShelfsTabMediator : UIBottomPanelInteriorTabMediatorBase<ItemConfig<ShelfConfigDto>>
+public class UIBottomPanelShelfsTabMediator : UIBottomPanelScrollItemsTabMediatorBase<ItemConfig<ShelfConfigDto>>
 {
     private readonly IShelfsConfig _shelfsConfig;
     private readonly SpritesProvider _spritesProvider;

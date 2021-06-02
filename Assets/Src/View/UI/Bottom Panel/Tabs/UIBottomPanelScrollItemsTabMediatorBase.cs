@@ -2,19 +2,26 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public abstract class UIBottomPanelInteriorTabMediatorBase<TViewModel> : UIBottomPanelSubMediatorBase
+public abstract class UIBottomPanelScrollItemsTabMediatorBase<TViewModel> : UIBottomPanelSubMediatorBase
 {
-    private const int MaxViewsAmount = 10;
+    private const int MaxDisplayedAmount = 8;
 
-    private readonly LinkedList<(UIBottomPanelScrollItemView View, TViewModel ViewModel)> _items = new LinkedList<(UIBottomPanelScrollItemView, TViewModel)>();
+    private readonly UpdatesProvider _updatesProvider;
+    private readonly ScrollBoxView _scrollBoxView;
+    private readonly LinkedList<(UIBottomPanelScrollItemView View, TViewModel ViewModel)> _items;
 
     private TViewModel[] _viewModels;
     private int _shownIndexFrom = 0;
     private int _shownIndexTo = -1;
+    private float _lastContentPosition;
 
-    public UIBottomPanelInteriorTabMediatorBase(BottomPanelView view)
+    public UIBottomPanelScrollItemsTabMediatorBase(BottomPanelView view)
         : base(view)
     {
+        _updatesProvider = UpdatesProvider.Instance;
+        _scrollBoxView = view.ScrollBoxView;
+
+        _items = new LinkedList<(UIBottomPanelScrollItemView, TViewModel)>();
     }
 
     public override void Mediate()
@@ -25,28 +32,67 @@ public abstract class UIBottomPanelInteriorTabMediatorBase<TViewModel> : UIBotto
 
         _viewModels = GetViewModelsToShow().ToArray();
 
-        DisplayItems(0, MaxViewsAmount);
-        View.ScrollBoxView.SetContentWidth(_viewModels.Length * View.ScrollBoxView.SlotWidth);
-        View.ScrollBoxView.SetContentPosition(0);
+        _scrollBoxView.SetContentWidth(_viewModels.Length * _scrollBoxView.SlotWidth);
+        _scrollBoxView.SetContentPosition(_lastContentPosition);
+        UpdateDisplayItems();
+
+        Activate();
     }
 
     public override void Unmediate()
     {
+        Deactivate();
+
         foreach (var item in _items)
         {
             HideItem(item.View);
         }
         _items.Clear();
+        _shownIndexFrom = 0;
+        _shownIndexTo = -1;
 
         HideScrollBox();
 
         base.Unmediate();
     }
 
-    private void DisplayItems(int indexFrom, int indexTo)
+    private void Activate()
     {
-        indexTo = Math.Min(_viewModels.Length - 1, indexTo);
+        _updatesProvider.RealtimeUpdate += OnRealtimeUpdate;
+    }
+
+    private void Deactivate()
+    {
+        _updatesProvider.RealtimeUpdate -= OnRealtimeUpdate;
+    }
+
+    private void OnRealtimeUpdate()
+    {
+        var pos = _scrollBoxView.GetContentPosition();
+        if (Math.Abs(pos - _lastContentPosition) > 0.05f)
+        {
+            _lastContentPosition = pos;
+            UpdateDisplayItems();
+        }
+    }
+
+    private void UpdateDisplayItems()
+    {
+        var renderIndexFrom = GetRenderStartIndexFromContentPosition(_lastContentPosition);
+        DisplayItemsFromIndex(renderIndexFrom);
+    }
+
+    private int GetRenderStartIndexFromContentPosition(float contentPosition)
+    {
+        var startDisplayIndex = (int)Math.Max(0, -(int)contentPosition / _scrollBoxView.SlotWidth);
+        return Math.Max(startDisplayIndex - 1, 0);
+    }
+
+    private void DisplayItemsFromIndex(int indexFrom)
+    {
+        var indexTo = Math.Min(_viewModels.Length - 1, indexFrom + MaxDisplayedAmount);
         UIBottomPanelScrollItemView itemView;
+        //remove items from left
         while (_shownIndexFrom < indexFrom)
         {
             itemView = _items.First.Value.View;
@@ -54,6 +100,7 @@ public abstract class UIBottomPanelInteriorTabMediatorBase<TViewModel> : UIBotto
             _items.RemoveFirst();
             _shownIndexFrom++;
         }
+        //remove items from right
         while (_shownIndexTo > indexTo)
         {
             itemView = _items.Last.Value.View;
@@ -63,6 +110,7 @@ public abstract class UIBottomPanelInteriorTabMediatorBase<TViewModel> : UIBotto
         }
 
         TViewModel viewModel;
+        //add items to left
         while (_shownIndexFrom > indexFrom)
         {
             _shownIndexFrom--;
@@ -71,6 +119,7 @@ public abstract class UIBottomPanelInteriorTabMediatorBase<TViewModel> : UIBotto
             _items.AddFirst((itemView, viewModel));
             ShowItem(itemView, viewModel);
         }
+        //add items to right
         while (_shownIndexTo < indexTo)
         {
             _shownIndexTo++;

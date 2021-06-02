@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,7 +12,6 @@ public class ScrollBoxView : MonoBehaviour
     public RectTransform Content => _contentTransform;
 
     [SerializeField] private RectTransform _viewportTransform;
-    [SerializeField] private GridLayoutGroup _gridLayoutGroup;
     [SerializeField] private ScrollRect _scrollRect;
     [SerializeField] private Button _scrollLeft;
     [SerializeField] private Button _rewindLeft;
@@ -23,14 +21,12 @@ public class ScrollBoxView : MonoBehaviour
     public float SlotWidth => _slotWidth;
 
     private float _viewportWidth;
-    private float _cellWidth;
 
     //private List<RectTransform> _items = new List<RectTransform>(10);
 
     public void Awake()
     {
         _viewportWidth = _viewportTransform.rect.width;
-        _cellWidth = _gridLayoutGroup.cellSize.x;
 
         _scrollRight.onClick.AddListener(OnScrollRigthClick);
         _rewindRight.onClick.AddListener(OnRewindRigthClick);
@@ -58,14 +54,19 @@ public class ScrollBoxView : MonoBehaviour
         _contentTransform.anchoredPosition = pos;
     }
 
+    public float GetContentPosition()
+    {
+        return _contentTransform.anchoredPosition.x;
+    }
+
     public void OnDragEnded()
     {
         var currentContentPos = _contentTransform.anchoredPosition.x;
 
         if (!IsOutOfBounds(currentContentPos))
         {
-            var correctedContentPos = -currentContentPos + _cellWidth * 0.5f;
-            var closestItemIndex = (int)Math.Floor(correctedContentPos / _cellWidth);
+            var correctedContentPos = -currentContentPos + _slotWidth * 0.5f;
+            var closestItemIndex = (int)Math.Floor(correctedContentPos / _slotWidth);
 
             ScrollToIndex(closestItemIndex, DefaultFastDuration);
         }
@@ -73,7 +74,7 @@ public class ScrollBoxView : MonoBehaviour
 
     private void ScrollToIndex(int closestItemIndex, float duration = DefaultDuration)
     {
-        var newContentPos = -closestItemIndex * _cellWidth;
+        var newContentPos = -closestItemIndex * _slotWidth;
         LeanTween.cancel(_contentTransform);
         LeanTween.moveX(_contentTransform, newContentPos, duration);
     }
@@ -111,13 +112,13 @@ public class ScrollBoxView : MonoBehaviour
 
         var direction = delta > 0 ? 1 : -1;
         var currentContentPos = _contentTransform.anchoredPosition.x;
-        var newContentPos = currentContentPos - _gridLayoutGroup.cellSize.x * delta;
+        var newContentPos = currentContentPos - _slotWidth * delta;
 
         LeanTween.cancel(_contentTransform);
         if ((direction > 0 && IsPositionOutOfRightBound(currentContentPos, 1)) || (direction < 0 && IsPositionOutOfLeftBound(currentContentPos, 1)))
         {
             _scrollRect.enabled = false;
-            await LeanTweenHelper.BounceXAsync(_contentTransform, -1 * direction * _gridLayoutGroup.cellSize.x * 0.5f);
+            await LeanTweenHelper.BounceXAsync(_contentTransform, -1 * direction * _slotWidth * 0.5f);
             _scrollRect.enabled = true;
         }
         else

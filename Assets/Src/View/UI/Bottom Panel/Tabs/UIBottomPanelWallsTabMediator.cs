@@ -35,10 +35,9 @@ public class UIBottomPanelWallsTabMediator : UIBottomPanelInteriorTabMediatorBas
 
     protected override void SetupItem(UIBottomPanelScrollItemView itemView, ItemConfig<ShopDecorationConfigDto> viewModel)
     {
-        var configDto = viewModel.ConfigDto;
         itemView.SetupIconSize(110);
         itemView.SetImage(_spritesProvider.GetWallIcon(viewModel.NumericId));
-        itemView.SetPrice(Price.FromString(configDto.price));
+        itemView.SetPrice(viewModel.Price);
     }
 
     protected override void HandleClick(ItemConfig<ShopDecorationConfigDto> viewModel)

@@ -35,10 +35,9 @@ public class UIBottomPanelDoorsTabMediator : UIBottomPanelInteriorTabMediatorBas
 
     protected override void SetupItem(UIBottomPanelScrollItemView itemView, ItemConfig<ShopDecorationConfigDto> viewModel)
     {
-        var config = viewModel.ConfigDto;
         itemView.SetupIconSize(110);
         itemView.SetImage(_spritesProvider.GetDoorIcon(viewModel.NumericId));
-        itemView.SetPrice(Price.FromString(config.price));
+        itemView.SetPrice(viewModel.Price);
     }
 
     protected override void HandleClick(ItemConfig<ShopDecorationConfigDto> viewModel)

@@ -1,23 +1,49 @@
+using System;
 
 public class ProductModel
 {
-    public readonly int ProductId;
+    public event Action<int, int> AmountChanged = delegate { };
+    public event Action<int, int> DeliveryTimeChanged = delegate { };
 
-    public int Amount = 1;
-    public int Time = -1;
+    public readonly int NumericId;
 
-    public ProductModel(int productId)
+    private int _amount = 1;
+    private int _deliverTime = 0;
+
+    public ProductModel(int numericId)
     {
-        ProductId = productId;
+        NumericId = numericId;
     }
 
-    public ProductModel(int productId, int amount) : this(productId)
+    public ProductModel(int numericId, int amount) : this(numericId)
     {
-        Amount = amount;
+        _amount = amount;
     }
 
-    public ProductModel(int productId, int amount, int time) : this(productId, amount)
+    public ProductModel(int numericId, int amount, int deliverTime) : this(numericId, amount)
     {
-        Time = time;
+        _deliverTime = deliverTime;
+    }
+
+    public int Amount
+    {
+        get => _amount;
+        set
+        {
+            var previousValue = _amount;
+            _amount = value;
+            AmountChanged(previousValue, value);
+        }
+    }
+
+    public int DeliverTime
+    {
+        get => _deliverTime;
+        set
+        {
+            var previousValue = _deliverTime;
+            _deliverTime = value;
+            DeliveryTimeChanged(previousValue, value);
+        }
     }
 }

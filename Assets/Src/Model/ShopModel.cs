@@ -10,11 +10,17 @@ public class ShopModel
 
     public readonly string Uid;
     public readonly ShopProgressModel ProgressModel;
+    public readonly ShopWarehouseModel WarehouseModel;
     public readonly ShoDesignModel ShopDesign;
     public readonly Dictionary<Vector2Int, ShopObjectModelBase> ShopObjects;
     public readonly Dictionary<Vector2Int, (int buildState, ShopObjectModelBase reference)> Grid;
 
-    public ShopModel(string uid, ShoDesignModel shopDesign, Dictionary<Vector2Int, ShopObjectModelBase> shopObjects, ShopProgressModel progressModel)
+    public ShopModel(
+        string uid,
+        ShoDesignModel shopDesign,
+        Dictionary<Vector2Int, ShopObjectModelBase> shopObjects,
+        ShopProgressModel progressModel,
+        ShopWarehouseModel warehouseModel)
     {
         Grid = new Dictionary<Vector2Int, (int buildState, ShopObjectModelBase reference)>();
 
@@ -22,6 +28,7 @@ public class ShopModel
         ShopDesign = shopDesign;
         ShopObjects = shopObjects;
         ProgressModel = progressModel;
+        WarehouseModel = warehouseModel;
 
         RefillGrid();
     }
@@ -554,6 +561,72 @@ public class ShopProgressModel
     private int Decode(string base64Input)
     {
         return int.Parse(Base64Helper.Base64Decode(base64Input));
+    }
+}
+
+public class ShopWarehouseModel
+{
+    public event Action<int, ProductModel> ProductIsSet = delegate { };
+    public event Action<int, ProductModel> ProductRemoved = delegate { };
+    public event Action<int, int> VolumeChanged = delegate { };
+    public event Action SlotAdded = delegate { };
+
+    private ProductModel[] _products;
+
+    public ShopWarehouseModel(int volume, int size)
+    {
+        Volume = volume;
+        Size = size;
+
+        _products = new ProductModel[size];
+    }
+
+    public int Volume { get; private set; }
+    public int Size { get; private set; }
+
+    public ProductModel GetProductAt(int index)
+    {
+        return _products[index];
+    }
+
+    public void SetProductAt(int index, ProductModel product)
+    {
+        _products[index] = product;
+        ProductIsSet(index, product);
+    }
+
+    public bool RemoveProductAt(int index)
+    {
+        var product = _products[index];
+        if (product != null)
+        {
+            _products[index] = null;
+            ProductRemoved(index, product);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void AddVolume(int addedVolume)
+    {
+        var previousVolume = Volume;
+        Volume += addedVolume;
+        VolumeChanged(previousVolume, Volume);
+    }
+
+    public void AddSlot()
+    {
+        Size++;
+        var newProducts = new ProductModel[Size];
+        for (var i = 0; i < _products.Length; i++)
+        {
+            newProducts[i] = _products[i];
+        }
+        _products = newProducts;
+        SlotAdded();
     }
 }
 

@@ -10,9 +10,49 @@ public static class DtoExtensions
     {
         var designModel = ToDesignModel(dto.data.design);
         var shopObjects = ToObjectsModel(dto.data.objects);
+        var warehouseModel = ToWarehouseModel(dto.data.warehouse);
         var shopProgress = ToProgressModel(dto.data);
 
-        return new ShopModel(dto.data.uid, designModel, shopObjects, shopProgress);
+        return new ShopModel(dto.data.uid, designModel, shopObjects, shopProgress, warehouseModel);
+    }
+
+    private static ShopWarehouseModel ToWarehouseModel(string warehouseStr)
+    {
+        var warehouseConvertedDto = JsonConvert.DeserializeObject<Dictionary<string, string>>(warehouseStr);
+        var volume = int.Parse(warehouseConvertedDto["volume"]);
+        var size = int.Parse(warehouseConvertedDto["size"]);
+        var products = warehouseConvertedDto["items"].Split('|')
+            .Select(ParseProduct)
+            .ToArray();
+        var result = new ShopWarehouseModel(volume, size);
+        for (var i = 0; i < products.Length; i++)
+        {
+            if (products[i] != null)
+            {
+                result.SetProductAt(i, products[i]);
+            }
+        }
+
+        return result;
+    }
+
+    private static ProductModel ParseProduct(string productStr)
+    {
+        if (string.IsNullOrEmpty(productStr) || productStr.IndexOf('p') < 0) return null;
+        var splittedByD = productStr.Split('d');
+        int deliverTime = 0;
+        if (splittedByD.Length > 1)
+        {
+            deliverTime = int.Parse(splittedByD[1]);
+        }
+        var splittedByX = splittedByD[0].Split('x');
+        int amount = 1;
+        if (splittedByX.Length > 1)
+        {
+            amount = int.Parse(splittedByX[1]);
+        }
+        var numericId = int.Parse(splittedByX[0].Split('p')[1]);
+        return new ProductModel(numericId, amount, deliverTime);
     }
 
     private static ShopProgressModel ToProgressModel(GetDataResponseDataDto data)

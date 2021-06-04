@@ -5025,7 +5025,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _contentTransform: {fileID: 1380841330}
   _viewportTransform: {fileID: 793997755}
-  _gridLayoutGroup: {fileID: 0}
   _scrollRect: {fileID: 963397128}
   _scrollLeft: {fileID: 1619139875}
   _rewindLeft: {fileID: 2104944339}

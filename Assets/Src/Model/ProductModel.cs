@@ -5,26 +5,27 @@ public class ProductModel
     public event Action<int, int> AmountChanged = delegate { };
     public event Action<int, int> DeliveryTimeChanged = delegate { };
 
-    public readonly int NumericId;
+    public readonly ProductConfig Config;
 
     private int _amount = 1;
     private int _deliverTime = 0;
 
-    public ProductModel(int numericId)
+    public ProductModel(ProductConfig config)
     {
-        NumericId = numericId;
+        Config = config;
     }
 
-    public ProductModel(int numericId, int amount) : this(numericId)
+    public ProductModel(ProductConfig config, int amount) : this(config)
     {
         _amount = amount;
     }
 
-    public ProductModel(int numericId, int amount, int deliverTime) : this(numericId, amount)
+    public ProductModel(ProductConfig config, int amount, int deliverTime) : this(config, amount)
     {
         _deliverTime = deliverTime;
     }
 
+    public int NumericId => Config.NumericId;
     public int Amount
     {
         get => _amount;

@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
-public class MainConfig : IShelfsConfig, IFloorsConfig, IWallsConfig, IWindowsConfig, IDoorsConfig
+public class MainConfig : IProductsConfig, IShelfsConfig, IFloorsConfig, IWallsConfig, IWindowsConfig, IDoorsConfig
 {
     public readonly int GameplayAtlasVersion;
     public readonly int InterfaceAtlasVersion;
+    public readonly Dictionary<string, ProductConfig> ProductsConfig;
     public readonly Dictionary<string, ItemConfig<ShelfConfigDto>> ShelfsConfig;
     public readonly Dictionary<string, ItemConfig<ShopObjectConfigDto>> ShopObjectsConfig;
     public readonly Dictionary<string, ItemConfig<ShopDecorationConfigDto>> FloorsConfig;
@@ -15,6 +17,7 @@ public class MainConfig : IShelfsConfig, IFloorsConfig, IWallsConfig, IWindowsCo
     public MainConfig(
         int gameplayAtlasVersion,
         int interfaceAtlasVersion,
+        Dictionary<string, ProductConfig> productsConfig,
         Dictionary<string, ItemConfig<ShelfConfigDto>> shelfsConfig,
         Dictionary<string, ItemConfig<ShopObjectConfigDto>> shopObjectsConfig,
         Dictionary<string, ItemConfig<ShopDecorationConfigDto>> floorsConfig,
@@ -24,6 +27,7 @@ public class MainConfig : IShelfsConfig, IFloorsConfig, IWallsConfig, IWindowsCo
     {
         GameplayAtlasVersion = gameplayAtlasVersion;
         InterfaceAtlasVersion = interfaceAtlasVersion;
+        ProductsConfig = productsConfig;
         ShelfsConfig = shelfsConfig;
         ShopObjectsConfig = shopObjectsConfig;
         FloorsConfig = floorsConfig;
@@ -40,6 +44,27 @@ public class MainConfig : IShelfsConfig, IFloorsConfig, IWallsConfig, IWindowsCo
     public ItemConfig<ShelfConfigDto> GetShelfConfigByNumericId(int numericId)
     {
         return ShelfsConfig[$"s_{numericId}"];
+    }
+
+    public IEnumerable<ProductConfig> GetProductConfigsForLevel(int level)
+    {
+        foreach (var kvp in ProductsConfig)
+        {
+            if (kvp.Value.UnlockLevel <= level)
+            {
+                yield return kvp.Value;
+            }
+        }
+    }
+
+    public ProductConfig GetProductConfigByNumericId(int numericId)
+    {
+        return ProductsConfig[$"p{numericId}"];
+    }
+
+    public ProductConfig GetProductConfigByKey(string key)
+    {
+        return ProductsConfig.First(c => c.Key == key).Value;
     }
 
     public ItemConfig<ShopObjectConfigDto> GetCashDeskConfigByNumericId(int cashDeskNumericId)
@@ -129,6 +154,57 @@ public class ItemConfig<TConfigDto> where TConfigDto : PlaceableItemConfigDto
         ConfigDto = configDto;
         Price = Price.FromString(configDto.price);
     }
+}
+
+public class ProductConfig
+{
+    public readonly int NumericId;
+    public readonly string Key;
+    public readonly int UnlockLevel;
+    public readonly int Volume;
+    public readonly Price PricePer1000v;
+    public readonly int ProfitPer1000v;
+    public readonly int SellPricePer1000v;
+    public readonly float Demand;
+    public readonly int DeliverTimeSeconds;
+
+    public ProductConfig(int numericId, ProductConfigDto dto)
+    {
+        NumericId = numericId;
+        Key = dto.key;
+        UnlockLevel = dto.unlock_level;
+        var amountIn1000Volume = dto.amount_per_1000v;
+        Volume = 1000 / amountIn1000Volume;
+
+        PricePer1000v = Price.FromString(dto.price_per_1000v);
+
+        ProfitPer1000v = dto.profit_per_1000v;
+        SellPricePer1000v = PricePer1000v.IsGold ? ProfitPer1000v : PricePer1000v.Value + ProfitPer1000v;
+
+        Demand = (int)(dto.demand_1000v_per_hour * amountIn1000Volume);
+
+        DeliverTimeSeconds = GetTotalSeconds(dto.deliver);
+    }
+
+    private int GetTotalSeconds(string deliverTimeStr)
+    {
+        var result = 0;
+        var splitted = deliverTimeStr.Split(':').Select(int.Parse).ToArray();
+        var length = splitted.Length;
+        for (var i = 0; i < length; i++)
+        {
+            result += (int)Math.Pow(splitted[i], length - i);
+        }
+
+        return result;
+    }
+}
+
+public interface IProductsConfig
+{
+    IEnumerable<ProductConfig> GetProductConfigsForLevel(int level);
+    ProductConfig GetProductConfigByNumericId(int numericId);
+    ProductConfig GetProductConfigByKey(string key);
 }
 
 public interface IShelfsConfig

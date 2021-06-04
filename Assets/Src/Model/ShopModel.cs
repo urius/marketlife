@@ -566,67 +566,94 @@ public class ShopProgressModel
 
 public class ShopWarehouseModel
 {
-    public event Action<int, ProductModel> ProductIsSet = delegate { };
-    public event Action<int, ProductModel> ProductRemoved = delegate { };
-    public event Action<int, int> VolumeChanged = delegate { };
+    public event Action<int, ProductModel> SlotProductIsSet = delegate { };
+    public event Action<int, ProductModel> SlotProductRemoved = delegate { };
+    public event Action<int> VolumeAdded = delegate { };
     public event Action SlotAdded = delegate { };
 
-    private ProductModel[] _products;
+    private readonly List<WarehouseSlotModel> _slots;
 
     public ShopWarehouseModel(int volume, int size)
     {
         Volume = volume;
-        Size = size;
 
-        _products = new ProductModel[size];
+        _slots = new List<WarehouseSlotModel>(size);
+        for (var i = 0; i < size; i++)
+        {
+            var slot = new WarehouseSlotModel(i);
+            _slots.Add(slot);
+            SubscribeForSlot(slot);
+        }
     }
 
     public int Volume { get; private set; }
-    public int Size { get; private set; }
-
-    public ProductModel GetProductAt(int index)
-    {
-        return _products[index];
-    }
-
-    public void SetProductAt(int index, ProductModel product)
-    {
-        _products[index] = product;
-        ProductIsSet(index, product);
-    }
-
-    public bool RemoveProductAt(int index)
-    {
-        var product = _products[index];
-        if (product != null)
-        {
-            _products[index] = null;
-            ProductRemoved(index, product);
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
+    public int Size => _slots.Count;
+    public IReadOnlyList<WarehouseSlotModel> Slots => _slots;
 
     public void AddVolume(int addedVolume)
     {
         var previousVolume = Volume;
         Volume += addedVolume;
-        VolumeChanged(previousVolume, Volume);
+        VolumeAdded(addedVolume);
     }
 
     public void AddSlot()
     {
-        Size++;
-        var newProducts = new ProductModel[Size];
-        for (var i = 0; i < _products.Length; i++)
-        {
-            newProducts[i] = _products[i];
-        }
-        _products = newProducts;
+        var newSlot = new WarehouseSlotModel(Size);
+        SubscribeForSlot(newSlot);
+        _slots.Add(newSlot);
         SlotAdded();
+    }
+
+    private void SubscribeForSlot(WarehouseSlotModel slot)
+    {
+        slot.ProductIsSet += OnSlotProductSet;
+        slot.ProductRemoved += OnSlotProductRemoved;
+    }
+
+    private void OnSlotProductSet(int slotIndex)
+    {
+        SlotProductIsSet(slotIndex, _slots[slotIndex].Product);
+    }
+
+    private void OnSlotProductRemoved(int slotIndex, ProductModel product)
+    {
+        SlotProductRemoved(slotIndex, product);
+    }
+}
+
+public class WarehouseSlotModel
+{
+    public event Action<int> ProductIsSet = delegate { };
+    public event Action<int, ProductModel> ProductRemoved = delegate { };
+
+    public readonly int Index;
+
+    public WarehouseSlotModel(int index)
+    {
+        Index = index;
+    }
+
+    public ProductModel Product { get; private set; }
+    //public float Fullness => Product != null ? Product.Amount
+
+    public void SetProduct(ProductModel productModel)
+    {
+        if (productModel == null) return;
+        Product = productModel;
+        ProductIsSet(Index);
+    }
+
+    public bool RemoveProduct()
+    {
+        if (Product != null)
+        {
+            var tempProduct = Product;
+            Product = null;
+            ProductRemoved(Index, tempProduct);
+            return true;
+        }
+        return false;
     }
 }
 

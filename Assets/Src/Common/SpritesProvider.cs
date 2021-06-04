@@ -86,7 +86,17 @@ public class SpritesProvider
     public Sprite GetOrangeButtonSprite()
     {
         return GetSprite(SpriteAtlasId.InterfaceAtlas, "button_1_long_orange");
-    }   
+    }
+
+    public Sprite GetProductIcon(string productKey)
+    {
+        return GetSprite(SpriteAtlasId.InterfaceAtlas, productKey);
+    }
+
+    public Sprite GetProductSprite(string productKey)
+    {
+        return GetSprite(SpriteAtlasId.GameplayAtlas, productKey);
+    }
 
     private Sprite GetSprite(SpriteAtlasId gameplayAtlas, string name)
     {

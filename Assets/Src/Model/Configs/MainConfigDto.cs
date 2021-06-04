@@ -10,6 +10,7 @@ public class MainConfigDto
     public Dictionary<string, ShopDecorationConfigDto> WallsConfig;
     public Dictionary<string, ShopDecorationConfigDto> WindowsConfig;
     public Dictionary<string, ShopDecorationConfigDto> DoorsConfig;
+    public Dictionary<string, ProductConfigDto> ProductsConfig;
 }
 
 public class PlaceableItemConfigDto
@@ -32,4 +33,15 @@ public class ShelfConfigDto : ShopObjectConfigDto
 
 public class ShopDecorationConfigDto : PlaceableItemConfigDto
 {
+}
+
+public class ProductConfigDto
+{
+    public string key;
+    public int unlock_level;
+    public string price_per_1000v;
+    public int profit_per_1000v;
+    public float demand_1000v_per_hour;
+    public string deliver;
+    public int amount_per_1000v;
 }

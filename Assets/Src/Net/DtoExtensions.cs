@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
@@ -22,21 +21,21 @@ public static class DtoExtensions
         var volume = int.Parse(warehouseConvertedDto["volume"]);
         var size = int.Parse(warehouseConvertedDto["size"]);
         var products = warehouseConvertedDto["items"].Split('|')
-            .Select(ParseProduct)
+            .Select(ToProductModel)
             .ToArray();
         var result = new ShopWarehouseModel(volume, size);
-        for (var i = 0; i < products.Length; i++)
+        for (var i = 0; i < size; i++)
         {
-            if (products[i] != null)
+            if (i < products.Length)
             {
-                result.SetProductAt(i, products[i]);
+                result.Slots[i].SetProduct(products[i]);
             }
         }
 
         return result;
     }
 
-    private static ProductModel ParseProduct(string productStr)
+    private static ProductModel ToProductModel(string productStr)
     {
         if (string.IsNullOrEmpty(productStr) || productStr.IndexOf('p') < 0) return null;
         var splittedByD = productStr.Split('d');
@@ -52,7 +51,23 @@ public static class DtoExtensions
             amount = int.Parse(splittedByX[1]);
         }
         var numericId = int.Parse(splittedByX[0].Split('p')[1]);
-        return new ProductModel(numericId, amount, deliverTime);
+        var configsProvider = GameConfigManager.Instance.MainConfig;
+        return new ProductModel(configsProvider.GetProductConfigByNumericId(numericId), amount, deliverTime);
+    }
+
+    private static ProductModel[] ToProducts(string objectParamsShort)
+    {
+        var result = new List<ProductModel>();
+        var splitted = objectParamsShort.Split(',');
+        foreach (var productStr in splitted)
+        {
+            if (productStr.Contains('p') && productStr.Contains('x'))
+            {
+                result.Add(ToProductModel(productStr));
+            }
+        }
+
+        return result.ToArray();
     }
 
     private static ShopProgressModel ToProgressModel(GetDataResponseDataDto data)
@@ -195,41 +210,6 @@ public static class DtoExtensions
         }
 
         return result;
-    }
-
-    private static ProductModel[] ToProducts(string objectParamsShort)
-    {
-        var result = new List<ProductModel>();
-        var splitted = objectParamsShort.Split(',');
-        foreach (var productStr in splitted)
-        {
-            if (productStr.Contains('p') && productStr.Contains('x'))
-            {
-                result.Add(ToProduct(productStr));
-            }
-        }
-
-        return result.ToArray();
-    }
-
-    private static ProductModel ToProduct(string paramsShort)
-    {
-        var splittedByX = paramsShort.Split('x');
-        var productId = int.Parse(splittedByX[0].Split('p')[1]);
-        var time = 0;
-        int amount;
-        if (splittedByX[1].Contains("d"))
-        {
-            var splitedByD = splittedByX[1].Split('d');
-            amount = int.Parse(splitedByD[0]);
-            time = int.Parse(splitedByD[1]);
-        }
-        else
-        {
-            amount = int.Parse(splittedByX[1]);
-        }
-
-        return new ProductModel(productId, amount, time);
     }
 
     private static Vector2Int ParseCoords(string coordsStr)

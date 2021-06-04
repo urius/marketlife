@@ -46,7 +46,7 @@ public class BottomPanelMediator : UINotMonoMediatorBase
                     result = new UIBottomPanelShelfsTabMediator(_view);
                     break;
                 case GameStateName.ShopSimulation:
-                    //TODO: default simulationMediator (friends?)
+                    result = new UIBottomPanelWarehouseTabMediator(_view);
                     break;
             }
         }

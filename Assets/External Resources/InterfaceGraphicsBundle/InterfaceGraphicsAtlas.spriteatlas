@@ -32,8 +32,8 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 46b41057a82fe4010b5245cd9e8b4afa, type: 3}
-    totalSpriteSurfaceArea: 595217
-    bindAsDefault: 0
+    totalSpriteSurfaceArea: 1084270
+    bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
@@ -47,12 +47,12 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 8baa2e017939f4b0588a2eb438bd3277, type: 3}
   - {fileID: 21300000, guid: 0c454711431f2483aa1cbf658576a592, type: 3}
   - {fileID: 21300000, guid: bac311417fd894ee0b91dfe06d6d5314, type: 3}
-  - {fileID: 21300000, guid: bc3106c14ddfc451cb17dbaf5889285c, type: 3}
   - {fileID: 21300000, guid: 918670d1bceec4cceb8282040d4f72a7, type: 3}
   - {fileID: 21300000, guid: 0a79d0d13d0694a58849f83f8879f169, type: 3}
   - {fileID: 21300000, guid: 72a72af10eaa24eb5bfafe181d14f9ac, type: 3}
   - {fileID: 21300000, guid: bf963e02a32544b8fa517606d749ca29, type: 3}
   - {fileID: 21300000, guid: 742722429a021491f9af9a98628524c5, type: 3}
+  - {fileID: 21300000, guid: f6416052473584c90931f9eba17e0c97, type: 3}
   - {fileID: 21300000, guid: ed347672ec4ad41ffb84217e5144acdc, type: 3}
   - {fileID: 21300000, guid: 848e139269b1f491b86b90be3f143ea7, type: 3}
   - {fileID: 21300000, guid: adb788d29559f4c858092acd11f95c40, type: 3}
@@ -61,6 +61,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 1a8906235a76048078f220d0c8e9b813, type: 3}
   - {fileID: 21300000, guid: 8d444b5392fef4240ba261583b447348, type: 3}
   - {fileID: 21300000, guid: 8e1d6873f23dc405b9520e4ed9cdf2f4, type: 3}
+  - {fileID: 21300000, guid: 0fda6973830ca4617b4f5aa41c6d1a9a, type: 3}
   - {fileID: 21300000, guid: 99e4d3b3131284fb390e1730c8bb969e, type: 3}
   - {fileID: 21300000, guid: 48dabf54da5ad464b81880ebbdafcc97, type: 3}
   - {fileID: 21300000, guid: 873fb87419f414aba878b2a83ca87eca, type: 3}
@@ -102,6 +103,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 0b104c3a210fa4e5a887802a73a203f9, type: 3}
   - {fileID: 21300000, guid: e1e1f17ab004e4ce3963afd10c495d59, type: 3}
   - {fileID: 21300000, guid: 0376dcaa29ea041dca0831e29332670c, type: 3}
+  - {fileID: 21300000, guid: 5302aaba45dd54fbb99ff82b032d79c4, type: 3}
   - {fileID: 21300000, guid: 288ad3fad7fda4d19b158dab317a88f0, type: 3}
   - {fileID: 21300000, guid: 29eb170b0e7ad42eb97645738622e48c, type: 3}
   - {fileID: 21300000, guid: afac811b41f2448718fb7a74d7a6dbaa, type: 3}
@@ -125,11 +127,11 @@ SpriteAtlas:
   - {fileID: 21300000, guid: a56735fcf4bef4f9091f25446ad512ec, type: 3}
   - {fileID: 21300000, guid: ae46a12dd16874664a541e6cb3d37583, type: 3}
   - {fileID: 21300000, guid: 298bee2dbf79a4ae58df9f6fe4f45827, type: 3}
-  - {fileID: 21300000, guid: b42b989d6f34c4b4eb19e2ef3d2be991, type: 3}
   - {fileID: 21300000, guid: 333e4e0ee5d2d4b21820b87e983ebe97, type: 3}
   - {fileID: 21300000, guid: dafec13efc0d44426a63df1be62d5a7e, type: 3}
   - {fileID: 21300000, guid: 91c56d4e8df2f45eea493e57150277a0, type: 3}
   - {fileID: 21300000, guid: 068c775eade72471c9b2535333653af2, type: 3}
+  - {fileID: 21300000, guid: 08851b6e2083d4cc186b2c19fd6b28b4, type: 3}
   - {fileID: 21300000, guid: 11530f8ebeb1b4981ba44f19f406046d, type: 3}
   - {fileID: 21300000, guid: c055a11f5f50847d88482fc7ae2bed36, type: 3}
   - {fileID: 21300000, guid: 83cdb23ff557e4b4abfc50135fddc1b0, type: 3}
@@ -150,12 +152,12 @@ SpriteAtlas:
   - Wall3
   - price_label
   - Wall1
-  - Lipsticks_1
   - Notebook
   - Eggs_1
   - content_skin_1
   - Icon_Role
   - Icon_Up3
+  - LimeOn
   - Window1
   - button_1_small_red
   - Icon_Shelf_1
@@ -164,6 +166,7 @@ SpriteAtlas:
   - window_caption
   - Sausage_1
   - Icon_AddPerson
+  - bracket
   - hint_skin
   - Door1
   - content_skin_2
@@ -205,6 +208,7 @@ SpriteAtlas:
   - skin_top_rating_button
   - popup_content_inner
   - button_1_long_orange
+  - Lipsticks_1
   - Icon_Shelf_5
   - top_bar_bg
   - Wall6
@@ -228,11 +232,11 @@ SpriteAtlas:
   - bottom_panel_item_skin
   - Perfume_2
   - Cream_1
-  - LimeOn
   - Icon_Shelf_2
   - sign_paint_floor
   - Floor4
   - Icon_Dlassification
+  - square_88_white
   - ToothBrushes_1
   - Floor1
   - Icon_Home

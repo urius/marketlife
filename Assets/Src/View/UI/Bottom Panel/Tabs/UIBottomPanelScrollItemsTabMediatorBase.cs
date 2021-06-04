@@ -12,7 +12,7 @@ public abstract class UIBottomPanelScrollItemsTabMediatorBase<TViewModel> : UINo
     private readonly UpdatesProvider _updatesProvider;
     private readonly ViewsCache _viewsCache;
     private readonly ScrollBoxView _scrollBoxView;
-    private readonly LinkedList<(UIBottomPanelScrollItemView View, TViewModel ViewModel)> _items;
+    private readonly LinkedList<(UIBottomPanelScrollItemView View, TViewModel ViewModel)> _displayedItems;
 
     private TViewModel[] _viewModels;
     private int _shownIndexFrom = 0;
@@ -30,7 +30,7 @@ public abstract class UIBottomPanelScrollItemsTabMediatorBase<TViewModel> : UINo
         _slotWidth = View.ScrollBoxView.SlotWidth;
         _scrollBoxView = view.ScrollBoxView;
 
-        _items = new LinkedList<(UIBottomPanelScrollItemView, TViewModel)>();
+        _displayedItems = new LinkedList<(UIBottomPanelScrollItemView, TViewModel)>();
     }
 
     public override void Mediate()
@@ -52,11 +52,11 @@ public abstract class UIBottomPanelScrollItemsTabMediatorBase<TViewModel> : UINo
     {
         Deactivate();
 
-        foreach (var item in _items)
+        foreach (var item in _displayedItems)
         {
-            HideItem(item.View);
+            HideItem(item);
         }
-        _items.Clear();
+        _displayedItems.Clear();
         _shownIndexFrom = 0;
         _shownIndexTo = -1;
 
@@ -125,24 +125,22 @@ public abstract class UIBottomPanelScrollItemsTabMediatorBase<TViewModel> : UINo
     private void DisplayItemsFromIndex(int indexFrom)
     {
         var indexTo = Math.Min(_viewModels.Length - 1, indexFrom + MaxDisplayedAmount);
-        UIBottomPanelScrollItemView itemView;
         //remove items from left
         while (_shownIndexFrom < indexFrom)
         {
-            itemView = _items.First.Value.View;
-            HideItem(itemView);
-            _items.RemoveFirst();
+            HideItem(_displayedItems.First.Value);
+            _displayedItems.RemoveFirst();
             _shownIndexFrom++;
         }
         //remove items from right
         while (_shownIndexTo > indexTo)
         {
-            itemView = _items.Last.Value.View;
-            HideItem(itemView);
-            _items.RemoveLast();
+            HideItem(_displayedItems.First.Value);
+            _displayedItems.RemoveLast();
             _shownIndexTo--;
         }
 
+        UIBottomPanelScrollItemView itemView;
         TViewModel viewModel;
         //add items to left
         while (_shownIndexFrom > indexFrom)
@@ -150,7 +148,7 @@ public abstract class UIBottomPanelScrollItemsTabMediatorBase<TViewModel> : UINo
             _shownIndexFrom--;
             viewModel = _viewModels[_shownIndexFrom];
             itemView = GetOrCreateScrollBoxItemAt(_shownIndexFrom);
-            _items.AddFirst((itemView, viewModel));
+            _displayedItems.AddFirst((itemView, viewModel));
             ShowItem(itemView, viewModel);
         }
         //add items to right
@@ -159,7 +157,7 @@ public abstract class UIBottomPanelScrollItemsTabMediatorBase<TViewModel> : UINo
             _shownIndexTo++;
             viewModel = _viewModels[_shownIndexTo];
             itemView = GetOrCreateScrollBoxItemAt(_shownIndexTo);
-            _items.AddLast((itemView, viewModel));
+            _displayedItems.AddLast((itemView, viewModel));
             ShowItem(itemView, viewModel);
         }
     }
@@ -170,15 +168,18 @@ public abstract class UIBottomPanelScrollItemsTabMediatorBase<TViewModel> : UINo
         ActivateItem(itemView);
     }
 
-    private void HideItem(UIBottomPanelScrollItemView itemView)
+    private void HideItem((UIBottomPanelScrollItemView View, TViewModel ViewModel) item)
     {
-        DeactivateItem(itemView);
-        ReturnOrDestroyScrollBoxItem(itemView);
+        BeforeHideItem(item.View, item.ViewModel);
+        DeactivateItem(item.View);
+        ReturnOrDestroyScrollBoxItem(item.View);
     }
 
     abstract protected IEnumerable<TViewModel> GetViewModelsToShow();
     abstract protected void SetupItem(UIBottomPanelScrollItemView itemView, TViewModel viewModel);
     abstract protected void HandleClick(TViewModel viewModel);
+
+    protected virtual void BeforeHideItem(UIBottomPanelScrollItemView itemView, TViewModel viewModel) { }
 
     private void ActivateItem(UIBottomPanelScrollItemView itemView)
     {
@@ -192,7 +193,7 @@ public abstract class UIBottomPanelScrollItemsTabMediatorBase<TViewModel> : UINo
 
     private void OnItemClicked(UIBottomPanelScrollItemView itemView)
     {
-        var viewModel = _items.First(t => t.View == itemView).ViewModel;
+        var viewModel = _displayedItems.First(t => t.View == itemView).ViewModel;
         HandleClick(viewModel);
     }
 }

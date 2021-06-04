@@ -32,10 +32,12 @@ public class GameConfigManager : ScriptableObject
         var wallsConfig = ConvertToConfigs(mainConfigDto.WallsConfig);
         var windowsConfig = ConvertToConfigs(mainConfigDto.WindowsConfig);
         var doorsConfig = ConvertToConfigs(mainConfigDto.DoorsConfig);
+        var productsConfig = ToProductsConfigs(mainConfigDto.ProductsConfig);
 
         return new MainConfig(
             mainConfigDto.GameplayAtlasVersion,
             mainConfigDto.InterfaceAtlasVersion,
+            productsConfig,
             shelfsConfig,
             shopObjectsConfig,
             floorsConfig,
@@ -52,6 +54,18 @@ public class GameConfigManager : ScriptableObject
         {
             var numericId = int.Parse(kvp.Key.Split('_')[1]);
             result[kvp.Key] = new ItemConfig<T>(numericId, kvp.Value);
+        }
+
+        return result;
+    }
+
+    private Dictionary<string, ProductConfig> ToProductsConfigs(Dictionary<string, ProductConfigDto> configsDtosDictionary)
+    {
+        var result = new Dictionary<string, ProductConfig>();
+        foreach (var kvp in configsDtosDictionary)
+        {
+            var numericId = int.Parse(kvp.Key.Split('p')[1]);
+            result[kvp.Key] = new ProductConfig(numericId, kvp.Value);
         }
 
         return result;

@@ -13,6 +13,7 @@ public class GameStateModel
     public event Action PlayerShopModelWasSet = delegate { };
     public event Action HighlightStateChanged = delegate { };
     public event Action PopupShown = delegate { };
+
     public event Action PopupRemoved = delegate { };
 
     private TaskCompletionSource<bool> _dataLoadedTcs = new TaskCompletionSource<bool>();
@@ -25,6 +26,16 @@ public class GameStateModel
     public ShopModel PlayerShopModel { get; private set; }
     public HighlightState HighlightState { get; private set; } = HighlightState.Default;
     public PopupViewModelBase ShowingPopupModel { get; private set; }
+    public int ServerTime => (int)(_serverTime + Time.realtimeSinceStartup - _realtimeSinceStartupCheckpoint);
+
+    private int _serverTime;
+    private float _realtimeSinceStartupCheckpoint;
+
+    public void SetServerTime(int serverTime)
+    {
+        _serverTime = serverTime;
+        _realtimeSinceStartupCheckpoint = Time.realtimeSinceStartup;
+    }
 
     public void SetGameState(GameStateName newState)
     {

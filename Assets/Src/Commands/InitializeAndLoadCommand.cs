@@ -10,6 +10,7 @@ public struct InitializeAndLoadCommand
 
         new InitializeSystemsCommand().Execute();
 
+        await new LoadServerTimeCommand().ExecuteAsync();
         await new LoadLocalizationCommand().ExecuteAsync();
         await new LoadConfigsCommand().ExecuteAsync();
         await new LoadGraphicsCommand().ExecuteAsync();

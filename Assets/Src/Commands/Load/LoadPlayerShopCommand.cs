@@ -3,12 +3,10 @@ using Newtonsoft.Json;
 
 public struct LoadPlayerShopCommand
 {
-    private const string _getDataUrl = "https://devman.ru/marketVK/dataProvider.php?command=get_data&id={0}";
-
     public async UniTask<bool> ExecuteAsync()
     {
         var playerModel = PlayerModel.Instance;
-        var url = string.Format(_getDataUrl, playerModel.Uid);
+        var url = string.Format(URLsHolder.Instance.GetDataURL, playerModel.Uid);
 
         var resultOperation = await new WebRequestsSender().GetAsync(url);
         if (resultOperation.IsSuccess)

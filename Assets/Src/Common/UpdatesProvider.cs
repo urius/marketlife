@@ -7,6 +7,7 @@ public class UpdatesProvider
 
     public event Action RealtimeUpdate = delegate { };
     public event Action GametimeUpdate = delegate { };
+    public event Action RealtimeSecondUpdate = delegate { };
 
     public void CallRealtimeUpdate()
     {
@@ -16,5 +17,10 @@ public class UpdatesProvider
     public void CallGameplayUpdate()
     {
         GametimeUpdate();
+    }
+
+    public void CallRealtimeSecondUpdate()
+    {
+        RealtimeSecondUpdate();
     }
 }

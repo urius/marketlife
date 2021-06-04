@@ -7,18 +7,25 @@ public class RootGameViewMediator : MonoBehaviour
 
     private UpdatesProvider _updatesProvider;
     private GridCalculator _gridCalculator;
+    private int NextSecondUpdate;
 
     private void Awake()
     {
         _updatesProvider = UpdatesProvider.Instance;
 
         SetupGridCalculator();
+        NextSecondUpdate = (int)Time.realtimeSinceStartup + 1;
     }
 
     private void FixedUpdate()
     {
         _updatesProvider.CallGameplayUpdate();
         _updatesProvider.CallRealtimeUpdate();
+        if (Time.realtimeSinceStartup >= NextSecondUpdate)
+        {
+            NextSecondUpdate = (int)Time.realtimeSinceStartup + 1;
+            _updatesProvider.CallRealtimeSecondUpdate();
+        }
     }
 
     private void SetupGridCalculator()

@@ -27,11 +27,13 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
 
     public void SetTopText(string text)
     {
+        _topText.gameObject.SetActive(true);
         _topText.text = text;
     }
 
     public void SetPercentLineXScaleMultiplier(float multiplier)
     {
+        _percentLineContainerTransform.gameObject.SetActive(true);
         var scale = _percentLineImage.transform.localScale;
         scale.x = multiplier;
         _percentLineImage.transform.localScale = scale;
@@ -39,6 +41,7 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
 
     public void SetPercentLineColor(Color color)
     {
+        _percentLineContainerTransform.gameObject.SetActive(true);
         _percentLineImage.color = color;
     }
 

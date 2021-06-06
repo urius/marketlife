@@ -8,6 +8,8 @@ public abstract class ShopObjectMediatorBase
     private readonly bool _hasProfileSide;
     private readonly (GameObject, GameObject) _prefabs;
 
+    protected ShopObjectViewBase CurrentView => _currentView;
+
     private ShopObjectViewBase _currentView;
     private ShopObjectViewBase _defaultSideView;
     private ShopObjectViewBase _profileSideView;
@@ -33,7 +35,7 @@ public abstract class ShopObjectMediatorBase
         DestroyViews();
     }
 
-    protected void DestroyNotDisplayedSideView()
+    protected virtual void DestroyNotDisplayedSideView()
     {
         if (_currentView != _defaultSideView && _defaultSideView != null)
         {
@@ -45,6 +47,17 @@ public abstract class ShopObjectMediatorBase
             GameObject.Destroy(_profileSideView.gameObject);
             _profileSideView = null;
         }
+    }
+
+    protected virtual void UpdateView()
+    {
+        if (_currentView != null)
+        {
+            _currentView.gameObject.SetActive(false);
+        }
+        _currentView = GetOrCreatRotatedView(Model.Side);
+        SetIsHighlighted(Model.IsHighlighted);
+        UpdatePosition();
     }
 
     private ShopObjectViewBase GetOrCreatRotatedView(int side)
@@ -101,17 +114,6 @@ public abstract class ShopObjectMediatorBase
     private void OnSideChanged(int previousSide, int newSide)
     {
         UpdateView();
-    }
-
-    private void UpdateView()
-    {
-        if (_currentView != null)
-        {
-            _currentView.gameObject.SetActive(false);
-        }
-        _currentView = GetOrCreatRotatedView(Model.Side);
-        SetIsHighlighted(Model.IsHighlighted);
-        UpdatePosition();
     }
 
     private void OnCoordsChanged(Vector2Int oldCoords, Vector2Int newCoords)

@@ -301,6 +301,9 @@ MonoBehaviour:
   - ProductPlaceholders:
     - {fileID: 3324369298278129016}
     - {fileID: 3324369296875617686}
+    ProductSprites:
+    - {fileID: 3324369298278129017}
+    - {fileID: 3324369296875617687}
 --- !u!210 &9146300022538481713
 SortingGroup:
   m_ObjectHideFlags: 0

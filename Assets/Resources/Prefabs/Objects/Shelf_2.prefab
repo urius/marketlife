@@ -141,6 +141,10 @@ MonoBehaviour:
     - {fileID: 818053113624729133}
     - {fileID: 818053111704795536}
     - {fileID: 818053113089997475}
+    ProductSprites:
+    - {fileID: 818053113624729132}
+    - {fileID: 818053111704795539}
+    - {fileID: 818053113089997474}
 --- !u!210 &818053112919683420
 SortingGroup:
   m_ObjectHideFlags: 0

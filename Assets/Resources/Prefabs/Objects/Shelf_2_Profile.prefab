@@ -141,6 +141,10 @@ MonoBehaviour:
     - {fileID: 5250451073566975064}
     - {fileID: 5250451072133565413}
     - {fileID: 5250451073032227030}
+    ProductSprites:
+    - {fileID: 5250451073566975065}
+    - {fileID: 5250451072133565414}
+    - {fileID: 5250451073032227031}
 --- !u!210 &5250451072811320105
 SortingGroup:
   m_ObjectHideFlags: 0

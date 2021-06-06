@@ -2,8 +2,8 @@ using System;
 
 public class ProductModel
 {
-    public event Action<int, int> AmountChanged = delegate { };
-    public event Action<int, int> DeliveryTimeChanged = delegate { };
+    public event Action<int> AmountChanged = delegate { };
+    public event Action<int> DeliveryTimeChanged = delegate { };
 
     public readonly ProductConfig Config;
 
@@ -33,7 +33,7 @@ public class ProductModel
         {
             var previousValue = _amount;
             _amount = value;
-            AmountChanged(previousValue, value);
+            AmountChanged(value - previousValue);
         }
     }
 
@@ -44,7 +44,7 @@ public class ProductModel
         {
             var previousValue = _deliverTime;
             _deliverTime = value;
-            DeliveryTimeChanged(previousValue, value);
+            DeliveryTimeChanged(value - previousValue);
         }
     }
 }

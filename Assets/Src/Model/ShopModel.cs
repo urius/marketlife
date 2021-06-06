@@ -626,6 +626,8 @@ public class WarehouseSlotModel
 {
     public event Action<int> ProductIsSet = delegate { };
     public event Action<int, ProductModel> ProductRemoved = delegate { };
+    public event Action<int> ProductAmountChanged = delegate { };
+    public event Action<int> ProductDeliveryTimeChanged = delegate { };
 
     public readonly int Index;
 
@@ -640,7 +642,9 @@ public class WarehouseSlotModel
     public void SetProduct(ProductModel productModel)
     {
         if (productModel == null) return;
+        RemoveProduct();
         Product = productModel;
+        SubscribeForProduct(Product);
         ProductIsSet(Index);
     }
 
@@ -648,12 +652,35 @@ public class WarehouseSlotModel
     {
         if (Product != null)
         {
+            UnsubscribeFromProduct(Product);
             var tempProduct = Product;
             Product = null;
             ProductRemoved(Index, tempProduct);
             return true;
         }
         return false;
+    }
+
+    private void SubscribeForProduct(ProductModel product)
+    {
+        product.AmountChanged += OnProductAmountChanged;
+        product.DeliveryTimeChanged += OnProductDeliveryTimeChanged;
+    }
+
+    private void UnsubscribeFromProduct(ProductModel product)
+    {
+        product.AmountChanged -= OnProductAmountChanged;
+        product.DeliveryTimeChanged -= OnProductDeliveryTimeChanged;
+    }
+
+    private void OnProductAmountChanged(int deltaAmount)
+    {
+        ProductAmountChanged(deltaAmount);
+    }
+
+    private void OnProductDeliveryTimeChanged(int deltaTimeSeconds)
+    {
+        ProductDeliveryTimeChanged(deltaTimeSeconds);
     }
 }
 

@@ -728,11 +728,20 @@ MonoBehaviour:
     - {fileID: 7329594752430298658}
     - {fileID: 7329594751241748325}
     - {fileID: 7329594751028626812}
+    ProductSprites:
+    - {fileID: 7329594752430298657}
+    - {fileID: 7329594751241748324}
+    - {fileID: 7329594751028626811}
   - ProductPlaceholders:
     - {fileID: 7329594751446027049}
     - {fileID: 7329594751412454782}
     - {fileID: 7329594752591047274}
     - {fileID: 7329594752638445369}
+    ProductSprites:
+    - {fileID: 7329594751446027048}
+    - {fileID: 7329594751412454781}
+    - {fileID: 7329594752591047273}
+    - {fileID: 7329594752638445368}
 --- !u!210 &7329594752370575070
 SortingGroup:
   m_ObjectHideFlags: 0

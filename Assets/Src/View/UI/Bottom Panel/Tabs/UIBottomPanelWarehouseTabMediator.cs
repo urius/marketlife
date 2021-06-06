@@ -29,6 +29,7 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
 
     protected override void SetupItem(UIBottomPanelScrollItemView itemView, WarehouseSlotModel viewModel)
     {
+        ActivateItem(viewModel);
         if (viewModel.Product != null)
         {
             var product = viewModel.Product;
@@ -38,21 +39,42 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
             itemView.SetupIconSize(110);
             itemView.SetImage(icon);
 
-            if (product.DeliverTime > _gameStateModel.ServerTime)
+            var deltaDeliver = product.DeliverTime - _gameStateModel.ServerTime;
+            if (deltaDeliver > 0)
             {
+                itemView.SetTopText(FormattingHelper.ToSeparatedTimeFormat(deltaDeliver));
                 //TODO: show deliver mode
                 //TODO: subscribe OnSecondPassed
             }
             else
             {
-                itemView.SetTopText(product.Amount.ToString());
-
-                var fullness = (float)(product.Amount * config.Volume) / _warehouseModel.Volume;
-                itemView.SetPercentLineXScaleMultiplier(fullness);
-
-                var color = Color.Lerp(Color.red, Color.yellow, fullness);
-                itemView.SetPercentLineColor(color);
+                UpdateProductAmount(itemView, product);
             }
         }
+    }
+
+    protected override void BeforeHideItem(UIBottomPanelScrollItemView itemView, WarehouseSlotModel viewModel)
+    {
+        base.BeforeHideItem(itemView, viewModel);
+        DeactivateItem(viewModel);
+    }
+
+    private void ActivateItem(WarehouseSlotModel viewModel)
+    {
+        //viewModel
+    }
+
+    private void DeactivateItem(WarehouseSlotModel viewModel)
+    {
+        //throw new System.NotImplementedException();
+    }
+
+    private void UpdateProductAmount(UIBottomPanelScrollItemView itemView, ProductModel product)
+    {
+        itemView.SetTopText(product.Amount.ToString());
+        var fullness = (float)(product.Amount * product.Config.Volume) / _warehouseModel.Volume;
+        itemView.SetPercentLineXScaleMultiplier(fullness);
+        var color = Color.Lerp(Color.red, Color.yellow, fullness);
+        itemView.SetPercentLineColor(color);
     }
 }

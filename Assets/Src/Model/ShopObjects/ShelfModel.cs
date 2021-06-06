@@ -19,6 +19,18 @@ public class ShelfModel : ShopObjectModelBase
         Products = new ProductModel[PartsCount];
     }
 
+    public float GetFullnesOnFloor(int floor)
+    {
+        var productOnFloor = Products[floor];
+        if (productOnFloor != null)
+        {
+            var volume = productOnFloor.Config.Volume * productOnFloor.Amount;
+            return (float)volume / PartVolume;
+        }
+
+        return 0;
+    }
+
     public bool TrySetProduct(int partIndex, ProductModel productModel)
     {
         if (partIndex < Products.Length)

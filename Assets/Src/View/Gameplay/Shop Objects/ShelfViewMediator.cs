@@ -4,14 +4,14 @@ public class ShelfViewMediator : ShopObjectMediatorBase
 {
     private readonly SpritesProvider _spritesProvider;
 
-    private ShelfModel _model;
+    private ShelfModel _shelfModel;
 
     public ShelfViewMediator(Transform parentTransform, ShelfModel shelfModel)
         : base(parentTransform, shelfModel)
     {
         _spritesProvider = SpritesProvider.Instance;
 
-        _model = shelfModel;
+        _shelfModel = shelfModel;
     }
 
     private ShelfView CurrentShelfView => CurrentView as ShelfView;
@@ -20,13 +20,24 @@ public class ShelfViewMediator : ShopObjectMediatorBase
     {
         base.UpdateView();
 
-        for (var i = 0; i < _model.Products.Length; i++)
+        UpdateProductViews();
+    }
+
+    private void UpdateProductViews()
+    {
+        for (var i = 0; i < _shelfModel.Products.Length; i++)
         {
-            var product = _model.Products[i];
-            if (product == null) continue;
-            var sprite = _spritesProvider.GetProductSprite(product.Config.Key);
-            var fullnes = _model.GetFullnesOnFloor(i);
-            CurrentShelfView.SetProductSpriteOnFloor(i, sprite, fullnes);
+            var product = _shelfModel.Products[i];
+            if (product == null)
+            {
+                CurrentShelfView.EmptyFloor(i);
+            }
+            else
+            {
+                var sprite = _spritesProvider.GetProductSprite(product.Config.Key);
+                var fullnes = _shelfModel.GetFullnesOnFloor(i);
+                CurrentShelfView.SetProductSpriteOnFloor(i, sprite, fullnes);
+            }
         }
     }
 }

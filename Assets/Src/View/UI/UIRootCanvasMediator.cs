@@ -17,6 +17,7 @@ public class UIRootCanvasMediator : MonoBehaviour
     private BottomPanelMediator _bottomPanelMediator;
     private ShopObjectActionsPanelMediator _shopObjectActionsPanelMediator;
     private UIFlyingTextsMediator _flyingTextsMediator;
+    private PlacingProductMediator _placingProductMediator;
     private PopupsMediator _popupsMediator;
     private Vector3 _mouseDownPosition;
     private int _mouseDownFramesCount;
@@ -29,6 +30,7 @@ public class UIRootCanvasMediator : MonoBehaviour
         _bottomPanelMediator = new BottomPanelMediator(_bottomPanelView);
         _shopObjectActionsPanelMediator = new ShopObjectActionsPanelMediator(_gameViewUiContainerRectTransform);
         _flyingTextsMediator = new UIFlyingTextsMediator(_gameViewUiContainerRectTransform);
+        _placingProductMediator = new PlacingProductMediator(_gameViewUiContainerRectTransform);
         _popupsMediator = new PopupsMediator(_popupsCanvas.transform as RectTransform);
 
         PoolCanvasProvider.Instance.SetupPoolCanvas(_poolCanvas);
@@ -46,6 +48,7 @@ public class UIRootCanvasMediator : MonoBehaviour
         _bottomPanelMediator.Mediate();
         _shopObjectActionsPanelMediator.Mediate();
         _flyingTextsMediator.Mediate();
+        _placingProductMediator.Mediate();
         _popupsMediator.Mediate();
     }
 

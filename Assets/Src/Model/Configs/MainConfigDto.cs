@@ -4,6 +4,7 @@ public class MainConfigDto
 {
     public int GameplayAtlasVersion;
     public int InterfaceAtlasVersion;
+    public int AutoPlacePriceGold;    
     public Dictionary<string, ShelfConfigDto> ShelfsConfig;
     public Dictionary<string, ShopObjectConfigDto> ShopObjectsConfig;
     public Dictionary<string, ShopDecorationConfigDto> FloorsConfig;

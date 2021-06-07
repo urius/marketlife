@@ -17,10 +17,13 @@ public class GameStateModel
     public event Action PopupRemoved = delegate { };
 
     private TaskCompletionSource<bool> _dataLoadedTcs = new TaskCompletionSource<bool>();
+    private int _placingIntParameter = -1;
+
     public Task GameDataLoadedTask => _dataLoadedTcs.Task;
     public GameStateName GameState { get; private set; } = GameStateName.Initializing;
     public PlacingStateName PlacingState { get; private set; } = PlacingStateName.None;
-    public int PlacingDecorationNumericId { get; private set; }
+    public int PlacingDecorationNumericId => _placingIntParameter;
+    public int PlacingProductWarehouseSlotIndex => _placingIntParameter;
     public ShopObjectModelBase PlacingShopObjectModel { get; private set; }
     public ShopModel ViewingShopModel { get; private set; }
     public ShopModel PlayerShopModel { get; private set; }
@@ -70,7 +73,7 @@ public class GameStateModel
     public void ResetPlacingState()
     {
         PlacingShopObjectModel = null;
-        PlacingDecorationNumericId = 0;
+        _placingIntParameter = -1;
         SetPlacingState(PlacingStateName.None);
     }
 
@@ -82,26 +85,32 @@ public class GameStateModel
 
     public void SetPlacingFloor(int numericId)
     {
-        PlacingDecorationNumericId = numericId;
+        _placingIntParameter = numericId;
         SetPlacingState(PlacingStateName.PlacingNewFloor);
     }
 
     public void SetPlacingWall(int numericId)
     {
-        PlacingDecorationNumericId = numericId;
+        _placingIntParameter = numericId;
         SetPlacingState(PlacingStateName.PlacingNewWall);
     }
 
     public void SetPlacingWindow(int numericId, bool isNew = true)
     {
-        PlacingDecorationNumericId = numericId;
+        _placingIntParameter = numericId;
         SetPlacingState(isNew ? PlacingStateName.PlacingNewWindow : PlacingStateName.MovingWindow);
     }
 
     public void SetPlacingDoor(int numericId, bool isNew = true)
     {
-        PlacingDecorationNumericId = numericId;
+        _placingIntParameter = numericId;
         SetPlacingState(isNew ? PlacingStateName.PlacingNewDoor : PlacingStateName.MovingDoor);
+    }
+
+    public void SetPlacingProductSlotIndex(int slotIndex)
+    {
+        _placingIntParameter = slotIndex;
+        SetPlacingState(PlacingStateName.PlacingProduct);
     }
 
     public void SetViewingShopModel(ShopModel shopModel)
@@ -216,4 +225,5 @@ public enum PlacingStateName
     MovingWindow,
     PlacingNewDoor,
     MovingDoor,
+    PlacingProduct,
 }

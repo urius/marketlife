@@ -6,6 +6,7 @@ public class Dispatcher
     public Action<ShopModel> PlayerShopLoaded = delegate { };
 
     public Action<Vector3> CameraMoved = delegate { };
+    public Action MouseMoved = delegate { };    
 
     public Action UIGameViewMouseDown = delegate { };
     public Action UIGameViewMouseUp = delegate { };

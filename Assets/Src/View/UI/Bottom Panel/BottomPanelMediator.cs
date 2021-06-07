@@ -7,6 +7,7 @@ public class BottomPanelMediator : UINotMonoMediatorBase
     private readonly BottomPanelView _view;
     private readonly Dispatcher _dispatcher;
     private readonly GameStateModel _gameStateModel;
+    private readonly GameConfigManager _configManager;
     private readonly Dictionary<GameStateName, IMediator> _lastTabMediatorForState = new Dictionary<GameStateName, IMediator>();
 
     private IMediator _currentTabMediator;
@@ -17,6 +18,7 @@ public class BottomPanelMediator : UINotMonoMediatorBase
         _view = view;
         _dispatcher = Dispatcher.Instance;
         _gameStateModel = GameStateModel.Instance;
+        _configManager = GameConfigManager.Instance;
     }
 
     public override async void Mediate()
@@ -27,6 +29,7 @@ public class BottomPanelMediator : UINotMonoMediatorBase
 
         _currentTabMediator = GetTabMediatorForGameState(_gameStateModel.GameState);
         _currentTabMediator?.Mediate();
+        _view.SetAutoPlacePriceGold(_configManager.MainConfig.AutoPlacePriceGold);
 
         await ShowBgAndTopButtonsForStateAsync(_gameStateModel.GameState);
     }
@@ -107,6 +110,9 @@ public class BottomPanelMediator : UINotMonoMediatorBase
                     case PlacingStateName.PlacingNewWindow:
                     case PlacingStateName.PlacingNewDoor:
                         await _view.ShowPlacingButtonsAsync(PlacingModeType.ShopDecoration);
+                        break;
+                    case PlacingStateName.PlacingProduct:
+                        await _view.ShowPlacingButtonsAsync(PlacingModeType.Product);
                         break;
                 }
             }

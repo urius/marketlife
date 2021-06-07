@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class EventsHandleSystem : MonoBehaviour
@@ -23,6 +24,7 @@ public class EventsHandleSystem : MonoBehaviour
         _dispatcher.UIBottomPanelPlaceWallClicked += OnUIBottomPanelPlaceWallClicked;
         _dispatcher.UIBottomPanelPlaceWindowClicked += OnUIBottomPanelPlaceWindowClicked;
         _dispatcher.UIBottomPanelPlaceDoorClicked += OnUIBottomPanelPlaceDoorClicked;
+        _dispatcher.UIBottomPanelWarehouseSlotClicked += OnUIBottomPanelWarehouseSlotClicked;
         _dispatcher.UIActionsRotateRightClicked += OnUIActionsRotateRightClicked;
         _dispatcher.UIActionsRotateLeftClicked += OnUIActionsRotateLeftClicked;
         _dispatcher.UIActionsMoveClicked += OnUIActionsMoveClicked;
@@ -152,5 +154,10 @@ public class EventsHandleSystem : MonoBehaviour
     private void OnUIBottomPanelPlaceDoorClicked(int doorNumericId)
     {
         new UIRequestPlacingDecorationCommand().Execute(ShopDecorationObjectType.Door, doorNumericId);
+    }
+
+    private void OnUIBottomPanelWarehouseSlotClicked(int slotIndex)
+    {
+        new UIProcessWarehouseSlotClickCommand().Execute(slotIndex);
     }
 }

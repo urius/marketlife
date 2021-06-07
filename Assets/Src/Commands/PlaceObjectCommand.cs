@@ -33,6 +33,34 @@ public struct PlaceObjectCommand
             case PlacingStateName.MovingDoor:
                 PlaceMovingDecoration(mouseCellCoords, ShopDecorationObjectType.Door, gameStateModel.PlacingDecorationNumericId);
                 break;
+            case PlacingStateName.PlacingProduct:
+                PlaceProductOnHighlightedShelf();
+                break;
+        }
+    }
+
+    private void PlaceProductOnHighlightedShelf()
+    {
+        var gameStateModel = GameStateModel.Instance;
+        var shopModel = gameStateModel.ViewingShopModel;
+        var highlightState = gameStateModel.HighlightState;
+        var highlightedShopObject = highlightState.HighlightedShopObject;
+        if (highlightState.IsHighlighted
+            && highlightedShopObject != null
+            && highlightedShopObject.Type == ShopObjectType.Shelf)
+        {
+            var shelf = highlightedShopObject as ShelfModel;
+            var placingProduct = shopModel.WarehouseModel.Slots[gameStateModel.PlacingProductWarehouseSlotIndex].Product;
+            for (var i = 0; i < shelf.Products.Length; i++)
+            {
+                var productOnShelf = shelf.Products[i];
+                if (productOnShelf == null)
+                {
+                    var neededAmount = Math.Min(shelf.PartVolume / placingProduct.Config.Volume, placingProduct.Amount);
+                    var productToPlace = new ProductModel(placingProduct.Config, neededAmount);
+                    shelf.TrySetProduct(i, productToPlace);
+                }
+            }
         }
     }
 

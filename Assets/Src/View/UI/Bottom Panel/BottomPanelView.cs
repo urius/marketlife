@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class BottomPanelView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public event Action PointerEnter = delegate { };
-    public event Action PointerExit = delegate { };    
+    public event Action PointerExit = delegate { };
     public event Action FriendsButtonClicked = delegate { };
     public event Action WarehouseButtonClicked = delegate { };
     public event Action InteriorButtonClicked = delegate { };
@@ -22,6 +22,7 @@ public class BottomPanelView : MonoBehaviour, IPointerEnterHandler, IPointerExit
     public event Action FinishPlacingClicked = delegate { };
     public event Action RotateRightClicked = delegate { };
     public event Action RotateLeftClicked = delegate { };
+    public event Action AutoPlaceClicked = delegate { };    
 
     private const float DefaultDurationSeconds = 0.15f;
     private const float DefaultDelaySeconds = 0.05f;
@@ -44,6 +45,8 @@ public class BottomPanelView : MonoBehaviour, IPointerEnterHandler, IPointerExit
     [SerializeField] private Button _buttonFinishPlacing;
     [SerializeField] private Button _buttonRotateRight;
     [SerializeField] private Button _buttonRotateLeft;
+    [SerializeField] private Button _buttonAutoPlace;
+    [SerializeField] private Text _buttonAutoPlacePriceText;
     [Space(10)]
     [SerializeField] private GameObject _blockPanel;
     [Space(10)]
@@ -61,6 +64,7 @@ public class BottomPanelView : MonoBehaviour, IPointerEnterHandler, IPointerExit
     private CanvasGroup[] _placingShopObjectModeButtons;
     private CanvasGroup[] _movingShopObjectModeButtons;
     private CanvasGroup[] _placingDecorationModeButtons;
+    private CanvasGroup[] _placingProductModeButtons;
     private UIHintableView[] _allHintableViews;
 
     public Button FriendsButton => _friendsButton;
@@ -75,10 +79,11 @@ public class BottomPanelView : MonoBehaviour, IPointerEnterHandler, IPointerExit
     {
         _simulationModeButtons = new CanvasGroup[] { GetCanvasGroup(_friendsButton), GetCanvasGroup(_warehouseButton), GetCanvasGroup(_interiorButton), GetCanvasGroup(_manageButton) };
         _interiorModeButtons = new CanvasGroup[] { GetCanvasGroup(_interiorCloseButton), GetCanvasGroup(_interiorObjectsButton), GetCanvasGroup(_interiorFloorsButton), GetCanvasGroup(_interiorWallsButton), GetCanvasGroup(_interiorWindowsButton), GetCanvasGroup(_interiorDoorsButton) };
-        _allPlacingModeButtons = new CanvasGroup[] { GetCanvasGroup(_buttonFinishPlacing), GetCanvasGroup(_buttonRotateRight), GetCanvasGroup(_buttonRotateLeft) };
+        _allPlacingModeButtons = new CanvasGroup[] { GetCanvasGroup(_buttonFinishPlacing), GetCanvasGroup(_buttonRotateRight), GetCanvasGroup(_buttonRotateLeft), GetCanvasGroup(_buttonAutoPlace) };
         _placingShopObjectModeButtons = new CanvasGroup[] { GetCanvasGroup(_buttonFinishPlacing), GetCanvasGroup(_buttonRotateRight), GetCanvasGroup(_buttonRotateLeft) };
         _movingShopObjectModeButtons = new CanvasGroup[] { GetCanvasGroup(_buttonRotateRight), GetCanvasGroup(_buttonRotateLeft) };
         _placingDecorationModeButtons = new CanvasGroup[] { GetCanvasGroup(_buttonFinishPlacing) };
+        _placingProductModeButtons = new CanvasGroup[] { GetCanvasGroup(_buttonFinishPlacing), GetCanvasGroup(_buttonAutoPlace) };
 
         _buttonYPositionsByCanvasGroup = new Dictionary<CanvasGroup[], float>
         {
@@ -88,11 +93,17 @@ public class BottomPanelView : MonoBehaviour, IPointerEnterHandler, IPointerExit
             [_placingShopObjectModeButtons] = (_placingShopObjectModeButtons[0].transform as RectTransform).anchoredPosition.y,
             [_movingShopObjectModeButtons] = (_movingShopObjectModeButtons[0].transform as RectTransform).anchoredPosition.y,
             [_placingDecorationModeButtons] = (_placingDecorationModeButtons[0].transform as RectTransform).anchoredPosition.y,
+            [_placingProductModeButtons] = (_placingProductModeButtons[0].transform as RectTransform).anchoredPosition.y,
         };
 
         _allHintableViews = GetComponentsInChildren<UIHintableView>(true);
 
         Activate();
+    }
+
+    public void SetAutoPlacePriceGold(int goldAmount)
+    {
+        _buttonAutoPlacePriceText.text = goldAmount.ToString();
     }
 
     public void SetIsBlocked(bool isBlocked)
@@ -146,6 +157,7 @@ public class BottomPanelView : MonoBehaviour, IPointerEnterHandler, IPointerExit
             PlacingModeType.NewShopObject => ShowButtonsInternalAsync(_placingShopObjectModeButtons, withDelays: false),
             PlacingModeType.MovingShopObject => ShowButtonsInternalAsync(_movingShopObjectModeButtons, withDelays: false),
             PlacingModeType.ShopDecoration => ShowButtonsInternalAsync(_placingDecorationModeButtons, withDelays: false),
+            PlacingModeType.Product => ShowButtonsInternalAsync(_placingProductModeButtons, withDelays: false),
             _ => UniTask.CompletedTask,
         };
     }
@@ -286,6 +298,12 @@ public class BottomPanelView : MonoBehaviour, IPointerEnterHandler, IPointerExit
         _buttonFinishPlacing.AddOnClickListener(OnFinishPlacingButtonClicked);
         _buttonRotateRight.AddOnClickListener(OnRotateRightButtonClicked);
         _buttonRotateLeft.AddOnClickListener(OnRotateLeftButtonClicked);
+        _buttonAutoPlace.AddOnClickListener(OnAutoPlaceClicked);
+    }
+
+    private void OnAutoPlaceClicked()
+    {
+        InvokeActionIfNotBlocked(AutoPlaceClicked);
     }
 
     private void OnRotateLeftButtonClicked()
@@ -382,4 +400,5 @@ public enum PlacingModeType
     NewShopObject,
     MovingShopObject,
     ShopDecoration,
+    Product,
 }

@@ -6,24 +6,40 @@ public struct ProcessHighlightCommand
     {
         var gameStateModel = GameStateModel.Instance;
 
-        if (gameStateModel.PlacingState != PlacingStateName.None)
+        if (gameStateModel.PlacingState != PlacingStateName.None && gameStateModel.PlacingState != PlacingStateName.PlacingProduct)
         {
             return;
         }
 
         var shopModel = gameStateModel.ViewingShopModel;
-        if (shopModel.Grid.TryGetValue(coords, out var shopObjectData)
-             && shopObjectData.buildState > 0)
+        if (gameStateModel.PlacingState == PlacingStateName.PlacingProduct)
         {
-            gameStateModel.SetHighlightedShopObject(shopObjectData.reference);
-        }
-        else if (shopModel.ShopDesign.IsHighlightableDecorationOn(coords))
-        {
-            gameStateModel.SetHighlightedDecorationOn(coords);
+            if (shopModel.Grid.TryGetValue(coords, out var shopObjectData)
+                             && shopObjectData.buildState > 0
+                             && shopObjectData.reference.Type == ShopObjectType.Shelf)
+            {
+                gameStateModel.SetHighlightedShopObject(shopObjectData.reference);
+            }
+            else
+            {
+                gameStateModel.ResetHighlightedState();
+            }
         }
         else
         {
-            gameStateModel.ResetHighlightedState();
+            if (shopModel.Grid.TryGetValue(coords, out var shopObjectData)
+                 && shopObjectData.buildState > 0)
+            {
+                gameStateModel.SetHighlightedShopObject(shopObjectData.reference);
+            }
+            else if (shopModel.ShopDesign.IsHighlightableDecorationOn(coords))
+            {
+                gameStateModel.SetHighlightedDecorationOn(coords);
+            }
+            else
+            {
+                gameStateModel.ResetHighlightedState();
+            }
         }
     }
 }

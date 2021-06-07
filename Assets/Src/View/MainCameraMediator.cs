@@ -72,6 +72,10 @@ public class MainCameraMediator : MonoBehaviour
         _currentMousePosition = Input.mousePosition;
         ProcessCameraMove();
         ProcessMouseCellPositionCalculation();
+        if (_currentMousePosition != _previousMousePosition)
+        {
+            _dispatcher.MouseMoved();
+        }
     }
 
     private void ProcessMouseCellPositionCalculation()

@@ -37,6 +37,7 @@ public class GameConfigManager : ScriptableObject
         return new MainConfig(
             mainConfigDto.GameplayAtlasVersion,
             mainConfigDto.InterfaceAtlasVersion,
+            mainConfigDto.AutoPlacePriceGold,
             productsConfig,
             shelfsConfig,
             shopObjectsConfig,

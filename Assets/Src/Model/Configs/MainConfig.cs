@@ -6,6 +6,7 @@ public class MainConfig : IProductsConfig, IShelfsConfig, IFloorsConfig, IWallsC
 {
     public readonly int GameplayAtlasVersion;
     public readonly int InterfaceAtlasVersion;
+    public readonly int AutoPlacePriceGold;    
     public readonly Dictionary<string, ProductConfig> ProductsConfig;
     public readonly Dictionary<string, ItemConfig<ShelfConfigDto>> ShelfsConfig;
     public readonly Dictionary<string, ItemConfig<ShopObjectConfigDto>> ShopObjectsConfig;
@@ -17,6 +18,7 @@ public class MainConfig : IProductsConfig, IShelfsConfig, IFloorsConfig, IWallsC
     public MainConfig(
         int gameplayAtlasVersion,
         int interfaceAtlasVersion,
+        int autoPlacePriceGold,
         Dictionary<string, ProductConfig> productsConfig,
         Dictionary<string, ItemConfig<ShelfConfigDto>> shelfsConfig,
         Dictionary<string, ItemConfig<ShopObjectConfigDto>> shopObjectsConfig,
@@ -27,6 +29,7 @@ public class MainConfig : IProductsConfig, IShelfsConfig, IFloorsConfig, IWallsC
     {
         GameplayAtlasVersion = gameplayAtlasVersion;
         InterfaceAtlasVersion = interfaceAtlasVersion;
+        AutoPlacePriceGold = autoPlacePriceGold;
         ProductsConfig = productsConfig;
         ShelfsConfig = shelfsConfig;
         ShopObjectsConfig = shopObjectsConfig;

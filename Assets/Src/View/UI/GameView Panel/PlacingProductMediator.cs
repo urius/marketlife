@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlacingProductMediator : IMediator
 {
@@ -10,7 +9,8 @@ public class PlacingProductMediator : IMediator
     private readonly SpritesProvider _spritesProvider;
     private readonly ScreenCalculator _screenCalculator;
 
-    private GameObject _currentPlacingProductGo;
+    private PlacingProductView _placingProductView;
+    private ProductModel _placingProductModel;
 
     public PlacingProductMediator(RectTransform contentTransform)
     {
@@ -37,36 +37,67 @@ public class PlacingProductMediator : IMediator
     {
         if (currentState == PlacingStateName.PlacingProduct)
         {
-            _currentPlacingProductGo = GameObject.Instantiate(_prefabsHolder.UIPlacingProductPrefab, _contentTransform);
+            _placingProductModel = _gameStateModel.PlayerShopModel.WarehouseModel.Slots[_gameStateModel.PlacingProductWarehouseSlotIndex].Product;
+            var go = GameObject.Instantiate(_prefabsHolder.UIPlacingProductPrefab, _contentTransform);
+            _placingProductView = go.GetComponent<PlacingProductView>();
             SetupView();
+            UpdateViewPosition();
+
             _dispatcher.MouseMoved -= OnMouseMoved;
             _dispatcher.MouseMoved += OnMouseMoved;
+            SubscribeForPlacingProduct();
         }
         else if (previousState == PlacingStateName.PlacingProduct)
         {
             _dispatcher.MouseMoved -= OnMouseMoved;
-            if (_currentPlacingProductGo != null)
+            UnsubscribeFromPlacingProduct();
+
+            _placingProductModel = null;
+            if (_placingProductView != null)
             {
-                GameObject.Destroy(_currentPlacingProductGo);
-                _currentPlacingProductGo = null;
+                GameObject.Destroy(_placingProductView.gameObject);
+                _placingProductView = null;
             }
         }
     }
 
+    private void SubscribeForPlacingProduct()
+    {
+        _placingProductModel.AmountChanged += OnProductAmountChanged;
+    }
+
+    private void UnsubscribeFromPlacingProduct()
+    {
+        _placingProductModel.AmountChanged -= OnProductAmountChanged;
+    }
+
+    private void OnProductAmountChanged(int deltaAmount)
+    {
+        UpdateAmount();
+    }
+
     private void OnMouseMoved()
+    {
+        UpdateViewPosition();
+    }
+
+    private void UpdateViewPosition()
     {
         var screenPoint = Input.mousePosition;
         if (_screenCalculator.ScreenPointToWorldPointInRectangle(_contentTransform, screenPoint, out var position))
         {
-            _currentPlacingProductGo.transform.position = position;
+            _placingProductView.transform.position = position;
         }
     }
 
     private void SetupView()
     {
-        var warehouseModel = _gameStateModel.PlayerShopModel.WarehouseModel;
-        var image = _currentPlacingProductGo.GetComponentInChildren<Image>();
-        var productKey = warehouseModel.Slots[_gameStateModel.PlacingProductWarehouseSlotIndex].Product.Config.Key;
-        image.sprite = _spritesProvider.GetProductIcon(productKey);
+        _placingProductView.SetImageSprite(_spritesProvider.GetProductIcon(_placingProductModel.Config.Key));
+        UpdateAmount();
+    }
+
+    private void UpdateAmount()
+    {
+        _placingProductView.SetText($"{_placingProductModel.Amount}x");
     }
 }

@@ -20,4 +20,9 @@ public class FormattingHelper
     {
         return value < 10 ? $"0{value}" : value.ToString();
     }
+
+    internal static string ToCommaSeparatedNumber(int amount)
+    {
+        return string.Format("{0:n0}", amount);
+    }
 }

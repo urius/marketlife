@@ -5,10 +5,10 @@ public class UIFlyingTextsMediator : IMediator
 {
     private readonly RectTransform _contentTransform;
     private readonly Dispatcher _dispatcher;
+    private readonly GameConfigManager _configManager;
     private readonly ScreenCalculator _screenCalculator;
     private readonly PrefabsHolder _prefabsHolder;
     private readonly SpritesProvider _spritesProvider;
-    private readonly UpdatesProvider _updatesProvider;
     private readonly GridCalculator _gridCalculator;
     private readonly List<(RectTransform transform, Vector3 worldPosition)> _itemsWithOffsetsList = new List<(RectTransform, Vector3)>(5);
 
@@ -19,10 +19,10 @@ public class UIFlyingTextsMediator : IMediator
         _contentTransform = contentTransform;
 
         _dispatcher = Dispatcher.Instance;
+        _configManager = GameConfigManager.Instance;
         _screenCalculator = ScreenCalculator.Instance;
         _prefabsHolder = PrefabsHolder.Instance;
         _spritesProvider = SpritesProvider.Instance;
-        _updatesProvider = UpdatesProvider.Instance;
         _gridCalculator = GridCalculator.Instance;
     }
 
@@ -32,6 +32,7 @@ public class UIFlyingTextsMediator : IMediator
 
         _dispatcher.UIRequestFlyingPrice += OnUIRequestFlyingPrice;
         _dispatcher.UIRequestFlyingText += OnUIRequestFlyingText;
+        _dispatcher.UIRequestFlyingProduct += OnUIRequestFlyingProduct;
         _dispatcher.CameraMoved += OnCameraMoved;
     }
 
@@ -39,26 +40,35 @@ public class UIFlyingTextsMediator : IMediator
     {
         _dispatcher.UIRequestFlyingPrice -= OnUIRequestFlyingPrice;
         _dispatcher.UIRequestFlyingText -= OnUIRequestFlyingText;
+        _dispatcher.UIRequestFlyingProduct -= OnUIRequestFlyingProduct;
         _dispatcher.CameraMoved -= OnCameraMoved;
+    }
+
+    private void OnUIRequestFlyingProduct(Vector2 screenPoint, string productKey, int amount)
+    {
+        var icon = _spritesProvider.GetProductIcon(productKey);
+        var flyingPriceView = CreateFlyingPrice(screenPoint, icon, amount);
+        ShowAsFlyingText(flyingPriceView, screenPoint, amount < 0);
     }
 
     private void OnUIRequestFlyingPrice(Vector2 screenPoint, bool isGold, int amount)
     {
-        var flyingPriceView = CreateFlyingPrice(screenPoint, isGold, amount);
+        var priceIcon = isGold ? _spritesProvider.GetGoldIcon() : _spritesProvider.GetCashIcon();
+        var flyingPriceView = CreateFlyingPrice(screenPoint, priceIcon, amount);
         ShowAsFlyingText(flyingPriceView, screenPoint);
     }
 
-    private UIFlyingTextView CreateFlyingPrice(Vector2 screenPoint, bool isGold, int amount)
+    private UIFlyingTextView CreateFlyingPrice(Vector2 screenPoint, Sprite image, int amount)
     {
-        var flyingPriceGo = GameObject.Instantiate(_prefabsHolder.UIFlyingPricePrefab, _contentTransform);
-        var flyingPriceView = flyingPriceGo.GetComponent<UIFlyingPriceView>();
+        var flyingPriceGo = GameObject.Instantiate(_prefabsHolder.UIFlyingTextImagePrefab, _contentTransform);
+        var flyingPriceView = flyingPriceGo.GetComponent<UIFlyingTextImageView>();
         if (_screenCalculator.ScreenPointToWorldPointInRectangle(_contentTransform, screenPoint, out var position))
         {
             flyingPriceGo.transform.position = position;
         }
 
-        flyingPriceView.SetImageSprite(isGold ? _spritesProvider.GetGoldIcon() : _spritesProvider.GetCashIcon());
-        var amountStr = string.Format("{0:n0}", amount);
+        flyingPriceView.SetImageSprite(image);
+        var amountStr = FormattingHelper.ToCommaSeparatedNumber(amount);
         flyingPriceView.SetText(amount >= 0 ? $"+{amountStr}" : amountStr);
         flyingPriceView.SetTextColor(amount >= 0 ? Color.green : Color.red);
 
@@ -83,7 +93,7 @@ public class UIFlyingTextsMediator : IMediator
         return flyingTextView;
     }
 
-    private void ShowAsFlyingText(UIFlyingTextView flyingTextView, Vector2 screenPoint)
+    private void ShowAsFlyingText(UIFlyingTextView flyingTextView, Vector2 screenPoint, bool upDirection = true)
     {
         var flyingTextGo = flyingTextView.gameObject;
 
@@ -94,7 +104,7 @@ public class UIFlyingTextsMediator : IMediator
         var duration = 2f;
         LeanTween.value(flyingTextGo, flyingTextView.SetAlpha, 1, 0, duration)
             .setEaseInQuad();
-        LeanTween.value(flyingTextGo, flyingTextView.SetOffsetY, 0, 150, duration)
+        LeanTween.value(flyingTextGo, flyingTextView.SetOffsetY, upDirection ? 0 : 150, upDirection ? 150 : 0, duration)
             .setEaseOutQuad()
             .setOnComplete(() => DestroyItem(flyingTextGo));
     }

@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2540469423
+CRC: 252554664
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: a663a42691037fb63f1a19dfae0657ae
+    Hash: b88b45d2eb6074214d98b7b9ba55d406
   TypeTreeHash:
     serializedVersion: 2
     Hash: ba23c2e8f8b3f5319028008a25497317
@@ -69,6 +69,7 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/Popups/content_skin_2.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/icon_dollar.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Beer.png
+- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/Icon_Order.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall3.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Orange.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/sign_rotate_left.png

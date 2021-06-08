@@ -11,7 +11,7 @@ public class ShelfView : ShopObjectViewBase
         var spriteRenderers = _productFloors[floorIndex].ProductSprites;
         for (var i = 0; i < spriteRenderers.Length; i++)
         {
-            var rank = (float)i / FloorsCount;
+            var rank = (float)i / spriteRenderers.Length;
             spriteRenderers[i].sprite = rank < fullness ? sprite : null;
         }
     }

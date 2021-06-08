@@ -51,10 +51,13 @@ public class LocalizationManager : ScriptableObject
 public class LocalizationKeys
 {
     public static string HintBottomPanelShelfDescription = "hint_bottom_panel_shelf_description";
+    public static string BottomPanelWarehouseEmptySlot = "bottom_panel_warehouse_empty_slot";
+    public static string BottomPanelWarehouseEmptySlotHint = "bottom_panel_warehouse_empty_slot_hint";        
     public static string NameShopObjectPrefix = "name_shop_object_";
     public static string FlyingTextInsufficientFunds = "flying_text_insufficient_funds";
     public static string FlyingTextWrongPlace = "flying_text_wrong_place";
     public static string FlyingTextCantSellLastDoor = "flying_text_cant_sell_last_door";
+    public static string FlyingTextShelfDoesntHaveFreeSpace = "flying_text_shelf_doesn_have_free_space";    
     public static string CommonYes = "common_yes";
     public static string CommonNo = "common_no";
     public static string PopupRemoveObjectTitle = "popup_remove_object_title";

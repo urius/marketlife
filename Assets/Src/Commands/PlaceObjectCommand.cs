@@ -41,18 +41,24 @@ public struct PlaceObjectCommand
 
     private void PlaceProductOnHighlightedShelf()
     {
+        var dispatcher = Dispatcher.Instance;
         var gameStateModel = GameStateModel.Instance;
         var shopModel = gameStateModel.ViewingShopModel;
         var highlightState = gameStateModel.HighlightState;
         var highlightedShopObject = highlightState.HighlightedShopObject;
+        var loc = LocalizationManager.Instance;
+        var screenCalculator = ScreenCalculator.Instance;
+
         if (highlightState.IsHighlighted
             && highlightedShopObject != null
             && highlightedShopObject.Type == ShopObjectType.Shelf)
         {
             var shelf = highlightedShopObject as ShelfModel;
             var placingProduct = shopModel.WarehouseModel.Slots[gameStateModel.PlacingProductWarehouseSlotIndex].Product;
+            string flyingTextToShow = null;
             for (var i = 0; i < shelf.PartsCount; i++)
             {
+                flyingTextToShow = null;
                 if (shelf.TryGetProductAt(i, out var productOnShelf))
                 {
                     if (productOnShelf.NumericId == placingProduct.NumericId)
@@ -64,6 +70,14 @@ public struct PlaceObjectCommand
                             placingProduct.Amount -= neededAmount;
                             break;
                         }
+                        else
+                        {
+                            flyingTextToShow = loc.GetLocalization(LocalizationKeys.FlyingTextShelfDoesntHaveFreeSpace);
+                        }
+                    }
+                    else
+                    {
+                        flyingTextToShow = loc.GetLocalization(LocalizationKeys.FlyingTextShelfDoesntHaveFreeSpace);
                     }
                 }
                 else
@@ -73,13 +87,19 @@ public struct PlaceObjectCommand
                     if (shelf.TrySetProductOn(i, productToPlace))
                     {
                         placingProduct.Amount -= neededAmount;
+                        break;
                     }
                 }
             }
 
             if (placingProduct.Amount <= 0)
             {
-                //TODO check if need to remove placingProduct from warehouse
+                gameStateModel.ResetPlacingState();
+            }
+
+            if (flyingTextToShow != null)
+            {
+                dispatcher.UIRequestFlyingText(screenCalculator.CellToScreenPoint(shelf.Coords), flyingTextToShow);
             }
         }
     }

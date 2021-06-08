@@ -1,12 +1,9 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class ProductSlotModel
 {
     public event Action<int> ProductIsSet = delegate { };
-    public event Action<int> ProductRemoved = delegate { };
+    public event Action<int, ProductModel> ProductRemoved = delegate { };
     public event Action<int, int> ProductAmountChanged = delegate { };
     public event Action<int> ProductDeliveryTimeChanged = delegate { };
 
@@ -39,19 +36,20 @@ public class ProductSlotModel
         if (HasProduct)
         {
             UnsubscribeFromProduct(Product);
+            var removedProduct = Product;
             Product = null;
-            ProductRemoved(Index);
+            ProductRemoved(Index, removedProduct);
             return true;
         }
         return false;
     }
 
-    public float GetFullnes()
+    public float GetFullness()
     {
         if (HasProduct)
         {
-            var productsTotalVolume = Product.Config.Volume * Product.Amount;
-            return (float)productsTotalVolume / Volume;
+            var maxAmount = Volume / Product.Config.Volume;
+            return (float)Product.Amount / maxAmount;
         }
 
         return 0;

@@ -61,7 +61,7 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
     public void SetImage(Sprite sprite)
     {
         _imageSprite.sprite = sprite;
-        _imageSprite.gameObject.SetActive(true);
+        _imageSprite.gameObject.SetActive(sprite != null);
     }
 
     public void SetupHint(string hintText)

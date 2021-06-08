@@ -567,7 +567,7 @@ public class ShopProgressModel
 public class ShopWarehouseModel
 {
     public event Action<int> SlotProductIsSet = delegate { };
-    public event Action<int> SlotProductRemoved = delegate { };
+    public event Action<int, ProductModel> SlotProductRemoved = delegate { };
     public event Action<int, int> SlotProductAmountChanged = delegate { };
     public event Action<int> VolumeAdded = delegate { };
     public event Action SlotAdded = delegate { };
@@ -627,9 +627,9 @@ public class ShopWarehouseModel
         SlotProductIsSet(slotIndex);
     }
 
-    private void OnSlotProductRemoved(int slotIndex)
+    private void OnSlotProductRemoved(int slotIndex, ProductModel removedProduct)
     {
-        SlotProductRemoved(slotIndex);
+        SlotProductRemoved(slotIndex, removedProduct);
     }
 }
 

@@ -65,6 +65,19 @@ public abstract class UIBottomPanelScrollItemsTabMediatorBase<TViewModel> : UINo
         base.Unmediate();
     }
 
+    protected UIBottomPanelScrollItemView GetViewByViewModel(TViewModel viewModel)
+    {
+        foreach (var item in _displayedItems)
+        {
+            if (item.ViewModel.Equals(viewModel))
+            {
+                return item.View;
+            }
+        }
+
+        return null;
+    }
+
     protected UIBottomPanelScrollItemView GetOrCreateScrollBoxItemAt(int index)
     {
         var result = _viewsCache.GetOrCreateScrollBoxItem();

@@ -30,8 +30,9 @@ public class UIRootCanvasMediator : MonoBehaviour
         _bottomPanelMediator = new BottomPanelMediator(_bottomPanelView);
         _shopObjectActionsPanelMediator = new ShopObjectActionsPanelMediator(_gameViewUiContainerRectTransform);
         _flyingTextsMediator = new UIFlyingTextsMediator(_gameViewUiContainerRectTransform);
-        _placingProductMediator = new PlacingProductMediator(_gameViewUiContainerRectTransform);
-        _popupsMediator = new PopupsMediator(_popupsCanvas.transform as RectTransform);
+        var popupCanvasRectTransform = _popupsCanvas.transform as RectTransform;
+        _placingProductMediator = new PlacingProductMediator(popupCanvasRectTransform);
+        _popupsMediator = new PopupsMediator(popupCanvasRectTransform);
 
         PoolCanvasProvider.Instance.SetupPoolCanvas(_poolCanvas);
     }

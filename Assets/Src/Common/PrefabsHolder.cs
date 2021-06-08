@@ -37,7 +37,7 @@ public class PrefabsHolder : ScriptableObject
     public GameObject UIBottomPanelScrollItemPrefab;
     public GameObject UIHintPrefab;
     public GameObject UIShelfActionsPrefab;
-    public GameObject UIFlyingPricePrefab;
+    public GameObject UIFlyingTextImagePrefab;
     public GameObject UIFlyingTextPrefab;
     public GameObject UITextPopupPrefab;
     public GameObject UIPlacingProductPrefab;

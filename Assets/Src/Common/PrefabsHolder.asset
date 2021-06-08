@@ -55,7 +55,7 @@ MonoBehaviour:
     type: 3}
   UIShelfActionsPrefab: {fileID: 6049905846877215710, guid: 558d635435e7d4364ac5de6f55c77231,
     type: 3}
-  UIFlyingPricePrefab: {fileID: 7789236709652670622, guid: e0eca89781b82472289b9e4db6f4f389,
+  UIFlyingTextImagePrefab: {fileID: 7789236709652670622, guid: e0eca89781b82472289b9e4db6f4f389,
     type: 3}
   UIFlyingTextPrefab: {fileID: 7789236709652670622, guid: f8bfa3ccff47149fa97cd5339a4dd82b,
     type: 3}

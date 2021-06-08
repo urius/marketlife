@@ -88,6 +88,11 @@ public class SpritesProvider
         return GetSprite(SpriteAtlasId.InterfaceAtlas, "button_1_long_orange");
     }
 
+    public Sprite GetOrderIcon()
+    {
+        return GetSprite(SpriteAtlasId.InterfaceAtlas, "Icon_Order");
+    }
+
     public Sprite GetProductIcon(string productKey)
     {
         return GetSprite(SpriteAtlasId.InterfaceAtlas, productKey);

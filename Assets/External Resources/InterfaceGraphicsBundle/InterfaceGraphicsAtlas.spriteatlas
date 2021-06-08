@@ -32,12 +32,13 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 46b41057a82fe4010b5245cd9e8b4afa, type: 3}
-    totalSpriteSurfaceArea: 1084270
+    totalSpriteSurfaceArea: 1093552
     bindAsDefault: 0
     isAtlasV2: 0
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 21300000, guid: a6c62310aba024052a9099f0ba330d00, type: 3}
   - {fileID: 21300000, guid: 666a752063454439a9a093e762e4bea1, type: 3}
   - {fileID: 21300000, guid: 616e25307c0194520af83c418eb12825, type: 3}
   - {fileID: 21300000, guid: 54f67570dcfd34652ba626fdbf313f67, type: 3}
@@ -143,6 +144,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 8bd3716f39a974116b9b24631773f5e9, type: 3}
   - {fileID: 21300000, guid: 9cc07ebfc57794109b7cbb0e1cb10d65, type: 3}
   m_PackedSpriteNamesToIndex:
+  - Icon_Order
   - skin_add_money_button
   - Cheese_1
   - sign_windows

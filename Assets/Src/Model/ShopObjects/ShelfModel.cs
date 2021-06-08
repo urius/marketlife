@@ -5,7 +5,7 @@ using UnityEngine;
 public class ShelfModel : ShopObjectModelBase
 {
     public event Action<int> ProductIsSetOnSlot = delegate { };
-    public event Action<int> ProductRemovedFromSlot = delegate { };
+    public event Action<int, ProductModel> ProductRemovedFromSlot = delegate { };
     public event Action<int, int> ProductAmountChangedOnSlot = delegate { };
 
     public readonly int PartVolume;
@@ -35,9 +35,9 @@ public class ShelfModel : ShopObjectModelBase
         ProductIsSetOnSlot(slotIndex);
     }
 
-    private void OnSlotProductRemoved(int slotIndex)
+    private void OnSlotProductRemoved(int slotIndex, ProductModel removedProduct)
     {
-        ProductRemovedFromSlot(slotIndex);
+        ProductRemovedFromSlot(slotIndex, removedProduct);
     }
 
     private void OnSlotProductAmountChanged(int slotIndex, int amountDelta)
@@ -45,9 +45,9 @@ public class ShelfModel : ShopObjectModelBase
         ProductAmountChangedOnSlot(slotIndex, amountDelta);
     }
 
-    public float GetFullnesOnFloor(int partIndex)
+    public float GetFullnessOnFloor(int partIndex)
     {
-        return Slots[partIndex].GetFullnes();
+        return Slots[partIndex].GetFullness();
     }
 
     public bool RemoveProductAt(int partIndex)

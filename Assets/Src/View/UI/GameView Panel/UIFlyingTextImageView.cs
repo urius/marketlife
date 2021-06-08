@@ -1,8 +1,7 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIFlyingPriceView : UIFlyingTextView
+public class UIFlyingTextImageView : UIFlyingTextView
 {
     [SerializeField] private Image _image;
 

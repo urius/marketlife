@@ -33,6 +33,7 @@ public class Dispatcher
     public Action UIRequestBlinkCash = delegate { };
     public Action<Vector2, bool, int> UIRequestFlyingPrice = delegate { };
     public Action<Vector2, string> UIRequestFlyingText = delegate { };    
+    public Action<Vector2, string, int> UIRequestFlyingProduct = delegate { };
 
     public Action<Vector2Int> MouseCellCoordsUpdated = delegate { };
     public Action RequestForceMouseCellPositionUpdate = delegate { };

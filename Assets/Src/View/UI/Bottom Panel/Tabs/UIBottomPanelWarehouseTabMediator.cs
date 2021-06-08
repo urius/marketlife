@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMediatorBase<WarehouseSlotModel>
+public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMediatorBase<ProductSlotModel>
 {
     private readonly ShopWarehouseModel _warehouseModel;
     private readonly Dispatcher _dispatcher;
@@ -17,17 +17,17 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
         _warehouseModel = PlayerModel.Instance.ShopModel.WarehouseModel;
     }
 
-    protected override IEnumerable<WarehouseSlotModel> GetViewModelsToShow()
+    protected override IEnumerable<ProductSlotModel> GetViewModelsToShow()
     {
         return _warehouseModel.Slots;
     }
 
-    protected override void HandleClick(WarehouseSlotModel slotModel)
+    protected override void HandleClick(ProductSlotModel slotModel)
     {
         _dispatcher.UIBottomPanelWarehouseSlotClicked(slotModel.Index);
     }
 
-    protected override void SetupItem(UIBottomPanelScrollItemView itemView, WarehouseSlotModel viewModel)
+    protected override void SetupItem(UIBottomPanelScrollItemView itemView, ProductSlotModel viewModel)
     {
         ActivateItem(viewModel);
         if (viewModel.Product != null)
@@ -53,18 +53,18 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
         }
     }
 
-    protected override void BeforeHideItem(UIBottomPanelScrollItemView itemView, WarehouseSlotModel viewModel)
+    protected override void BeforeHideItem(UIBottomPanelScrollItemView itemView, ProductSlotModel viewModel)
     {
         base.BeforeHideItem(itemView, viewModel);
         DeactivateItem(viewModel);
     }
 
-    private void ActivateItem(WarehouseSlotModel viewModel)
+    private void ActivateItem(ProductSlotModel viewModel)
     {
         //viewModel
     }
 
-    private void DeactivateItem(WarehouseSlotModel viewModel)
+    private void DeactivateItem(ProductSlotModel viewModel)
     {
         //throw new System.NotImplementedException();
     }

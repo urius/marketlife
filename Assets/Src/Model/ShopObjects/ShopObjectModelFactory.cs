@@ -10,7 +10,7 @@ public struct ShopObjectModelFactory
         {
             for(var i = 0; i< products.Length; i++)
             {
-                result.TrySetProduct(i, products[i]);
+                result.TrySetProductOn(i, products[i]);
             }
         }
 

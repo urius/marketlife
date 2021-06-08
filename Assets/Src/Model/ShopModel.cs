@@ -566,121 +566,70 @@ public class ShopProgressModel
 
 public class ShopWarehouseModel
 {
-    public event Action<int, ProductModel> SlotProductIsSet = delegate { };
-    public event Action<int, ProductModel> SlotProductRemoved = delegate { };
+    public event Action<int> SlotProductIsSet = delegate { };
+    public event Action<int> SlotProductRemoved = delegate { };
+    public event Action<int, int> SlotProductAmountChanged = delegate { };
     public event Action<int> VolumeAdded = delegate { };
     public event Action SlotAdded = delegate { };
 
-    private readonly List<WarehouseSlotModel> _slots;
+    private readonly List<ProductSlotModel> _slots;
 
     public ShopWarehouseModel(int volume, int size)
     {
         Volume = volume;
 
-        _slots = new List<WarehouseSlotModel>(size);
+        _slots = new List<ProductSlotModel>(size);
         for (var i = 0; i < size; i++)
         {
-            var slot = new WarehouseSlotModel(i);
+            var slot = new ProductSlotModel(i, Volume);
             _slots.Add(slot);
-            SubscribeForSlot(slot);
+            SubscribeOnSlot(slot);
         }
     }
 
     public int Volume { get; private set; }
     public int Size => _slots.Count;
-    public IReadOnlyList<WarehouseSlotModel> Slots => _slots;
+    public IReadOnlyList<ProductSlotModel> Slots => _slots;
 
     public void AddVolume(int addedVolume)
     {
         var previousVolume = Volume;
         Volume += addedVolume;
+        foreach (var slot in Slots)
+        {
+            slot.AddVolume(addedVolume);
+        }
         VolumeAdded(addedVolume);
     }
 
     public void AddSlot()
     {
-        var newSlot = new WarehouseSlotModel(Size);
-        SubscribeForSlot(newSlot);
+        var newSlot = new ProductSlotModel(Size, Volume);
+        SubscribeOnSlot(newSlot);
         _slots.Add(newSlot);
         SlotAdded();
     }
 
-    private void SubscribeForSlot(WarehouseSlotModel slot)
+    private void SubscribeOnSlot(ProductSlotModel slot)
     {
         slot.ProductIsSet += OnSlotProductSet;
         slot.ProductRemoved += OnSlotProductRemoved;
+        slot.ProductAmountChanged += OnSlotProductAmountChanged;
+    }
+
+    private void OnSlotProductAmountChanged(int slotIndex, int deltaAmount)
+    {
+        SlotProductAmountChanged(slotIndex, deltaAmount);
     }
 
     private void OnSlotProductSet(int slotIndex)
     {
-        SlotProductIsSet(slotIndex, _slots[slotIndex].Product);
+        SlotProductIsSet(slotIndex);
     }
 
-    private void OnSlotProductRemoved(int slotIndex, ProductModel product)
+    private void OnSlotProductRemoved(int slotIndex)
     {
-        SlotProductRemoved(slotIndex, product);
-    }
-}
-
-public class WarehouseSlotModel
-{
-    public event Action<int> ProductIsSet = delegate { };
-    public event Action<int, ProductModel> ProductRemoved = delegate { };
-    public event Action<int> ProductAmountChanged = delegate { };
-    public event Action<int> ProductDeliveryTimeChanged = delegate { };
-
-    public readonly int Index;
-
-    public WarehouseSlotModel(int index)
-    {
-        Index = index;
-    }
-
-    public ProductModel Product { get; private set; }
-    //public float Fullness => Product != null ? Product.Amount
-
-    public void SetProduct(ProductModel productModel)
-    {
-        if (productModel == null) return;
-        RemoveProduct();
-        Product = productModel;
-        SubscribeForProduct(Product);
-        ProductIsSet(Index);
-    }
-
-    public bool RemoveProduct()
-    {
-        if (Product != null)
-        {
-            UnsubscribeFromProduct(Product);
-            var tempProduct = Product;
-            Product = null;
-            ProductRemoved(Index, tempProduct);
-            return true;
-        }
-        return false;
-    }
-
-    private void SubscribeForProduct(ProductModel product)
-    {
-        product.AmountChanged += OnProductAmountChanged;
-        product.DeliveryTimeChanged += OnProductDeliveryTimeChanged;
-    }
-
-    private void UnsubscribeFromProduct(ProductModel product)
-    {
-        product.AmountChanged -= OnProductAmountChanged;
-        product.DeliveryTimeChanged -= OnProductDeliveryTimeChanged;
-    }
-
-    private void OnProductAmountChanged(int deltaAmount)
-    {
-        ProductAmountChanged(deltaAmount);
-    }
-
-    private void OnProductDeliveryTimeChanged(int deltaTimeSeconds)
-    {
-        ProductDeliveryTimeChanged(deltaTimeSeconds);
+        SlotProductRemoved(slotIndex);
     }
 }
 

@@ -25,9 +25,9 @@ public class ShelfViewMediator : ShopObjectMediatorBase
 
     private void UpdateProductViews()
     {
-        for (var i = 0; i < _shelfModel.Products.Length; i++)
+        for (var i = 0; i < _shelfModel.Slots.Length; i++)
         {
-            var product = _shelfModel.Products[i];
+            var product = _shelfModel.Slots[i].Product;
             if (product == null)
             {
                 CurrentShelfView.EmptyFloor(i);

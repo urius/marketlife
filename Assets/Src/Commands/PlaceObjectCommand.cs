@@ -51,15 +51,35 @@ public struct PlaceObjectCommand
         {
             var shelf = highlightedShopObject as ShelfModel;
             var placingProduct = shopModel.WarehouseModel.Slots[gameStateModel.PlacingProductWarehouseSlotIndex].Product;
-            for (var i = 0; i < shelf.Products.Length; i++)
+            for (var i = 0; i < shelf.PartsCount; i++)
             {
-                var productOnShelf = shelf.Products[i];
-                if (productOnShelf == null)
+                if (shelf.TryGetProductAt(i, out var productOnShelf))
+                {
+                    if (productOnShelf.NumericId == placingProduct.NumericId)
+                    {
+                        var neededAmount = Math.Min(shelf.GetRestAmountOn(i), placingProduct.Amount);
+                        if (neededAmount > 0)
+                        {
+                            productOnShelf.Amount += neededAmount;
+                            placingProduct.Amount -= neededAmount;
+                            break;
+                        }
+                    }
+                }
+                else
                 {
                     var neededAmount = Math.Min(shelf.PartVolume / placingProduct.Config.Volume, placingProduct.Amount);
                     var productToPlace = new ProductModel(placingProduct.Config, neededAmount);
-                    shelf.TrySetProduct(i, productToPlace);
+                    if (shelf.TrySetProductOn(i, productToPlace))
+                    {
+                        placingProduct.Amount -= neededAmount;
+                    }
                 }
+            }
+
+            if (placingProduct.Amount <= 0)
+            {
+                //TODO check if need to remove placingProduct from warehouse
             }
         }
     }

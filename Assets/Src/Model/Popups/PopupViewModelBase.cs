@@ -7,4 +7,5 @@ public enum PopupType
 {
     Unknown,
     ConfirmRemoveObject,
+    OrderProduct,
 }

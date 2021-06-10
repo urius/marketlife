@@ -1,23 +1,14 @@
 using System;
-using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UITextPopupView : MonoBehaviour
+public class UITextPopupView : UIPopupBase
 {
     public event Action Button1Clicked = delegate { };
     public event Action Button2Clicked = delegate { };
-    public event Action ButtonCloseClicked = delegate { };
 
-    private const float AppearDurationSec = 0.4f;
-    private const float DisppearDurationSec = 0.25f;
-
-    [SerializeField] private Image _blockRaycastsImage;
-    [SerializeField] private RectTransform _popupBodyRectTransform;
-    [SerializeField] private TMP_Text _titleText;
     [SerializeField] private TMP_Text _messageText;
-    [SerializeField] private Button _closeButton;
     [SerializeField] private Button _leftButton;
     [SerializeField] private Text _leftButtonText;
     [SerializeField] private Button _midButton;
@@ -25,16 +16,9 @@ public class UITextPopupView : MonoBehaviour
     [SerializeField] private Button _rightButton;
     [SerializeField] private Text _rightButtonText;
 
-    private CanvasGroup _popupBodyCanvasGroup;
-
-    public void Awake()
-    {
-        _popupBodyCanvasGroup = _popupBodyRectTransform.gameObject.GetComponent<CanvasGroup>();
-    }
-
     public void Setup(bool haveCloseButton = true, int bottomButtonsAmount = 0)
     {
-        _closeButton.gameObject.SetActive(haveCloseButton);
+        SetCloseButtonVisibility(haveCloseButton);
         _leftButton.gameObject.SetActive(false);
         _midButton.gameObject.SetActive(false);
         _rightButton.gameObject.SetActive(false);
@@ -51,28 +35,6 @@ public class UITextPopupView : MonoBehaviour
                 _rightButton.AddOnClickListener(OnButton2Click);
                 break;
         }
-        _closeButton.AddOnClickListener(OnCloseClicked);
-    }
-
-    public UniTask AppearAsync()
-    {
-        var tcs = new UniTaskCompletionSource();
-        LeanTween.value(gameObject, a => _popupBodyCanvasGroup.alpha = a, 0, 1, 0.5f * AppearDurationSec);
-        LeanTween.value(gameObject, p => _popupBodyRectTransform.anchoredPosition = p, new Vector2(0, -300), Vector2.zero, AppearDurationSec)
-            .setEaseOutBack()
-            .setOnComplete(() => tcs.TrySetResult());
-        return tcs.Task;
-    }
-
-    public UniTask DisppearAsync()
-    {
-        var tcs = new UniTaskCompletionSource();
-        _blockRaycastsImage.color = _blockRaycastsImage.color.SetAlpha(0);
-        LeanTween.value(gameObject, a => _popupBodyCanvasGroup.alpha = a, 1, 0, DisppearDurationSec);
-        LeanTween.value(gameObject, p => _popupBodyRectTransform.anchoredPosition = p, Vector2.zero, new Vector2(0, 300), DisppearDurationSec)
-            .setEaseInBack()
-            .setOnComplete(() => tcs.TrySetResult());
-        return tcs.Task;
     }
 
     public void SetupButton(int buttonIndex, Sprite sprite, string text)
@@ -91,11 +53,6 @@ public class UITextPopupView : MonoBehaviour
         }
     }
 
-    public void SetRaycastBlockerEnabled(bool isEnabled)
-    {
-        _blockRaycastsImage.gameObject.SetActive(isEnabled);
-    }
-
     private void OnButton1Click()
     {
         Button1Clicked();
@@ -106,28 +63,8 @@ public class UITextPopupView : MonoBehaviour
         Button2Clicked();
     }
 
-    public void SetPopupAnchoredPosition(Vector2 anchoredPosition)
-    {
-        _popupBodyRectTransform.anchoredPosition = anchoredPosition;
-    }
-
-    public void SetPopupAlpha(float alpha)
-    {
-        _popupBodyCanvasGroup.alpha = alpha;
-    }
-
-    public void SetTitleText(string text)
-    {
-        _titleText.text = text;
-    }
-
     public void SetMessageText(string text)
     {
         _messageText.text = text;
-    }
-
-    private void OnCloseClicked()
-    {
-        ButtonCloseClicked();
     }
 }

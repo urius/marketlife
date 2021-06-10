@@ -44,5 +44,6 @@ public class ProductConfigDto
     public int profit_per_1000v;
     public float demand_1000v_per_hour;
     public string deliver;
+    public int group;
     public int amount_per_1000v;
 }

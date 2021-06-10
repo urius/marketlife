@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 252554664
+CRC: 307501076
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: b88b45d2eb6074214d98b7b9ba55d406
+    Hash: b698ee66c2c8298bd82e9cbf0dfd0b81
   TypeTreeHash:
     serializedVersion: 2
     Hash: ba23c2e8f8b3f5319028008a25497317
@@ -69,9 +69,14 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/Popups/content_skin_2.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/icon_dollar.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Beer.png
+- Assets/External Resources/InterfaceGraphicsBundle/Popups/item_skin_orange.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/Icon_Order.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall3.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Orange.png
+- Assets/External Resources/InterfaceGraphicsBundle/TopPanel/skin_top_stribe_red.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/button_3_long_crimson_1.png
+- Assets/External Resources/InterfaceGraphicsBundle/TopPanel/skin_top_stribe_green.png
+- Assets/External Resources/InterfaceGraphicsBundle/Popups/content_item_skin_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/sign_rotate_left.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall6.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Sausage_1.png
@@ -80,6 +85,7 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/Common/Icon_Up3.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall2.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/square_88_white.png
+- Assets/External Resources/InterfaceGraphicsBundle/TopPanel/skin_top_stribe_yellow.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Floors/Floor1.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/hint_arrow_up.png
 - Assets/External Resources/InterfaceGraphicsBundle/InterfaceGraphicsAtlas.spriteatlas
@@ -95,11 +101,12 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Chips.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Juice_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/icon_mood.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/button_3_long_crimson.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Sugar_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/Icon_Dlassification.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/sign_windows.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Bread_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Cola.png
+- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Bread_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/bottom_panel_item_skin.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/sign_cube.png
 - Assets/External Resources/InterfaceGraphicsBundle/Popups/window_caption.png
@@ -132,8 +139,9 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_3.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Sushi.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/hint_skin.png
-- Assets/External Resources/InterfaceGraphicsBundle/TopPanel/skin_top_rating_button.png
+- Assets/External Resources/InterfaceGraphicsBundle/TopPanel/skin_top_stribe_blue.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Doors/Door1.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Perfumes_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall8.png
+- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Perfumes_1.png
+- Assets/External Resources/InterfaceGraphicsBundle/TopPanel/skin_top_rating_button.png
 Dependencies: []

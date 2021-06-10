@@ -11,6 +11,7 @@ public class GameConfigManager : ScriptableObject
     [SerializeField] private string _mainConfigUrl;
 
     public MainConfig MainConfig { get; private set; }
+    public IProductsConfig ProductsConfig => MainConfig;
 
     public async UniTask<bool> LoadConfigAsync()
     {

@@ -33,6 +33,9 @@ public class PopupsMediator : IMediator
             case PopupType.ConfirmRemoveObject:
                 _currentPopupMediator = new UIConfirmRemoveObjectPopupMediator(_contentTransform);
                 break;
+            case PopupType.OrderProduct:
+                _currentPopupMediator = new UIOrderProductsPopupMediator(_contentTransform);
+                break;
         };
         _currentPopupMediator.Mediate();
     }

@@ -20,7 +20,7 @@ public class UIPriceLabelView : MonoBehaviour
         set
         {
             _amount = value;
-            _text.text = string.Format("{0:n0}", value);
+            _text.text = FormattingHelper.ToCommaSeparatedNumber(value);
         }
     }
 }

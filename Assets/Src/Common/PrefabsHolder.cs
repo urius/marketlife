@@ -41,6 +41,8 @@ public class PrefabsHolder : ScriptableObject
     public GameObject UIFlyingTextPrefab;
     public GameObject UITextPopupPrefab;
     public GameObject UIPlacingProductPrefab;
+    public GameObject UIOrderProductPopupPrefab;
+    public GameObject UIOrderProductPopupItemPrefab;
 
     //remote
     private Dictionary<string, GameObject> _remotePrefabs = new Dictionary<string, GameObject>();
@@ -55,25 +57,25 @@ public class PrefabsHolder : ScriptableObject
         };
     }
 
-    public (GameObject, GameObject) GetShelfPrefabs(int level)
+    public (GameObject, GameObject) GetShelfPrefabs(int numericId)
     {
-        return level switch
+        return numericId switch
         {
             1 => (Shelf1Prefab, Shelf1ProfilePrefab),
             2 => (Shelf2Prefab, Shelf2ProfilePrefab),
             3 => (Shelf3Prefab, Shelf3ProfilePrefab),
             4 => (Shelf4Prefab, Shelf4ProfilePrefab),
             5 => (Shelf5Prefab, Shelf5ProfilePrefab),
-            _ => throw new ArgumentOutOfRangeException(nameof(level), $"GetShelfPrefabs: Unsupported shelf level {level}"),
+            _ => throw new ArgumentOutOfRangeException(nameof(numericId), $"GetShelfPrefabs: Unsupported shelf numericId {numericId}"),
         };
     }
 
-    public (GameObject, GameObject) GetCashDeskPrefabs(int level)
+    public (GameObject, GameObject) GetCashDeskPrefabs(int numericId)
     {
-        return level switch
+        return numericId switch
         {
             1 => (CashDesk1Prefab, null),
-            _ => throw new ArgumentOutOfRangeException(nameof(level), $"GetShelfPrefabs: Unsupported cashdesk level {level}"),
+            _ => throw new ArgumentOutOfRangeException(nameof(numericId), $"GetShelfPrefabs: Unsupported cashdesk numericId {numericId}"),
         };
     }
 

@@ -6,7 +6,7 @@ public class MainConfig : IProductsConfig, IShelfsConfig, IFloorsConfig, IWallsC
 {
     public readonly int GameplayAtlasVersion;
     public readonly int InterfaceAtlasVersion;
-    public readonly int AutoPlacePriceGold;    
+    public readonly int AutoPlacePriceGold;
     public readonly Dictionary<string, ProductConfig> ProductsConfig;
     public readonly Dictionary<string, ItemConfig<ShelfConfigDto>> ShelfsConfig;
     public readonly Dictionary<string, ItemConfig<ShopObjectConfigDto>> ShopObjectsConfig;
@@ -163,30 +163,51 @@ public class ProductConfig
 {
     public readonly int NumericId;
     public readonly string Key;
+    public readonly int GroupId;
     public readonly int UnlockLevel;
     public readonly int Volume;
     public readonly Price PricePer1000v;
     public readonly int ProfitPer1000v;
     public readonly int SellPricePer1000v;
     public readonly float Demand;
+    public readonly float DemandPer1000v;
     public readonly int DeliverTimeSeconds;
 
     public ProductConfig(int numericId, ProductConfigDto dto)
     {
         NumericId = numericId;
         Key = dto.key;
+        GroupId = dto.group;
         UnlockLevel = dto.unlock_level;
         var amountIn1000Volume = dto.amount_per_1000v;
         Volume = 1000 / amountIn1000Volume;
+        DemandPer1000v = dto.demand_1000v_per_hour;
 
         PricePer1000v = Price.FromString(dto.price_per_1000v);
 
         ProfitPer1000v = dto.profit_per_1000v;
         SellPricePer1000v = PricePer1000v.IsGold ? ProfitPer1000v : PricePer1000v.Value + ProfitPer1000v;
 
-        Demand = (int)(dto.demand_1000v_per_hour * amountIn1000Volume);
+        Demand = (int)(DemandPer1000v * amountIn1000Volume);
 
         DeliverTimeSeconds = GetTotalSeconds(dto.deliver);
+    }
+
+    public int GroupIndex => GroupId - 1;
+
+    public float GetDemandForVolume(int volume)
+    {
+        return (int)(DemandPer1000v / (volume * 0.001) * 100) * 0.01f;
+    }
+
+    public int GetAmountInVolume(int volume)
+    {
+        return volume / Volume;
+    }
+
+    public int GetSellPriceForVolume(int volume)
+    {
+        return (int)(SellPricePer1000v * (float)volume / 1000);
     }
 
     private int GetTotalSeconds(string deliverTimeStr)
@@ -196,7 +217,7 @@ public class ProductConfig
         var length = splitted.Length;
         for (var i = 0; i < length; i++)
         {
-            result += (int)Math.Pow(splitted[i], length - i);
+            result += splitted[i] * (int)Math.Pow(60, length - i - 1);
         }
 
         return result;

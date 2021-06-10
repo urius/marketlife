@@ -15,9 +15,10 @@ public struct UIProcessWarehouseSlotClickCommand
             {
                 gameStateModel.SetPlacingProductSlotIndex(slotIndex);
             }
-        } else
+        }
+        else
         {
-            //TODO: open order popup
+            gameStateModel.ShowPopup(new OrderProductPopupViewModel(slotIndex));
         }
     }
 }

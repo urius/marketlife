@@ -1,10 +1,10 @@
 public class OrderProductPopupViewModel : PopupViewModelBase
 {
-    private readonly int _targetWarehouseSlotIndex;
+    public readonly int TargetWarehouseSlotIndex;
 
     public OrderProductPopupViewModel(int targetWarehouseSlotIndex)
     {
-        _targetWarehouseSlotIndex = targetWarehouseSlotIndex;
+        TargetWarehouseSlotIndex = targetWarehouseSlotIndex;
     }
 
     public override PopupType PopupType => PopupType.OrderProduct;

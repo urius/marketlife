@@ -52,8 +52,7 @@ public class UITopPanelMediator : MonoBehaviour
 
     private void Activate()
     {
-        _dispatcher.UIRequestBlinkCash += OnUIRequestBlinkCash;
-        _dispatcher.UIRequestBlinkGold += OnUIRequestBlinkGold;
+        _dispatcher.UIRequestBlinkMoney += OnUIRequestBlinkMoney;
 
         _playerShopModel.ProgressModel.CashChanged += OnCashChanged;
         _playerShopModel.ProgressModel.GoldChanged += OnGoldChanged;
@@ -69,14 +68,16 @@ public class UITopPanelMediator : MonoBehaviour
         _crystalsBarView.SetAmountAnimatedAsync(currentValue);
     }
 
-    private async void OnUIRequestBlinkGold()
+    private async void OnUIRequestBlinkMoney(bool isGold)
     {
-        await _crystalsBarView.BlinkAmountAsync();
-    }
-
-    private async void OnUIRequestBlinkCash()
-    {
-        await _cashBarView.BlinkAmountAsync();
+        if (isGold)
+        {
+            await _crystalsBarView.BlinkAmountAsync();
+        }
+        else
+        {
+            await _cashBarView.BlinkAmountAsync();
+        }
     }
 
     private UniTask ShowNewLevelAnimationAsync()

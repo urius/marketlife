@@ -9,6 +9,8 @@ public class UIOrderProductsPopupMediator : IMediator
 
     private readonly RectTransform _parentTransform;
     private readonly LocalizationManager _loc;
+    private readonly Dispatcher _dispatcher;
+    private readonly ScreenCalculator _screenCalculator;
     private readonly UpdatesProvider _updatesProvider;
     private readonly SpritesProvider _spritesProvider;
     private readonly IProductsConfig _productsConfig;
@@ -31,6 +33,8 @@ public class UIOrderProductsPopupMediator : IMediator
         _parentTransform = contentTransform;
 
         _loc = LocalizationManager.Instance;
+        _dispatcher = Dispatcher.Instance;
+        _screenCalculator = ScreenCalculator.Instance;
         _updatesProvider = UpdatesProvider.Instance;
         _spritesProvider = SpritesProvider.Instance;
         _productsConfig = GameConfigManager.Instance.ProductsConfig;
@@ -72,13 +76,24 @@ public class UIOrderProductsPopupMediator : IMediator
     private void Activate()
     {
         _popupView.CategoryButtonClicked += OnCategoryButtonClicked;
+        _popupView.ButtonCloseClicked += OnCloseClicked;
         _updatesProvider.RealtimeUpdate += OnRealtimeUpdate;
     }
 
     private void Deactivate()
     {
         _popupView.CategoryButtonClicked -= OnCategoryButtonClicked;
+        _popupView.ButtonCloseClicked -= OnCloseClicked;
         _updatesProvider.RealtimeUpdate -= OnRealtimeUpdate;
+        foreach (var displayedItem in _displayedItems)
+        {
+            DeactivateItem(displayedItem.View);
+        }
+    }
+
+    private void OnCloseClicked()
+    {
+        _dispatcher.UIRequestRemoveCurrentPopup();
     }
 
     private void OnRealtimeUpdate()
@@ -142,7 +157,9 @@ public class UIOrderProductsPopupMediator : IMediator
 
     private void OnItemClicked(UIOrderProductItemView itemView)
     {
-        //todo
+        var productConfig = _displayedItems.Where(i => i.View == itemView).First().Config;
+        var startAnimationScreenPoint = _screenCalculator.WorldToScreenPoint(itemView.GetIconPosition());
+        _dispatcher.UIOrderProductClicked(_parentTransform, startAnimationScreenPoint, productConfig);
     }
 
     private void ShowItemsFromIndex(int fromIndex)
@@ -190,9 +207,10 @@ public class UIOrderProductsPopupMediator : IMediator
     private void SetupItem(UIOrderProductItemView itemView, ProductConfig config)
     {
         itemView.SetProductIcon(_spritesProvider.GetProductIcon(config.Key));
-        itemView.SetPrice(config.PricePer1000v.IsGold, config.PricePer1000v.Value);
-        itemView.SetTitleText(_loc.GetLocalization($"{LocalizationKeys.NameProductIdPrefix}{config.NumericId}"));
         var warehouseVolume = _shopModel.WarehouseModel.Volume;
+        var price = config.GetPriceForVolume(warehouseVolume);
+        itemView.SetPrice(price.IsGold, price.Value);
+        itemView.SetTitleText(_loc.GetLocalization($"{LocalizationKeys.NameProductIdPrefix}{config.NumericId}"));
         var description = string.Format(
                 _loc.GetLocalization(LocalizationKeys.PopupOrderProductItemDescriptionText),
                 config.GetDemandForVolume(warehouseVolume),

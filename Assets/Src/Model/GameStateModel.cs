@@ -60,6 +60,7 @@ public class GameStateModel
         ShowingPopupModel = popupModel;
         PopupShown();
     }
+    
 
     public void RemoveCurrentPopupIfNeeded()
     {

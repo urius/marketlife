@@ -205,6 +205,12 @@ public class ProductConfig
         return volume / Volume;
     }
 
+    public Price GetPriceForVolume(int volume)
+    {
+        var newValue = (int)(PricePer1000v.Value * (float)volume / 1000);
+        return new Price(newValue, PricePer1000v.IsGold);
+    }
+
     public int GetSellPriceForVolume(int volume)
     {
         return (int)(SellPricePer1000v * (float)volume / 1000);

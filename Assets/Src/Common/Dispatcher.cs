@@ -29,11 +29,13 @@ public class Dispatcher
     public Action UIActionsRemoveClicked = delegate { };
     public Action<bool> UIRemovePopupResult = delegate { };
 
-    public Action UIRequestBlinkGold = delegate { };
-    public Action UIRequestBlinkCash = delegate { };
+    public Action<bool> UIRequestBlinkMoney = delegate { };
     public Action<Vector2, bool, int> UIRequestFlyingPrice = delegate { };
     public Action<Vector2, string> UIRequestFlyingText = delegate { };    
     public Action<Vector2, string, int> UIRequestFlyingProduct = delegate { };
+    public Action UIRequestRemoveCurrentPopup = delegate { };
+    public Action<RectTransform, Vector2, ProductConfig> UIOrderProductClicked = delegate { };
+    public Action<RectTransform, Vector2, int, ProductModel> UIRequestOrderProductAnimation = delegate { };
 
     public Action<Vector2Int> MouseCellCoordsUpdated = delegate { };
     public Action RequestForceMouseCellPositionUpdate = delegate { };

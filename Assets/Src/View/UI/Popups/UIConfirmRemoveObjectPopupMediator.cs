@@ -58,13 +58,15 @@ public class UIConfirmRemoveObjectPopupMediator : IMediator
 
     private async void OnYesClicked()
     {
-        await _popupView.DisppearAsync();
         _dispatcher.UIRemovePopupResult(true);
+        await _popupView.DisppearAsync();
+        _dispatcher.UIRequestRemoveCurrentPopup();
     }
 
     private async void OnNoClicked()
     {
-        await _popupView.DisppearAsync();
         _dispatcher.UIRemovePopupResult(false);
+        await _popupView.DisppearAsync();
+        _dispatcher.UIRequestRemoveCurrentPopup();
     }
 }

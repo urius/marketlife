@@ -202,14 +202,7 @@ public struct PlaceObjectCommand
         }
         else
         {
-            if (price.IsGold)
-            {
-                Dispatcher.Instance.UIRequestBlinkGold();
-            }
-            else
-            {
-                Dispatcher.Instance.UIRequestBlinkCash();
-            }
+            Dispatcher.Instance.UIRequestBlinkMoney(price.IsGold);
             return false;
         }
     }

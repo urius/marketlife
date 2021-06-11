@@ -8,6 +8,7 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
     private readonly Dispatcher _dispatcher;
     private readonly SpritesProvider _spritesProvider;
     private readonly GameStateModel _gameStateModel;
+    private readonly Dictionary<int, UIOrderProductFromPopupAnimator> _orderProductAnimatorsBySlotIndex = new Dictionary<int, UIOrderProductFromPopupAnimator>();
 
     public UIBottomPanelWarehouseTabMediator(BottomPanelView view)
         : base(view)
@@ -17,6 +18,27 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
         _spritesProvider = SpritesProvider.Instance;
         _warehouseModel = PlayerModel.Instance.ShopModel.WarehouseModel;
         _loc = LocalizationManager.Instance;
+    }
+
+    public override void Mediate()
+    {
+        base.Mediate();
+        _dispatcher.UIRequestOrderProductAnimation += OnUIRequestOrderProductAnimation;
+    }
+
+    public override void Unmediate()
+    {
+        _dispatcher.UIRequestOrderProductAnimation -= OnUIRequestOrderProductAnimation;
+        base.Unmediate();
+    }
+
+    private async void OnUIRequestOrderProductAnimation(RectTransform rectTransform, Vector2 screenPosition, int slotIndex, ProductModel productModel)
+    {
+        var slotModel = _warehouseModel.Slots[slotIndex];
+        var animator = new UIOrderProductFromPopupAnimator(rectTransform, screenPosition, GetViewByViewModel(slotModel), productModel);
+        _orderProductAnimatorsBySlotIndex[slotIndex] = animator;
+        await animator.AnimateAsync();
+        _orderProductAnimatorsBySlotIndex[slotIndex] = null;
     }
 
     protected override IEnumerable<ProductSlotModel> GetViewModelsToShow()
@@ -37,20 +59,40 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
 
     protected override void BeforeHideItem(UIBottomPanelScrollItemView itemView, ProductSlotModel viewModel)
     {
-        base.BeforeHideItem(itemView, viewModel);
         DeactivateItem(viewModel);
+        if (_orderProductAnimatorsBySlotIndex.ContainsKey(viewModel.Index))
+        {
+            _orderProductAnimatorsBySlotIndex[viewModel.Index].CancelAnimation();
+            _orderProductAnimatorsBySlotIndex[viewModel.Index] = null;
+        }
+
+        base.BeforeHideItem(itemView, viewModel);
     }
 
     private void ActivateItem(ProductSlotModel slotModel)
     {
+        slotModel.ProductIsSet += OnProductSet;
         slotModel.ProductAmountChanged += OnProductAmountChanged;
         slotModel.ProductRemoved += OnProductRemoved;
     }
 
     private void DeactivateItem(ProductSlotModel slotModel)
     {
+        slotModel.ProductIsSet -= OnProductSet;
         slotModel.ProductAmountChanged -= OnProductAmountChanged;
         slotModel.ProductRemoved -= OnProductRemoved;
+    }
+
+    private async void OnProductSet(int slotIndex)
+    {
+        if (_orderProductAnimatorsBySlotIndex.TryGetValue(slotIndex, out var animator))
+        {
+            await animator.AnimationTask;
+        }
+        UpdateSlotViewByIndex(slotIndex);
+        var slotmodel = _warehouseModel.Slots[slotIndex];
+        var view = GetViewByViewModel(slotmodel);
+        await view.AnimateJumpAsync();
     }
 
     private void OnProductRemoved(int slotIndex, ProductModel removedProduct)

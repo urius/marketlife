@@ -30,6 +30,8 @@ public class EventsHandleSystem : MonoBehaviour
         _dispatcher.UIActionsMoveClicked += OnUIActionsMoveClicked;
         _dispatcher.UIActionsRemoveClicked += OnUIActionsRemoveClicked;
         _dispatcher.UIRemovePopupResult += OnUIRemovePopupResult;
+        _dispatcher.UIRequestRemoveCurrentPopup += OnUIRequestRemoveCurrentPopup;
+        _dispatcher.UIOrderProductClicked += OnUIOrderProductClicked;
         _dispatcher.MouseCellCoordsUpdated += OnMouseCellCoordsUpdated;
         _dispatcher.BottomPanelInteriorClicked += BottomPanelInteriorClicked;
         _dispatcher.BottomPanelInteriorCloseClicked += BottomPanelInteriorCloseClicked;
@@ -38,6 +40,16 @@ public class EventsHandleSystem : MonoBehaviour
         _dispatcher.BottomPanelRotateLeftClicked += BottomPanelRotateLeftClicked;
 
         _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
+    }
+
+    private void OnUIOrderProductClicked(RectTransform transform, Vector2 startAnimationScreenPoint, ProductConfig productConfig)
+    {
+        new OrderProductCommand().Execute(transform, startAnimationScreenPoint, productConfig);
+    }
+
+    private void OnUIRequestRemoveCurrentPopup()
+    {
+        _gameStateModel.RemoveCurrentPopupIfNeeded();
     }
 
     private void OnUIBottomPanelPointerEnter()

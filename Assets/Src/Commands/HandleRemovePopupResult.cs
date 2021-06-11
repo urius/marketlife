@@ -28,7 +28,5 @@ public struct HandleRemovePopupResult
             shopModel.ProgressModel.AddCash(popupModel.SellPrice);
             dispatcher.UIRequestFlyingPrice(screenCalculator.CellToScreenPoint(coords), false, popupModel.SellPrice);
         }
-
-        gameStateModel.RemoveCurrentPopupIfNeeded();
     }
 }

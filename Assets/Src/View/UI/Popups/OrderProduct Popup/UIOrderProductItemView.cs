@@ -18,6 +18,11 @@ public class UIOrderProductItemView : MonoBehaviour
         _button.AddOnClickListener(OnButtonClick);
     }
 
+    public Vector3 GetIconPosition()
+    {
+        return _productIcon.rectTransform.position;
+    }
+
     public void SetTitleText(string text)
     {
         _titleText.text = text;

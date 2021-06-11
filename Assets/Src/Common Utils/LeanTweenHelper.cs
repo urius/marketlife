@@ -19,8 +19,51 @@ public class LeanTweenHelper
         var startPos = rectTransform.anchoredPosition.x;
         LeanTween.moveX(rectTransform, rectTransform.anchoredPosition.x + deltaX, duration1)
             .setEaseOutQuad()
-            .setOnComplete(() => rectTransform.LeanMoveX(startPos, duration2).setEaseOutBounce().setOnComplete(() => tcs.TrySetResult()));
-            
+            .setOnComplete(AnimationPart2);
+
+        void AnimationPart2()
+        {
+            if (rectTransform.gameObject.activeInHierarchy)
+            {
+                rectTransform.LeanMoveX(startPos, duration2).setEaseOutBounce()
+                    .setOnComplete(() => tcs.TrySetResult());
+            }
+            else
+            {
+                var pos = rectTransform.anchoredPosition;
+                pos.x = startPos;
+                rectTransform.anchoredPosition = pos;
+                tcs.TrySetResult();
+            }
+        }
+        return tcs.Task;
+    }
+
+    public static UniTask BounceYAsync(RectTransform rectTransform, float deltaY, float duration1 = 0.3f, float duration2 = 0.6f)
+    {
+        var tcs = new UniTaskCompletionSource();
+
+        var startPos = rectTransform.anchoredPosition.y;
+        LeanTween.moveY(rectTransform, rectTransform.anchoredPosition.y + deltaY, duration1)
+            .setEaseOutQuad()
+            .setOnComplete(AnimationPart2);
+
+        void AnimationPart2()
+        {
+            if (rectTransform.gameObject.activeInHierarchy)
+            {
+                rectTransform.LeanMoveY(startPos, duration2).setEaseOutBounce()
+                    .setOnComplete(() => tcs.TrySetResult());
+            }
+            else
+            {
+                var pos = rectTransform.anchoredPosition;
+                pos.y = startPos;
+                rectTransform.anchoredPosition = pos;
+                tcs.TrySetResult();
+            }
+        }
+
         return tcs.Task;
     }
 

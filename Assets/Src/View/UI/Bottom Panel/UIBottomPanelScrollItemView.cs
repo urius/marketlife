@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,8 +22,12 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
     public void Awake()
     {
         _rectTransform = transform as RectTransform;
-
         _button.onClick.AddListener(OnButtonClick);
+    }
+
+    public UniTask AnimateJumpAsync()
+    {
+        return LeanTweenHelper.BounceYAsync(_rectTransform, 50, 0.3f);
     }
 
     public void SetTopText(string text)
@@ -72,6 +77,7 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
 
     public void Reset()
     {
+        LeanTween.cancel(_rectTransform);
         _percentLineContainerTransform.gameObject.SetActive(false);
         _topText.gameObject.SetActive(false);
         _priceLabel.gameObject.SetActive(false);

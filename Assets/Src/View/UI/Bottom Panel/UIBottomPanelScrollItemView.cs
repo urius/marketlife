@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -18,6 +19,7 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
     [SerializeField] private UIHintableView _hintableView;
 
     private RectTransform _rectTransform;
+    private CancellationTokenSource _animationsCts;
 
     public void Awake()
     {
@@ -25,9 +27,14 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
         _button.onClick.AddListener(OnButtonClick);
     }
 
-    public UniTask AnimateJumpAsync()
+    public async UniTask AnimateJumpAsync()
     {
-        return LeanTweenHelper.BounceYAsync(_rectTransform, 50, 0.3f);
+        CancelAllAnimations();
+        _animationsCts = new CancellationTokenSource();
+        using (_animationsCts)
+        {
+            await LeanTweenHelper.BounceYAsync(_rectTransform, 40, _animationsCts.Token);
+        }
     }
 
     public void SetTopText(string text)
@@ -75,9 +82,18 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
         _hintableView.SetEnabled(true);
     }
 
+    public void CancelAllAnimations()
+    {
+        if (_animationsCts == null) return;
+        _animationsCts.Cancel();
+        _animationsCts.Dispose();
+        _animationsCts = null;
+    }
+
     public void Reset()
     {
-        LeanTween.cancel(_rectTransform);
+        CancelAllAnimations();
+
         _percentLineContainerTransform.gameObject.SetActive(false);
         _topText.gameObject.SetActive(false);
         _priceLabel.gameObject.SetActive(false);

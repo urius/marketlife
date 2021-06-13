@@ -33,6 +33,7 @@ public class ViewsCache
 
     public void ReturnOrDestroyScrollBoxItem(UIBottomPanelScrollItemView scrollBoxItem)
     {
+        scrollBoxItem.CancelAllAnimations();
         if (_cachedScrollBoxItems.Count >= ScrollBoxItemsCacheSize)
         {
             GameObject.Destroy(scrollBoxItem.gameObject);

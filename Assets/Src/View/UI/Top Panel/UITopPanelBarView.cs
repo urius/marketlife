@@ -96,11 +96,11 @@ public class UITopPanelBarView : MonoBehaviour
 
         var targetPos = _icon.anchoredPosition;
         targetPos.y = 35;
-        var (task, tweenDescription) = LeanTweenHelper.MoveAsync(_icon, targetPos, AnimationInDurationSec);
+        var (task, tweenDescription) = LeanTweenHelper.MoveBounceAsync(_icon, targetPos, AnimationInDurationSec);
         tweenDescription.setEaseOutQuad();
         await task;
 
-        var (task2, tweenDescription2) = LeanTweenHelper.MoveAsync(_icon, _iconDefaultAnchoredPosition, 2 * AnimationInDurationSec);
+        var (task2, tweenDescription2) = LeanTweenHelper.MoveBounceAsync(_icon, _iconDefaultAnchoredPosition, 2 * AnimationInDurationSec);
         tweenDescription2.setEaseOutBounce();
         await task2;
 
@@ -140,7 +140,7 @@ public class UITopPanelBarView : MonoBehaviour
 
         var targetPos = _icon.anchoredPosition;
         targetPos.y = 35;
-        var (jumpTask1, jumpDescription1) = LeanTweenHelper.MoveAsync(_icon, targetPos, AnimationInDurationSec);
+        var (jumpTask1, jumpDescription1) = LeanTweenHelper.MoveBounceAsync(_icon, targetPos, AnimationInDurationSec);
         jumpDescription1.setEaseOutQuad();
 
         var (rotateTask1, rotateDescription1) = RotateZAsync(_icon.gameObject, _iconDefaultRotation.z + 180, 0.5f * AnimationOutDurationSec);
@@ -151,7 +151,7 @@ public class UITopPanelBarView : MonoBehaviour
 
         await jumpTask1;
 
-        var (jumpTask2, jumpDescription2) = LeanTweenHelper.MoveAsync(_icon, _iconDefaultAnchoredPosition, 2 * AnimationInDurationSec);
+        var (jumpTask2, jumpDescription2) = LeanTweenHelper.MoveBounceAsync(_icon, _iconDefaultAnchoredPosition, 2 * AnimationInDurationSec);
         jumpDescription2.setDelay(0.2f);
         jumpDescription2.setEaseOutBounce();
         await jumpTask2;

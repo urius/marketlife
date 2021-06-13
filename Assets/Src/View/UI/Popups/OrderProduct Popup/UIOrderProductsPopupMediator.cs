@@ -78,6 +78,7 @@ public class UIOrderProductsPopupMediator : IMediator
         _popupView.CategoryButtonClicked += OnCategoryButtonClicked;
         _popupView.ButtonCloseClicked += OnCloseClicked;
         _updatesProvider.RealtimeUpdate += OnRealtimeUpdate;
+        _dispatcher.UIRequestOrderProductAnimation += OnUIRequestOrderProductAnimation;
     }
 
     private void Deactivate()
@@ -85,10 +86,18 @@ public class UIOrderProductsPopupMediator : IMediator
         _popupView.CategoryButtonClicked -= OnCategoryButtonClicked;
         _popupView.ButtonCloseClicked -= OnCloseClicked;
         _updatesProvider.RealtimeUpdate -= OnRealtimeUpdate;
+        _dispatcher.UIRequestOrderProductAnimation -= OnUIRequestOrderProductAnimation;
         foreach (var displayedItem in _displayedItems)
         {
             DeactivateItem(displayedItem.View);
         }
+    }
+
+    private void OnUIRequestOrderProductAnimation(RectTransform arg1, Vector2 arg2, int arg3, ProductModel arg4)
+    {
+        Deactivate();
+        //todo: close animation
+        _dispatcher.UIRequestRemoveCurrentPopup();
     }
 
     private void OnCloseClicked()

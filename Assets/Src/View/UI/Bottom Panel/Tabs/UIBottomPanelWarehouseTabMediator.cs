@@ -38,7 +38,7 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
         var animator = new UIOrderProductFromPopupAnimator(rectTransform, screenPosition, GetViewByViewModel(slotModel), productModel);
         _orderProductAnimatorsBySlotIndex[slotIndex] = animator;
         await animator.AnimateAsync();
-        _orderProductAnimatorsBySlotIndex[slotIndex] = null;
+        _orderProductAnimatorsBySlotIndex.Remove(slotIndex);
     }
 
     protected override IEnumerable<ProductSlotModel> GetViewModelsToShow()
@@ -63,7 +63,6 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
         if (_orderProductAnimatorsBySlotIndex.ContainsKey(viewModel.Index))
         {
             _orderProductAnimatorsBySlotIndex[viewModel.Index].CancelAnimation();
-            _orderProductAnimatorsBySlotIndex[viewModel.Index] = null;
         }
 
         base.BeforeHideItem(itemView, viewModel);
@@ -89,10 +88,14 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
         {
             await animator.AnimationTask;
         }
-        UpdateSlotViewByIndex(slotIndex);
+
         var slotmodel = _warehouseModel.Slots[slotIndex];
         var view = GetViewByViewModel(slotmodel);
-        await view.AnimateJumpAsync();
+        if (view != null)
+        {
+            UpdateSlotView(view, slotmodel);
+            await view.AnimateJumpAsync();
+        }
     }
 
     private void OnProductRemoved(int slotIndex, ProductModel removedProduct)
@@ -118,7 +121,10 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
     {
         var slotmodel = _warehouseModel.Slots[slotIndex];
         var view = GetViewByViewModel(slotmodel);
-        UpdateSlotView(view, slotmodel);
+        if (view != null)
+        {
+            UpdateSlotView(view, slotmodel);
+        }
     }
 
     private void UpdateSlotView(UIBottomPanelScrollItemView itemView, ProductSlotModel slotModel)

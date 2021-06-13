@@ -66,6 +66,7 @@ public class UIOrderProductFromPopupAnimator
         LeanTween.cancel(_flyingProductImage.gameObject, true);
     }
 
+    //not work properly
     public void UpdateFinishPosition()
     {
         var newFinishosition = GetFinishLocalPosition();

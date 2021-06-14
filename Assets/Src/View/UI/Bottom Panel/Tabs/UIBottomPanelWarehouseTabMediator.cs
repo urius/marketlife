@@ -4,6 +4,7 @@ using UnityEngine;
 public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMediatorBase<ProductSlotModel>
 {
     private readonly ShopWarehouseModel _warehouseModel;
+    private readonly UpdatesProvider _updatesProvider;
     private readonly LocalizationManager _loc;
     private readonly Dispatcher _dispatcher;
     private readonly SpritesProvider _spritesProvider;
@@ -14,6 +15,7 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
         : base(view)
     {
         _dispatcher = Dispatcher.Instance;
+        _updatesProvider = UpdatesProvider.Instance;
         _gameStateModel = GameStateModel.Instance;
         _spritesProvider = SpritesProvider.Instance;
         _warehouseModel = PlayerModel.Instance.ShopModel.WarehouseModel;
@@ -24,11 +26,13 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
     {
         base.Mediate();
         _dispatcher.UIRequestOrderProductAnimation += OnUIRequestOrderProductAnimation;
+        _updatesProvider.RealtimeSecondUpdate += OnRealtimeSecondUpdate;
     }
 
     public override void Unmediate()
     {
         _dispatcher.UIRequestOrderProductAnimation -= OnUIRequestOrderProductAnimation;
+        _updatesProvider.RealtimeSecondUpdate -= OnRealtimeSecondUpdate;
         base.Unmediate();
     }
 
@@ -137,16 +141,17 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
 
             itemView.SetupIconSize(110);
             itemView.SetImage(icon);
+            itemView.DisableHint();
 
             var deltaDeliver = product.DeliverTime - _gameStateModel.ServerTime;
             if (deltaDeliver > 0)
             {
+                itemView.SetImageAlpha(0.3f);
                 itemView.SetTopText(FormattingHelper.ToSeparatedTimeFormat(deltaDeliver));
-                //TODO: show deliver mode
-                //TODO: subscribe OnSecondPassed
             }
             else
             {
+                itemView.SetImageAlpha(1);
                 UpdateProductAmount(itemView, product);
             }
         }
@@ -157,6 +162,19 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
             itemView.SetImage(_spritesProvider.GetOrderIcon());
             itemView.SetTopText(_loc.GetLocalization(LocalizationKeys.BottomPanelWarehouseEmptySlot));
             itemView.SetupHint(_loc.GetLocalization(LocalizationKeys.BottomPanelWarehouseEmptySlotHint));
+        }
+    }
+
+    private void OnRealtimeSecondUpdate()
+    {
+        foreach (var displayedItem in DisplayedItems)
+        {
+            if (_orderProductAnimatorsBySlotIndex.ContainsKey(displayedItem.ViewModel.Index)) continue;
+            if (displayedItem.ViewModel.HasProduct
+                && (displayedItem.ViewModel.Product.DeliverTime - _gameStateModel.ServerTime) >= 0)
+            {
+                UpdateSlotView(displayedItem.View, displayedItem.ViewModel);
+            }
         }
     }
 }

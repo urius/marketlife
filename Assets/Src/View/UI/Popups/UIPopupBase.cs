@@ -51,6 +51,31 @@ public abstract class UIPopupBase : MonoBehaviour
         return tcs.Task;
     }
 
+    public UniTask AppearAsync2()
+    {
+        var tcs = new UniTaskCompletionSource();
+        var targetSize = _popupBodyRectTransform.sizeDelta;
+        var startSize = new Vector2(targetSize.x, 0);
+        LeanTween.value(gameObject, a => _popupBodyCanvasGroup.alpha = a, 0, 1, 0.5f * AppearDurationSec);
+        LeanTween.value(gameObject, p => _popupBodyRectTransform.sizeDelta = p, startSize, targetSize, AppearDurationSec)
+            .setEaseOutBack()
+            .setOnComplete(() => tcs.TrySetResult());
+        return tcs.Task;
+    }
+
+    public UniTask DisppearAsync2()
+    {
+        var tcs = new UniTaskCompletionSource();
+        var startSize = _popupBodyRectTransform.sizeDelta;
+        var targetSize = new Vector2(startSize.x, 0);
+        _blockRaycastsImage.color = _blockRaycastsImage.color.SetAlpha(0);
+        LeanTween.value(gameObject, a => _popupBodyCanvasGroup.alpha = a, 1, 0, DisppearDurationSec);
+        LeanTween.value(gameObject, p => _popupBodyRectTransform.sizeDelta = p, startSize, targetSize, DisppearDurationSec)
+            .setEaseInBack()
+            .setOnComplete(() => tcs.TrySetResult());
+        return tcs.Task;
+    }
+
     public void SetRaycastBlockerEnabled(bool isEnabled)
     {
         _blockRaycastsImage.gameObject.SetActive(isEnabled);

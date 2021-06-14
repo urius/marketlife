@@ -31,10 +31,8 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
     {
         CancelAllAnimations();
         _animationsCts = new CancellationTokenSource();
-        using (_animationsCts)
-        {
-            await LeanTweenHelper.BounceYAsync(_rectTransform, 40, _animationsCts.Token);
-        }
+        await LeanTweenHelper.BounceYAsync(_rectTransform, 40, _animationsCts.Token);
+        CancelAllAnimations();
     }
 
     public void SetTopText(string text)
@@ -76,10 +74,20 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
         _imageSprite.gameObject.SetActive(sprite != null);
     }
 
+    public void SetImageAlpha(float alpha)
+    {
+        _imageSprite.color = _imageSprite.color.SetAlpha(alpha);
+    }
+
     public void SetupHint(string hintText)
     {
         _hintableView.DisplayText = hintText;
         _hintableView.SetEnabled(true);
+    }
+
+    public void DisableHint()
+    {
+        _hintableView.SetEnabled(false);
     }
 
     public void CancelAllAnimations()
@@ -97,6 +105,7 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
         _percentLineContainerTransform.gameObject.SetActive(false);
         _topText.gameObject.SetActive(false);
         _priceLabel.gameObject.SetActive(false);
+        _imageSprite.color = _imageSprite.color.SetAlpha(1);
         _imageSprite.gameObject.SetActive(false);
         _hintableView.SetEnabled(false);
         _imageRectTransform.sizeDelta = new Vector2(130, 130);

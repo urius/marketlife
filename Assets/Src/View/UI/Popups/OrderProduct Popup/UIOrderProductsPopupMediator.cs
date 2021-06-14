@@ -43,7 +43,7 @@ public class UIOrderProductsPopupMediator : IMediator
         _poolCanvasProvider = PoolCanvasProvider.Instance;
     }
 
-    public void Mediate()
+    public async void Mediate()
     {
         _itemRect = (_prefabsHolder.UIOrderProductPopupItemPrefab.transform as RectTransform).rect;
         _availableProductConfigsByGroupId = _productsConfig.GetProductConfigsForLevel(_shopModel.ProgressModel.Level)
@@ -57,12 +57,14 @@ public class UIOrderProductsPopupMediator : IMediator
             .Select(k => _loc.GetLocalization($"{LocalizationKeys.NameProductGroupIdPrefix}{k.Key}"))
             .ToArray());
 
-        Activate();
-
         ShowTab(0);
+
+        await _popupView.AppearAsync2();
+
+        Activate();
     }
 
-    public void Unmediate()
+    public async void Unmediate()
     {
         Deactivate();
         foreach (var itemView in _cachedItems)
@@ -70,6 +72,9 @@ public class UIOrderProductsPopupMediator : IMediator
             GameObject.Destroy(itemView.gameObject);
         }
         _cachedItems.Clear();
+
+        await _popupView.DisppearAsync2();
+
         GameObject.Destroy(_popupView.gameObject);
     }
 
@@ -95,8 +100,6 @@ public class UIOrderProductsPopupMediator : IMediator
 
     private void OnUIRequestOrderProductAnimation(RectTransform arg1, Vector2 arg2, int arg3, ProductModel arg4)
     {
-        Deactivate();
-        //todo: close animation
         _dispatcher.UIRequestRemoveCurrentPopup();
     }
 

@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMediatorBase<ProductSlotModel>
 {
     private readonly ShopWarehouseModel _warehouseModel;
+    private readonly GameConfigManager _configManager;
     private readonly UpdatesProvider _updatesProvider;
     private readonly LocalizationManager _loc;
     private readonly Dispatcher _dispatcher;
@@ -19,6 +21,7 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
         _gameStateModel = GameStateModel.Instance;
         _spritesProvider = SpritesProvider.Instance;
         _warehouseModel = PlayerModel.Instance.ShopModel.WarehouseModel;
+        _configManager = GameConfigManager.Instance;
         _loc = LocalizationManager.Instance;
     }
 
@@ -72,11 +75,30 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
         base.BeforeHideItem(itemView, viewModel);
     }
 
+    protected override void ActivateItem(UIBottomPanelScrollItemView itemView)
+    {
+        itemView.BottomButtonClicked += OnBottomButtonClicked;
+        base.ActivateItem(itemView);
+    }
+
+    protected override void DeactivateItem(UIBottomPanelScrollItemView itemView)
+    {
+        itemView.BottomButtonClicked -= OnBottomButtonClicked;
+        base.DeactivateItem(itemView);
+    }
+
+    private void OnBottomButtonClicked(UIBottomPanelScrollItemView itemView)
+    {
+        var viewModel = DisplayedItems.First(t => t.View == itemView).ViewModel;
+        _dispatcher.UIBottomPanelWarehouseQuickDeliverClicked(viewModel.Index);
+    }
+
     private void ActivateItem(ProductSlotModel slotModel)
     {
         slotModel.ProductIsSet += OnProductSet;
         slotModel.ProductAmountChanged += OnProductAmountChanged;
         slotModel.ProductRemoved += OnProductRemoved;
+        slotModel.ProductDeliveryTimeChanged += OnDeliveryTimeChanged;
     }
 
     private void DeactivateItem(ProductSlotModel slotModel)
@@ -84,6 +106,7 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
         slotModel.ProductIsSet -= OnProductSet;
         slotModel.ProductAmountChanged -= OnProductAmountChanged;
         slotModel.ProductRemoved -= OnProductRemoved;
+        slotModel.ProductDeliveryTimeChanged -= OnDeliveryTimeChanged;
     }
 
     private async void OnProductSet(int slotIndex)
@@ -108,6 +131,11 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
     }
 
     private void OnProductAmountChanged(int slotIndex, int deltaAmount)
+    {
+        UpdateSlotViewByIndex(slotIndex);
+    }
+
+    private void OnDeliveryTimeChanged(int slotIndex, int deltaTime)
     {
         UpdateSlotViewByIndex(slotIndex);
     }
@@ -148,9 +176,13 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
             {
                 itemView.SetImageAlpha(0.3f);
                 itemView.SetTopText(FormattingHelper.ToSeparatedTimeFormat(deltaDeliver));
+                var quickDeliverPrice = CalculationHelper.GetPriceForDeliver(_configManager.MainConfig.QuickDeliverPriceGoldPerMinute, deltaDeliver);
+                itemView.SetBottomButtonPrice(quickDeliverPrice);
+                itemView.SetupBottomButtonHint(_loc.GetLocalization(LocalizationKeys.BottomPanelWarehouseQuickDeliveryHint));
             }
             else
             {
+                itemView.DisableBottomButton();
                 itemView.SetImageAlpha(1);
                 UpdateProductAmount(itemView, product);
             }
@@ -161,7 +193,7 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
             itemView.SetupIconSize(110);
             itemView.SetImage(_spritesProvider.GetOrderIcon());
             itemView.SetTopText(_loc.GetLocalization(LocalizationKeys.BottomPanelWarehouseEmptySlot));
-            itemView.SetupHint(_loc.GetLocalization(LocalizationKeys.BottomPanelWarehouseEmptySlotHint));
+            itemView.SetupMainHint(_loc.GetLocalization(LocalizationKeys.BottomPanelWarehouseEmptySlotHint));
         }
     }
 

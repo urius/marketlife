@@ -21,7 +21,8 @@ public class Dispatcher
     public Action<int> UIBottomPanelPlaceWallClicked = delegate { };
     public Action<int> UIBottomPanelPlaceWindowClicked = delegate { };
     public Action<int> UIBottomPanelPlaceDoorClicked = delegate { };
-    public Action<int> UIBottomPanelWarehouseSlotClicked = delegate { };    
+    public Action<int> UIBottomPanelWarehouseSlotClicked = delegate { };
+    public Action<int> UIBottomPanelWarehouseQuickDeliverClicked = delegate { };    
 
     public Action UIActionsRotateRightClicked = delegate { };
     public Action UIActionsRotateLeftClicked = delegate { };

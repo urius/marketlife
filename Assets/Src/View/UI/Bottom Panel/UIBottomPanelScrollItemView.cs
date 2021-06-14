@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class UIBottomPanelScrollItemView : MonoBehaviour
 {
     public event Action<UIBottomPanelScrollItemView> Clicked = delegate { };
+    public event Action<UIBottomPanelScrollItemView> BottomButtonClicked = delegate { };
 
     [SerializeField] private UIPriceLabelView _priceLabel;
     [SerializeField] private Image _imageSprite;
@@ -17,6 +18,9 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
     [SerializeField] private RectTransform _percentLineContainerTransform;
     [SerializeField] private Image _percentLineImage;
     [SerializeField] private UIHintableView _hintableView;
+    [SerializeField] private Button _bottomButton;
+    [SerializeField] private UIPriceLabelView _bottomButtonPriceLabel;
+    [SerializeField] private UIHintableView _bottomButtonHintableView;
 
     private RectTransform _rectTransform;
     private CancellationTokenSource _animationsCts;
@@ -24,7 +28,8 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
     public void Awake()
     {
         _rectTransform = transform as RectTransform;
-        _button.onClick.AddListener(OnButtonClick);
+        _button.AddOnClickListener(OnButtonClick);
+        _bottomButton.AddOnClickListener(OnBottomButtonClick);
     }
 
     public async UniTask AnimateJumpAsync()
@@ -68,6 +73,20 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
         _priceLabel.Value = price.Value;
     }
 
+    public void SetBottomButtonPrice(Price price)
+    {
+        _bottomButton.gameObject.SetActive(true);
+
+        _bottomButtonPriceLabel.SetType(price.IsGold);
+        _bottomButtonPriceLabel.Value = price.Value;
+    }
+
+    public void DisableBottomButton()
+    {
+        _bottomButton.gameObject.SetActive(false);
+        _bottomButtonHintableView.SetEnabled(false);
+    }
+
     public void SetImage(Sprite sprite)
     {
         _imageSprite.sprite = sprite;
@@ -79,10 +98,16 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
         _imageSprite.color = _imageSprite.color.SetAlpha(alpha);
     }
 
-    public void SetupHint(string hintText)
+    public void SetupMainHint(string hintText)
     {
         _hintableView.DisplayText = hintText;
         _hintableView.SetEnabled(true);
+    }
+
+    public void SetupBottomButtonHint(string hintText)
+    {
+        _bottomButtonHintableView.DisplayText = hintText;
+        _bottomButtonHintableView.SetEnabled(true);
     }
 
     public void DisableHint()
@@ -107,7 +132,9 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
         _priceLabel.gameObject.SetActive(false);
         _imageSprite.color = _imageSprite.color.SetAlpha(1);
         _imageSprite.gameObject.SetActive(false);
+        _bottomButton.gameObject.SetActive(false);
         _hintableView.SetEnabled(false);
+        _bottomButtonHintableView.SetEnabled(false);
         _imageRectTransform.sizeDelta = new Vector2(130, 130);
     }
 
@@ -119,5 +146,10 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
     private void OnButtonClick()
     {
         Clicked(this);
+    }
+
+    private void OnBottomButtonClick()
+    {
+        BottomButtonClicked(this);
     }
 }

@@ -44,7 +44,7 @@ public class UIBottomPanelShelfsTabMediator : UIBottomPanelScrollItemsTabMediato
         var shelfName = _localizationManager.GetLocalization($"{LocalizationKeys.NameShopObjectPrefix}s_{viewModel.NumericId}");
         var hintDescriptionRaw = _localizationManager.GetLocalization(LocalizationKeys.HintBottomPanelShelfDescription);
         var hintDescription = string.Format(hintDescriptionRaw, shelfName, configDto.part_volume * configDto.parts_num, configDto.parts_num);
-        itemView.SetupHint(hintDescription);
+        itemView.SetupMainHint(hintDescription);
     }
 
     protected override void HandleClick(ItemConfig<ShelfConfigDto> viewModel)

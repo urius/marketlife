@@ -66,6 +66,22 @@ public abstract class UIBottomPanelScrollItemsTabMediatorBase<TViewModel> : UINo
         base.Unmediate();
     }
 
+    abstract protected IEnumerable<TViewModel> GetViewModelsToShow();
+    abstract protected void SetupItem(UIBottomPanelScrollItemView itemView, TViewModel viewModel);
+    abstract protected void HandleClick(TViewModel viewModel);
+
+    protected virtual void BeforeHideItem(UIBottomPanelScrollItemView itemView, TViewModel viewModel) { }
+
+    protected virtual void ActivateItem(UIBottomPanelScrollItemView itemView)
+    {
+        itemView.Clicked += OnItemClicked;
+    }
+
+    protected virtual void DeactivateItem(UIBottomPanelScrollItemView itemView)
+    {
+        itemView.Clicked -= OnItemClicked;
+    }
+
     protected UIBottomPanelScrollItemView GetViewByViewModel(TViewModel viewModel)
     {
         foreach (var item in DisplayedItems)
@@ -187,22 +203,6 @@ public abstract class UIBottomPanelScrollItemsTabMediatorBase<TViewModel> : UINo
         BeforeHideItem(item.View, item.ViewModel);
         DeactivateItem(item.View);
         ReturnOrDestroyScrollBoxItem(item.View);
-    }
-
-    abstract protected IEnumerable<TViewModel> GetViewModelsToShow();
-    abstract protected void SetupItem(UIBottomPanelScrollItemView itemView, TViewModel viewModel);
-    abstract protected void HandleClick(TViewModel viewModel);
-
-    protected virtual void BeforeHideItem(UIBottomPanelScrollItemView itemView, TViewModel viewModel) { }
-
-    private void ActivateItem(UIBottomPanelScrollItemView itemView)
-    {
-        itemView.Clicked += OnItemClicked;
-    }
-
-    private void DeactivateItem(UIBottomPanelScrollItemView itemView)
-    {
-        itemView.Clicked -= OnItemClicked;
     }
 
     private void OnItemClicked(UIBottomPanelScrollItemView itemView)

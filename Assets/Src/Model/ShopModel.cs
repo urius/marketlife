@@ -497,6 +497,11 @@ public class ShopProgressModel
         TrySpendCash(-amount);
     }
 
+    public bool TrySpendMoney(Price price)
+    {
+        return price.IsGold ? TrySpendGold(price.Value) : TrySpendCash(price.Value);
+    }
+
     public bool TrySpendCash(int spendAmount)
     {
         var currentValue = Cash;

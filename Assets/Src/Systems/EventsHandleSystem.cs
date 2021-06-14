@@ -25,6 +25,7 @@ public class EventsHandleSystem : MonoBehaviour
         _dispatcher.UIBottomPanelPlaceWindowClicked += OnUIBottomPanelPlaceWindowClicked;
         _dispatcher.UIBottomPanelPlaceDoorClicked += OnUIBottomPanelPlaceDoorClicked;
         _dispatcher.UIBottomPanelWarehouseSlotClicked += OnUIBottomPanelWarehouseSlotClicked;
+        _dispatcher.UIBottomPanelWarehouseQuickDeliverClicked += OnUIBottomPanelWarehouseQuickDeliverClicked;
         _dispatcher.UIActionsRotateRightClicked += OnUIActionsRotateRightClicked;
         _dispatcher.UIActionsRotateLeftClicked += OnUIActionsRotateLeftClicked;
         _dispatcher.UIActionsMoveClicked += OnUIActionsMoveClicked;
@@ -40,6 +41,11 @@ public class EventsHandleSystem : MonoBehaviour
         _dispatcher.BottomPanelRotateLeftClicked += BottomPanelRotateLeftClicked;
 
         _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
+    }
+
+    private void OnUIBottomPanelWarehouseQuickDeliverClicked(int slotIndex)
+    {
+        new QuickDeliverCommand().Execute(slotIndex);
     }
 
     private void OnUIOrderProductClicked(RectTransform transform, Vector2 startAnimationScreenPoint, ProductConfig productConfig)

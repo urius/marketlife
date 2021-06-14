@@ -5,7 +5,7 @@ public class ProductSlotModel
     public event Action<int> ProductIsSet = delegate { };
     public event Action<int, ProductModel> ProductRemoved = delegate { };
     public event Action<int, int> ProductAmountChanged = delegate { };
-    public event Action<int> ProductDeliveryTimeChanged = delegate { };
+    public event Action<int, int> ProductDeliveryTimeChanged = delegate { };
 
     public readonly int Index;
 
@@ -92,6 +92,6 @@ public class ProductSlotModel
 
     private void OnProductDeliveryTimeChanged(int deltaTimeSeconds)
     {
-        ProductDeliveryTimeChanged(deltaTimeSeconds);
+        ProductDeliveryTimeChanged(Index, deltaTimeSeconds);
     }
 }

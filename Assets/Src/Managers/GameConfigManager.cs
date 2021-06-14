@@ -39,6 +39,7 @@ public class GameConfigManager : ScriptableObject
             mainConfigDto.GameplayAtlasVersion,
             mainConfigDto.InterfaceAtlasVersion,
             mainConfigDto.AutoPlacePriceGold,
+            mainConfigDto.QuickDeliverPriceGoldPerMinute,
             productsConfig,
             shelfsConfig,
             shopObjectsConfig,

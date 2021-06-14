@@ -78,13 +78,21 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
     protected override void ActivateItem(UIBottomPanelScrollItemView itemView)
     {
         itemView.BottomButtonClicked += OnBottomButtonClicked;
+        itemView.RemoveButtonClicked += OnRemoveButtonClicked;
         base.ActivateItem(itemView);
     }
 
     protected override void DeactivateItem(UIBottomPanelScrollItemView itemView)
     {
         itemView.BottomButtonClicked -= OnBottomButtonClicked;
+        itemView.RemoveButtonClicked -= OnRemoveButtonClicked;
         base.DeactivateItem(itemView);
+    }
+
+    private void OnRemoveButtonClicked(UIBottomPanelScrollItemView itemView)
+    {
+        var viewModel = DisplayedItems.First(t => t.View == itemView).ViewModel;
+        _dispatcher.UIBottomPanelWarehouseRemoveProductClicked(viewModel.Index);
     }
 
     private void OnBottomButtonClicked(UIBottomPanelScrollItemView itemView)
@@ -184,6 +192,7 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
             {
                 itemView.DisableBottomButton();
                 itemView.SetImageAlpha(1);
+                itemView.ShowRemoveButton();
                 UpdateProductAmount(itemView, product);
             }
         }

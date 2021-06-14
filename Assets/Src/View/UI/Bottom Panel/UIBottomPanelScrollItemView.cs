@@ -9,6 +9,7 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
 {
     public event Action<UIBottomPanelScrollItemView> Clicked = delegate { };
     public event Action<UIBottomPanelScrollItemView> BottomButtonClicked = delegate { };
+    public event Action<UIBottomPanelScrollItemView> RemoveButtonClicked = delegate { };
 
     [SerializeField] private UIPriceLabelView _priceLabel;
     [SerializeField] private Image _imageSprite;
@@ -21,6 +22,7 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
     [SerializeField] private Button _bottomButton;
     [SerializeField] private UIPriceLabelView _bottomButtonPriceLabel;
     [SerializeField] private UIHintableView _bottomButtonHintableView;
+    [SerializeField] private Button _removeButton;
 
     private RectTransform _rectTransform;
     private CancellationTokenSource _animationsCts;
@@ -30,6 +32,7 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
         _rectTransform = transform as RectTransform;
         _button.AddOnClickListener(OnButtonClick);
         _bottomButton.AddOnClickListener(OnBottomButtonClick);
+        _removeButton.AddOnClickListener(OnRemoveClicked);
     }
 
     public async UniTask AnimateJumpAsync()
@@ -115,6 +118,11 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
         _hintableView.SetEnabled(false);
     }
 
+    public void ShowRemoveButton()
+    {
+        _removeButton.gameObject.SetActive(true);
+    }
+
     public void CancelAllAnimations()
     {
         if (_animationsCts == null) return;
@@ -135,6 +143,7 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
         _bottomButton.gameObject.SetActive(false);
         _hintableView.SetEnabled(false);
         _bottomButtonHintableView.SetEnabled(false);
+        _removeButton.gameObject.SetActive(false);
         _imageRectTransform.sizeDelta = new Vector2(130, 130);
     }
 
@@ -151,5 +160,10 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
     private void OnBottomButtonClick()
     {
         BottomButtonClicked(this);
+    }
+
+    private void OnRemoveClicked()
+    {
+        RemoveButtonClicked(this);
     }
 }

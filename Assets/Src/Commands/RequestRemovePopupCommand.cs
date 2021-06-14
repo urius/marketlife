@@ -45,4 +45,11 @@ public struct RequestRemovePopupCommand
             }
         }
     }
+
+    public void Execute(int slotIndex)
+    {
+        var gameStateModel = GameStateModel.Instance;
+        var slotModel = gameStateModel.PlayerShopModel.WarehouseModel.Slots[slotIndex];
+        gameStateModel.ShowPopup(new RemoveProductPopupViewModel(slotIndex, slotModel.Product.NumericId));
+    }
 }

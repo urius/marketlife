@@ -26,6 +26,7 @@ public class EventsHandleSystem : MonoBehaviour
         _dispatcher.UIBottomPanelPlaceDoorClicked += OnUIBottomPanelPlaceDoorClicked;
         _dispatcher.UIBottomPanelWarehouseSlotClicked += OnUIBottomPanelWarehouseSlotClicked;
         _dispatcher.UIBottomPanelWarehouseQuickDeliverClicked += OnUIBottomPanelWarehouseQuickDeliverClicked;
+        _dispatcher.UIBottomPanelWarehouseRemoveProductClicked += OnUIBottomPanelWarehouseRemoveProductClicked;
         _dispatcher.UIActionsRotateRightClicked += OnUIActionsRotateRightClicked;
         _dispatcher.UIActionsRotateLeftClicked += OnUIActionsRotateLeftClicked;
         _dispatcher.UIActionsMoveClicked += OnUIActionsMoveClicked;
@@ -41,6 +42,11 @@ public class EventsHandleSystem : MonoBehaviour
         _dispatcher.BottomPanelRotateLeftClicked += BottomPanelRotateLeftClicked;
 
         _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
+    }
+
+    private void OnUIBottomPanelWarehouseRemoveProductClicked(int slotIndex)
+    {
+        new RequestRemovePopupCommand().Execute(slotIndex);
     }
 
     private void OnUIBottomPanelWarehouseQuickDeliverClicked(int slotIndex)

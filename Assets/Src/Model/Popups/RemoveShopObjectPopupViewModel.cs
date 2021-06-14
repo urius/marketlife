@@ -1,4 +1,4 @@
-public class RemoveShopObjectPopupViewModel : PopupViewModelBase, IConfirmRemoveObjectPopupViewModel
+public class RemoveShopObjectPopupViewModel : PopupViewModelBase, IConfirmRemoveWithRefundPopupViewModel
 {
     public RemoveShopObjectPopupViewModel(ShopObjectModelBase shopObjectModel, int sellPrice)
     {

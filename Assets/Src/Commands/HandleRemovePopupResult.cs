@@ -10,7 +10,7 @@ public struct HandleRemovePopupResult
         var screenCalculator = ScreenCalculator.Instance;
         if (result)
         {
-            var popupModel = gameStateModel.ShowingPopupModel as IConfirmRemoveObjectPopupViewModel;
+            var popupModel = gameStateModel.ShowingPopupModel;
             Vector2Int coords = Vector2Int.zero;
             if (popupModel is RemoveShopObjectPopupViewModel removeShopObjectPopupViewModel)
             {
@@ -24,9 +24,16 @@ public struct HandleRemovePopupResult
                 var removeResult = shopModel.TryRemoveDecoration(coords);
                 if (removeResult == false) return;
             }
+            else if (popupModel is RemoveProductPopupViewModel removeProductPopupViewModel)
+            {
+                shopModel.WarehouseModel.Slots[removeProductPopupViewModel.SlotIndex].RemoveProduct();
+            }
 
-            shopModel.ProgressModel.AddCash(popupModel.SellPrice);
-            dispatcher.UIRequestFlyingPrice(screenCalculator.CellToScreenPoint(coords), false, popupModel.SellPrice);
+            if (popupModel is IConfirmRemoveWithRefundPopupViewModel confirmRemoveWithRefundViewModel)
+            {
+                shopModel.ProgressModel.AddCash(confirmRemoveWithRefundViewModel.SellPrice);
+                dispatcher.UIRequestFlyingPrice(screenCalculator.CellToScreenPoint(coords), false, confirmRemoveWithRefundViewModel.SellPrice);
+            }
         }
     }
 }

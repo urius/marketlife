@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class RemoveShopDecorationPopupViewModel : PopupViewModelBase, IConfirmRemoveObjectPopupViewModel
+public class RemoveShopDecorationPopupViewModel : PopupViewModelBase, IConfirmRemoveWithRefundPopupViewModel
 {
     private readonly Vector2Int _coords;
     private readonly int _sellPrice;

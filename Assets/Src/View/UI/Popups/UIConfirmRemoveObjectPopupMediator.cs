@@ -4,7 +4,7 @@ public class UIConfirmRemoveObjectPopupMediator : IMediator
 {
     private readonly RectTransform _contentTransform;
     private readonly Dispatcher _dispatcher;
-    private readonly IConfirmRemoveObjectPopupViewModel _popupModel;
+    private readonly PopupViewModelBase _popupModel;
     private readonly PrefabsHolder _prefabsHolder;
     private readonly SpritesProvider _spritesProvider;
     private readonly LocalizationManager _loc;
@@ -16,7 +16,7 @@ public class UIConfirmRemoveObjectPopupMediator : IMediator
         _contentTransform = contentTransform;
 
         _dispatcher = Dispatcher.Instance;
-        _popupModel = GameStateModel.Instance.ShowingPopupModel as IConfirmRemoveObjectPopupViewModel;
+        _popupModel = GameStateModel.Instance.ShowingPopupModel;
         _prefabsHolder = PrefabsHolder.Instance;
         _spritesProvider = SpritesProvider.Instance;
         _loc = LocalizationManager.Instance;
@@ -29,8 +29,17 @@ public class UIConfirmRemoveObjectPopupMediator : IMediator
         _popupView.Setup(haveCloseButton: true, bottomButtonsAmount: 2);
         _popupView.SetupButton(0, _spritesProvider.GetGreenButtonSprite(), _loc.GetLocalization(LocalizationKeys.CommonYes));
         _popupView.SetupButton(1, _spritesProvider.GetOrangeButtonSprite(), _loc.GetLocalization(LocalizationKeys.CommonNo));
-        _popupView.SetTitleText(_loc.GetLocalization(LocalizationKeys.PopupRemoveObjectTitle));
-        _popupView.SetMessageText(string.Format(_loc.GetLocalization(LocalizationKeys.PopupRemoveObjectText), _popupModel.SellPrice));
+        if (_popupModel is IConfirmRemoveWithRefundPopupViewModel removeWithRefundPopupViewModel)
+        {
+            _popupView.SetTitleText(_loc.GetLocalization(LocalizationKeys.PopupRemoveObjectTitle));
+            _popupView.SetMessageText(string.Format(_loc.GetLocalization(LocalizationKeys.PopupRemoveObjectText), removeWithRefundPopupViewModel.SellPrice));
+        }
+        else if (_popupModel is RemoveProductPopupViewModel removeProductPopupViewModel)
+        {
+            _popupView.SetTitleText(_loc.GetLocalization(LocalizationKeys.PopupRemoveProductTitle));
+            var productName = _loc.GetLocalization($"{LocalizationKeys.NameProductIdPrefix}{removeProductPopupViewModel.ProductNumericId}");
+            _popupView.SetMessageText(string.Format(_loc.GetLocalization(LocalizationKeys.PopupRemoveProductText), productName));            
+        }
 
         await _popupView.AppearAsync();
         Activate();

@@ -62,6 +62,8 @@ public class LocalizationKeys
     public static string CommonNo = "common_no";
     public static string PopupRemoveObjectTitle = "popup_remove_object_title";
     public static string PopupRemoveObjectText = "popup_remove_object_text";
+    public static string PopupRemoveProductTitle = "popup_remove_product_title";
+    public static string PopupRemoveProductText = "popup_remove_product_text";
     public static string PopupOrderProductItemDescriptionText = "popup_order_product_item_description_text";
     public static string NameShopObjectPrefix = "name_shop_object_";
     public static string NameProductGroupIdPrefix = "name_product_group_id_";

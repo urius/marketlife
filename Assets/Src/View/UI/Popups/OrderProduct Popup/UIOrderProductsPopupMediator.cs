@@ -20,7 +20,7 @@ public class UIOrderProductsPopupMediator : IMediator
     private readonly LinkedList<(UIOrderProductItemView View, ProductConfig Config)> _displayedItems = new LinkedList<(UIOrderProductItemView, ProductConfig)>();
     private readonly Queue<UIOrderProductItemView> _cachedItems = new Queue<UIOrderProductItemView>();
 
-    private UIOrderProductsPopup _popupView;
+    private UITabbedContentPopupView _popupView;
     private Rect _itemRect;
     private IGrouping<int, ProductConfig>[] _availableProductConfigsByGroupId;
     private ProductConfig[] _currentTabProductConfigs;
@@ -51,8 +51,8 @@ public class UIOrderProductsPopupMediator : IMediator
             .OrderBy(g => g.Key)
             .ToArray();
 
-        var popupGo = GameObject.Instantiate(_prefabsHolder.UIOrderProductPopupPrefab, _parentTransform);
-        _popupView = popupGo.GetComponent<UIOrderProductsPopup>();
+        var popupGo = GameObject.Instantiate(_prefabsHolder.UITabbedContentPopupPrefab, _parentTransform);
+        _popupView = popupGo.GetComponent<UITabbedContentPopupView>();
         _popupView.SetupTabButtons(_availableProductConfigsByGroupId
             .Select(k => _loc.GetLocalization($"{LocalizationKeys.NameProductGroupIdPrefix}{k.Key}"))
             .ToArray());
@@ -80,7 +80,7 @@ public class UIOrderProductsPopupMediator : IMediator
 
     private void Activate()
     {
-        _popupView.CategoryButtonClicked += OnCategoryButtonClicked;
+        _popupView.TabButtonClicked += OnTabButtonClicked;
         _popupView.ButtonCloseClicked += OnCloseClicked;
         _updatesProvider.RealtimeUpdate += OnRealtimeUpdate;
         _dispatcher.UIRequestOrderProductAnimation += OnUIRequestOrderProductAnimation;
@@ -88,7 +88,7 @@ public class UIOrderProductsPopupMediator : IMediator
 
     private void Deactivate()
     {
-        _popupView.CategoryButtonClicked -= OnCategoryButtonClicked;
+        _popupView.TabButtonClicked -= OnTabButtonClicked;
         _popupView.ButtonCloseClicked -= OnCloseClicked;
         _updatesProvider.RealtimeUpdate -= OnRealtimeUpdate;
         _dispatcher.UIRequestOrderProductAnimation -= OnUIRequestOrderProductAnimation;
@@ -119,7 +119,7 @@ public class UIOrderProductsPopupMediator : IMediator
         }
     }
 
-    private void OnCategoryButtonClicked(int buttonIndex)
+    private void OnTabButtonClicked(int buttonIndex)
     {
         ShowTab(buttonIndex);
     }

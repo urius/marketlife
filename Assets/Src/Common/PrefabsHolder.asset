@@ -63,7 +63,9 @@ MonoBehaviour:
     type: 3}
   UIPlacingProductPrefab: {fileID: 3510333535774996464, guid: 4e7f8e23cc19c49b99ebcdd582113e07,
     type: 3}
-  UIOrderProductPopupPrefab: {fileID: 6701860279966104194, guid: 39782c310484f40029acb648d8fccfb2,
+  UIContentPopupPrefab: {fileID: 5173990274866861764, guid: cdcf6da1c70f14a30baf46a6758bea09,
     type: 3}
-  UIOrderProductPopupItemPrefab: {fileID: 1468346764679988326, guid: a413bef440987480cb129b9a775c53c3,
+  UITabbedContentPopupPrefab: {fileID: 6701860279966104194, guid: 39782c310484f40029acb648d8fccfb2,
+    type: 3}
+  UITabbedContentPopupTabPrefab: {fileID: 934413467596253710, guid: da7b0e36e55e947059533066a5b55edd,
     type: 3}

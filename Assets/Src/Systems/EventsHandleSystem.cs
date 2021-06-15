@@ -105,6 +105,10 @@ public class EventsHandleSystem : MonoBehaviour
         {
             new PlaceObjectCommand().Execute();
         }
+        else if (_gameStateModel.HighlightState.IsHighlighted == true)
+        {
+            new ProcessHighlightedObjectClickCommand().Execute();
+        }
     }
 
     private void BottomPanelRotateLeftClicked()

@@ -898,9 +898,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6701860279966104205}
-  - component: {fileID: 6701860279966104195}
+  - component: {fileID: 3589372930905642740}
   m_Layer: 5
-  m_Name: UIOrderProductsPopup
+  m_Name: UITabbedContentPopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -927,7 +927,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &6701860279966104195
+--- !u!114 &3589372930905642740
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -936,7 +936,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6701860279966104194}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d7c8f765b19548b18540ff36a17dbe6, type: 3}
+  m_Script: {fileID: 11500000, guid: 48fb60572a0a84cf48aed40c33fcaa12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _blockRaycastsImage: {fileID: 6701860279754695540}
@@ -944,9 +944,9 @@ MonoBehaviour:
   _closeButton: {fileID: 4371110481795259868}
   _titleText: {fileID: 6701860280598188863}
   _contentRectTransform: {fileID: 3913857129095540081}
-  _categoryButtonPrefab: {fileID: 934413467596253710, guid: da7b0e36e55e947059533066a5b55edd,
+  _tabButtonPrefab: {fileID: 934413467596253710, guid: da7b0e36e55e947059533066a5b55edd,
     type: 3}
-  _categoryButtonsContainerRectTransform: {fileID: 5846287646331105927}
+  _tabButtonsContainerRectTransform: {fileID: 5846287646331105927}
 --- !u!1 &6701860280091265008
 GameObject:
   m_ObjectHideFlags: 0

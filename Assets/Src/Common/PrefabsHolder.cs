@@ -41,7 +41,8 @@ public class PrefabsHolder : ScriptableObject
     public GameObject UIFlyingTextPrefab;
     public GameObject UITextPopupPrefab;
     public GameObject UIPlacingProductPrefab;
-    public GameObject UIOrderProductPopupPrefab;
+    public GameObject UIContentPopupPrefab;
+    public GameObject UITabbedContentPopupPrefab;
     public GameObject UIOrderProductPopupItemPrefab;
 
     //remote

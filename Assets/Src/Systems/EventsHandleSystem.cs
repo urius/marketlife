@@ -34,6 +34,7 @@ public class EventsHandleSystem : MonoBehaviour
         _dispatcher.UIRemovePopupResult += OnUIRemovePopupResult;
         _dispatcher.UIRequestRemoveCurrentPopup += OnUIRequestRemoveCurrentPopup;
         _dispatcher.UIOrderProductClicked += OnUIOrderProductClicked;
+        _dispatcher.UIShelfContentRemoveProductClicked += OnUIShelfContentRemoveProductClicked;
         _dispatcher.MouseCellCoordsUpdated += OnMouseCellCoordsUpdated;
         _dispatcher.BottomPanelInteriorClicked += BottomPanelInteriorClicked;
         _dispatcher.BottomPanelInteriorCloseClicked += BottomPanelInteriorCloseClicked;
@@ -42,6 +43,11 @@ public class EventsHandleSystem : MonoBehaviour
         _dispatcher.BottomPanelRotateLeftClicked += BottomPanelRotateLeftClicked;
 
         _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
+    }
+
+    private void OnUIShelfContentRemoveProductClicked(ShelfContentPopupViewModel popupModel, int shelfSlotIndex)
+    {
+        new RemoveProductFromShelfCommand().Execute(popupModel, shelfSlotIndex);
     }
 
     private void OnUIBottomPanelWarehouseRemoveProductClicked(int slotIndex)

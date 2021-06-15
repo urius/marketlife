@@ -56,6 +56,7 @@ public class UIOrderProductsPopupMediator : IMediator
         _popupView.SetupTabButtons(_availableProductConfigsByGroupId
             .Select(k => _loc.GetLocalization($"{LocalizationKeys.NameProductGroupIdPrefix}{k.Key}"))
             .ToArray());
+        _popupView.SetSize(1048, 868);
 
         ShowTab(0);
 

@@ -36,6 +36,9 @@ public class PopupsMediator : IMediator
             case PopupType.OrderProduct:
                 _currentPopupMediator = new UIOrderProductsPopupMediator(_contentTransform);
                 break;
+            case PopupType.ShelfContent:
+                _currentPopupMediator = new UIShelfContentPopupMediator(_contentTransform);
+                break;
         };
         _currentPopupMediator.Mediate();
     }

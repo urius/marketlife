@@ -38,6 +38,8 @@ public class Dispatcher
     public Action UIRequestRemoveCurrentPopup = delegate { };
     public Action<RectTransform, Vector2, ProductConfig> UIOrderProductClicked = delegate { };
     public Action<RectTransform, Vector2, int, ProductModel> UIRequestOrderProductAnimation = delegate { };
+    public Action<ShelfContentPopupViewModel, int> UIShelfContentAddProductClicked = delegate { };
+    public Action<ShelfContentPopupViewModel, int> UIShelfContentRemoveProductClicked = delegate { };    
 
     public Action<Vector2Int> MouseCellCoordsUpdated = delegate { };
     public Action RequestForceMouseCellPositionUpdate = delegate { };

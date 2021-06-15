@@ -25,6 +25,11 @@ public abstract class UIPopupBase : MonoBehaviour
         _closeButton.AddOnClickListener(OnCloseClicked);
     }
 
+    public void SetSize(int width, int height)
+    {
+        _popupBodyRectTransform.sizeDelta = new Vector2(width, height);
+    }
+
     public void SetCloseButtonVisibility(bool isVisible)
     {
         _closeButton.gameObject.SetActive(isVisible);

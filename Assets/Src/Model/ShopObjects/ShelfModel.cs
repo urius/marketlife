@@ -88,7 +88,7 @@ public class ShelfModel : ShopObjectModelBase
     {
         if (partIndex < Slots.Length)
         {
-            Slots[partIndex].GetRestAmount();
+            return Slots[partIndex].GetRestAmount();
         }
         return -1;
     }

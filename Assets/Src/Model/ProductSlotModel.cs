@@ -31,6 +31,21 @@ public class ProductSlotModel
         ProductIsSet(Index);
     }
 
+    public void ChangeProductAmount(int deltaAmount)
+    {
+        if (HasProduct)
+        {
+            if (Product.Amount + deltaAmount <= 0)
+            {
+                RemoveProduct();
+            }
+            else
+            {
+                Product.Amount += deltaAmount;
+            }
+        }
+    }
+
     public bool RemoveProduct()
     {
         if (HasProduct)
@@ -61,6 +76,16 @@ public class ProductSlotModel
         {
             var maxAmount = Volume / Product.Config.Volume;
             return Math.Max(maxAmount - Product.Amount, 0);
+        }
+
+        return -1;
+    }
+
+    public int GetMaxAmount()
+    {
+        if (HasProduct)
+        {
+            return Volume / Product.Config.Volume;
         }
 
         return -1;

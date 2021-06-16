@@ -63,12 +63,9 @@ public class UIHintView : MonoBehaviour
     {
         _text.enableWordWrapping = false;
 
-        var size = _bgRect.sizeDelta;
-        _bgRect.sizeDelta = size;
-
         _text.ForceMeshUpdate();
 
-        size = _bgRect.sizeDelta;
+        var size = _bgRect.sizeDelta;
         var textRectTransform = _text.rectTransform;
         size.x = _text.textBounds.size.x + textRectTransform.offsetMin.x - textRectTransform.offsetMax.x + 1;
         size.y = _text.textBounds.size.y + textRectTransform.offsetMin.y - textRectTransform.offsetMax.y;

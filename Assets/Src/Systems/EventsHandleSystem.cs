@@ -34,7 +34,9 @@ public class EventsHandleSystem : MonoBehaviour
         _dispatcher.UIRemovePopupResult += OnUIRemovePopupResult;
         _dispatcher.UIRequestRemoveCurrentPopup += OnUIRequestRemoveCurrentPopup;
         _dispatcher.UIOrderProductClicked += OnUIOrderProductClicked;
+        _dispatcher.UIShelfContentAddProductClicked += OnUIShelfContentAddProductClicked;
         _dispatcher.UIShelfContentRemoveProductClicked += OnUIShelfContentRemoveProductClicked;
+        _dispatcher.UIWarehousePopupSlotClicked += OnUIWarehousePopupSlotClicked;
         _dispatcher.MouseCellCoordsUpdated += OnMouseCellCoordsUpdated;
         _dispatcher.BottomPanelInteriorClicked += BottomPanelInteriorClicked;
         _dispatcher.BottomPanelInteriorCloseClicked += BottomPanelInteriorCloseClicked;
@@ -43,6 +45,16 @@ public class EventsHandleSystem : MonoBehaviour
         _dispatcher.BottomPanelRotateLeftClicked += BottomPanelRotateLeftClicked;
 
         _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
+    }
+
+    private void OnUIWarehousePopupSlotClicked(WarehousePopupViewModel popupModel, int warehouseSlotIndex)
+    {
+        new UIWarehousePopupSlotClickedCommand().Execute(popupModel, warehouseSlotIndex);
+    }
+
+    private void OnUIShelfContentAddProductClicked(ShelfContentPopupViewModel popupModel, int shelfSlotIndex)
+    {
+        new UIShelfContentAddProductClicked().Execute(popupModel, shelfSlotIndex);
     }
 
     private void OnUIShelfContentRemoveProductClicked(ShelfContentPopupViewModel popupModel, int shelfSlotIndex)

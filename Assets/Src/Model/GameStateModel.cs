@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -18,6 +19,7 @@ public class GameStateModel
 
     private TaskCompletionSource<bool> _dataLoadedTcs = new TaskCompletionSource<bool>();
     private int _placingIntParameter = -1;
+    private readonly Stack<PopupViewModelBase> _showingPopupModelsStack = new Stack<PopupViewModelBase>();
 
     public Task GameDataLoadedTask => _dataLoadedTcs.Task;
     public GameStateName GameState { get; private set; } = GameStateName.Initializing;
@@ -28,7 +30,7 @@ public class GameStateModel
     public ShopModel ViewingShopModel { get; private set; }
     public ShopModel PlayerShopModel { get; private set; }
     public HighlightState HighlightState { get; private set; } = HighlightState.Default;
-    public PopupViewModelBase ShowingPopupModel { get; private set; }
+    public PopupViewModelBase ShowingPopupModel => _showingPopupModelsStack.Count > 0 ? _showingPopupModelsStack.Peek() : null;
     public int ServerTime => (int)(_serverTime + Time.realtimeSinceStartup - _realtimeSinceStartupCheckpoint);
 
     private int _serverTime;
@@ -56,17 +58,16 @@ public class GameStateModel
 
     public void ShowPopup(PopupViewModelBase popupModel)
     {
-        RemoveCurrentPopupIfNeeded();
-        ShowingPopupModel = popupModel;
+        _showingPopupModelsStack.Push(popupModel);
         PopupShown();
     }
-    
+
 
     public void RemoveCurrentPopupIfNeeded()
     {
         if (ShowingPopupModel != null)
         {
-            ShowingPopupModel = null;
+            _showingPopupModelsStack.Pop();
             PopupRemoved();
         }
     }

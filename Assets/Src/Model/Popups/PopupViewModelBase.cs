@@ -9,4 +9,5 @@ public enum PopupType
     ConfirmRemoveObject,
     OrderProduct,
     ShelfContent,
+    Warehouse,
 }

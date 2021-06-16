@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PopupsMediator : IMediator
@@ -5,7 +6,7 @@ public class PopupsMediator : IMediator
     private readonly RectTransform _contentTransform;
     private readonly GameStateModel _gameStateModel;
 
-    private IMediator _currentPopupMediator;
+    private Stack<IMediator> _popupMediators = new Stack<IMediator>();//todo check if using new types adds a weight to result build
 
     public PopupsMediator(RectTransform contentTransform)
     {
@@ -28,27 +29,31 @@ public class PopupsMediator : IMediator
 
     private void OnPopupShown()
     {
+        IMediator newMediator = null;
         switch (_gameStateModel.ShowingPopupModel.PopupType)
         {
             case PopupType.ConfirmRemoveObject:
-                _currentPopupMediator = new UIConfirmRemoveObjectPopupMediator(_contentTransform);
+                newMediator = new UIConfirmRemoveObjectPopupMediator(_contentTransform);
                 break;
             case PopupType.OrderProduct:
-                _currentPopupMediator = new UIOrderProductsPopupMediator(_contentTransform);
+                newMediator = new UIOrderProductsPopupMediator(_contentTransform);
                 break;
             case PopupType.ShelfContent:
-                _currentPopupMediator = new UIShelfContentPopupMediator(_contentTransform);
+                newMediator = new UIShelfContentPopupMediator(_contentTransform);
+                break;
+            case PopupType.Warehouse:
+                newMediator = new UIWarehousePopupMediator(_contentTransform);
                 break;
         };
-        _currentPopupMediator.Mediate();
+        newMediator.Mediate();
+        _popupMediators.Push(newMediator);
     }
 
     private void OnPopupRemoved()
     {
-        if (_currentPopupMediator != null)
+        if (_popupMediators.Count > 0)
         {
-            _currentPopupMediator.Unmediate();
-            _currentPopupMediator = null;
+            _popupMediators.Pop().Unmediate();
         }
     }
 }

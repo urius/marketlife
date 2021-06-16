@@ -69,6 +69,9 @@ public class LocalizationKeys
     public static string PopupShelfContentProductEmpty = "popup_shelf_content_product_empty";
     public static string PopupShelfContentProductTakeFromWarehouse = "popup_shelf_content_product_take_from_warehouse";   
     public static string PopupOrderProductItemDescriptionText = "popup_order_product_item_description_text";
+    public static string PopupWarehouseTitle = "popup_warehouse_title";
+    public static string PopupWarehouseItemAmountFormat = "popup_warehouse_item_amount_format";
+    public static string PopupWarehouseItemHintFormat = "popup_warehouse_item_hint_format";
     public static string NameShopObjectPrefix = "name_shop_object_";
     public static string NameProductGroupIdPrefix = "name_product_group_id_";
     public static string NameProductIdPrefix = "name_product_id_";

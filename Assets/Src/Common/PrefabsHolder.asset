@@ -71,3 +71,5 @@ MonoBehaviour:
     type: 3}
   UIShelfContentPopupItemPrefab: {fileID: 680210390860874559, guid: e78dcba675eff4cc3a76ca7605c71107,
     type: 3}
+  UIWarehousePopupItemPrefab: {fileID: 5086720712618960146, guid: 81b62047977bc40eba22cb8896ab7cd0,
+    type: 3}

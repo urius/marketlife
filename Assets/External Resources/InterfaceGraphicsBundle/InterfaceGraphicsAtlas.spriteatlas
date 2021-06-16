@@ -32,7 +32,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 46b41057a82fe4010b5245cd9e8b4afa, type: 3}
-    totalSpriteSurfaceArea: 1128517
+    totalSpriteSurfaceArea: 1195085
     bindAsDefault: 0
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -62,9 +62,12 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 523c1d134aa9c453895d41a9ae7e8b80, type: 3}
   - {fileID: 21300000, guid: 1a8906235a76048078f220d0c8e9b813, type: 3}
   - {fileID: 21300000, guid: 8d444b5392fef4240ba261583b447348, type: 3}
+  - {fileID: 21300000, guid: c5014473a02e04e7ab90a27bb627f2e4, type: 3}
   - {fileID: 21300000, guid: 8e1d6873f23dc405b9520e4ed9cdf2f4, type: 3}
   - {fileID: 21300000, guid: 0fda6973830ca4617b4f5aa41c6d1a9a, type: 3}
   - {fileID: 21300000, guid: 99e4d3b3131284fb390e1730c8bb969e, type: 3}
+  - {fileID: 21300000, guid: ed209af3c3a7c4df7a339501538238f7, type: 3}
+  - {fileID: 21300000, guid: db0478048338c44d49168225e7e11016, type: 3}
   - {fileID: 21300000, guid: 48dabf54da5ad464b81880ebbdafcc97, type: 3}
   - {fileID: 21300000, guid: 873fb87419f414aba878b2a83ca87eca, type: 3}
   - {fileID: 21300000, guid: 62dd0884dfc6a4b919b25990d561aa26, type: 3}
@@ -76,6 +79,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: e4917145357b346368689e03b8fd5f63, type: 3}
   - {fileID: 21300000, guid: fb735965bef5647d18ab054ecaac82b3, type: 3}
   - {fileID: 21300000, guid: cda34d852c13a441db360bbe0f7bc4eb, type: 3}
+  - {fileID: 21300000, guid: b185cca53318b4f1586f6dded13fe2e3, type: 3}
   - {fileID: 21300000, guid: 31d0f5c5ba76b452386bd539c3381363, type: 3}
   - {fileID: 21300000, guid: 049e44d5b1fa54ca7b9f8b8dd77d28c3, type: 3}
   - {fileID: 21300000, guid: 53fe7b16c7aa440948296d381c4a3fd3, type: 3}
@@ -102,6 +106,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 8fcee709520284d7799a69863b2222b4, type: 3}
   - {fileID: 21300000, guid: 9380ae0982d0d4cdb8bf5eec4395ef33, type: 3}
   - {fileID: 21300000, guid: 21876a599f887488689f6ae9c22449f0, type: 3}
+  - {fileID: 21300000, guid: 607dc3a9340b04ec6bd721454157dba4, type: 3}
   - {fileID: 21300000, guid: cfe69cf998df545fd8e8af949b957762, type: 3}
   - {fileID: 21300000, guid: b00b140a1468748619c82d75ffc5ed5e, type: 3}
   - {fileID: 21300000, guid: f59ca50a261b248c8937898c4e4e3c84, type: 3}
@@ -119,6 +124,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 0137ae5b191d24f3195eeb886b45add7, type: 3}
   - {fileID: 21300000, guid: 1c6bd57b301c845a2bbd582c348e108a, type: 3}
   - {fileID: 21300000, guid: 666d2aab7cffd4f39a63eb1931b30396, type: 3}
+  - {fileID: 21300000, guid: ded3aabb0d15747e9a39b26c7bc4d873, type: 3}
   - {fileID: 21300000, guid: c5af3edb4c9714d4fb439ce7536f0b38, type: 3}
   - {fileID: 21300000, guid: b087660cc59194beba42e338ec00c968, type: 3}
   - {fileID: 21300000, guid: 120b541c7df1b48b5b1f5aa0d324dd1e, type: 3}
@@ -142,6 +148,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 068c775eade72471c9b2535333653af2, type: 3}
   - {fileID: 21300000, guid: 08851b6e2083d4cc186b2c19fd6b28b4, type: 3}
   - {fileID: 21300000, guid: 11530f8ebeb1b4981ba44f19f406046d, type: 3}
+  - {fileID: 21300000, guid: 2597101f35bed451798e2fb32a60a716, type: 3}
   - {fileID: 21300000, guid: c055a11f5f50847d88482fc7ae2bed36, type: 3}
   - {fileID: 21300000, guid: 83cdb23ff557e4b4abfc50135fddc1b0, type: 3}
   - {fileID: 21300000, guid: a9bdf43f37227457b81416a464153092, type: 3}
@@ -176,9 +183,12 @@ SpriteAtlas:
   - Cola
   - window_caption
   - Sausage_1
+  - sign_upgrade_wh_slot
   - Icon_AddPerson
   - bracket
   - hint_skin
+  - sign_upgrade_wh_volume
+  - sign_expand_shop_x
   - Door1
   - content_skin_2
   - sign_rotate_right
@@ -190,6 +200,7 @@ SpriteAtlas:
   - Wall8
   - icon_star_big
   - Icon_next1
+  - icon_personal_2
   - Water_1
   - bottom_panel_bg_simulation_mode
   - MilkBottles
@@ -216,6 +227,7 @@ SpriteAtlas:
   - hint_arrow_up
   - skin_top_stribe_blue
   - Banana
+  - icon_personal_1
   - button_3_long_crimson
   - button_1_long_green
   - Door2
@@ -233,6 +245,7 @@ SpriteAtlas:
   - sign_4arrows
   - Cake
   - TV
+  - sign_expand_shop_y
   - Icon_Back1
   - Pizza_1
   - Perfumes_1
@@ -256,6 +269,7 @@ SpriteAtlas:
   - Icon_Dlassification
   - square_88_white
   - ToothBrushes_1
+  - icon_personal_3
   - Floor1
   - Icon_Home
   - Sugar_1

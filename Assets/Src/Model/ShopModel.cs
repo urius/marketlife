@@ -10,6 +10,7 @@ public class ShopModel
 
     public readonly string Uid;
     public readonly ShopProgressModel ProgressModel;
+    public readonly ShopPersonalModel PersonalModel;
     public readonly ShopWarehouseModel WarehouseModel;
     public readonly ShoDesignModel ShopDesign;
     public readonly Dictionary<Vector2Int, ShopObjectModelBase> ShopObjects;
@@ -20,6 +21,7 @@ public class ShopModel
         ShoDesignModel shopDesign,
         Dictionary<Vector2Int, ShopObjectModelBase> shopObjects,
         ShopProgressModel progressModel,
+        ShopPersonalModel personalModel,
         ShopWarehouseModel warehouseModel)
     {
         Grid = new Dictionary<Vector2Int, (int buildState, ShopObjectModelBase reference)>();
@@ -28,6 +30,7 @@ public class ShopModel
         ShopDesign = shopDesign;
         ShopObjects = shopObjects;
         ProgressModel = progressModel;
+        PersonalModel = personalModel;
         WarehouseModel = warehouseModel;
 
         RefillGrid();
@@ -637,6 +640,11 @@ public class ShopWarehouseModel
         SlotProductRemoved(slotIndex, removedProduct);
     }
 }
+
+public class ShopPersonalModel
+{
+
+} 
 
 public enum ShopDecorationObjectType
 {

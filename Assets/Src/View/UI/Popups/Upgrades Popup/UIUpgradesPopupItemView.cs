@@ -9,6 +9,7 @@ public class UIUpgradesPopupItemView : MonoBehaviour
 
     [SerializeField] private TMP_Text _tittleText;
     [SerializeField] private TMP_Text _decsriptionText;
+    [SerializeField] private TMP_Text _statusText;
     [SerializeField] private TMP_Text _unlockText;
     [SerializeField] private Image _iconImage;
     [SerializeField] private TMP_Text _unlockRequirement1Text;
@@ -23,10 +24,11 @@ public class UIUpgradesPopupItemView : MonoBehaviour
         _buyButton.AddOnClickListener(OnBuyClicked);
     }
 
-    public void SetupUnlockedState(bool isUnlocked)
+    public void SetupState(bool isUnlocked, bool isCharged)
     {
         _unlockText.gameObject.SetActive(!isUnlocked);
-        _buyButton.gameObject.SetActive(isUnlocked);
+        _buyButton.gameObject.SetActive(!isCharged);
+        _statusText.gameObject.SetActive(isCharged);
     }
 
     public void SetPrice(bool isGold, int amount)
@@ -48,6 +50,11 @@ public class UIUpgradesPopupItemView : MonoBehaviour
     public void SetDescriptionText(string text)
     {
         _decsriptionText.text = text;
+    }
+
+    public void SetStatusText(string text)
+    {
+        _statusText.text = text;
     }
 
     public void SetUnlockState(string text, int requirementsCount)

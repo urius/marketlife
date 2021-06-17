@@ -13,6 +13,11 @@ public class MainConfigDto
     public Dictionary<string, ShopDecorationConfigDto> WindowsConfig;
     public Dictionary<string, ShopDecorationConfigDto> DoorsConfig;
     public Dictionary<string, ProductConfigDto> ProductsConfig;
+    public Dictionary<string, PersonalConfigDto> PersonalConfig;
+    public UpgradeConfigDto[] WarehouseVolumeUpgradesConfig;
+    public UpgradeConfigDto[] WarehouseSlotsUpgradesConfig;
+    public UpgradeConfigDto[] ExtendShopXUpgradesConfig;
+    public UpgradeConfigDto[] ExtendShopYUpgradesConfig;
 }
 
 public class PlaceableItemConfigDto
@@ -37,7 +42,7 @@ public class ShopDecorationConfigDto : PlaceableItemConfigDto
 {
 }
 
-public class ProductConfigDto
+public struct ProductConfigDto
 {
     public string key;
     public int unlock_level;
@@ -47,4 +52,20 @@ public class ProductConfigDto
     public string deliver;
     public int group;
     public int amount_per_1000v;
+}
+
+public struct PersonalConfigDto
+{
+    public string key;
+    public string price;
+    public int unlock_level;
+    public int work_hours;
+}
+
+public struct UpgradeConfigDto
+{
+    public int value;
+    public string price;
+    public int unlock_level;
+    public int unlock_friends;
 }

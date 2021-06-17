@@ -73,3 +73,5 @@ MonoBehaviour:
     type: 3}
   UIWarehousePopupItemPrefab: {fileID: 5086720712618960146, guid: 81b62047977bc40eba22cb8896ab7cd0,
     type: 3}
+  UIUPgradePopupItemPrefab: {fileID: 4432199906071516380, guid: 092f72bf224594d2bb7b0b58b513d05c,
+    type: 3}

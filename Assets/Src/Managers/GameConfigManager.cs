@@ -34,6 +34,7 @@ public class GameConfigManager : ScriptableObject
         var windowsConfig = ConvertToConfigs(mainConfigDto.WindowsConfig);
         var doorsConfig = ConvertToConfigs(mainConfigDto.DoorsConfig);
         var productsConfig = ToProductsConfigs(mainConfigDto.ProductsConfig);
+        var personalConfig = ToPersonalConfigs(mainConfigDto.PersonalConfig);
 
         return new MainConfig(
             mainConfigDto.GameplayAtlasVersion,
@@ -46,7 +47,22 @@ public class GameConfigManager : ScriptableObject
             floorsConfig,
             wallsConfig,
             windowsConfig,
-            doorsConfig);
+            doorsConfig,
+            personalConfig,
+            ToUpgradeConfigs(mainConfigDto.WarehouseVolumeUpgradesConfig),
+            ToUpgradeConfigs(mainConfigDto.WarehouseSlotsUpgradesConfig),
+            ToUpgradeConfigs(mainConfigDto.ExtendShopXUpgradesConfig),
+            ToUpgradeConfigs(mainConfigDto.ExtendShopYUpgradesConfig));
+    }
+
+    private UpgradeConfig[] ToUpgradeConfigs(UpgradeConfigDto[] upgradesConfigsDto)
+    {
+        var result = new UpgradeConfig[upgradesConfigsDto.Length];
+        for (var i = 0; i < upgradesConfigsDto.Length; i++)
+        {
+            result[i] = new UpgradeConfig(upgradesConfigsDto[i]);
+        }
+        return result;
     }
 
     private Dictionary<string, ItemConfig<T>> ConvertToConfigs<T>(Dictionary<string, T> configsDtosDictionary)
@@ -69,6 +85,17 @@ public class GameConfigManager : ScriptableObject
         {
             var numericId = int.Parse(kvp.Key.Split('p')[1]);
             result[kvp.Key] = new ProductConfig(numericId, kvp.Value);
+        }
+
+        return result;
+    }
+
+    private Dictionary<string, PersonalConfig> ToPersonalConfigs(Dictionary<string, PersonalConfigDto> configsDtosDictionary)
+    {
+        var result = new Dictionary<string, PersonalConfig>();
+        foreach (var kvp in configsDtosDictionary)
+        {
+            result[kvp.Key] = new PersonalConfig(kvp.Key, kvp.Value);
         }
 
         return result;

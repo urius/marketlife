@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class MainConfig : IProductsConfig, IShelfsConfig, IFloorsConfig, IWallsConfig, IWindowsConfig, IDoorsConfig
+public class MainConfig : IProductsConfig, IShelfsConfig, IFloorsConfig, IWallsConfig, IWindowsConfig, IDoorsConfig, IPersonalConfig, IUpgradesConfig
 {
     public readonly int GameplayAtlasVersion;
     public readonly int InterfaceAtlasVersion;
     public readonly int AutoPlacePriceGold;
     public readonly int QuickDeliverPriceGoldPerMinute;
-    
+
     public readonly Dictionary<string, ProductConfig> ProductsConfig;
     public readonly Dictionary<string, ItemConfig<ShelfConfigDto>> ShelfsConfig;
     public readonly Dictionary<string, ItemConfig<ShopObjectConfigDto>> ShopObjectsConfig;
@@ -16,6 +16,11 @@ public class MainConfig : IProductsConfig, IShelfsConfig, IFloorsConfig, IWallsC
     public readonly Dictionary<string, ItemConfig<ShopDecorationConfigDto>> WallsConfig;
     public readonly Dictionary<string, ItemConfig<ShopDecorationConfigDto>> WindowsConfig;
     public readonly Dictionary<string, ItemConfig<ShopDecorationConfigDto>> DoorsConfig;
+    public readonly Dictionary<string, PersonalConfig> PersonalConfig;
+    public readonly UpgradeConfig[] WarehouseVolumeUpgradesConfig;
+    public readonly UpgradeConfig[] WarehouseSlotsUpgradesConfig;
+    public readonly UpgradeConfig[] ExtendShopXUpgradesConfig;
+    public readonly UpgradeConfig[] ExtendShopYUpgradesConfig;
 
     public MainConfig(
         int gameplayAtlasVersion,
@@ -28,7 +33,12 @@ public class MainConfig : IProductsConfig, IShelfsConfig, IFloorsConfig, IWallsC
         Dictionary<string, ItemConfig<ShopDecorationConfigDto>> floorsConfig,
         Dictionary<string, ItemConfig<ShopDecorationConfigDto>> wallsConfig,
         Dictionary<string, ItemConfig<ShopDecorationConfigDto>> windowsConfig,
-        Dictionary<string, ItemConfig<ShopDecorationConfigDto>> doorsConfig)
+        Dictionary<string, ItemConfig<ShopDecorationConfigDto>> doorsConfig,
+        Dictionary<string, PersonalConfig> personalConfig,
+        UpgradeConfig[] warehouseVolumeUpgradesConfig,
+        UpgradeConfig[] warehouseSlotsUpgradesConfig,
+        UpgradeConfig[] extendShopXUpgradesConfig,
+        UpgradeConfig[] extendShopYUpgradesConfig)
     {
         GameplayAtlasVersion = gameplayAtlasVersion;
         InterfaceAtlasVersion = interfaceAtlasVersion;
@@ -41,6 +51,31 @@ public class MainConfig : IProductsConfig, IShelfsConfig, IFloorsConfig, IWallsC
         WallsConfig = wallsConfig;
         WindowsConfig = windowsConfig;
         DoorsConfig = doorsConfig;
+        PersonalConfig = personalConfig;
+        WarehouseVolumeUpgradesConfig = warehouseVolumeUpgradesConfig;
+        WarehouseSlotsUpgradesConfig = warehouseSlotsUpgradesConfig;
+        ExtendShopXUpgradesConfig = extendShopXUpgradesConfig;
+        ExtendShopYUpgradesConfig = extendShopYUpgradesConfig;
+    }
+
+    public UpgradeConfig GetNextExpandXUpgradeForValue(int value)
+    {
+        return GetNextUpgradeForValue(ExtendShopXUpgradesConfig, value);
+    }
+
+    public UpgradeConfig GetNextExpandYUpgradeForValue(int value)
+    {
+        return GetNextUpgradeForValue(ExtendShopYUpgradesConfig, value);
+    }
+
+    public UpgradeConfig GetNextWarehouseVolumeUpgradeForValue(int value)
+    {
+        return GetNextUpgradeForValue(WarehouseVolumeUpgradesConfig, value);
+    }
+
+    public UpgradeConfig GetNextWarehouseSlotsUpgradeForValue(int value)
+    {
+        return GetNextUpgradeForValue(WarehouseSlotsUpgradesConfig, value);
     }
 
     public IEnumerable<ItemConfig<ShelfConfigDto>> GetShelfConfigsForLevel(int level)
@@ -67,6 +102,29 @@ public class MainConfig : IProductsConfig, IShelfsConfig, IFloorsConfig, IWallsC
     public ProductConfig GetProductConfigByNumericId(int numericId)
     {
         return ProductsConfig[$"p{numericId}"];
+    }
+
+    public IEnumerable<PersonalConfig> GetPersonalConfigsForLevel(int level)
+    {
+        foreach (var kvp in PersonalConfig)
+        {
+            if (kvp.Value.UnlockLevel <= level)
+            {
+                yield return kvp.Value;
+            }
+        }
+    }
+
+    public PersonalConfig GetPersonalConfigByIds(PersonalType typeId, int numericId)
+    {
+        foreach (var kvp in PersonalConfig)
+        {
+            if (kvp.Value.TypeId == typeId && kvp.Value.NumericId == numericId)
+            {
+                return kvp.Value;
+            }
+        }
+        return null;
     }
 
     public ProductConfig GetProductConfigByKey(string key)
@@ -146,6 +204,18 @@ public class MainConfig : IProductsConfig, IShelfsConfig, IFloorsConfig, IWallsC
                 yield return kvp.Value;
             }
         }
+    }
+
+    private UpgradeConfig GetNextUpgradeForValue(UpgradeConfig[] upgradeConfigs, int value)
+    {
+        foreach (var upgrade in upgradeConfigs)
+        {
+            if (upgrade.Value > value)
+            {
+                return upgrade;
+            }
+        }
+        return null;
     }
 }
 
@@ -234,6 +304,65 @@ public class ProductConfig
     }
 }
 
+public class PersonalConfig
+{
+    public readonly string TypeIdStr;
+    public readonly PersonalType TypeId;
+    public readonly int NumericId;
+    public readonly string Key;
+    public readonly int UnlockLevel;
+    public readonly int WorkHours;
+    public readonly Price Price;
+
+    public PersonalConfig(string id, PersonalConfigDto dto)
+    {
+        var splitted = id.Split('_');
+        TypeIdStr = splitted[0];
+        TypeId = GetPersonalTypeByString(TypeIdStr);
+        NumericId = int.Parse(splitted[1]);
+        Key = dto.key;
+        UnlockLevel = dto.unlock_level;
+        WorkHours = dto.work_hours;
+        Price = Price.FromString(dto.price);
+    }
+
+    private static PersonalType GetPersonalTypeByString(string personalTypeStr)
+    {
+        return personalTypeStr switch
+        {
+            "mer" => PersonalType.Merchandiser,
+            "clean" => PersonalType.Cleaner,
+            "sec" => PersonalType.Security,
+            _ => PersonalType.Undefined,
+        };
+    }
+
+}
+
+public class UpgradeConfig
+{
+    public readonly int Value;
+    public readonly Price Price;
+    public readonly int UnlockLevel;
+    public readonly int UnlockFriends;
+
+    public UpgradeConfig(UpgradeConfigDto dto)
+    {
+        Value = dto.value;
+        Price = Price.FromString(dto.price);
+        UnlockLevel = dto.unlock_level;
+        UnlockFriends = dto.unlock_friends;
+    }
+}
+
+public enum PersonalType
+{
+    Undefined,
+    Merchandiser,
+    Cleaner,
+    Security,
+}
+
 public interface IProductsConfig
 {
     IEnumerable<ProductConfig> GetProductConfigsForLevel(int level);
@@ -269,4 +398,18 @@ public interface IDoorsConfig
 {
     IEnumerable<ItemConfig<ShopDecorationConfigDto>> GetDoorsConfigsForLevel(int level);
     ItemConfig<ShopDecorationConfigDto> GetDoorConfigByNumericId(int levelId);
+}
+
+public interface IPersonalConfig
+{
+    IEnumerable<PersonalConfig> GetPersonalConfigsForLevel(int level);
+    PersonalConfig GetPersonalConfigByIds(PersonalType typeId, int numericId);
+}
+
+public interface IUpgradesConfig
+{
+    UpgradeConfig GetNextExpandXUpgradeForValue(int value);
+    UpgradeConfig GetNextExpandYUpgradeForValue(int value);
+    UpgradeConfig GetNextWarehouseVolumeUpgradeForValue(int value);
+    UpgradeConfig GetNextWarehouseSlotsUpgradeForValue(int value);
 }

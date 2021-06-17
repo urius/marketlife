@@ -46,6 +46,7 @@ public class PrefabsHolder : ScriptableObject
     public GameObject UIOrderProductPopupItemPrefab;
     public GameObject UIShelfContentPopupItemPrefab;
     public GameObject UIWarehousePopupItemPrefab;
+    public GameObject UIUPgradePopupItemPrefab;
 
     //remote
     private Dictionary<string, GameObject> _remotePrefabs = new Dictionary<string, GameObject>();

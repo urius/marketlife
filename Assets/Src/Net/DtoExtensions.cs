@@ -12,7 +12,13 @@ public static class DtoExtensions
         var warehouseModel = ToWarehouseModel(dto.data.warehouse);
         var shopProgress = ToProgressModel(dto.data);
 
-        return new ShopModel(dto.data.uid, designModel, shopObjects, shopProgress, warehouseModel);
+        return new ShopModel(
+            dto.data.uid,
+            designModel,
+            shopObjects,
+            shopProgress,
+            new ShopPersonalModel(),
+            warehouseModel);
     }
 
     private static ShopWarehouseModel ToWarehouseModel(string warehouseStr)

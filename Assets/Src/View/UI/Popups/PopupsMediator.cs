@@ -6,7 +6,7 @@ public class PopupsMediator : IMediator
     private readonly RectTransform _contentTransform;
     private readonly GameStateModel _gameStateModel;
 
-    private Stack<IMediator> _popupMediators = new Stack<IMediator>();//todo check if using new types adds a weight to result build
+    private Stack<IMediator> _popupMediators = new Stack<IMediator>();//todo /Stack/ check if using new types adds a weight to result build
 
     public PopupsMediator(RectTransform contentTransform)
     {
@@ -43,6 +43,9 @@ public class PopupsMediator : IMediator
                 break;
             case PopupType.Warehouse:
                 newMediator = new UIWarehousePopupMediator(_contentTransform);
+                break;
+            case PopupType.Upgrades:
+                newMediator = new UIUpgradesPopupMediator(_contentTransform);
                 break;
         };
         newMediator.Mediate();

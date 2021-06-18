@@ -10,4 +10,5 @@ public enum PopupType
     OrderProduct,
     ShelfContent,
     Warehouse,
+    Upgrades,
 }

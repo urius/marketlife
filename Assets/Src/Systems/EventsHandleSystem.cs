@@ -39,6 +39,7 @@ public class EventsHandleSystem : MonoBehaviour
         _dispatcher.UIWarehousePopupSlotClicked += OnUIWarehousePopupSlotClicked;
         _dispatcher.MouseCellCoordsUpdated += OnMouseCellCoordsUpdated;
         _dispatcher.BottomPanelInteriorClicked += BottomPanelInteriorClicked;
+        _dispatcher.BottomPanelManageButtonClicked += BottomPanelManageClicked;
         _dispatcher.BottomPanelInteriorCloseClicked += BottomPanelInteriorCloseClicked;
         _dispatcher.BottomPanlelFinishPlacingClicked += BottomPanelFinishPlacingClicked;
         _dispatcher.BottomPanelRotateRightClicked += BottomPanelRotateRightClicked;
@@ -147,6 +148,11 @@ public class EventsHandleSystem : MonoBehaviour
     private void BottomPanelInteriorClicked()
     {
         _gameStateModel.SetGameState(GameStateName.ShopInterior);
+    }
+
+    private void BottomPanelManageClicked()
+    {
+        new UIShowManagePopupCommand().Execute();
     }
 
     private void BottomPanelInteriorCloseClicked()

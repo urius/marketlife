@@ -46,6 +46,7 @@ public class Dispatcher
     public Action RequestForceMouseCellPositionUpdate = delegate { };
     
     public Action BottomPanelInteriorClicked = delegate { };
+    public Action BottomPanelManageButtonClicked = delegate { };    
     public Action BottomPanelInteriorCloseClicked = delegate { };
     public Action BottomPanlelFinishPlacingClicked = delegate { };
     public Action BottomPanelRotateRightClicked = delegate { };

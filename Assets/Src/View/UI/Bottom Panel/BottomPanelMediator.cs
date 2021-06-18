@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -63,6 +64,7 @@ public class BottomPanelMediator : UINotMonoMediatorBase
         _view.PointerEnter += OnBottomPanelPointerEnter;
         _view.PointerExit += OnBottomPanelPointerExit;
         _view.InteriorButtonClicked += OnInteriorButtonClicked;
+        _view.ManageButtonClicked += OnManageButtonClicked;
         _view.InteriorCloseButtonClicked += OnInteriorCloseButtonClicked;
         _view.InteriorObjectsButtonClicked += OnInteriorObjectsButtonClicked;
         _view.InteriorFloorsButtonClicked += OnInteriorFloorsButtonClicked;
@@ -75,6 +77,11 @@ public class BottomPanelMediator : UINotMonoMediatorBase
 
         _gameStateModel.GameStateChanged += OnGameStateChanged;
         _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
+    }
+
+    private void OnManageButtonClicked()
+    {
+        _dispatcher.BottomPanelManageButtonClicked();
     }
 
     private void OnBottomPanelPointerEnter()

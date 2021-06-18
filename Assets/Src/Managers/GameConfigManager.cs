@@ -12,6 +12,8 @@ public class GameConfigManager : ScriptableObject
 
     public MainConfig MainConfig { get; private set; }
     public IProductsConfig ProductsConfig => MainConfig;
+    public IPersonalConfig PersonalConfig => MainConfig;
+    public IUpgradesConfig UpgradesConfig => MainConfig;
 
     public async UniTask<bool> LoadConfigAsync()
     {
@@ -49,18 +51,18 @@ public class GameConfigManager : ScriptableObject
             windowsConfig,
             doorsConfig,
             personalConfig,
-            ToUpgradeConfigs(mainConfigDto.WarehouseVolumeUpgradesConfig),
-            ToUpgradeConfigs(mainConfigDto.WarehouseSlotsUpgradesConfig),
-            ToUpgradeConfigs(mainConfigDto.ExtendShopXUpgradesConfig),
-            ToUpgradeConfigs(mainConfigDto.ExtendShopYUpgradesConfig));
+            ToUpgradeConfigs(UpgradeType.WarehouseVolume, mainConfigDto.WarehouseVolumeUpgradesConfig),
+            ToUpgradeConfigs(UpgradeType.WarehouseSlots, mainConfigDto.WarehouseSlotsUpgradesConfig),
+            ToUpgradeConfigs(UpgradeType.ExpandX, mainConfigDto.ExtendShopXUpgradesConfig),
+            ToUpgradeConfigs(UpgradeType.ExpandY, mainConfigDto.ExtendShopYUpgradesConfig));
     }
 
-    private UpgradeConfig[] ToUpgradeConfigs(UpgradeConfigDto[] upgradesConfigsDto)
+    private UpgradeConfig[] ToUpgradeConfigs(UpgradeType upgradeType, UpgradeConfigDto[] upgradesConfigsDto)
     {
         var result = new UpgradeConfig[upgradesConfigsDto.Length];
         for (var i = 0; i < upgradesConfigsDto.Length; i++)
         {
-            result[i] = new UpgradeConfig(upgradesConfigsDto[i]);
+            result[i] = new UpgradeConfig(upgradeType, upgradesConfigsDto[i]);
         }
         return result;
     }

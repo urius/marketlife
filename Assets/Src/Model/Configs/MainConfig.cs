@@ -58,24 +58,14 @@ public class MainConfig : IProductsConfig, IShelfsConfig, IFloorsConfig, IWallsC
         ExtendShopYUpgradesConfig = extendShopYUpgradesConfig;
     }
 
-    public UpgradeConfig GetNextExpandXUpgradeForValue(int value)
+    public UpgradeConfig GetCurrentUpgradeForValue(UpgradeType upgradeType, int value)
     {
-        return GetNextUpgradeForValue(ExtendShopXUpgradesConfig, value);
+        return GetCurrentUpgradeForValueInternal(GetUpgradesFor(upgradeType), value);
     }
 
-    public UpgradeConfig GetNextExpandYUpgradeForValue(int value)
+    public UpgradeConfig GetNextUpgradeForValue(UpgradeType upgradeType, int value)
     {
-        return GetNextUpgradeForValue(ExtendShopYUpgradesConfig, value);
-    }
-
-    public UpgradeConfig GetNextWarehouseVolumeUpgradeForValue(int value)
-    {
-        return GetNextUpgradeForValue(WarehouseVolumeUpgradesConfig, value);
-    }
-
-    public UpgradeConfig GetNextWarehouseSlotsUpgradeForValue(int value)
-    {
-        return GetNextUpgradeForValue(WarehouseSlotsUpgradesConfig, value);
+        return GetNextUpgradeForValueInternal(GetUpgradesFor(upgradeType), value);
     }
 
     public IEnumerable<ItemConfig<ShelfConfigDto>> GetShelfConfigsForLevel(int level)
@@ -206,7 +196,19 @@ public class MainConfig : IProductsConfig, IShelfsConfig, IFloorsConfig, IWallsC
         }
     }
 
-    private UpgradeConfig GetNextUpgradeForValue(UpgradeConfig[] upgradeConfigs, int value)
+    private UpgradeConfig GetCurrentUpgradeForValueInternal(UpgradeConfig[] upgradeConfigs, int value)
+    {
+        foreach (var upgrade in upgradeConfigs)
+        {
+            if (upgrade.Value >= value)
+            {
+                return upgrade;
+            }
+        }
+        return null;
+    }
+
+    private UpgradeConfig GetNextUpgradeForValueInternal(UpgradeConfig[] upgradeConfigs, int value)
     {
         foreach (var upgrade in upgradeConfigs)
         {
@@ -216,6 +218,18 @@ public class MainConfig : IProductsConfig, IShelfsConfig, IFloorsConfig, IWallsC
             }
         }
         return null;
+    }
+
+    private UpgradeConfig[] GetUpgradesFor(UpgradeType upgradeType)
+    {
+        return upgradeType switch
+        {
+            UpgradeType.ExpandX => ExtendShopXUpgradesConfig,
+            UpgradeType.ExpandY => ExtendShopYUpgradesConfig,
+            UpgradeType.WarehouseVolume => WarehouseVolumeUpgradesConfig,
+            UpgradeType.WarehouseSlots => WarehouseSlotsUpgradesConfig,
+            _ => null,
+        };
     }
 }
 
@@ -341,18 +355,29 @@ public class PersonalConfig
 
 public class UpgradeConfig
 {
+    public readonly UpgradeType UpgradeType;
     public readonly int Value;
     public readonly Price Price;
     public readonly int UnlockLevel;
     public readonly int UnlockFriends;
 
-    public UpgradeConfig(UpgradeConfigDto dto)
+    public UpgradeConfig(UpgradeType upgradeType, UpgradeConfigDto dto)
     {
+        UpgradeType = upgradeType;
         Value = dto.value;
         Price = Price.FromString(dto.price);
         UnlockLevel = dto.unlock_level;
         UnlockFriends = dto.unlock_friends;
     }
+}
+
+public enum UpgradeType
+{
+    Undefined,
+    ExpandX,
+    ExpandY,
+    WarehouseSlots,
+    WarehouseVolume,
 }
 
 public enum PersonalType
@@ -408,8 +433,6 @@ public interface IPersonalConfig
 
 public interface IUpgradesConfig
 {
-    UpgradeConfig GetNextExpandXUpgradeForValue(int value);
-    UpgradeConfig GetNextExpandYUpgradeForValue(int value);
-    UpgradeConfig GetNextWarehouseVolumeUpgradeForValue(int value);
-    UpgradeConfig GetNextWarehouseSlotsUpgradeForValue(int value);
+    UpgradeConfig GetCurrentUpgradeForValue(UpgradeType upgradeType, int value);
+    UpgradeConfig GetNextUpgradeForValue(UpgradeType upgradeType, int value);
 }

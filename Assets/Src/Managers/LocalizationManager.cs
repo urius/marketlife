@@ -60,6 +60,7 @@ public class LocalizationKeys
     public static string FlyingTextShelfDoesntHaveFreeSpace = "flying_text_shelf_doesn_have_free_space";    
     public static string CommonYes = "common_yes";
     public static string CommonNo = "common_no";
+    public static string CommonPersonalNamePrefix = "common_personal_name_";
     public static string PopupRemoveObjectTitle = "popup_remove_object_title";
     public static string PopupRemoveObjectText = "popup_remove_object_text";
     public static string PopupRemoveProductTitle = "popup_remove_product_title";
@@ -72,6 +73,17 @@ public class LocalizationKeys
     public static string PopupWarehouseTitle = "popup_warehouse_title";
     public static string PopupWarehouseItemAmountFormat = "popup_warehouse_item_amount_format";
     public static string PopupWarehouseItemHintFormat = "popup_warehouse_item_hint_format";
+    public static string PopupUpgradesWarehouseTab = "popup_upgrades_warehouse_tab_name";
+    public static string PopupUpgradesExpandTab = "popup_upgrades_expand_tab_name";
+    public static string PopupUpgradesPersonalTab = "popup_upgrades_personal_tab_name";
+    public static string PopupUpgradesPersonalDescriptionPrefix = "popup_upgrades_personal_description_";
+    public static string PopupUpgradesUpgradeDescriptionPrefix = "popup_upgrades_upgrade_description_";
+    public static string PopupUpgradesUpgradeTitleFormat = "popup_upgrades_upgrade_title_format_";
+    public static string PopupUpgradesPersonalIsWorkingFormat = "popup_upgrades_personal_is_working_format"; 
+    public static string PopupUpgradesUnlockUpgradeCaption = "popup_upgrades_unlock_upgrade_caption";
+    public static string PopupUpgradesUnlockUpgradeFriendsFormat = "popup_upgrades_unlock_upgrade_friends_format";
+    public static string PopupUpgradesUnlockUpgradeLevelFormat = "popup_upgrades_unlock_upgrade_level_format";
+    public static string PopupUpgradesMaxLevel = "popup_upgrades_max_level";    
     public static string NameShopObjectPrefix = "name_shop_object_";
     public static string NameProductGroupIdPrefix = "name_product_group_id_";
     public static string NameProductIdPrefix = "name_product_id_";

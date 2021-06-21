@@ -24,10 +24,15 @@ public class UIUpgradesPopupItemView : MonoBehaviour
         _buyButton.AddOnClickListener(OnBuyClicked);
     }
 
+    public void SetIconSprite(Sprite sprite)
+    {
+        _iconImage.sprite = sprite;
+    }
+
     public void SetupState(bool isUnlocked, bool isCharged)
     {
         _unlockText.gameObject.SetActive(!isUnlocked);
-        _buyButton.gameObject.SetActive(!isCharged);
+        _buyButton.gameObject.SetActive(!isCharged && isUnlocked);
         _statusText.gameObject.SetActive(isCharged);
     }
 
@@ -59,10 +64,11 @@ public class UIUpgradesPopupItemView : MonoBehaviour
 
     public void SetUnlockState(string text, int requirementsCount)
     {
-        _unlockText.gameObject.SetActive(true);
+        _unlockText.gameObject.SetActive(requirementsCount > 0);
         _unlockText.text = text;
         _unlockRequirement1Text.gameObject.SetActive(requirementsCount > 0);
         _unlockRequirement2Text.gameObject.SetActive(requirementsCount > 1);
+        _decsriptionText.gameObject.SetActive(requirementsCount <= 0);
     }
 
     public void SetUnlockRequirementData(int requirementIndex, string text, Sprite iconSprite)

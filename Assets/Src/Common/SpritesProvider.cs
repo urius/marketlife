@@ -103,6 +103,33 @@ public class SpritesProvider
         return GetSprite(SpriteAtlasId.GameplayAtlas, productKey);
     }
 
+    public Sprite GetPersonalIcon(string key)
+    {
+        return GetSprite(SpriteAtlasId.InterfaceAtlas, key);
+    }
+
+    public Sprite GetStarIcon(bool isBig)
+    {
+        return GetSprite(SpriteAtlasId.InterfaceAtlas, isBig ? "icon_star_big" : "icon_star_05");
+    }
+
+    public Sprite GetFriendsIcon()
+    {
+        return GetSprite(SpriteAtlasId.InterfaceAtlas, "sign_friends");
+    }
+
+    public Sprite GetUpgradeIcon(UpgradeType upgradeType)
+    {
+        return upgradeType switch
+        {
+            UpgradeType.ExpandX => GetSprite(SpriteAtlasId.InterfaceAtlas, "sign_expand_shop_x"),
+            UpgradeType.ExpandY => GetSprite(SpriteAtlasId.InterfaceAtlas, "sign_expand_shop_y"),
+            UpgradeType.WarehouseSlots => GetSprite(SpriteAtlasId.InterfaceAtlas, "sign_upgrade_wh_slot"),
+            UpgradeType.WarehouseVolume => GetSprite(SpriteAtlasId.InterfaceAtlas, "sign_upgrade_wh_volume"),
+            _ => null,
+        };
+    }
+
     private Sprite GetSprite(SpriteAtlasId gameplayAtlas, string name)
     {
         if (_graphicsManager == null)

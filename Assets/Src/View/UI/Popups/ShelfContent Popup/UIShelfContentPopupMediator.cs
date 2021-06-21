@@ -36,7 +36,7 @@ public class UIShelfContentPopupMediator : IMediator
 
         CreateItems(_viewModel.ShelfModel.Slots);
 
-        await _popupView.AppearAsync2();
+        await _popupView.Appear2Async();
 
         Activate();
     }
@@ -45,7 +45,7 @@ public class UIShelfContentPopupMediator : IMediator
     {
         Deactivate();
 
-        await _popupView.DisppearAsync2();
+        await _popupView.Disppear2Async();
 
         GameObject.Destroy(_popupView.gameObject);
     }

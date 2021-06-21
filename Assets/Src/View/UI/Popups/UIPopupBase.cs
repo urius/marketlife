@@ -56,7 +56,7 @@ public abstract class UIPopupBase : MonoBehaviour
         return tcs.Task;
     }
 
-    public UniTask AppearAsync2()
+    public UniTask Appear2Async()
     {
         var tcs = new UniTaskCompletionSource();
         var targetSize = _popupBodyRectTransform.sizeDelta;
@@ -68,7 +68,7 @@ public abstract class UIPopupBase : MonoBehaviour
         return tcs.Task;
     }
 
-    public UniTask DisppearAsync2()
+    public UniTask Disppear2Async()
     {
         var tcs = new UniTaskCompletionSource();
         var startSize = _popupBodyRectTransform.sizeDelta;

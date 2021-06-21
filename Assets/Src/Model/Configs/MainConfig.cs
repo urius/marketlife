@@ -369,6 +369,15 @@ public class UpgradeConfig
         UnlockLevel = dto.unlock_level;
         UnlockFriends = dto.unlock_friends;
     }
+
+    public string UpgradeTypeStr => UpgradeType switch
+    {
+        UpgradeType.ExpandX => "expand_x",
+        UpgradeType.ExpandY => "expand_y",
+        UpgradeType.WarehouseSlots => "add_wh_slots",
+        UpgradeType.WarehouseVolume => "add_wh_volume",
+        _ => "Undefined upgrade type",
+    };
 }
 
 public enum UpgradeType

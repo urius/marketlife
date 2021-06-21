@@ -643,7 +643,18 @@ public class ShopWarehouseModel
 
 public class ShopPersonalModel
 {
+    private int _endworkTimeStub;
 
+    public ShopPersonalModel()
+    {
+        _endworkTimeStub = GameStateModel.Instance.ServerTime + 20;
+    }
+
+    public int GetEndWorkTime(PersonalType personalType)
+    {
+        //TODO: implement
+        return _endworkTimeStub;
+    }
 } 
 
 public enum ShopDecorationObjectType

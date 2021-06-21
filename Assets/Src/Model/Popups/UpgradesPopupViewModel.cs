@@ -5,6 +5,7 @@ public class UpgradesPopupViewModel : PopupViewModelBase
 {
     private const int MaxTabsCount = 3;
 
+    public readonly TabType ShowOnTab;
     public readonly IDictionary<TabType, UpgradesPopupItemViewModelBase[]> ItemViewModelsByTabKey = new Dictionary<TabType, UpgradesPopupItemViewModelBase[]>(MaxTabsCount);
 
     private readonly ShopModel _shopModel;
@@ -12,17 +13,34 @@ public class UpgradesPopupViewModel : PopupViewModelBase
     private readonly IUpgradesConfig _upgradesConfig;
     private readonly List<TabType> _tabs = new List<TabType>(MaxTabsCount);
 
-    public UpgradesPopupViewModel(ShopModel shopModel, IPersonalConfig personalConfig, IUpgradesConfig upgradesConfig)
+    public UpgradesPopupViewModel(
+        ShopModel shopModel,
+        IPersonalConfig personalConfig,
+        IUpgradesConfig upgradesConfig,
+        TabType showOnTab = TabType.Undefined)
     {
         _shopModel = shopModel;
         _personalConfig = personalConfig;
         _upgradesConfig = upgradesConfig;
+        ShowOnTab = showOnTab;
 
         UpdateItems();
     }
 
     public IReadOnlyList<TabType> TabKeys => _tabs;
     public override PopupType PopupType => PopupType.Upgrades;
+
+    public int GetTabIndex(TabType tabType)
+    {
+        for (var i = 0; i < TabKeys.Count; i++)
+        {
+            if (TabKeys[i] == tabType)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
 
     private void UpdateItems()
     {

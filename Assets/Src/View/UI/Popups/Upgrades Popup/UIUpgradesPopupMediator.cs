@@ -73,6 +73,7 @@ public class UIUpgradesPopupMediator : IMediator
         _updatesProvider.RealtimeSecondUpdate += OnRealtimeSecondPassed;
         _popupView.ButtonCloseClicked += OnButtonCloseClicked;
         _model.ItemsUpdated += OnItemsUpdated;
+        _personalModel.PersonalWorkingTimeUpdated += OnPersonalWorkingTimeUpdated;
     }
 
     private void Deactivate()
@@ -85,6 +86,15 @@ public class UIUpgradesPopupMediator : IMediator
         _updatesProvider.RealtimeSecondUpdate -= OnRealtimeSecondPassed;
         _popupView.ButtonCloseClicked -= OnButtonCloseClicked;
         _model.ItemsUpdated -= OnItemsUpdated;
+        _personalModel.PersonalWorkingTimeUpdated -= OnPersonalWorkingTimeUpdated;
+    }
+
+    private void OnPersonalWorkingTimeUpdated(PersonalType personalType)
+    {
+        if (_model.GetTabIndex(TabType.ManagePersonal) == _currentShowingTabIndex)
+        {
+            RefreshShowingTabView();
+        }
     }
 
     private void OnItemsUpdated()

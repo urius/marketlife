@@ -679,17 +679,27 @@ public class ShopWarehouseModel
 
 public class ShopPersonalModel
 {
-    private int _endworkTimeStub;
+    public event Action<PersonalType> PersonalWorkingTimeUpdated = delegate { };
+
+    private Dictionary<PersonalType, int> _personalWorkingTimes = new Dictionary<PersonalType, int>();
 
     public ShopPersonalModel()
     {
-        _endworkTimeStub = GameStateModel.Instance.ServerTime + 20;
+    }
+
+    public void SetPersonalWorkingTime(PersonalType personalType, int endWorkTime)
+    {
+        _personalWorkingTimes[personalType] = endWorkTime;
+        PersonalWorkingTimeUpdated(personalType);
     }
 
     public int GetEndWorkTime(PersonalType personalType)
     {
-        //TODO: implement
-        return _endworkTimeStub;
+        if (_personalWorkingTimes.TryGetValue(personalType, out var endWorkTime))
+        {
+            return endWorkTime;
+        }
+        return 0;
     }
 }
 

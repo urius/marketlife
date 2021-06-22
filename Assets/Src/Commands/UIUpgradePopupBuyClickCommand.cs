@@ -22,6 +22,19 @@ public struct UIUpgradePopupBuyClickCommand
                 dispatcher.UIRequestBlinkMoney(upgradeConfigToBuy.Price.IsGold);
             }
         }
+        else if (viewModel.ItemType == UpgradesPopupItemType.Personal)
+        {
+            var personalConfigToBuy = (viewModel as UpgradesPopupPersonalItemViewModel).PersonalConfig;
+            if (shopModel.CanSpendMoney(personalConfigToBuy.Price))
+            {
+                shopModel.TrySpendMoney(personalConfigToBuy.Price);
+                shopModel.PersonalModel.SetPersonalWorkingTime(personalConfigToBuy.TypeId, gameStateModel.ServerTime + personalConfigToBuy.WorkHours * 3600);
+            }
+            else
+            {
+                dispatcher.UIRequestBlinkMoney(personalConfigToBuy.Price.IsGold);
+            }
+        }
     }
 
     private bool ApplyUpgarde(UpgradeConfig upgradeConfig)

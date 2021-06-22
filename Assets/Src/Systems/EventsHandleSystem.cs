@@ -37,6 +37,7 @@ public class EventsHandleSystem : MonoBehaviour
         _dispatcher.UIShelfContentAddProductClicked += OnUIShelfContentAddProductClicked;
         _dispatcher.UIShelfContentRemoveProductClicked += OnUIShelfContentRemoveProductClicked;
         _dispatcher.UIWarehousePopupSlotClicked += OnUIWarehousePopupSlotClicked;
+        _dispatcher.UIUpgradePopupBuyClicked += OnUIUpgradePopupBuyClicked;
         _dispatcher.MouseCellCoordsUpdated += OnMouseCellCoordsUpdated;
         _dispatcher.BottomPanelInteriorClicked += BottomPanelInteriorClicked;
         _dispatcher.BottomPanelManageButtonClicked += BottomPanelManageClicked;
@@ -46,6 +47,11 @@ public class EventsHandleSystem : MonoBehaviour
         _dispatcher.BottomPanelRotateLeftClicked += BottomPanelRotateLeftClicked;
 
         _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
+    }
+
+    private void OnUIUpgradePopupBuyClicked(UpgradesPopupItemViewModelBase itemViewModel)
+    {
+        new UIUpgradePopupBuyClickCommand().Execute(itemViewModel);
     }
 
     private void OnUIWarehousePopupSlotClicked(WarehousePopupViewModel popupModel, int warehouseSlotIndex)

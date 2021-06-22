@@ -325,9 +325,8 @@ public class ShoDesignModel
     public event Action<Vector2Int, int> WallChanged = delegate { };
     public event Action<Vector2Int, int> WindowChanged = delegate { };
     public event Action<Vector2Int, int> DoorChanged = delegate { };
-
-    public int SizeX;
-    public int SizeY;
+    public event Action<int, int> SizeXChanged = delegate { };
+    public event Action<int, int> SizeYChanged = delegate { };
 
     public readonly Dictionary<Vector2Int, int> Floors;
     public readonly Dictionary<Vector2Int, int> Walls;
@@ -347,6 +346,40 @@ public class ShoDesignModel
         Walls = walls;
         Doors = doors;
         Windows = windows;
+    }
+
+    public int SizeX { get; private set; }
+    public int SizeY { get; private set; }
+
+    public void SetSizeX(int value)
+    {
+        var prevValue = SizeX;
+        SizeX = value;
+        for (var x = prevValue; x < SizeX; x++)
+        {
+            Walls[new Vector2Int(x, -1)] = 1;
+            for (var y = 0; y < SizeY; y++)
+            {
+                Floors[new Vector2Int(x, y)] = 1;
+            }
+        }
+        SizeXChanged(prevValue, SizeX);
+    }
+
+    public void SetSizeY(int value)
+    {
+        var prevValue = SizeY;
+        SizeY = value;
+
+        for (var y = prevValue; y < SizeY; y++)
+        {
+            Walls[new Vector2Int(-1, y)] = 1;
+            for (var x = 0; x < SizeX; x++)
+            {
+                Floors[new Vector2Int(x, y)] = 1;
+            }
+        }
+        SizeYChanged(prevValue, SizeY);
     }
 
     public bool CanPlaceFloor(Vector2Int cellCoords, int placingDecorationNumericId)
@@ -578,7 +611,7 @@ public class ShopWarehouseModel
     public event Action<int, ProductModel> SlotProductRemoved = delegate { };
     public event Action<int, int> SlotProductAmountChanged = delegate { };
     public event Action<int> VolumeAdded = delegate { };
-    public event Action SlotAdded = delegate { };
+    public event Action<int> SlotsAdded = delegate { };
 
     private readonly List<ProductSlotModel> _slots;
 
@@ -610,12 +643,15 @@ public class ShopWarehouseModel
         VolumeAdded(addedVolume);
     }
 
-    public void AddSlot()
+    public void AddSlots(int amount)
     {
-        var newSlot = new ProductSlotModel(Size, Volume);
-        SubscribeOnSlot(newSlot);
-        _slots.Add(newSlot);
-        SlotAdded();
+        for (var i = 0; i < amount; i++)
+        {
+            var newSlot = new ProductSlotModel(Size, Volume);
+            SubscribeOnSlot(newSlot);
+            _slots.Add(newSlot);
+        }
+        SlotsAdded(amount);
     }
 
     private void SubscribeOnSlot(ProductSlotModel slot)
@@ -655,7 +691,7 @@ public class ShopPersonalModel
         //TODO: implement
         return _endworkTimeStub;
     }
-} 
+}
 
 public enum ShopDecorationObjectType
 {

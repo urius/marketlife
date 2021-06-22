@@ -28,15 +28,43 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
     public override void Mediate()
     {
         base.Mediate();
-        _dispatcher.UIRequestOrderProductAnimation += OnUIRequestOrderProductAnimation;
-        _updatesProvider.RealtimeSecondUpdate += OnRealtimeSecondUpdate;
+        Activate();
     }
 
     public override void Unmediate()
     {
+        Deactivate();
+
+        base.Unmediate();
+    }
+
+    private void Activate()
+    {
+        _dispatcher.UIRequestOrderProductAnimation += OnUIRequestOrderProductAnimation;
+        _updatesProvider.RealtimeSecondUpdate += OnRealtimeSecondUpdate;
+        _warehouseModel.SlotsAdded += OnSlotsAdded;
+        _warehouseModel.VolumeAdded += OnVolumeAdded;
+    }
+
+    private void Deactivate()
+    {
         _dispatcher.UIRequestOrderProductAnimation -= OnUIRequestOrderProductAnimation;
         _updatesProvider.RealtimeSecondUpdate -= OnRealtimeSecondUpdate;
-        base.Unmediate();
+        _warehouseModel.SlotsAdded -= OnSlotsAdded;
+        _warehouseModel.VolumeAdded -= OnVolumeAdded;
+    }
+
+    private void OnVolumeAdded(int addedVolume)
+    {
+        foreach (var displayedItem in DisplayedItems)
+        {
+            UpdateSlotView(displayedItem.View, displayedItem.ViewModel);
+        }
+    }
+
+    private void OnSlotsAdded(int addedSlotsCount)
+    {
+        RefreshScrollContent();
     }
 
     private async void OnUIRequestOrderProductAnimation(RectTransform rectTransform, Vector2 screenPosition, int slotIndex, ProductModel productModel)
@@ -60,13 +88,11 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
 
     protected override void SetupItem(UIBottomPanelScrollItemView itemView, ProductSlotModel slotModel)
     {
-        ActivateItem(slotModel);
         UpdateSlotView(itemView, slotModel);
     }
 
     protected override void BeforeHideItem(UIBottomPanelScrollItemView itemView, ProductSlotModel viewModel)
     {
-        DeactivateItem(viewModel);
         if (_orderProductAnimatorsBySlotIndex.ContainsKey(viewModel.Index))
         {
             _orderProductAnimatorsBySlotIndex[viewModel.Index].CancelAnimation();
@@ -75,18 +101,28 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
         base.BeforeHideItem(itemView, viewModel);
     }
 
-    protected override void ActivateItem(UIBottomPanelScrollItemView itemView)
+    protected override void ActivateItem(UIBottomPanelScrollItemView itemView, ProductSlotModel slotModel)
     {
+        base.ActivateItem(itemView, slotModel);
+
         itemView.BottomButtonClicked += OnBottomButtonClicked;
         itemView.RemoveButtonClicked += OnRemoveButtonClicked;
-        base.ActivateItem(itemView);
+        slotModel.ProductIsSet += OnProductSet;
+        slotModel.ProductAmountChanged += OnProductAmountChanged;
+        slotModel.ProductRemoved += OnProductRemoved;
+        slotModel.ProductDeliveryTimeChanged += OnDeliveryTimeChanged;
     }
 
-    protected override void DeactivateItem(UIBottomPanelScrollItemView itemView)
+    protected override void DeactivateItem(UIBottomPanelScrollItemView itemView, ProductSlotModel slotModel)
     {
         itemView.BottomButtonClicked -= OnBottomButtonClicked;
         itemView.RemoveButtonClicked -= OnRemoveButtonClicked;
-        base.DeactivateItem(itemView);
+        slotModel.ProductIsSet -= OnProductSet;
+        slotModel.ProductAmountChanged -= OnProductAmountChanged;
+        slotModel.ProductRemoved -= OnProductRemoved;
+        slotModel.ProductDeliveryTimeChanged -= OnDeliveryTimeChanged;
+
+        base.DeactivateItem(itemView, slotModel);
     }
 
     private void OnRemoveButtonClicked(UIBottomPanelScrollItemView itemView)
@@ -99,22 +135,6 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
     {
         var viewModel = DisplayedItems.First(t => t.View == itemView).ViewModel;
         _dispatcher.UIBottomPanelWarehouseQuickDeliverClicked(viewModel.Index);
-    }
-
-    private void ActivateItem(ProductSlotModel slotModel)
-    {
-        slotModel.ProductIsSet += OnProductSet;
-        slotModel.ProductAmountChanged += OnProductAmountChanged;
-        slotModel.ProductRemoved += OnProductRemoved;
-        slotModel.ProductDeliveryTimeChanged += OnDeliveryTimeChanged;
-    }
-
-    private void DeactivateItem(ProductSlotModel slotModel)
-    {
-        slotModel.ProductIsSet -= OnProductSet;
-        slotModel.ProductAmountChanged -= OnProductAmountChanged;
-        slotModel.ProductRemoved -= OnProductRemoved;
-        slotModel.ProductDeliveryTimeChanged -= OnDeliveryTimeChanged;
     }
 
     private async void OnProductSet(int slotIndex)
@@ -212,7 +232,7 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
         {
             if (_orderProductAnimatorsBySlotIndex.ContainsKey(displayedItem.ViewModel.Index)) continue;
             if (displayedItem.ViewModel.HasProduct
-                && (displayedItem.ViewModel.Product.DeliverTime - _gameStateModel.ServerTime) >= 0)
+                && (displayedItem.ViewModel.Product.DeliverTime - _gameStateModel.ServerTime) >= -1)
             {
                 UpdateSlotView(displayedItem.View, displayedItem.ViewModel);
             }

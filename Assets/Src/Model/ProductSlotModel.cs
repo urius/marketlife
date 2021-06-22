@@ -26,6 +26,8 @@ public class ProductSlotModel
 
     public void SetProduct(ProductModel product)
     {
+        RemoveProduct();
+        if (product == null) return;
         Product = product;
         SubscribeToProduct(Product);
         ProductIsSet(Index);

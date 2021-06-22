@@ -121,6 +121,8 @@ public class PerimeterMediator : MonoBehaviour
         _activeShopModel.ShopDesign.WallChanged += OnWallChanged;
         _activeShopModel.ShopDesign.WindowChanged += OnWindowChanged;
         _activeShopModel.ShopDesign.DoorChanged += OnDoorChanged;
+        _activeShopModel.ShopDesign.SizeXChanged += OnSizeChanged;
+        _activeShopModel.ShopDesign.SizeYChanged += OnSizeChanged;
     }
 
     private void DeactivateCurrentShopModel()
@@ -129,6 +131,13 @@ public class PerimeterMediator : MonoBehaviour
         _activeShopModel.ShopDesign.WallChanged -= OnWallChanged;
         _activeShopModel.ShopDesign.WindowChanged -= OnWindowChanged;
         _activeShopModel.ShopDesign.DoorChanged -= OnDoorChanged;
+        _activeShopModel.ShopDesign.SizeXChanged -= OnSizeChanged;
+        _activeShopModel.ShopDesign.SizeYChanged -= OnSizeChanged;
+    }
+
+    private void OnSizeChanged(int previousSize, int currentSize)
+    {
+        ShowPerimeterDesign(_activeShopModel.ShopDesign);
     }
 
     private void OnWallChanged(Vector2Int cellCords, int numericId)

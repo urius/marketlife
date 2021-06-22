@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 public class UpgradesPopupViewModel : PopupViewModelBase
 {
+    public event Action ItemsUpdated = delegate { };
+
     private const int MaxTabsCount = 3;
 
     public readonly TabType ShowOnTab;
@@ -42,7 +45,7 @@ public class UpgradesPopupViewModel : PopupViewModelBase
         return -1;
     }
 
-    private void UpdateItems()
+    public void UpdateItems()
     {
         _tabs.Clear();
         ItemViewModelsByTabKey.Clear();
@@ -65,6 +68,8 @@ public class UpgradesPopupViewModel : PopupViewModelBase
             _tabs.Add(TabType.ManagePersonal);
             ItemViewModelsByTabKey[TabType.ManagePersonal] = personalConfigs.Select(c => new UpgradesPopupPersonalItemViewModel(c)).ToArray();
         }
+
+        ItemsUpdated();
     }
 
     private UpgradesPopupUpgradeItemViewModel GetUpgradeViewModel(UpgradeType upgradeType, int value)

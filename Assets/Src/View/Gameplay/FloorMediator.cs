@@ -40,12 +40,21 @@ public class FloorMediator : MonoBehaviour
         _activeShopModel = shopModel;
 
         _activeShopModel.ShopDesign.FloorChanged += OnFloorChanged;
+        _activeShopModel.ShopDesign.SizeXChanged += OnSizeChanged;
+        _activeShopModel.ShopDesign.SizeYChanged += OnSizeChanged;
     }
 
     private void DeactivateCurrentShopModel()
     {
         if (_activeShopModel == null) return;
         _activeShopModel.ShopDesign.FloorChanged -= OnFloorChanged;
+        _activeShopModel.ShopDesign.SizeXChanged -= OnSizeChanged;
+        _activeShopModel.ShopDesign.SizeYChanged -= OnSizeChanged;
+    }
+
+    private void OnSizeChanged(int previousSize, int currentSize)
+    {
+        ShowFloors(_gameStateModel.ViewingShopModel.ShopDesign.Floors);
     }
 
     private void OnFloorChanged(Vector2Int cellCoords, int numericId)

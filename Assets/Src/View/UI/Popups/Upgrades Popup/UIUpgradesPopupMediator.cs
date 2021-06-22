@@ -20,6 +20,7 @@ public class UIUpgradesPopupMediator : IMediator
     private UpgradesPopupViewModel _model;
     private UITabbedContentPopupView _popupView;
     private Queue<UIUpgradesPopupItemView> _cachedViews = new Queue<UIUpgradesPopupItemView>();
+    private int _currentShowingTabIndex = -1;
 
     public UIUpgradesPopupMediator(RectTransform parentTransform)
     {
@@ -71,6 +72,7 @@ public class UIUpgradesPopupMediator : IMediator
         _popupView.TabButtonClicked += OnTabButtonClicked;
         _updatesProvider.RealtimeSecondUpdate += OnRealtimeSecondPassed;
         _popupView.ButtonCloseClicked += OnButtonCloseClicked;
+        _model.ItemsUpdated += OnItemsUpdated;
     }
 
     private void Deactivate()
@@ -82,6 +84,12 @@ public class UIUpgradesPopupMediator : IMediator
         _popupView.TabButtonClicked -= OnTabButtonClicked;
         _updatesProvider.RealtimeSecondUpdate -= OnRealtimeSecondPassed;
         _popupView.ButtonCloseClicked -= OnButtonCloseClicked;
+        _model.ItemsUpdated -= OnItemsUpdated;
+    }
+
+    private void OnItemsUpdated()
+    {
+        RefreshShowingTabView();
     }
 
     private void OnButtonCloseClicked()
@@ -116,10 +124,16 @@ public class UIUpgradesPopupMediator : IMediator
 
     private void ShowTab(int tabIndex)
     {
-        ClearShownItems();
         _popupView.SetTabButtonSelected(tabIndex);
+        _currentShowingTabIndex = tabIndex;
+        RefreshShowingTabView();
+    }
 
-        var itemModels = _model.ItemViewModelsByTabKey[_model.TabKeys[tabIndex]];
+    private void RefreshShowingTabView()
+    {
+        ClearShownItems();
+
+        var itemModels = _model.ItemViewModelsByTabKey[_model.TabKeys[_currentShowingTabIndex]];
         var itemSize = (_prefabsHolder.UIUPgradePopupItemPrefab.transform as RectTransform).sizeDelta;
 
         for (var i = 0; i < itemModels.Length; i++)
@@ -175,7 +189,7 @@ public class UIUpgradesPopupMediator : IMediator
     private void OnItemBuyClicked(UIUpgradesPopupItemView itemView)
     {
         var viewModel = _displayedItems.First(i => i.View == itemView).Model;
-        _dispatcher.UIUpgradeWindownBuyClicked(viewModel);
+        _dispatcher.UIUpgradePopupBuyClicked(viewModel);
     }
 
     private void SetupItem(UIUpgradesPopupItemView itemView, UpgradesPopupItemViewModelBase viewModel)

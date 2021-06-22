@@ -39,12 +39,7 @@ public abstract class UIBottomPanelScrollItemsTabMediatorBase<TViewModel> : UINo
         base.Mediate();
 
         ShowScrollBox();
-
-        _viewModels = GetViewModelsToShow().ToArray();
-
-        _scrollBoxView.SetContentWidth(_viewModels.Length * _scrollBoxView.SlotWidth);
-        _scrollBoxView.SetContentPosition(_lastContentPosition);
-        UpdateDisplayItems();
+        RefreshScrollContent();
 
         Activate();
     }
@@ -72,14 +67,23 @@ public abstract class UIBottomPanelScrollItemsTabMediatorBase<TViewModel> : UINo
 
     protected virtual void BeforeHideItem(UIBottomPanelScrollItemView itemView, TViewModel viewModel) { }
 
-    protected virtual void ActivateItem(UIBottomPanelScrollItemView itemView)
+    protected virtual void ActivateItem(UIBottomPanelScrollItemView itemView, TViewModel viewModel)
     {
         itemView.Clicked += OnItemClicked;
     }
 
-    protected virtual void DeactivateItem(UIBottomPanelScrollItemView itemView)
+    protected virtual void DeactivateItem(UIBottomPanelScrollItemView itemView, TViewModel viewModel)
     {
         itemView.Clicked -= OnItemClicked;
+    }
+
+    protected void RefreshScrollContent()
+    {
+        _viewModels = GetViewModelsToShow().ToArray();
+
+        _scrollBoxView.SetContentWidth(_viewModels.Length * _scrollBoxView.SlotWidth);
+        _scrollBoxView.SetContentPosition(_lastContentPosition);
+        UpdateDisplayItems();
     }
 
     protected UIBottomPanelScrollItemView GetViewByViewModel(TViewModel viewModel)
@@ -195,13 +199,13 @@ public abstract class UIBottomPanelScrollItemsTabMediatorBase<TViewModel> : UINo
     private void ShowItem(UIBottomPanelScrollItemView itemView, TViewModel viewModel)
     {
         SetupItem(itemView, viewModel);
-        ActivateItem(itemView);
+        ActivateItem(itemView, viewModel);
     }
 
     private void HideItem((UIBottomPanelScrollItemView View, TViewModel ViewModel) item)
     {
+        DeactivateItem(item.View, item.ViewModel);
         BeforeHideItem(item.View, item.ViewModel);
-        DeactivateItem(item.View);
         ReturnOrDestroyScrollBoxItem(item.View);
     }
 

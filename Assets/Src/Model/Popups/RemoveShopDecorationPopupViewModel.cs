@@ -1,11 +1,12 @@
 using UnityEngine;
 
-public class RemoveShopDecorationPopupViewModel : PopupViewModelBase, IConfirmRemoveWithRefundPopupViewModel
+public class RemoveShopDecorationPopupViewModel : ConfirmPopupViewModel, IConfirmRemoveWithRefundPopupViewModel
 {
     private readonly Vector2Int _coords;
     private readonly int _sellPrice;
 
-    public RemoveShopDecorationPopupViewModel(Vector2Int coords, int sellPrice)
+    public RemoveShopDecorationPopupViewModel(string titleText, string messageText, Vector2Int coords, int sellPrice)
+        : base(titleText, messageText)
     {
         _coords = coords;
         _sellPrice = sellPrice;
@@ -13,6 +14,4 @@ public class RemoveShopDecorationPopupViewModel : PopupViewModelBase, IConfirmRe
 
     public int SellPrice => _sellPrice;
     public Vector2Int ObjectCoords => _coords;
-
-    public override PopupType PopupType => PopupType.ConfirmRemoveObject;
 }

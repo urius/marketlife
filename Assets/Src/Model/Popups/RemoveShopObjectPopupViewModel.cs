@@ -1,6 +1,7 @@
-public class RemoveShopObjectPopupViewModel : PopupViewModelBase, IConfirmRemoveWithRefundPopupViewModel
+public class RemoveShopObjectPopupViewModel : ConfirmPopupViewModel, IConfirmRemoveWithRefundPopupViewModel
 {
-    public RemoveShopObjectPopupViewModel(ShopObjectModelBase shopObjectModel, int sellPrice)
+    public RemoveShopObjectPopupViewModel(string titleText, string messageText, ShopObjectModelBase shopObjectModel, int sellPrice)
+        : base(titleText, messageText)
     {
         ShopObjectModel = shopObjectModel;
         SellPrice = sellPrice;
@@ -8,6 +9,4 @@ public class RemoveShopObjectPopupViewModel : PopupViewModelBase, IConfirmRemove
 
     public ShopObjectModelBase ShopObjectModel { get; }
     public int SellPrice { get; }
-
-    public override PopupType PopupType => PopupType.ConfirmRemoveObject;
 }

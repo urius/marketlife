@@ -1,13 +1,10 @@
-public class RemoveProductPopupViewModel : PopupViewModelBase
+public class RemoveProductPopupViewModel : ConfirmPopupViewModel
 {
     public readonly int SlotIndex;
-    public readonly int ProductNumericId;
 
-    public RemoveProductPopupViewModel(int slotIndex, int productNumericId)
+    public RemoveProductPopupViewModel(string titleText, string messageText, int slotIndex)
+        : base(titleText, messageText)
     {
         SlotIndex = slotIndex;
-        ProductNumericId = productNumericId;
     }
-
-    public override PopupType PopupType => PopupType.ConfirmRemoveObject;
 }

@@ -6,7 +6,7 @@ public abstract class PopupViewModelBase
 public enum PopupType
 {
     Unknown,
-    ConfirmRemoveObject,
+    Confirm,
     OrderProduct,
     ShelfContent,
     Warehouse,

@@ -1,22 +1,22 @@
 using UnityEngine;
 
-public class UIConfirmRemoveObjectPopupMediator : IMediator
+public class UIConfirmPopupMediator : IMediator
 {
     private readonly RectTransform _contentTransform;
     private readonly Dispatcher _dispatcher;
-    private readonly PopupViewModelBase _popupModel;
+    private readonly ConfirmPopupViewModel _popupModel;
     private readonly PrefabsHolder _prefabsHolder;
     private readonly SpritesProvider _spritesProvider;
     private readonly LocalizationManager _loc;
 
     private UITextPopupView _popupView;
 
-    public UIConfirmRemoveObjectPopupMediator(RectTransform contentTransform)
+    public UIConfirmPopupMediator(RectTransform contentTransform)
     {
         _contentTransform = contentTransform;
 
         _dispatcher = Dispatcher.Instance;
-        _popupModel = GameStateModel.Instance.ShowingPopupModel;
+        _popupModel = GameStateModel.Instance.ShowingPopupModel as ConfirmPopupViewModel;
         _prefabsHolder = PrefabsHolder.Instance;
         _spritesProvider = SpritesProvider.Instance;
         _loc = LocalizationManager.Instance;
@@ -27,19 +27,10 @@ public class UIConfirmRemoveObjectPopupMediator : IMediator
         var popupGo = GameObject.Instantiate(_prefabsHolder.UITextPopupPrefab, _contentTransform);
         _popupView = popupGo.GetComponent<UITextPopupView>();
         _popupView.Setup(haveCloseButton: true, bottomButtonsAmount: 2);
+        _popupView.SetTitleText(_popupModel.TitleText);
+        _popupView.SetMessageText(_popupModel.MessageText);
         _popupView.SetupButton(0, _spritesProvider.GetGreenButtonSprite(), _loc.GetLocalization(LocalizationKeys.CommonYes));
         _popupView.SetupButton(1, _spritesProvider.GetOrangeButtonSprite(), _loc.GetLocalization(LocalizationKeys.CommonNo));
-        if (_popupModel is IConfirmRemoveWithRefundPopupViewModel removeWithRefundPopupViewModel)
-        {
-            _popupView.SetTitleText(_loc.GetLocalization(LocalizationKeys.PopupRemoveObjectTitle));
-            _popupView.SetMessageText(string.Format(_loc.GetLocalization(LocalizationKeys.PopupRemoveObjectText), removeWithRefundPopupViewModel.SellPrice));
-        }
-        else if (_popupModel is RemoveProductPopupViewModel removeProductPopupViewModel)
-        {
-            _popupView.SetTitleText(_loc.GetLocalization(LocalizationKeys.PopupRemoveProductTitle));
-            var productName = _loc.GetLocalization($"{LocalizationKeys.NameProductIdPrefix}{removeProductPopupViewModel.ProductNumericId}");
-            _popupView.SetMessageText(string.Format(_loc.GetLocalization(LocalizationKeys.PopupRemoveProductText), productName));            
-        }
 
         await _popupView.AppearAsync();
         Activate();

@@ -4,6 +4,8 @@ public struct RequestRemovePopupCommand
     {
         var gameStateModel = GameStateModel.Instance;
         var shopModel = gameStateModel.PlayerShopModel;
+        var loc = LocalizationManager.Instance;
+
         if (gameStateModel.HighlightState.IsHighlighted)
         {
             var highlightState = gameStateModel.HighlightState;
@@ -11,7 +13,10 @@ public struct RequestRemovePopupCommand
             if (highlightState.HighlightedShopObject != null)
             {
                 var sellPrice = shopModel.GetSellPrice(highlightState.HighlightedShopObject.Price);
-                gameStateModel.ShowPopup(new RemoveShopObjectPopupViewModel(highlightState.HighlightedShopObject, sellPrice));
+                gameStateModel.ResetHighlightedState();
+                var tittleText = loc.GetLocalization(LocalizationKeys.PopupRemoveObjectTitle);
+                var messageText = string.Format(loc.GetLocalization(LocalizationKeys.PopupRemoveObjectText), sellPrice);
+                gameStateModel.ShowPopup(new RemoveShopObjectPopupViewModel(tittleText, messageText, highlightState.HighlightedShopObject, sellPrice));
             }
             else
             {
@@ -23,7 +28,6 @@ public struct RequestRemovePopupCommand
                 {
                     var dispatcher = Dispatcher.Instance;
                     var screenCalculator = ScreenCalculator.Instance;
-                    var loc = LocalizationManager.Instance;
                     dispatcher.UIRequestFlyingText(screenCalculator.CellToScreenPoint(coords), loc.GetLocalization(LocalizationKeys.FlyingTextCantSellLastDoor));
                 }
                 else
@@ -40,7 +44,10 @@ public struct RequestRemovePopupCommand
                             break;
                     }
                     var originalPrice = config.GetDecorationConfigBuNumericId(decorationType, numericId).Price;
-                    gameStateModel.ShowPopup(new RemoveShopDecorationPopupViewModel(coords, shopModel.GetSellPrice(originalPrice)));
+                    var sellPrice = shopModel.GetSellPrice(originalPrice);
+                    var tittleText = loc.GetLocalization(LocalizationKeys.PopupRemoveObjectTitle);
+                    var messageText = string.Format(loc.GetLocalization(LocalizationKeys.PopupRemoveObjectText), sellPrice);
+                    gameStateModel.ShowPopup(new RemoveShopDecorationPopupViewModel(tittleText, messageText, coords, sellPrice));
                 }
             }
         }
@@ -50,6 +57,12 @@ public struct RequestRemovePopupCommand
     {
         var gameStateModel = GameStateModel.Instance;
         var slotModel = gameStateModel.PlayerShopModel.WarehouseModel.Slots[slotIndex];
-        gameStateModel.ShowPopup(new RemoveProductPopupViewModel(slotIndex, slotModel.Product.NumericId));
+        var loc = LocalizationManager.Instance;
+
+        var titletext = loc.GetLocalization(LocalizationKeys.PopupRemoveProductTitle);
+        var productName = loc.GetLocalization($"{LocalizationKeys.NameProductIdPrefix}{slotModel.Product.NumericId}");
+        var messageText = string.Format(loc.GetLocalization(LocalizationKeys.PopupRemoveProductText), productName);
+
+        gameStateModel.ShowPopup(new RemoveProductPopupViewModel(titletext, messageText, slotIndex));
     }
 }

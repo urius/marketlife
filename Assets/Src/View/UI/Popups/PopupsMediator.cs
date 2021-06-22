@@ -32,8 +32,8 @@ public class PopupsMediator : IMediator
         IMediator newMediator = null;
         switch (_gameStateModel.ShowingPopupModel.PopupType)
         {
-            case PopupType.ConfirmRemoveObject:
-                newMediator = new UIConfirmRemoveObjectPopupMediator(_contentTransform);
+            case PopupType.Confirm:
+                newMediator = new UIConfirmPopupMediator(_contentTransform);
                 break;
             case PopupType.OrderProduct:
                 newMediator = new UIOrderProductsPopupMediator(_contentTransform);

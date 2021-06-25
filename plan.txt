@@ -35,7 +35,7 @@ ________
 
 19.06.2021 Corrected plan:
 
-Upgrade window (upgrades + personal)
+✔ Upgrade window (upgrades + personal) (22.06.2021)
 Report window
 Customers logic
 Unwashes logic

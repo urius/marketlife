@@ -336,16 +336,16 @@ public class ShoDesignModel
     public ShoDesignModel(int sizeX, int sizeY,
         Dictionary<Vector2Int, int> floors,
         Dictionary<Vector2Int, int> walls,
-        Dictionary<Vector2Int, int> doors,
-        Dictionary<Vector2Int, int> windows)
+        Dictionary<Vector2Int, int> windows,
+        Dictionary<Vector2Int, int> doors)
     {
         SizeX = sizeX;
         SizeY = sizeY;
 
         Floors = floors;
         Walls = walls;
-        Doors = doors;
         Windows = windows;
+        Doors = doors;
     }
 
     public int SizeX { get; private set; }
@@ -679,23 +679,24 @@ public class ShopWarehouseModel
 
 public class ShopPersonalModel
 {
-    public event Action<PersonalType> PersonalWorkingTimeUpdated = delegate { };
+    public event Action<PersonalConfig> PersonalWorkingTimeUpdated = delegate { };
 
-    private Dictionary<PersonalType, int> _personalWorkingTimes = new Dictionary<PersonalType, int>();
+    public Dictionary<PersonalConfig, int> PersonalData => _personalWorkingTimes;
+    private Dictionary<PersonalConfig, int> _personalWorkingTimes = new Dictionary<PersonalConfig, int>();
 
     public ShopPersonalModel()
     {
     }
 
-    public void SetPersonalWorkingTime(PersonalType personalType, int endWorkTime)
+    public void SetPersonalWorkingTime(PersonalConfig personalConfig, int endWorkTime)
     {
-        _personalWorkingTimes[personalType] = endWorkTime;
-        PersonalWorkingTimeUpdated(personalType);
+        _personalWorkingTimes[personalConfig] = endWorkTime;
+        PersonalWorkingTimeUpdated(personalConfig);
     }
 
-    public int GetEndWorkTime(PersonalType personalType)
+    public int GetEndWorkTime(PersonalConfig personalConfig)
     {
-        if (_personalWorkingTimes.TryGetValue(personalType, out var endWorkTime))
+        if (_personalWorkingTimes.TryGetValue(personalConfig, out var endWorkTime))
         {
             return endWorkTime;
         }

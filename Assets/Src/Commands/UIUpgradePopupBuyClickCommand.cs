@@ -28,7 +28,7 @@ public struct UIUpgradePopupBuyClickCommand
             if (shopModel.CanSpendMoney(personalConfigToBuy.Price))
             {
                 shopModel.TrySpendMoney(personalConfigToBuy.Price);
-                shopModel.PersonalModel.SetPersonalWorkingTime(personalConfigToBuy.TypeId, gameStateModel.ServerTime + personalConfigToBuy.WorkHours * 3600);
+                shopModel.PersonalModel.SetPersonalWorkingTime(personalConfigToBuy, gameStateModel.ServerTime + personalConfigToBuy.WorkHours * 3600);
             }
             else
             {

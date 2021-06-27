@@ -11,7 +11,7 @@ public struct LoadPlayerShopCommand
         var resultOperation = await new WebRequestsSender().GetAsync(url);
         if (resultOperation.IsSuccess)
         {
-            var result = JsonConvert.DeserializeObject<GetDataResponseDto>(resultOperation.Result);
+            var result = JsonConvert.DeserializeObject<GetDataOldResponseDto>(resultOperation.Result);
             var shopModel = result.ToShopModel();
             playerModel.SetShopModel(shopModel);
 

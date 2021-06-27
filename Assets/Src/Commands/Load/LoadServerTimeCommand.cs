@@ -12,8 +12,7 @@ public struct LoadServerTimeCommand
         if (resultOperation.IsSuccess)
         {
             var result = JsonConvert.DeserializeObject<GetTimeResponseDto>(resultOperation.Result);
-            var serverTime = int.Parse(result.response);
-            gameStateModel.SetServerTime(serverTime);
+            gameStateModel.SetServerTime(result.response);
         }
 
         return resultOperation.IsSuccess;
@@ -22,5 +21,5 @@ public struct LoadServerTimeCommand
 
 public struct GetTimeResponseDto
 {
-    public string response;
+    public int response;
 }

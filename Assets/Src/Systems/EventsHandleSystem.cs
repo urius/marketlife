@@ -154,6 +154,7 @@ public class EventsHandleSystem : MonoBehaviour
     private void BottomPanelInteriorClicked()
     {
         _gameStateModel.SetGameState(GameStateName.ShopInterior);
+        new SaveDataCommand().Execute();
     }
 
     private void BottomPanelManageClicked()

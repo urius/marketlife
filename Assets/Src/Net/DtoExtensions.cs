@@ -5,7 +5,7 @@ using UnityEngine;
 
 public static class DtoExtensions
 {
-    public static ShopModel ToShopModel(this GetDataResponseDto dto)
+    public static ShopModel ToShopModel(this GetDataOldResponseDto dto)
     {
         var designModel = ToDesignModel(dto.data.design);
         var shopObjects = ToObjectsModel(dto.data.objects);
@@ -76,7 +76,7 @@ public static class DtoExtensions
         return result.ToArray();
     }
 
-    private static ShopProgressModel ToProgressModel(GetDataResponseDataDto data)
+    private static ShopProgressModel ToProgressModel(GetDataOldResponseDataDto data)
     {
         return new ShopProgressModel(
             int.Parse(data.cash),
@@ -111,8 +111,8 @@ public static class DtoExtensions
 
         ShopObjectModelBase result = typeId switch
         {
-            "s" => new ShopObjectModelFactory().CreateShelf(numericId, coords, side, ToProducts(objectParamsShort)),
-            "cd" => new ShopObjectModelFactory().CreateCashDesk(numericId, coords, side),
+            Constants.ShelfTypeStr => new ShopObjectModelFactory().CreateShelf(numericId, coords, side, ToProducts(objectParamsShort)),
+            Constants.CashDeskTypeStr => new ShopObjectModelFactory().CreateCashDesk(numericId, coords, side),
             _ => throw new System.ArgumentOutOfRangeException(typeId, $"typeId {typeId} is not supported"),
         };
         return result;
@@ -130,7 +130,7 @@ public static class DtoExtensions
         var convertedDoors = ConvertDoors(designConvertedDto.doors);
         var convertedWindows = ConvertWindows(designConvertedDto.windows);
 
-        return new ShoDesignModel(sizeX, sizeY, convertedFloors, convertedWalls, convertedDoors, convertedWindows);
+        return new ShoDesignModel(sizeX, sizeY, convertedFloors, convertedWalls, convertedWindows, convertedDoors);
     }
 
     private static Dictionary<Vector2Int, int> ConvertDoors(Dictionary<string, string> rawDoors)

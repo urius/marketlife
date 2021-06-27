@@ -15,7 +15,7 @@ public class DebugTestURL : MonoBehaviour
         var resultOperation = await new WebRequestsSender().GetAsync(GetDataUrl);
         if (resultOperation.IsSuccess)
         {
-            var result = JsonConvert.DeserializeObject<GetDataResponseDto>(resultOperation.Result);
+            var result = JsonConvert.DeserializeObject<GetDataOldResponseDto>(resultOperation.Result);
 
             result.ToShopModel();
 

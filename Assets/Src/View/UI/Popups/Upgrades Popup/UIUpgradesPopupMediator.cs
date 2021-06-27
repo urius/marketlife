@@ -89,7 +89,7 @@ public class UIUpgradesPopupMediator : IMediator
         _personalModel.PersonalWorkingTimeUpdated -= OnPersonalWorkingTimeUpdated;
     }
 
-    private void OnPersonalWorkingTimeUpdated(PersonalType personalType)
+    private void OnPersonalWorkingTimeUpdated(PersonalConfig personalConfig)
     {
         if (_model.GetTabIndex(TabType.ManagePersonal) == _currentShowingTabIndex)
         {
@@ -114,7 +114,7 @@ public class UIUpgradesPopupMediator : IMediator
             if (Model.ItemType == UpgradesPopupItemType.Personal)
             {
                 var personalItemViewModel = (Model as UpgradesPopupPersonalItemViewModel);
-                var restWorkTimeSec = _personalModel.GetEndWorkTime(personalItemViewModel.PersonalConfig.TypeId) - _gameStateModel.ServerTime;
+                var restWorkTimeSec = _personalModel.GetEndWorkTime(personalItemViewModel.PersonalConfig) - _gameStateModel.ServerTime;
                 if (restWorkTimeSec >= 0)
                 {
                     UpdatePersonalItemState(View, restWorkTimeSec);
@@ -208,7 +208,7 @@ public class UIUpgradesPopupMediator : IMediator
         {
             var personalViewModel = viewModel as UpgradesPopupPersonalItemViewModel;
             var personalConfig = personalViewModel.PersonalConfig;
-            var restWorkTimeSec = _personalModel.GetEndWorkTime(personalConfig.TypeId) - _gameStateModel.ServerTime;
+            var restWorkTimeSec = _personalModel.GetEndWorkTime(personalConfig) - _gameStateModel.ServerTime;
             var isWorking = restWorkTimeSec > 0;
             itemView.SetupState(isUnlocked: true, isWorking);
             UpdatePersonalItemState(itemView, restWorkTimeSec);

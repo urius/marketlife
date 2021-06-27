@@ -344,13 +344,12 @@ public class PersonalConfig
     {
         return personalTypeStr switch
         {
-            "mer" => PersonalType.Merchandiser,
-            "clean" => PersonalType.Cleaner,
-            "sec" => PersonalType.Security,
+            Constants.PersonalMerchandiserStr => PersonalType.Merchandiser,
+            Constants.PersonalCleanerStr => PersonalType.Cleaner,
+            Constants.PersonalSecurityStr => PersonalType.Security,
             _ => PersonalType.Undefined,
         };
     }
-
 }
 
 public class UpgradeConfig

@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 235d358022b6a4aa287489b646d0323c, type: 3}
   m_Name: URLsHolder
   m_EditorClassIdentifier: 
-  _getTimeURL: https://devman.ru/marketVK/getTime.php
+  _getTimeURL: https://devman.ru/marketVK/unity/DataProvider.php?command=get_time
   _getDataURL: https://devman.ru/marketVK/dataProvider.php?command=get_data&id={0}
+  _saveDataURL: https://devman.ru/marketVK/unity/DataProvider.php?command=save_data&id={0}

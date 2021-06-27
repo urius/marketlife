@@ -1,16 +1,18 @@
-using System;
 using UnityEngine;
 
-public class EventsHandleSystem : MonoBehaviour
+public class EventsHandleSystem
 {
-    private Dispatcher _dispatcher;
-    private GameStateModel _gameStateModel;
+    private readonly Dispatcher _dispatcher;
+    private readonly GameStateModel _gameStateModel;
 
-    public void Initialize()
+    public EventsHandleSystem()
     {
         _dispatcher = Dispatcher.Instance;
         _gameStateModel = GameStateModel.Instance;
+    }
 
+    public void Start()
+    {
         Activate();
     }
 

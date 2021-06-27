@@ -27,6 +27,17 @@ public struct GetDataOldResponseDataDto
 }
 
 //----- new format
+public struct CommonResponseDto
+{
+    public string response;
+    public string hash;
+}
+
+public struct BoolSuccessResponseDto
+{
+    public bool success;
+}
+
 public class ShopProgressDto
 {
     public int cash;

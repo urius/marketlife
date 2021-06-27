@@ -11,8 +11,13 @@ public struct SaveDataCommand
         var exportedDataDto = DataExporter.Instance.ExportFull(playerModel.ShopModel);
         var exportedDataStr = JsonConvert.SerializeObject(exportedDataDto);
 
-        var resultOperation = await new WebRequestsSender().PostAsync(url, exportedDataStr);
+        var resultOperation = await new WebRequestsSender().PostAsync<CommonResponseDto>(url, exportedDataStr);
 
-        return true;
+        if (resultOperation.IsSuccess)
+        {
+            var response = JsonConvert.DeserializeObject<BoolSuccessResponseDto>(resultOperation.Result.response);
+            return response.success;
+        }
+        return resultOperation.IsSuccess;
     }
 }

@@ -35,7 +35,7 @@ public class ShopObjectsMediator : MonoBehaviour
         _currentShopModel = viewingShopModel;
         _currentShopModel.ShopObjectPlaced += OnShopObjectPlaced;
         _currentShopModel.ShopObjectRemoved += OnShopObjectRemoved;
-        _currentShopModel.ShopModelChanged += OnShopModelChanged;
+        _currentShopModel.ShopObjectsChanged += OnShopObjectsChanged;
 
         DisplayShopObjects(viewingShopModel.ShopObjects);
     }
@@ -46,7 +46,7 @@ public class ShopObjectsMediator : MonoBehaviour
         {
             _currentShopModel.ShopObjectPlaced -= OnShopObjectPlaced;
             _currentShopModel.ShopObjectRemoved -= OnShopObjectRemoved;
-            _currentShopModel.ShopModelChanged -= OnShopModelChanged;
+            _currentShopModel.ShopObjectsChanged -= OnShopObjectsChanged;
         }
     }
 
@@ -110,7 +110,7 @@ public class ShopObjectsMediator : MonoBehaviour
         _shopObjectMediators[coords].Mediate();
     }
 
-    private void OnShopModelChanged()
+    private void OnShopObjectsChanged()
     {
 
 #if UNITY_EDITOR

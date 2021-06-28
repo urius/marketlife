@@ -32,7 +32,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 46b41057a82fe4010b5245cd9e8b4afa, type: 3}
-    totalSpriteSurfaceArea: 1200490
+    totalSpriteSurfaceArea: 1202171
     bindAsDefault: 0
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -105,6 +105,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: a3831db8968b14a7ca185a7e31bdc3db, type: 3}
   - {fileID: 21300000, guid: 5773aac8d972141b58f0aaf17633be10, type: 3}
   - {fileID: 21300000, guid: 4a5c12e84a2f4422eb09ad59ebd67d70, type: 3}
+  - {fileID: 21300000, guid: a97af409e267a413b8b556b04eec9a0b, type: 3}
   - {fileID: 21300000, guid: 8fcee709520284d7799a69863b2222b4, type: 3}
   - {fileID: 21300000, guid: 9380ae0982d0d4cdb8bf5eec4395ef33, type: 3}
   - {fileID: 21300000, guid: 21876a599f887488689f6ae9c22449f0, type: 3}
@@ -228,6 +229,7 @@ SpriteAtlas:
   - item_skin_orange
   - button_1_long_crimson
   - Icon_Shelf_3
+  - icon_save
   - hint_arrow_up
   - skin_top_stribe_blue
   - Banana

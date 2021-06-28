@@ -27,13 +27,13 @@ public class UITopPanelMediator : MonoBehaviour
         }
         else
         {
-            _gameStateModel.PlayerShopModelWasSet += OnPlayerShopMpdelSet;
+            _gameStateModel.PlayerShopModelWasSet += OnPlayerShopModelSet;
         }
     }
 
-    private void OnPlayerShopMpdelSet()
+    private void OnPlayerShopModelSet()
     {
-        _gameStateModel.PlayerShopModelWasSet -= OnPlayerShopMpdelSet;
+        _gameStateModel.PlayerShopModelWasSet -= OnPlayerShopModelSet;
         Initialize();
     }
 

@@ -156,7 +156,6 @@ public class EventsHandleSystem
     private void BottomPanelInteriorClicked()
     {
         _gameStateModel.SetGameState(GameStateName.ShopInterior);
-        new SaveDataCommand().Execute();
     }
 
     private void BottomPanelManageClicked()

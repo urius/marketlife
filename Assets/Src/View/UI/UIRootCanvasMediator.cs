@@ -1,9 +1,9 @@
-using System;
 using UnityEngine;
 
 public class UIRootCanvasMediator : MonoBehaviour
 {
     [SerializeField] private UIGameViewPanel _gameViewPanel;
+    [SerializeField] private UISaveIconView _saveIconView;
     [SerializeField] private RectTransform _gameViewUiContainerRectTransform;
     [SerializeField] private BottomPanelView _bottomPanelView;
     [SerializeField] private Canvas _popupsCanvas;
@@ -14,6 +14,7 @@ public class UIRootCanvasMediator : MonoBehaviour
 
     private Dispatcher _dispatcher;
     private GameStateModel _gameStateModel;
+    private UISaveIconMediator _saveIconMediator;
     private BottomPanelMediator _bottomPanelMediator;
     private ShopObjectActionsPanelMediator _shopObjectActionsPanelMediator;
     private UIFlyingTextsMediator _flyingTextsMediator;
@@ -27,6 +28,7 @@ public class UIRootCanvasMediator : MonoBehaviour
         _dispatcher = Dispatcher.Instance;
         _gameStateModel = GameStateModel.Instance;
 
+        _saveIconMediator = new UISaveIconMediator(_saveIconView);
         _bottomPanelMediator = new BottomPanelMediator(_bottomPanelView);
         _shopObjectActionsPanelMediator = new ShopObjectActionsPanelMediator(_gameViewUiContainerRectTransform);
         _flyingTextsMediator = new UIFlyingTextsMediator(_gameViewUiContainerRectTransform);
@@ -46,6 +48,7 @@ public class UIRootCanvasMediator : MonoBehaviour
         _gameViewPanel.PointerEnter += OnPointerEnter;
         _gameViewPanel.PointerExit += OnPointerExit;
 
+        _saveIconMediator.Mediate();
         _bottomPanelMediator.Mediate();
         _shopObjectActionsPanelMediator.Mediate();
         _flyingTextsMediator.Mediate();

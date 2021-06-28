@@ -6,7 +6,7 @@ public class ShopModel
 {
     public event Action<ShopObjectModelBase> ShopObjectPlaced = delegate { };
     public event Action<ShopObjectModelBase> ShopObjectRemoved = delegate { };
-    public event Action ShopModelChanged = delegate { };
+    public event Action ShopObjectsChanged = delegate { };
 
     public readonly string Uid;
     public readonly ShopProgressModel ProgressModel;
@@ -92,7 +92,7 @@ public class ShopModel
     public bool CanRotateShopObject(ShopObjectModelBase shopObject, int deltaSide)
     {
         var result = false;
-        if (RemoveFromGrid(shopObject, true) > 0)
+        if (RemoveFromGrid(shopObject) > 0)
         {
             var originalSide = shopObject.Side;
             shopObject.Side += deltaSide;
@@ -119,7 +119,7 @@ public class ShopModel
 
     public void RotateShopObject(ShopObjectModelBase shopObject, int deltaSide)
     {
-        if (RemoveFromGrid(shopObject, true) > 0)
+        if (RemoveFromGrid(shopObject) > 0)
         {
             shopObject.Side += deltaSide;
             RefillGrid();
@@ -247,12 +247,12 @@ public class ShopModel
         foreach (var kvp in ShopObjects)
         {
             var shopObject = kvp.Value;
-            AddToGrid(shopObject, true);
+            AddToGrid(shopObject);
         }
-        ShopModelChanged();
+        ShopObjectsChanged();
     }
 
-    private void AddToGrid(ShopObjectModelBase shopObject, bool isSilent = false)
+    private void AddToGrid(ShopObjectModelBase shopObject)
     {
         var coords = shopObject.Coords;
         var buildMatrix = shopObject.RotatedBuildMatrix;
@@ -275,14 +275,9 @@ public class ShopModel
                 }
             }
         }
-
-        if (isSilent == false)
-        {
-            ShopModelChanged();
-        }
     }
 
-    private int RemoveFromGrid(ShopObjectModelBase shopObject, bool isSilent = false)
+    private int RemoveFromGrid(ShopObjectModelBase shopObject)
     {
         var result = 0;
         var coords = shopObject.Coords;
@@ -308,11 +303,6 @@ public class ShopModel
                     }
                 }
             }
-        }
-
-        if (isSilent == false && result > 0)
-        {
-            ShopModelChanged();
         }
 
         return result;

@@ -69,7 +69,7 @@ public class DataExporter
         return new ShopDesignDto(shopDesignModel.SizeX, shopDesignModel.SizeY, floorsExport, wallsExport, windowsExport, doorsExport);
     }
 
-    private string[] ExportShopObjects(ShopModel shopModel)
+    public string[] ExportShopObjects(ShopModel shopModel)
     {
         return ExportCoordsDictionary(shopModel.ShopObjects, ExportShopObject);
     }

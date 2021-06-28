@@ -60,6 +60,7 @@ public class LocalizationKeys
     public static string FlyingTextShelfDoesntHaveFreeSpace = "flying_text_shelf_doesn_have_free_space";    
     public static string CommonYes = "common_yes";
     public static string CommonNo = "common_no";
+    public static string CommonSaving = "common_saving";    
     public static string CommonPersonalNamePrefix = "common_personal_name_";
     public static string PopupRemoveObjectTitle = "popup_remove_object_title";
     public static string PopupRemoveObjectText = "popup_remove_object_text";

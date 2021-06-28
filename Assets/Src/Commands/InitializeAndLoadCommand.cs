@@ -16,9 +16,9 @@ public struct InitializeAndLoadCommand
         await new LoadGraphicsCommand().ExecuteAsync();
         await new LoadPlayerShopCommand().ExecuteAsync();
 
+        gameStateModel.SetPlayerShopModel(playerModel.ShopModel);
         gameStateModel.SetGameState(GameStateName.Loaded);
 
-        gameStateModel.SetPlayerShopModel(playerModel.ShopModel);
         gameStateModel.SetViewingShopModel(playerModel.ShopModel);
         gameStateModel.SetGameState(GameStateName.ShopSimulation);
     }

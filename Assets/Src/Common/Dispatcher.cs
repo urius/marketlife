@@ -52,7 +52,10 @@ public class Dispatcher
     public Action BottomPanlelFinishPlacingClicked = delegate { };
     public Action BottomPanelRotateRightClicked = delegate { };
     public Action BottomPanelRotateLeftClicked = delegate { };
-    public Action NotifyNotEnoughtMoney = delegate { };    
+    public Action NotifyNotEnoughtMoney = delegate { };
+
+    public Action<ShelfModel, int, int> ProductPlacedOnShelf = delegate { };
+    public Action<bool> SaveStateChanged = delegate { };
 
     private static Lazy<Dispatcher> _instance = new Lazy<Dispatcher>();
     public static Dispatcher Instance => _instance.Value;

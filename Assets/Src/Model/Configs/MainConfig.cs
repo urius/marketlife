@@ -117,6 +117,11 @@ public class MainConfig : IProductsConfig, IShelfsConfig, IFloorsConfig, IWallsC
         return null;
     }
 
+    public PersonalConfig GetPersonalConfigByStringId(string stringId)
+    {
+        return PersonalConfig[stringId];
+    }    
+
     public ProductConfig GetProductConfigByKey(string key)
     {
         return ProductsConfig.First(c => c.Key == key).Value;
@@ -320,6 +325,7 @@ public class ProductConfig
 
 public class PersonalConfig
 {
+    public readonly string RawIdStr;
     public readonly string TypeIdStr;
     public readonly PersonalType TypeId;
     public readonly int NumericId;
@@ -330,6 +336,7 @@ public class PersonalConfig
 
     public PersonalConfig(string id, PersonalConfigDto dto)
     {
+        RawIdStr = id;
         var splitted = id.Split('_');
         TypeIdStr = splitted[0];
         TypeId = GetPersonalTypeByString(TypeIdStr);
@@ -437,6 +444,7 @@ public interface IPersonalConfig
 {
     IEnumerable<PersonalConfig> GetPersonalConfigsForLevel(int level);
     PersonalConfig GetPersonalConfigByIds(PersonalType typeId, int numericId);
+    PersonalConfig GetPersonalConfigByStringId(string typeIdStr);
 }
 
 public interface IUpgradesConfig

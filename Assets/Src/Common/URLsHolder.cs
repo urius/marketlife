@@ -7,7 +7,9 @@ public class URLsHolder : ScriptableObject
 
     [SerializeField] private string _getTimeURL = "https://devman.ru/marketVK/unity/DataProvider.php?command=get_time";
     public string GetTimeURL => _getTimeURL;
-    [SerializeField] private string _getDataURL = "https://devman.ru/marketVK/dataProvider.php?command=get_data&id={0}";
+    //https://devman.ru/marketVK/dataProvider.php?command=get_data&id={0}
+    //https://devman.ru/marketVK/unity/DataProvider.php?command=get_data&id={0}
+    [SerializeField] private string _getDataURL = "https://devman.ru/marketVK/unity/DataProvider.php?command=get_data&id={0}";
     public string GetDataURL => _getDataURL;
     [SerializeField] private string _saveDataURL = "https://devman.ru/marketVK/unity/DataProvider.php?command=save_data&id={0}";
     public string SaveDataURL => _saveDataURL;

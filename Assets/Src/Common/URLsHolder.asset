@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: URLsHolder
   m_EditorClassIdentifier: 
   _getTimeURL: https://devman.ru/marketVK/unity/DataProvider.php?command=get_time
-  _getDataURL: https://devman.ru/marketVK/dataProvider.php?command=get_data&id={0}
+  _getDataURL: https://devman.ru/marketVK/unity/DataProvider.php?command=get_data&id={0}
   _saveDataURL: https://devman.ru/marketVK/unity/DataProvider.php?command=save_data&id={0}

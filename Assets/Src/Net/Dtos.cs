@@ -31,11 +31,35 @@ public struct CommonResponseDto
 {
     public string response;
     public string hash;
+    public int v;
 }
 
 public struct BoolSuccessResponseDto
 {
     public bool success;
+}
+
+public struct GetDataResponseDto
+{
+    public string uid;
+    public ShopDataDto data;
+    public ExternalDataDto external_data;
+    public int days_play;
+    public int first_visit_time;
+    public int last_visit_time;
+}
+
+public class ShopDataDto
+{
+    public ShopProgressDto progress;
+    public string[] personal;
+    public ShopWarehouseDto warehouse;
+    public ShopDesignDto design;
+    public string[] objects;
+}
+
+public class ExternalDataDto
+{
 }
 
 public class ShopProgressDto

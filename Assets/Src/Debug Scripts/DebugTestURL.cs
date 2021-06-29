@@ -17,7 +17,7 @@ public class DebugTestURL : MonoBehaviour
         {
             var result = JsonConvert.DeserializeObject<GetDataOldResponseDto>(resultOperation.Result);
 
-            result.ToShopModel();
+            DataImporter.Instance.ImportOld(result);
 
             Debug.Log(result);
         }

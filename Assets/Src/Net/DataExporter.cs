@@ -54,7 +54,7 @@ public class DataExporter
             slotsToExport[i] = ExportSlot(warehouseModel.Slots[i]);
         }
 
-        return new ShopWarehouseDto(warehouseModel.Size, slotsToExport);
+        return new ShopWarehouseDto(warehouseModel.Volume, slotsToExport);
     }
 
     public ShopDesignDto ExportDesign(ShopModel shopModel)

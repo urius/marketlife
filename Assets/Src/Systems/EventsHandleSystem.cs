@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class EventsHandleSystem
@@ -49,6 +50,15 @@ public class EventsHandleSystem
         _dispatcher.BottomPanelRotateLeftClicked += BottomPanelRotateLeftClicked;
 
         _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
+        _gameStateModel.GameStateChanged += OnGameStateChanged;
+    }
+
+    private void OnGameStateChanged(GameStateName previousState, GameStateName currentState)
+    {
+        if (_gameStateModel.SwitchesToSimaulationsStateCount <= 1)
+        {
+            new CalculateForReportCommand().Execute();
+        }
     }
 
     private void OnUIUpgradePopupBuyClicked(UpgradesPopupItemViewModelBase itemViewModel)

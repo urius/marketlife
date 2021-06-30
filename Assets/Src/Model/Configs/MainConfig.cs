@@ -255,7 +255,7 @@ public class ItemConfig<TConfigDto> where TConfigDto : PlaceableItemConfigDto
 public class ProductConfig
 {
     public readonly int NumericId;
-    public readonly string Key;
+    public readonly string Key;//Sprite name
     public readonly int GroupId;
     public readonly int UnlockLevel;
     public readonly int Volume;

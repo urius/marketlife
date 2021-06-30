@@ -16,4 +16,10 @@ public class CalculationHelper
     {
         return originalPrice.IsGold ? originalPrice.Value * 1000 : (int)(originalPrice.Value * 0.5f);
     }
+
+    public static float CalculateMood(int usedVolume, int totalVolume)
+    {
+        var result = (float)usedVolume / totalVolume;
+        return result;
+    }
 }

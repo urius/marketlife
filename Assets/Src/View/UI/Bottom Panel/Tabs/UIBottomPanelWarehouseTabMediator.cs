@@ -20,7 +20,7 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
         _updatesProvider = UpdatesProvider.Instance;
         _gameStateModel = GameStateModel.Instance;
         _spritesProvider = SpritesProvider.Instance;
-        _warehouseModel = PlayerModel.Instance.ShopModel.WarehouseModel;
+        _warehouseModel = PlayerModelHolder.Instance.ShopModel.WarehouseModel;
         _configManager = GameConfigManager.Instance;
         _loc = LocalizationManager.Instance;
     }

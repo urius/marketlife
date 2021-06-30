@@ -5,7 +5,7 @@ public class UIBottomPanelWindowsTabMediator : UIBottomPanelScrollItemsTabMediat
     private readonly IWindowsConfig _windowsConfig;
     private readonly SpritesProvider _spritesProvider;
     private readonly Dispatcher _dispatcher;
-    private readonly ShopModel _playerShopModel;
+    private readonly UserModel _playerModel;
 
     public UIBottomPanelWindowsTabMediator(BottomPanelView view)
         : base(view)
@@ -13,7 +13,7 @@ public class UIBottomPanelWindowsTabMediator : UIBottomPanelScrollItemsTabMediat
         _windowsConfig = GameConfigManager.Instance.MainConfig;
         _spritesProvider = SpritesProvider.Instance;
         _dispatcher = Dispatcher.Instance;
-        _playerShopModel = GameStateModel.Instance.PlayerShopModel;
+        _playerModel = PlayerModelHolder.Instance.UserModel;
     }
 
     public override void Mediate()
@@ -30,7 +30,7 @@ public class UIBottomPanelWindowsTabMediator : UIBottomPanelScrollItemsTabMediat
 
     protected override IEnumerable<ItemConfig<ShopDecorationConfigDto>> GetViewModelsToShow()
     {
-        return _windowsConfig.GetWindowsConfigsForLevel(_playerShopModel.ProgressModel.Level);
+        return _windowsConfig.GetWindowsConfigsForLevel(_playerModel.ProgressModel.Level);
     }
 
     protected override void SetupItem(UIBottomPanelScrollItemView itemView, ItemConfig<ShopDecorationConfigDto> configData)

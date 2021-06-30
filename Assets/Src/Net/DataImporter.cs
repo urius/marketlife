@@ -9,41 +9,41 @@ public class DataImporter
     public static DataImporter Instance => _instance.Value;
     private static Lazy<DataImporter> _instance = new Lazy<DataImporter>();
 
-    public ShopModel ImportOld(GetDataOldResponseDto dto)
+    public UserModel ImportOld(GetDataOldResponseDto dto)
     {
         var designModel = ToDesignModelOld(dto.data.design);
         var shopObjects = ToObjectsModelOld(dto.data.objects);
         var warehouseModel = ToWarehouseModelOld(dto.data.warehouse);
         var shopProgress = ToProgressModelOld(dto.data);
 
-        return new ShopModel(
-            dto.data.uid,
+        var shopModel = new ShopModel(
             designModel,
             shopObjects,
-            shopProgress,
             new ShopPersonalModel(),
             warehouseModel);
+
+        return new UserModel(dto.data.uid, shopProgress, shopModel, new UserStatsData());
     }
 
-    public ShopModel Import(GetDataResponseDto deserializedData)
+    public UserModel Import(GetDataResponseDto deserializedData)
     {
-        var shopModel = ToShopModel(deserializedData.uid, deserializedData.data);
-        return shopModel;
-    }
-
-    private ShopModel ToShopModel(string uid, ShopDataDto dataDto)
-    {
+        var dataDto = deserializedData.data;
+        var shopModel = ToShopModel(dataDto);
         var shopProgress = ToProgressModel(dataDto.progress);
+        var statsData = new UserStatsData(deserializedData.first_visit_time, deserializedData.last_visit_time, deserializedData.days_play);
+        return new UserModel(deserializedData.uid, shopProgress, shopModel, statsData);
+    }
+
+    private ShopModel ToShopModel(ShopDataDto dataDto)
+    {
         var personalModel = ToPersonalModel(dataDto.personal);
         var warehouseModel = ToWarehouseModel(dataDto.warehouse);
         var designModel = ToDesignModel(dataDto.design);
         var shopObjects = ToObjectsModel(dataDto.objects);
 
         return new ShopModel(
-            uid,
             designModel,
             shopObjects,
-            shopProgress,
             personalModel,
             warehouseModel);
     }
@@ -64,9 +64,9 @@ public class DataImporter
         return result;
     }
 
-    private ShopProgressModel ToProgressModel(ShopProgressDto progress)
+    private UserProgressModel ToProgressModel(ShopProgressDto progress)
     {
-        return new ShopProgressModel(progress.cash, progress.gold, progress.exp, progress.level);
+        return new UserProgressModel(progress.cash, progress.gold, progress.exp, progress.level);
     }
 
     private ShopWarehouseModel ToWarehouseModel(ShopWarehouseDto warehouseDto)
@@ -254,9 +254,9 @@ public class DataImporter
         return result.ToArray();
     }
 
-    private ShopProgressModel ToProgressModelOld(GetDataOldResponseDataDto data)
+    private UserProgressModel ToProgressModelOld(GetDataOldResponseDataDto data)
     {
-        return new ShopProgressModel(
+        return new UserProgressModel(
             int.Parse(data.cash),
             int.Parse(data.gold),
             int.Parse(data.exp),

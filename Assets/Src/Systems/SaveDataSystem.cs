@@ -6,9 +6,11 @@ public class SaveDataSystem
 {
     private readonly GameStateModel _gameStateModel;
     private readonly Dispatcher _dispatcher;
+
     private SaveField _saveFieldsData = SaveField.None;
     private ShopModel _shopModel;
     private bool _saveInProgress = false;
+    private UserModel _playerModel;
 
     public SaveDataSystem()
     {
@@ -20,7 +22,8 @@ public class SaveDataSystem
     {
         await _gameStateModel.GameDataLoadedTask;
 
-        _shopModel = _gameStateModel.PlayerShopModel;
+        _playerModel = PlayerModelHolder.Instance.UserModel;
+        _shopModel = _playerModel.ShopModel;
 
         Activate();
     }
@@ -33,7 +36,7 @@ public class SaveDataSystem
 
     private void Activate()
     {
-        var progressModel = _shopModel.ProgressModel;
+        var progressModel = _playerModel.ProgressModel;
         var designModel = _shopModel.ShopDesign;
         var warehouseModel = _shopModel.WarehouseModel;
         var personalModel = _shopModel.PersonalModel;

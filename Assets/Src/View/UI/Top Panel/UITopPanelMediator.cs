@@ -1,4 +1,3 @@
-using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -11,24 +10,23 @@ public class UITopPanelMediator : MonoBehaviour
 
     private GameStateModel _gameStateModel;
     private Dispatcher _dispatcher;
-    private ShopModel _playerShopModel;
+    private PlayerModelHolder _playerModelHolder;
+    private UserProgressModel _playerProgressModel;
 
     private void Awake()
     {
         _gameStateModel = GameStateModel.Instance;
         _dispatcher = Dispatcher.Instance;
+        _playerModelHolder = PlayerModelHolder.Instance;
     }
 
-    public void Start()
+    public async void Start()
     {
-        if (_gameStateModel.PlayerShopModel != null)
-        {
-            Initialize();
-        }
-        else
-        {
-            _gameStateModel.PlayerShopModelWasSet += OnPlayerShopModelSet;
-        }
+        await _gameStateModel.GameDataLoadedTask;
+
+        _playerProgressModel = _playerModelHolder.UserModel.ProgressModel;
+
+        Initialize();
     }
 
     private void OnPlayerShopModelSet()
@@ -39,8 +37,7 @@ public class UITopPanelMediator : MonoBehaviour
 
     private void Initialize()
     {
-        _playerShopModel = _gameStateModel.PlayerShopModel;
-        var progressModel = _playerShopModel.ProgressModel;
+        var progressModel = _playerProgressModel;
 
         _crystalsBarView.Amount = progressModel.Gold;
         _cashBarView.Amount = progressModel.Cash;
@@ -54,8 +51,8 @@ public class UITopPanelMediator : MonoBehaviour
     {
         _dispatcher.UIRequestBlinkMoney += OnUIRequestBlinkMoney;
 
-        _playerShopModel.ProgressModel.CashChanged += OnCashChanged;
-        _playerShopModel.ProgressModel.GoldChanged += OnGoldChanged;
+        _playerProgressModel.CashChanged += OnCashChanged;
+        _playerProgressModel.GoldChanged += OnGoldChanged;
     }
 
     private void OnCashChanged(int previousValue, int currentValue)

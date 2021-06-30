@@ -15,6 +15,7 @@ public class UIOrderProductsPopupMediator : IMediator
     private readonly SpritesProvider _spritesProvider;
     private readonly IProductsConfig _productsConfig;
     private readonly ShopModel _shopModel;
+    private readonly UserModel _playerModel;
     private readonly PrefabsHolder _prefabsHolder;
     private readonly PoolCanvasProvider _poolCanvasProvider;
     private readonly LinkedList<(UIOrderProductItemView View, ProductConfig Config)> _displayedItems = new LinkedList<(UIOrderProductItemView, ProductConfig)>();
@@ -38,7 +39,8 @@ public class UIOrderProductsPopupMediator : IMediator
         _updatesProvider = UpdatesProvider.Instance;
         _spritesProvider = SpritesProvider.Instance;
         _productsConfig = GameConfigManager.Instance.ProductsConfig;
-        _shopModel = GameStateModel.Instance.PlayerShopModel;
+        _playerModel = PlayerModelHolder.Instance.UserModel;
+        _shopModel = _playerModel.ShopModel;
         _prefabsHolder = PrefabsHolder.Instance;
         _poolCanvasProvider = PoolCanvasProvider.Instance;
     }
@@ -46,7 +48,7 @@ public class UIOrderProductsPopupMediator : IMediator
     public async void Mediate()
     {
         _itemRect = (_prefabsHolder.UIOrderProductPopupItemPrefab.transform as RectTransform).rect;
-        _availableProductConfigsByGroupId = _productsConfig.GetProductConfigsForLevel(_shopModel.ProgressModel.Level)
+        _availableProductConfigsByGroupId = _productsConfig.GetProductConfigsForLevel(_playerModel.ProgressModel.Level)
             .GroupBy(p => p.GroupId)
             .OrderBy(g => g.Key)
             .ToArray();

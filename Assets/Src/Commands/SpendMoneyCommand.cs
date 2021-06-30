@@ -2,8 +2,8 @@ public struct SpendMoneyCommand
 {
     public bool Execute(string priceStr)
     {
-        var gameStateModel = GameStateModel.Instance;
-        if (gameStateModel.PlayerShopModel.TrySpendMoney(priceStr))
+        var playerModel = PlayerModelHolder.Instance.UserModel;
+        if (playerModel.TrySpendMoney(priceStr))
         {
             return true;
         }

@@ -11,18 +11,20 @@ public class UpgradesPopupViewModel : PopupViewModelBase
     public readonly TabType ShowOnTab;
     public readonly IDictionary<TabType, UpgradesPopupItemViewModelBase[]> ItemViewModelsByTabKey = new Dictionary<TabType, UpgradesPopupItemViewModelBase[]>(MaxTabsCount);
 
+    private readonly UserModel _playerModel;
     private readonly ShopModel _shopModel;
     private readonly IPersonalConfig _personalConfig;
     private readonly IUpgradesConfig _upgradesConfig;
     private readonly List<TabType> _tabs = new List<TabType>(MaxTabsCount);
 
     public UpgradesPopupViewModel(
-        ShopModel shopModel,
+        UserModel playerModel,
         IPersonalConfig personalConfig,
         IUpgradesConfig upgradesConfig,
         TabType showOnTab = TabType.Undefined)
     {
-        _shopModel = shopModel;
+        _playerModel = playerModel;
+        _shopModel = playerModel.ShopModel;
         _personalConfig = personalConfig;
         _upgradesConfig = upgradesConfig;
         ShowOnTab = showOnTab;
@@ -62,7 +64,7 @@ public class UpgradesPopupViewModel : PopupViewModelBase
             GetUpgradeViewModel(UpgradeType.WarehouseVolume, _shopModel.WarehouseModel.Volume),
         };
 
-        var personalConfigs = _personalConfig.GetPersonalConfigsForLevel(_shopModel.ProgressModel.Level);
+        var personalConfigs = _personalConfig.GetPersonalConfigsForLevel(_playerModel.ProgressModel.Level);
         if (personalConfigs.Any())
         {
             _tabs.Add(TabType.ManagePersonal);

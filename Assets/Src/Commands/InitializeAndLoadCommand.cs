@@ -4,7 +4,7 @@ public struct InitializeAndLoadCommand
 {
     public async UniTask ExecuteAsync()
     {
-        var playerModel = PlayerModel.Instance;
+        var playerModelHolder = PlayerModelHolder.Instance;
         var gameStateModel = GameStateModel.Instance;
         gameStateModel.SetGameState(GameStateName.Loading);
 
@@ -16,10 +16,10 @@ public struct InitializeAndLoadCommand
         await new LoadGraphicsCommand().ExecuteAsync();
         await new LoadPlayerShopCommand().ExecuteAsync();
 
-        gameStateModel.SetPlayerShopModel(playerModel.ShopModel);
+        gameStateModel.SetPlayerShopModel(playerModelHolder.ShopModel);
         gameStateModel.SetGameState(GameStateName.Loaded);
 
-        gameStateModel.SetViewingShopModel(playerModel.ShopModel);
+        gameStateModel.SetViewingShopModel(playerModelHolder.ShopModel);
         gameStateModel.SetGameState(GameStateName.ShopSimulation);
     }
 }

@@ -3,6 +3,7 @@ public struct QuickDeliverCommand
     public void Execute(int slotIndex)
     {
         var gameStateModel = GameStateModel.Instance;
+        var playerModel = PlayerModelHolder.Instance.UserModel;
         var dispatcher = Dispatcher.Instance;
         var shopModel = gameStateModel.PlayerShopModel;
         var slotModel = shopModel.WarehouseModel.Slots[slotIndex];
@@ -12,7 +13,7 @@ public struct QuickDeliverCommand
         if (deltaTimeSec > 0)
         {
             var price = CalculationHelper.GetPriceForDeliver(mainConfig.QuickDeliverPriceGoldPerMinute, deltaTimeSec);
-            if (shopModel.ProgressModel.TrySpendMoney(price))
+            if (playerModel.TrySpendMoney(price))
             {
                 slotModel.Product.DeliverTime = 0;
             }

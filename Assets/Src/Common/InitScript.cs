@@ -11,18 +11,18 @@ public class InitScript : MonoBehaviour
     [SerializeField] private GameConfigManager _gameConfigManager;
     [SerializeField] private LocalizationManager _localizationManager;
 
-    private PlayerModel _playerModel;
+    private PlayerModelHolder _playerModelHolder;
 
     private void Awake()
     {
         Application.targetFrameRate = 50;
 
-        _playerModel = PlayerModel.Instance;
+        _playerModelHolder = PlayerModelHolder.Instance;
     }
 
     private async void Start()
     {
-        _playerModel.SetUid(_debugUid);
+        _playerModelHolder.SetUid(_debugUid);
 
         await new InitializeAndLoadCommand().ExecuteAsync();
     }

@@ -2,19 +2,20 @@ public struct UIUpgradePopupBuyClickCommand
 {
     public void Execute(UpgradesPopupItemViewModelBase viewModel)
     {
-        var shopModel = GameStateModel.Instance.PlayerShopModel;
+        var playerModel = PlayerModelHolder.Instance.UserModel;
+        var shopModel = playerModel.ShopModel;
         var dispatcher = Dispatcher.Instance;
         var gameStateModel = GameStateModel.Instance;
 
         if (viewModel.ItemType == UpgradesPopupItemType.Upgrade)
         {
             var upgradeConfigToBuy = (viewModel as UpgradesPopupUpgradeItemViewModel).UpgradeConfig;
-            if (shopModel.CanSpendMoney(upgradeConfigToBuy.Price))
+            if (playerModel.CanSpendMoney(upgradeConfigToBuy.Price))
             {
                 if (ApplyUpgarde(upgradeConfigToBuy))
                 {
                     (gameStateModel.ShowingPopupModel as UpgradesPopupViewModel).UpdateItems();
-                    shopModel.TrySpendMoney(upgradeConfigToBuy.Price);
+                    playerModel.TrySpendMoney(upgradeConfigToBuy.Price);
                 }
             }
             else
@@ -25,9 +26,9 @@ public struct UIUpgradePopupBuyClickCommand
         else if (viewModel.ItemType == UpgradesPopupItemType.Personal)
         {
             var personalConfigToBuy = (viewModel as UpgradesPopupPersonalItemViewModel).PersonalConfig;
-            if (shopModel.CanSpendMoney(personalConfigToBuy.Price))
+            if (playerModel.CanSpendMoney(personalConfigToBuy.Price))
             {
-                shopModel.TrySpendMoney(personalConfigToBuy.Price);
+                playerModel.TrySpendMoney(personalConfigToBuy.Price);
                 shopModel.PersonalModel.SetPersonalWorkingTime(personalConfigToBuy, gameStateModel.ServerTime + personalConfigToBuy.WorkHours * 3600);
             }
             else

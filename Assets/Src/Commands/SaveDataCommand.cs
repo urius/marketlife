@@ -11,11 +11,11 @@ public struct SaveDataCommand
 
         Debug.Log("---SaveDataCommand: " + saveFields);
 
-        var playerModel = PlayerModel.Instance;
+        var playerModel = PlayerModelHolder.Instance.UserModel;
         var shopModel = playerModel.ShopModel;
         var url = string.Format(URLsHolder.Instance.SaveDataURL, playerModel.Uid);
 
-        var dataToSave = GetExportData(saveFields, shopModel);
+        var dataToSave = GetExportData(saveFields, playerModel);
         var dataToSaveStr = JsonConvert.SerializeObject(dataToSave);
 
         var resultOperation = await new WebRequestsSender().PostAsync<CommonResponseDto>(url, dataToSaveStr);
@@ -28,14 +28,15 @@ public struct SaveDataCommand
         return resultOperation.IsSuccess;
     }
 
-    private Dictionary<string, object> GetExportData(SaveField saveFields, ShopModel shopModel)
+    private Dictionary<string, object> GetExportData(SaveField saveFields, UserModel userModel)
     {
         var dataExporter = DataExporter.Instance;
+        var shopModel = userModel.ShopModel;
 
         var result = new Dictionary<string, object>();
         if (CheckSaveField(saveFields, SaveField.Progress))
         {
-            result[Constants.FieldProgress] = dataExporter.ExportProgress(shopModel);
+            result[Constants.FieldProgress] = dataExporter.ExportProgress(userModel.ProgressModel);
         }
 
         if (CheckSaveField(saveFields, SaveField.ShopObjects))

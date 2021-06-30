@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class Dispatcher
 {
-    public Action<ShopModel> PlayerShopLoaded = delegate { };
-
     public Action<Vector3> CameraMoved = delegate { };
     public Action MouseMoved = delegate { };    
 

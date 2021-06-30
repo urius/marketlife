@@ -196,9 +196,9 @@ public struct PlaceObjectCommand
 
     private bool TrySpendMoneyOrBlink(Price price)
     {
-        var gameStateModel = GameStateModel.Instance;
-        var shopModel = gameStateModel.ViewingShopModel;
-        if (shopModel.TrySpendMoney(price))
+        var playerModel = PlayerModelHolder.Instance.UserModel;
+        var shopModel = playerModel.ShopModel;
+        if (playerModel.TrySpendMoney(price))
         {
             return true;
         }

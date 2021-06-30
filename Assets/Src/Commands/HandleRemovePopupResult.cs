@@ -5,6 +5,7 @@ public struct HandleRemovePopupResult
     public void Execute(bool result)
     {
         var gameStateModel = GameStateModel.Instance;
+        var playerModel = PlayerModelHolder.Instance.UserModel;
         var shopModel = gameStateModel.PlayerShopModel;
         var dispatcher = Dispatcher.Instance;
         var screenCalculator = ScreenCalculator.Instance;
@@ -31,7 +32,7 @@ public struct HandleRemovePopupResult
 
             if (popupModel is IConfirmRemoveWithRefundPopupViewModel confirmRemoveWithRefundViewModel)
             {
-                shopModel.ProgressModel.AddCash(confirmRemoveWithRefundViewModel.SellPrice);
+                playerModel.AddCash(confirmRemoveWithRefundViewModel.SellPrice);
                 dispatcher.UIRequestFlyingPrice(screenCalculator.CellToScreenPoint(coords), false, confirmRemoveWithRefundViewModel.SellPrice);
             }
         }

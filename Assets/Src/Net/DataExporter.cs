@@ -8,21 +8,8 @@ public class DataExporter
     public static DataExporter Instance => _instance.Value;
     private static Lazy<DataExporter> _instance = new Lazy<DataExporter>();
 
-    public Dictionary<string, object> ExportFull(ShopModel shopModel)
+    public ShopProgressDto ExportProgress(UserProgressModel progressModel)
     {
-        var result = new Dictionary<string, object>();
-        result[Constants.FieldProgress] = ExportProgress(shopModel);
-        result[Constants.FieldPersonal] = ExportPersonal(shopModel);
-        result[Constants.FieldWarehouse] = ExportWarehouse(shopModel);
-        result[Constants.FieldDesign] = ExportDesign(shopModel);
-        result[Constants.FieldShopObjects] = ExportShopObjects(shopModel); 
-
-        return result;
-    }
-
-    public ShopProgressDto ExportProgress(ShopModel shopModel)
-    {
-        var progressModel = shopModel.ProgressModel;
         return new ShopProgressDto(progressModel.Cash, progressModel.Gold, progressModel.ExpAmount, progressModel.Level);
     }
 

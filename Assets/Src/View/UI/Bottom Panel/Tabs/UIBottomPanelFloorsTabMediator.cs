@@ -5,7 +5,7 @@ public class UIBottomPanelFloorsTabMediator : UIBottomPanelScrollItemsTabMediato
     private readonly IFloorsConfig _floorsConfig;
     private readonly SpritesProvider _spritesProvider;
     private readonly Dispatcher _dispatcher;
-    private readonly ShopModel _playerShopModel;
+    private readonly UserModel _playerModel;
 
     public UIBottomPanelFloorsTabMediator(BottomPanelView view)
         : base(view)
@@ -13,7 +13,7 @@ public class UIBottomPanelFloorsTabMediator : UIBottomPanelScrollItemsTabMediato
         _floorsConfig = GameConfigManager.Instance.MainConfig;
         _spritesProvider = SpritesProvider.Instance;
         _dispatcher = Dispatcher.Instance;
-        _playerShopModel = GameStateModel.Instance.PlayerShopModel;
+        _playerModel = PlayerModelHolder.Instance.UserModel;
     }
 
     public override void Mediate()
@@ -30,7 +30,7 @@ public class UIBottomPanelFloorsTabMediator : UIBottomPanelScrollItemsTabMediato
 
     protected override IEnumerable<ItemConfig<ShopDecorationConfigDto>> GetViewModelsToShow()
     {
-        return _floorsConfig.GetFloorsConfigsForLevel(_playerShopModel.ProgressModel.Level);
+        return _floorsConfig.GetFloorsConfigsForLevel(_playerModel.ProgressModel.Level);
     }
 
     protected override void SetupItem(UIBottomPanelScrollItemView itemView, ItemConfig<ShopDecorationConfigDto> viewModel)

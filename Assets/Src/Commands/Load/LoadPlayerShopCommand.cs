@@ -6,26 +6,26 @@ public struct LoadPlayerShopCommand
 {
     public async UniTask<bool> ExecuteAsync()
     {
-        var playerModel = PlayerModel.Instance;
+        var playerModelHolder = PlayerModelHolder.Instance;
         var dataImporter = DataImporter.Instance;
-        var url = string.Format(URLsHolder.Instance.GetDataURL, playerModel.Uid);
+        var url = string.Format(URLsHolder.Instance.GetDataURL, playerModelHolder.Uid);
 
         var resultOperation = await new WebRequestsSender().GetAsync(url);
         if (resultOperation.IsSuccess)
         {
-            ShopModel loadedShopModel = null;
+            UserModel loadedUserModel = null;
             var result = JsonConvert.DeserializeObject<CommonResponseDto>(resultOperation.Result);
             switch (result.v)
             {
                 case 0:
                     var deserializedDataOld = JsonConvert.DeserializeObject<GetDataOldResponseDto>(resultOperation.Result);
-                    loadedShopModel = dataImporter.ImportOld(deserializedDataOld);
+                    loadedUserModel = dataImporter.ImportOld(deserializedDataOld);
                     break;
                 case 1:
                     if (ValidateHash(result.response, result.hash))
                     {
                         var deserializedData = JsonConvert.DeserializeObject<GetDataResponseDto>(result.response);
-                        loadedShopModel = dataImporter.Import(deserializedData);
+                        loadedUserModel = dataImporter.Import(deserializedData);
                     }
                     else
                     {
@@ -35,10 +35,9 @@ public struct LoadPlayerShopCommand
                     break;
 
             }
-            if (loadedShopModel != null)
+            if (loadedUserModel != null)
             {
-                playerModel.SetShopModel(loadedShopModel);
-                Dispatcher.Instance.PlayerShopLoaded(loadedShopModel);
+                playerModelHolder.SetUserModel(loadedUserModel);
             }
         }
 

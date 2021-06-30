@@ -6,7 +6,7 @@ public class UIBottomPanelShelfsTabMediator : UIBottomPanelScrollItemsTabMediato
     private readonly SpritesProvider _spritesProvider;
     private readonly Dispatcher _dispatcher;
     private readonly LocalizationManager _localizationManager;
-    private readonly ShopModel _playerShopModel;
+    private readonly UserModel _playerModel;
 
     public UIBottomPanelShelfsTabMediator(BottomPanelView view)
         : base(view)
@@ -15,7 +15,7 @@ public class UIBottomPanelShelfsTabMediator : UIBottomPanelScrollItemsTabMediato
         _spritesProvider = SpritesProvider.Instance;
         _dispatcher = Dispatcher.Instance;
         _localizationManager = LocalizationManager.Instance;
-        _playerShopModel = GameStateModel.Instance.PlayerShopModel;
+        _playerModel = PlayerModelHolder.Instance.UserModel;
     }
 
     public override void Mediate()
@@ -32,7 +32,7 @@ public class UIBottomPanelShelfsTabMediator : UIBottomPanelScrollItemsTabMediato
 
     protected override IEnumerable<ItemConfig<ShelfConfigDto>> GetViewModelsToShow()
     {
-        return _shelfsConfig.GetShelfConfigsForLevel(_playerShopModel.ProgressModel.Level);
+        return _shelfsConfig.GetShelfConfigsForLevel(_playerModel.ProgressModel.Level);
     }
 
     protected override void SetupItem(UIBottomPanelScrollItemView itemView, ItemConfig<ShelfConfigDto> viewModel)

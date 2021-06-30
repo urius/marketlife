@@ -5,12 +5,13 @@ public struct OrderProductCommand
     public void Execute(RectTransform transform, Vector2 startAnimationScreenPoint, ProductConfig productConfig)
     {
         var dispatcher = Dispatcher.Instance;
+        var playerModel = PlayerModelHolder.Instance.UserModel;
         var gameStateModel = GameStateModel.Instance;
         var shopModel = gameStateModel.PlayerShopModel;
         var warehouseVolume = shopModel.WarehouseModel.Volume;
 
         var price = productConfig.GetPriceForVolume(warehouseVolume);
-        if (shopModel.TrySpendMoney(price))
+        if (playerModel.TrySpendMoney(price))
         {
             var productModel = new ProductModel(
                 productConfig,

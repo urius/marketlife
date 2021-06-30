@@ -7,6 +7,7 @@ public class UIUpgradesPopupMediator : IMediator
 {
     private readonly RectTransform _parentTransform;
     private readonly GameStateModel _gameStateModel;
+    private readonly UserModel _playerModel;
     private readonly ShopPersonalModel _personalModel;
     private readonly PrefabsHolder _prefabsHolder;
     private readonly LocalizationManager _loc;
@@ -26,6 +27,7 @@ public class UIUpgradesPopupMediator : IMediator
     {
         _parentTransform = parentTransform;
         _gameStateModel = GameStateModel.Instance;
+        _playerModel = PlayerModelHolder.Instance.UserModel;
         _personalModel = _gameStateModel.PlayerShopModel.PersonalModel;
         _prefabsHolder = PrefabsHolder.Instance;
         _loc = LocalizationManager.Instance;
@@ -221,7 +223,7 @@ public class UIUpgradesPopupMediator : IMediator
         {
             var upgradeViewModel = viewModel as UpgradesPopupUpgradeItemViewModel;
             var upgradeConfig = upgradeViewModel.UpgradeConfig;
-            var playerLevel = _gameStateModel.PlayerShopModel.ProgressModel.Level;
+            var playerLevel = _playerModel.ProgressModel.Level;
             var playerFriendsCount = _friendsDataHolder.InGameFriendsCount;
             var isLockedByLevel = playerLevel < upgradeConfig.UnlockLevel;
             var isLockedByFriends = playerFriendsCount < upgradeConfig.UnlockFriends;

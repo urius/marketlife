@@ -11,4 +11,9 @@ public class CalculationHelper
     {
         return targetVolume / productConfig.Volume;
     }
+
+    public static int GetSellPrice(Price originalPrice)
+    {
+        return originalPrice.IsGold ? originalPrice.Value * 1000 : (int)(originalPrice.Value * 0.5f);
+    }
 }

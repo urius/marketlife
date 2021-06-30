@@ -12,7 +12,7 @@ public struct RequestRemovePopupCommand
             gameStateModel.ResetHighlightedState();
             if (highlightState.HighlightedShopObject != null)
             {
-                var sellPrice = shopModel.GetSellPrice(highlightState.HighlightedShopObject.Price);
+                var sellPrice = CalculationHelper.GetSellPrice(highlightState.HighlightedShopObject.Price);
                 gameStateModel.ResetHighlightedState();
                 var tittleText = loc.GetLocalization(LocalizationKeys.PopupRemoveObjectTitle);
                 var messageText = string.Format(loc.GetLocalization(LocalizationKeys.PopupRemoveObjectText), sellPrice);
@@ -44,7 +44,7 @@ public struct RequestRemovePopupCommand
                             break;
                     }
                     var originalPrice = config.GetDecorationConfigBuNumericId(decorationType, numericId).Price;
-                    var sellPrice = shopModel.GetSellPrice(originalPrice);
+                    var sellPrice = CalculationHelper.GetSellPrice(originalPrice);
                     var tittleText = loc.GetLocalization(LocalizationKeys.PopupRemoveObjectTitle);
                     var messageText = string.Format(loc.GetLocalization(LocalizationKeys.PopupRemoveObjectText), sellPrice);
                     gameStateModel.ShowPopup(new RemoveShopDecorationPopupViewModel(tittleText, messageText, coords, sellPrice));

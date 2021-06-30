@@ -41,8 +41,8 @@ public struct UIRequestPlacingDecorationCommand
 
     private bool CheckCanSpendOrBlink(Price price)
     {
-        var gameStateModel = GameStateModel.Instance;
-        if (gameStateModel.PlayerShopModel.CanSpendMoney(price))
+        var playerModel = PlayerModelHolder.Instance.UserModel;
+        if (playerModel.CanSpendMoney(price))
         {
             return true;
         }

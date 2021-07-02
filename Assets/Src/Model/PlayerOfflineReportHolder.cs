@@ -21,6 +21,7 @@ public class UserOfflineReportModel
     public readonly float HoursPassed;
     public readonly Dictionary<ProductConfig, int> SoldFromShelfs;
     public readonly Dictionary<ProductConfig, int> SoldFromWarehouse;
+    public readonly int SellProfit;
     public readonly bool HasSellInfo;
     public readonly bool HasPersonalInfo;
 
@@ -35,6 +36,7 @@ public class UserOfflineReportModel
         SoldFromShelfs = soldFromShelfs;
         SoldFromWarehouse = soldFromWarehouse;
         HoursPassed = (int)(0.1f * Math.Ceiling(10 * (TimeTo - TimeFrom) / 3600f));
+        SellProfit = CalculateSellProfit(SoldFromWarehouse) + CalculateSellProfit(SoldFromShelfs);
 
         var hasSoldFromWarehouse = SoldFromWarehouse.Any(kvp => kvp.Value > 0);
         HasSellInfo = SoldFromShelfs.Any(kvp => kvp.Value > 0) || hasSoldFromWarehouse;
@@ -42,4 +44,15 @@ public class UserOfflineReportModel
     }
 
     public bool IsEmpty => !HasSellInfo && !HasPersonalInfo; //TODO add activity info
+
+
+    private int CalculateSellProfit(Dictionary<ProductConfig, int> soldProducts)
+    {
+        var result = 0;
+        foreach (var kvp in soldProducts)
+        {
+            result += kvp.Key.GetSellPriceForAmount(kvp.Value);
+        }
+        return result;
+    }
 }

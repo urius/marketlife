@@ -104,7 +104,7 @@ public class EventsHandleSystem
 
     private void OnUIRequestRemoveCurrentPopup()
     {
-        _gameStateModel.RemoveCurrentPopupIfNeeded();
+        new CloseCurrentPopupCommand().Execute();
     }
 
     private void OnUIBottomPanelPointerEnter()

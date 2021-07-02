@@ -10,6 +10,8 @@ public class UIOfflineReportPopupMediator : IMediator
     private readonly LocalizationManager _loc;
     private readonly SpritesProvider _spritesProvider;
     private readonly PoolCanvasProvider _poolCanvasProvider;
+    private readonly Dispatcher _dispatcher;
+
     private UITabbedContentPopupView _popupView;
     private OfflineReportPopupViewModel _viewModel;
     private Queue<(RectTransform Transform, GameObject Prefab)> _displayedItems = new Queue<(RectTransform Transform, GameObject Prefab)>();
@@ -25,6 +27,7 @@ public class UIOfflineReportPopupMediator : IMediator
         _loc = LocalizationManager.Instance;
         _spritesProvider = SpritesProvider.Instance;
         _poolCanvasProvider = PoolCanvasProvider.Instance;
+        _dispatcher = Dispatcher.Instance;
     }
 
     public async void Mediate()
@@ -57,14 +60,22 @@ public class UIOfflineReportPopupMediator : IMediator
                 GameObject.Destroy(rectTransform.gameObject);
             }
         }
+        GameObject.Destroy(_popupView.gameObject);
     }
 
     private void Activate()
     {
+        _popupView.ButtonCloseClicked += OnCloseClicked;
     }
 
     private void Deactivate()
     {
+        _popupView.ButtonCloseClicked -= OnCloseClicked;
+    }
+
+    private void OnCloseClicked()
+    {
+        _dispatcher.UIRequestRemoveCurrentPopup();
     }
 
     private void ShowTab(int tabIndex)

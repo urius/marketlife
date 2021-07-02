@@ -68,7 +68,6 @@ public struct PlaceObjectCommand
                         {
                             productOnShelf.Amount += neededAmount;
                             placingProduct.Amount -= neededAmount;
-                            dispatcher.ProductPlacedOnShelf(shelf, i, neededAmount);
                             break;
                         }
                         else
@@ -88,7 +87,6 @@ public struct PlaceObjectCommand
                     if (shelf.TrySetProductOn(i, productToPlace))
                     {
                         placingProduct.Amount -= neededAmount;
-                        dispatcher.ProductPlacedOnShelf(shelf, i, neededAmount);
                         break;
                     }
                 }

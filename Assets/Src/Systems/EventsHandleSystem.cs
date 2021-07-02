@@ -30,6 +30,7 @@ public class EventsHandleSystem
         _dispatcher.UIBottomPanelWarehouseSlotClicked += OnUIBottomPanelWarehouseSlotClicked;
         _dispatcher.UIBottomPanelWarehouseQuickDeliverClicked += OnUIBottomPanelWarehouseQuickDeliverClicked;
         _dispatcher.UIBottomPanelWarehouseRemoveProductClicked += OnUIBottomPanelWarehouseRemoveProductClicked;
+        _dispatcher.UIBottomPanelAutoPlaceClicked += OnUIBottomPanelAutoPlaceClicked;
         _dispatcher.UIActionsRotateRightClicked += OnUIActionsRotateRightClicked;
         _dispatcher.UIActionsRotateLeftClicked += OnUIActionsRotateLeftClicked;
         _dispatcher.UIActionsMoveClicked += OnUIActionsMoveClicked;
@@ -51,6 +52,11 @@ public class EventsHandleSystem
 
         _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
         _gameStateModel.GameStateChanged += OnGameStateChanged;
+    }
+
+    private void OnUIBottomPanelAutoPlaceClicked()
+    {
+        new AutoPlaceCommand().Execute();
     }
 
     private void OnGameStateChanged(GameStateName previousState, GameStateName currentState)

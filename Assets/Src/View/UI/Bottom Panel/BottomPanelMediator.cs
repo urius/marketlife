@@ -74,9 +74,15 @@ public class BottomPanelMediator : UINotMonoMediatorBase
         _view.FinishPlacingClicked += OnFinishPlacingButtonClicked;
         _view.RotateRightClicked += OnRotateRightButtonClicked;
         _view.RotateLeftClicked += OnRotateLeftButtonClicked;
+        _view.AutoPlaceClicked += OnAutoPlaceClicked;
 
         _gameStateModel.GameStateChanged += OnGameStateChanged;
         _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
+    }
+
+    private void OnAutoPlaceClicked()
+    {
+        _dispatcher.UIBottomPanelAutoPlaceClicked();
     }
 
     private void OnManageButtonClicked()

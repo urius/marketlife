@@ -21,7 +21,8 @@ public class Dispatcher
     public Action<int> UIBottomPanelPlaceDoorClicked = delegate { };
     public Action<int> UIBottomPanelWarehouseSlotClicked = delegate { };
     public Action<int> UIBottomPanelWarehouseQuickDeliverClicked = delegate { };
-    public Action<int> UIBottomPanelWarehouseRemoveProductClicked = delegate { };    
+    public Action<int> UIBottomPanelWarehouseRemoveProductClicked = delegate { };
+    public Action UIBottomPanelAutoPlaceClicked = delegate { };    
 
     public Action UIActionsRotateRightClicked = delegate { };
     public Action UIActionsRotateLeftClicked = delegate { };
@@ -52,7 +53,6 @@ public class Dispatcher
     public Action BottomPanelRotateLeftClicked = delegate { };
     public Action NotifyNotEnoughtMoney = delegate { };
 
-    public Action<ShelfModel, int, int> ProductPlacedOnShelf = delegate { };
     public Action<bool> SaveStateChanged = delegate { };
 
     private static Lazy<Dispatcher> _instance = new Lazy<Dispatcher>();

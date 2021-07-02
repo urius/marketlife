@@ -61,6 +61,23 @@ public class ProductSlotModel
         return false;
     }
 
+    public (int Index, int RemovedAmount) RemoveIfContains(ProductModel[] productModels)
+    {
+        for (var i = 0; i < productModels.Length; i++)
+        {
+            var productModel = productModels[i];
+            if (productModel.Amount > 0
+                && HasProduct
+                && Product.Config.NumericId == productModel.Config.NumericId)
+            {
+                var amountToRemove = Math.Min(Product.Amount, productModel.Amount);
+                ChangeProductAmount(-amountToRemove);
+                return (i, amountToRemove);
+            }
+        }
+        return (-1, 0);
+    }
+
     public float GetFullness()
     {
         if (HasProduct)

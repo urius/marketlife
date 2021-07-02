@@ -47,6 +47,9 @@ public class PopupsMediator : IMediator
             case PopupType.Upgrades:
                 newMediator = new UIUpgradesPopupMediator(_contentTransform);
                 break;
+            case PopupType.OfflineReport:
+                newMediator = new UIOfflineReportPopupMediator(_contentTransform);
+                break;
         };
         newMediator.Mediate();
         _popupMediators.Push(newMediator);

@@ -146,7 +146,7 @@ public class UIUpgradesPopupMediator : IMediator
         ClearShownItems();
 
         var itemModels = _model.ItemViewModelsByTabKey[_model.TabKeys[_currentShowingTabIndex]];
-        var itemSize = (_prefabsHolder.UIUPgradePopupItemPrefab.transform as RectTransform).sizeDelta;
+        var itemSize = (_prefabsHolder.UIUpgradePopupItemPrefab.transform as RectTransform).sizeDelta;
 
         for (var i = 0; i < itemModels.Length; i++)
         {
@@ -171,7 +171,7 @@ public class UIUpgradesPopupMediator : IMediator
         }
         else
         {
-            var itemViewGo = GameObject.Instantiate(_prefabsHolder.UIUPgradePopupItemPrefab, _popupView.ContentRectTransform);
+            var itemViewGo = GameObject.Instantiate(_prefabsHolder.UIUpgradePopupItemPrefab, _popupView.ContentRectTransform);
             result = itemViewGo.GetComponent<UIUpgradesPopupItemView>();
         }
         return result;

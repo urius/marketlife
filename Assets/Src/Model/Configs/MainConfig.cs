@@ -120,7 +120,7 @@ public class MainConfig : IProductsConfig, IShelfsConfig, IFloorsConfig, IWallsC
     public PersonalConfig GetPersonalConfigByStringId(string stringId)
     {
         return PersonalConfig[stringId];
-    }    
+    }
 
     public ProductConfig GetProductConfigByKey(string key)
     {
@@ -262,9 +262,12 @@ public class ProductConfig
     public readonly Price PricePer1000v;
     public readonly int ProfitPer1000v;
     public readonly int SellPricePer1000v;
+    public readonly float SellPrice;
     public readonly float Demand;
     public readonly float DemandPer1000v;
     public readonly int DeliverTimeSeconds;
+
+    private readonly int _amountIn1000Volume;
 
     public ProductConfig(int numericId, ProductConfigDto dto)
     {
@@ -272,21 +275,27 @@ public class ProductConfig
         Key = dto.key;
         GroupId = dto.group;
         UnlockLevel = dto.unlock_level;
-        var amountIn1000Volume = dto.amount_per_1000v;
-        Volume = 1000 / amountIn1000Volume;
+        _amountIn1000Volume = dto.amount_per_1000v;
+        Volume = 1000 / _amountIn1000Volume;
         DemandPer1000v = dto.demand_1000v_per_hour;
 
         PricePer1000v = Price.FromString(dto.price_per_1000v);
 
         ProfitPer1000v = dto.profit_per_1000v;
         SellPricePer1000v = PricePer1000v.IsGold ? ProfitPer1000v : PricePer1000v.Value + ProfitPer1000v;
+        SellPrice = (float)SellPricePer1000v / _amountIn1000Volume;
 
-        Demand = (int)(DemandPer1000v * amountIn1000Volume);
+        Demand = (int)(DemandPer1000v * _amountIn1000Volume);
 
         DeliverTimeSeconds = GetTotalSeconds(dto.deliver);
     }
 
     public int GroupIndex => GroupId - 1;
+
+    public int GetSellPriceForAmount(int amount)
+    {
+        return (int)Math.Ceiling((amount / (float)_amountIn1000Volume) * SellPricePer1000v);
+    }
 
     public float GetDemandForVolume(int volume)
     {

@@ -91,7 +91,7 @@ public class SaveDataSystem
 
     private void OnGameStateChanged(GameStateName previousState, GameStateName currentState)
     {
-        if (CheckSaveUserDataconditions())
+        if (previousState != GameStateName.ReadyForStart && CheckSaveUserDataconditions())
         {
             SaveIfNeeded();
         }

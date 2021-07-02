@@ -123,6 +123,81 @@ public class ShopModel
         };
     }
 
+    public (ProductModel[] Products, int TotalVolume, int UsedVolume) GetAllProductsInfo()
+    {
+        var totalVolume = 0;
+        var usedVolume = 0;
+        var productsDictionary = new Dictionary<ProductConfig, int>();
+        foreach (var kvp in ShopObjects)
+        {
+            if (kvp.Value.Type == ShopObjectType.Shelf)
+            {
+                var shelfModel = kvp.Value as ShelfModel;
+                foreach (var slot in shelfModel.Slots)
+                {
+                    totalVolume += slot.Volume;
+                    if (slot.HasProduct)
+                    {
+                        var productConfig = slot.Product.Config;
+                        usedVolume += slot.Product.Amount * productConfig.Volume;
+                        if (productsDictionary.ContainsKey(productConfig))
+                        {
+                            productsDictionary[productConfig] += slot.Product.Amount;
+                        }
+                        else
+                        {
+                            productsDictionary[productConfig] = slot.Product.Amount;
+                        }
+                    }
+                }
+            }
+        }
+
+        var productsList = new List<ProductModel>(productsDictionary.Count);
+        foreach (var kvp in productsDictionary)
+        {
+            productsList.Add(new ProductModel(kvp.Key, kvp.Value));
+        }
+
+        return (productsList.ToArray(), totalVolume, usedVolume);
+    }
+
+    public Dictionary<ProductConfig, int> RemoveProducts(IReadOnlyDictionary<ProductConfig, int> productsToRemove)
+    {
+        var restProductsToRemove = new Dictionary<ProductConfig, int>(productsToRemove.Count);
+        foreach (var inputProductToRemove in productsToRemove)
+        {
+            restProductsToRemove[inputProductToRemove.Key] = inputProductToRemove.Value;
+        }
+
+        foreach (var shopObject in ShopObjects)
+        {
+            if (shopObject.Value.Type == ShopObjectType.Shelf)
+            {
+                var shelfSlots = (shopObject.Value as ShelfModel).Slots;
+                foreach (var slot in shelfSlots)
+                {
+                    if (slot.HasProduct)
+                    {
+                        var productConfig = slot.Product.Config;
+                        if (restProductsToRemove.ContainsKey(productConfig)
+                            && restProductsToRemove[productConfig] > 0)
+                        {
+                            var amountToRemove = Math.Min(restProductsToRemove[productConfig], slot.Product.Amount);
+                            if (amountToRemove > 0)
+                            {
+                                slot.ChangeProductAmount(-amountToRemove);
+                                restProductsToRemove[productConfig] -= amountToRemove;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return restProductsToRemove;
+    }
+
     public bool TryRemoveDecoration(Vector2Int coords)
     {
         var decorationType = ShopDesign.GetDecorationType(coords);
@@ -498,6 +573,49 @@ public class ShopWarehouseModel
         SlotsAdded(amount);
     }
 
+    public Dictionary<ProductConfig, int> RemoveUndeliveredProducts(IReadOnlyDictionary<ProductConfig, int> productsToRemove, int targetTimestamp)
+    {
+        var restProductsToRemove = new Dictionary<ProductConfig, int>(productsToRemove.Count);
+        foreach (var inputProductToRemove in productsToRemove)
+        {
+            restProductsToRemove[inputProductToRemove.Key] = inputProductToRemove.Value;
+        }
+
+        foreach (var slot in _slots)
+        {
+            if (slot.HasProduct && slot.Product.DeliverTime <= targetTimestamp)
+            {
+                var productConfig = slot.Product.Config;
+                if (restProductsToRemove.ContainsKey(productConfig) && restProductsToRemove[productConfig] > 0)
+                {
+                    var amountToRemove = Math.Min(restProductsToRemove[productConfig], slot.Product.Amount);
+                    if (amountToRemove > 0)
+                    {
+                        slot.ChangeProductAmount(-amountToRemove);
+                        restProductsToRemove[productConfig] -= amountToRemove;
+                    }
+                }
+            }
+        }
+
+        return restProductsToRemove;
+    }
+
+    public int GetDeliveredProductAmount(int numericId, int targetTime)
+    {
+        var result = 0;
+        foreach (var slot in Slots)
+        {
+            if (slot.HasProduct
+                && slot.Product.Config.NumericId == numericId
+                && slot.Product.DeliverTime <= targetTime)
+            {
+                result += slot.Product.Amount;
+            }
+        }
+        return result;
+    }
+
     private void SubscribeOnSlot(ProductSlotModel slot)
     {
         slot.ProductIsSet += OnSlotProductSet;
@@ -545,6 +663,19 @@ public class ShopPersonalModel
             return endWorkTime;
         }
         return 0;
+    }
+
+    public int GetMaxEndWorkTimeForPersonalType(PersonalType personalType)
+    {
+        var result = 0;
+        foreach (var kvp in _personalWorkingTimes)
+        {
+            if (kvp.Key.TypeId == personalType && kvp.Value > result)
+            {
+                result = kvp.Value;
+            }
+        }
+        return result;
     }
 }
 

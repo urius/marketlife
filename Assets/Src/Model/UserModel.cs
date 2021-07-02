@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 public class UserModel
 {
@@ -38,6 +39,74 @@ public class UserModel
     public void AddCash(int amount)
     {
         ProgressModel.AddCash(amount);
+    }
+
+    public (Dictionary<ProductConfig, int> SoldFromShelfs, Dictionary<ProductConfig, int> SoldFromWarehouse) CalculateSellsToTime(int targetTime)
+    {
+        var userShopModel = ShopModel;
+        var personalModel = userShopModel.PersonalModel;
+        var warehouseModel = userShopModel.WarehouseModel;
+
+        var (restProductsOnShelfs, totalShelfsVolume, restUsedShelfsVolume) = userShopModel.GetAllProductsInfo();
+        var uniqueProductsOnShelfsCount = restProductsOnShelfs.Length;
+        var startCalculationTime = StatsData.LastVisitTimestamp;
+        var secondsSinceLastVisit = targetTime - startCalculationTime;
+        var hoursSinceLastVisit = secondsSinceLastVisit / 3600f;
+        var hoursCeilSinceLastVisit = (int)Math.Ceiling(hoursSinceLastVisit);
+        var soldFromShelfsProducts = new Dictionary<ProductConfig, int>(uniqueProductsOnShelfsCount);
+        var soldFromWarehouseProducts = new Dictionary<ProductConfig, int>(uniqueProductsOnShelfsCount);
+        var restWarehouseProductsForMerchandiser = new Dictionary<ProductConfig, int>(uniqueProductsOnShelfsCount);
+        foreach (var productModel in restProductsOnShelfs)
+        {
+            soldFromShelfsProducts[productModel.Config] = 0;
+            soldFromWarehouseProducts[productModel.Config] = 0;
+            restWarehouseProductsForMerchandiser[productModel.Config] = warehouseModel.GetDeliveredProductAmount(productModel.Config.NumericId, targetTime);
+        }
+
+        for (var i = 0; i < hoursCeilSinceLastVisit; i++)
+        {
+            var moodMultiplier = CalculationHelper.CalculateMood(restUsedShelfsVolume, totalShelfsVolume);
+            var hourMultiplier = Math.Min(1, hoursSinceLastVisit - i);
+            var buyMultiplier = moodMultiplier * hourMultiplier;
+            var iterationStartTime = startCalculationTime + i * 3600;
+            var isMerchandiserActive = personalModel.GetMaxEndWorkTimeForPersonalType(PersonalType.Merchandiser) > iterationStartTime;
+
+            var haveProductsOnShefsFlag = false;
+            foreach (var productModel in restProductsOnShelfs)
+            {
+                if (productModel.Amount > 0)
+                {
+                    haveProductsOnShefsFlag = true;
+
+                    var productConfig = productModel.Config;
+                    var demandedRestAmountToSell = (int)(productConfig.Demand * buyMultiplier);
+
+                    if (isMerchandiserActive && restWarehouseProductsForMerchandiser[productConfig] > 0)
+                    {
+                        var sellFromWarehouseAmount = Math.Min(restWarehouseProductsForMerchandiser[productConfig], demandedRestAmountToSell);
+                        restWarehouseProductsForMerchandiser[productConfig] -= sellFromWarehouseAmount;
+                        soldFromWarehouseProducts[productConfig] += sellFromWarehouseAmount;
+                        demandedRestAmountToSell -= sellFromWarehouseAmount;
+                    }
+
+                    var sellFromShelfsAmount = Math.Min(productModel.Amount, demandedRestAmountToSell);
+                    if (sellFromShelfsAmount > 0)
+                    {
+                        soldFromShelfsProducts[productConfig] += sellFromShelfsAmount;
+                        productModel.Amount -= sellFromShelfsAmount;
+                        restUsedShelfsVolume -= productConfig.Volume * sellFromShelfsAmount;
+                        demandedRestAmountToSell -= sellFromShelfsAmount;
+                    }
+                }
+            }
+
+            if (haveProductsOnShefsFlag == false)
+            {
+                break;
+            }
+        }
+
+        return (soldFromShelfsProducts, soldFromWarehouseProducts);
     }
 }
 

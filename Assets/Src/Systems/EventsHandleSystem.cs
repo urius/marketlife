@@ -55,7 +55,7 @@ public class EventsHandleSystem
 
     private void OnGameStateChanged(GameStateName previousState, GameStateName currentState)
     {
-        if (_gameStateModel.SwitchesToSimaulationsStateCount <= 1)
+        if (currentState == GameStateName.ReadyForStart)
         {
             new CalculateForReportCommand().Execute();
         }

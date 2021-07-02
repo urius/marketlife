@@ -32,7 +32,6 @@ public class GameStateModel
     public HighlightState HighlightState { get; private set; } = HighlightState.Default;
     public PopupViewModelBase ShowingPopupModel => _showingPopupModelsStack.Count > 0 ? _showingPopupModelsStack.Peek() : null;
     public int ServerTime => (int)(_serverTime + Time.realtimeSinceStartup - _realtimeSinceStartupCheckpoint);
-    public int SwitchesToSimaulationsStateCount = 0;
 
     private int _serverTime;
     private float _realtimeSinceStartupCheckpoint;
@@ -54,10 +53,6 @@ public class GameStateModel
 
         var previousState = GameState;
         GameState = newState;
-        if (newState == GameStateName.ShopSimulation)
-        {
-            SwitchesToSimaulationsStateCount++;
-        }
         GameStateChanged(previousState, newState);
     }
 
@@ -217,6 +212,7 @@ public enum GameStateName
     Initializing,
     Loading,
     Loaded,
+    ReadyForStart,
     ShopSimulation,
     ShopInterior,
 }

@@ -20,6 +20,6 @@ public struct InitializeAndLoadCommand
         gameStateModel.SetGameState(GameStateName.Loaded);
 
         gameStateModel.SetViewingShopModel(playerModelHolder.ShopModel);
-        gameStateModel.SetGameState(GameStateName.ShopSimulation);
+        gameStateModel.SetGameState(GameStateName.ReadyForStart);
     }
 }

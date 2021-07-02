@@ -11,4 +11,5 @@ public enum PopupType
     ShelfContent,
     Warehouse,
     Upgrades,
+    OfflineReport,
 }

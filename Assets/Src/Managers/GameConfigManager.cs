@@ -57,10 +57,10 @@ public class GameConfigManager : ScriptableObject
             ToUpgradeConfigs(UpgradeType.ExpandY, mainConfigDto.ExtendShopYUpgradesConfig));
     }
 
-    private UpgradeConfig[] ToUpgradeConfigs(UpgradeType upgradeType, UpgradeConfigDto[] upgradesConfigsDto)
+    private UpgradeConfig[] ToUpgradeConfigs(UpgradeType upgradeType, IList<UpgradeConfigDto> upgradesConfigsDto)
     {
-        var result = new UpgradeConfig[upgradesConfigsDto.Length];
-        for (var i = 0; i < upgradesConfigsDto.Length; i++)
+        var result = new UpgradeConfig[upgradesConfigsDto.Count];
+        for (var i = 0; i < upgradesConfigsDto.Count; i++)
         {
             result[i] = new UpgradeConfig(upgradeType, upgradesConfigsDto[i]);
         }

@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class SaveDataSystem
@@ -12,8 +13,12 @@ public class SaveDataSystem
     private bool _saveInProgress = false;
     private UserModel _playerModel;
 
+    private static SaveDataSystem _internalRef;
+
     public SaveDataSystem()
     {
+        _internalRef = this;
+
         _gameStateModel = GameStateModel.Instance;
         _dispatcher = Dispatcher.Instance;
     }
@@ -120,12 +125,13 @@ public class SaveDataSystem
     {
         _saveInProgress = true;
         _dispatcher.SaveStateChanged(_saveInProgress);
-        await Task.Delay(1000);
+        await UniTask.Delay(1000);
 
         var saveFieldsData = _saveFieldsData;
         _saveFieldsData = SaveField.None;
         await new SaveDataCommand().Execute(saveFieldsData);
-        await Task.Delay(4000);
+
+        await UniTask.Delay(4000);
 
         _saveInProgress = false;
         _dispatcher.SaveStateChanged(_saveInProgress);

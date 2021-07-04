@@ -31,14 +31,22 @@ public class GameStateModel
     public ShopModel PlayerShopModel { get; private set; }
     public HighlightState HighlightState { get; private set; } = HighlightState.Default;
     public PopupViewModelBase ShowingPopupModel => _showingPopupModelsStack.Count > 0 ? _showingPopupModelsStack.Peek() : null;
-    public int ServerTime => (int)(_serverTime + Time.realtimeSinceStartup - _realtimeSinceStartupCheckpoint);
+    public int ServerTime
+    {
+        get
+        {
+            var delta = (int)(Time.realtimeSinceStartup - _realtimeSinceStartupCheckpoint);
+            var result = _lastCheckedServerTime + delta;
+            return result;
+        }
+    }
 
-    private int _serverTime;
+    private int _lastCheckedServerTime;
     private float _realtimeSinceStartupCheckpoint;
 
     public void SetServerTime(int serverTime)
     {
-        _serverTime = serverTime;
+        _lastCheckedServerTime = serverTime;
         _realtimeSinceStartupCheckpoint = Time.realtimeSinceStartup;
     }
 

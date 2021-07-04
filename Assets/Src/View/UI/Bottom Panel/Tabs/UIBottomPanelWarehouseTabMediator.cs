@@ -173,7 +173,7 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
         itemView.SetTopText(product.Amount.ToString());
         var fullness = (float)(product.Amount * product.Config.Volume) / _warehouseModel.Volume;
         itemView.SetPercentLineXScaleMultiplier(fullness);
-        var color = Color.Lerp(Color.red, Color.yellow, fullness);
+        var color = Color.Lerp(Color.red, Color.green, fullness);
         itemView.SetPercentLineColor(color);
     }
 

@@ -41,7 +41,7 @@ public class UserModel
         ProgressModel.AddCash(amount);
     }
 
-    public (Dictionary<ProductConfig, int> SoldFromShelfs, Dictionary<ProductConfig, int> SoldFromWarehouse) CalculateSellsToTime(int targetTime)
+    public (Dictionary<ProductConfig, int> SoldFromShelfs, Dictionary<ProductConfig, int> SoldFromWarehouse) ProcessOfflineToTime(int targetTime)
     {
         var userShopModel = ShopModel;
         var personalModel = userShopModel.PersonalModel;
@@ -56,16 +56,18 @@ public class UserModel
         var soldFromShelfsProducts = new Dictionary<ProductConfig, int>(uniqueProductsOnShelfsCount);
         var soldFromWarehouseProducts = new Dictionary<ProductConfig, int>(uniqueProductsOnShelfsCount);
         var restWarehouseProductsForMerchandiser = new Dictionary<ProductConfig, int>(uniqueProductsOnShelfsCount);
+        var random = new Random(targetTime);
         foreach (var productModel in restProductsOnShelfs)
         {
             soldFromShelfsProducts[productModel.Config] = 0;
             soldFromWarehouseProducts[productModel.Config] = 0;
             restWarehouseProductsForMerchandiser[productModel.Config] = warehouseModel.GetDeliveredProductAmount(productModel.Config.NumericId, targetTime);
         }
-
+        var totalShopSquare = userShopModel.ShopDesign.SizeX * userShopModel.ShopDesign.SizeY;
         for (var i = 0; i < hoursCeilSinceLastVisit; i++)
         {
-            var moodMultiplier = CalculationHelper.CalculateMood(restUsedShelfsVolume, totalShelfsVolume);
+            var unwashesCount = userShopModel.Unwashes.Count;
+            var moodMultiplier = CalculationHelper.CalculateMood(restUsedShelfsVolume, totalShelfsVolume, unwashesCount, totalShopSquare);
             var hourMultiplier = Math.Min(1, hoursSinceLastVisit - i);
             var buyMultiplier = moodMultiplier * hourMultiplier;
             var iterationStartTime = startCalculationTime + i * 3600;
@@ -96,6 +98,17 @@ public class UserModel
                         productModel.Amount -= sellFromShelfsAmount;
                         restUsedShelfsVolume -= productConfig.Volume * sellFromShelfsAmount;
                         demandedRestAmountToSell -= sellFromShelfsAmount;
+                    }
+                }
+            }
+
+            if (random.NextDouble() <= moodMultiplier)
+            {
+                foreach (var kvp in userShopModel.Grid)
+                {
+                    if (userShopModel.AddUnwash(kvp.Key, random.Next(0, 3)))
+                    {
+                        break;
                     }
                 }
             }

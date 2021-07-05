@@ -16,6 +16,7 @@ public class PrefabsHolder : ScriptableObject
     public GameObject WhiteSquarePrefab;
 
     public GameObject FloorPrefab;
+    public GameObject OnFloorItemPrefab;
     public GameObject WallPrefab;
     public GameObject WindowPrefab;
     public GameObject DoorPrefab;

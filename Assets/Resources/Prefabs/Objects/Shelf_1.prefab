@@ -720,20 +720,11 @@ MonoBehaviour:
   - {fileID: 6576891290330359688}
   - {fileID: 6576891289248132804}
   _productFloors:
-  - ProductPlaceholders:
-    - {fileID: 6576891290700758607}
-    - {fileID: 6576891288938215219}
-    - {fileID: 6576891290397070037}
-    ProductSprites:
+  - ProductSprites:
     - {fileID: 6576891290700758606}
     - {fileID: 6576891288938215218}
     - {fileID: 6576891290397070036}
-  - ProductPlaceholders:
-    - {fileID: 6576891289565747542}
-    - {fileID: 6576891288807614672}
-    - {fileID: 6576891290330359689}
-    - {fileID: 6576891289248132805}
-    ProductSprites:
+  - ProductSprites:
     - {fileID: 6576891289565747541}
     - {fileID: 6576891288807614679}
     - {fileID: 6576891290330359688}

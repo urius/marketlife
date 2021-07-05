@@ -1,9 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class UIOfflineReportPopupMediator : IMediator
 {
+    private const int TopPadding = 20;
+
     private readonly GameStateModel _gameStateModel;
     private readonly RectTransform _parentTransform;
     private readonly PrefabsHolder _prefabsHolder;
@@ -35,8 +38,9 @@ public class UIOfflineReportPopupMediator : IMediator
         _viewModel = _gameStateModel.ShowingPopupModel as OfflineReportPopupViewModel;
         var popupGo = GameObject.Instantiate(_prefabsHolder.UITabbedContentPopupPrefab, _parentTransform);
         _popupView = popupGo.GetComponent<UITabbedContentPopupView>();
-        _popupView.SetSize(560, 730);
+        _popupView.SetSize(670, 730);
 
+        _popupView.SetTitleText(string.Format(_loc.GetLocalization(LocalizationKeys.PopupOfflineReportTitleFormat), _viewModel.ReportModel.HoursPassed));
         _popupView.SetupTabButtons(_viewModel.Tabs.Select(ToTabName).ToArray());
         ShowTab(0);
 
@@ -80,6 +84,8 @@ public class UIOfflineReportPopupMediator : IMediator
 
     private void ShowTab(int tabIndex)
     {
+        ClearDisplayedItems();
+
         _popupView.SetTabButtonSelected(tabIndex);
         switch (_viewModel.Tabs[tabIndex])
         {
@@ -91,22 +97,35 @@ public class UIOfflineReportPopupMediator : IMediator
 
     private void ShowProfitTab()
     {
-        ClearDisplayedItems();
-
-        var captionTransform = GetOrCreateItemToDisplay(_prefabsHolder.UIOfflineReportPopupCaptionPrefab);
-        var captionView = captionTransform.GetComponent<UIOfflineReportPopupCaptionItemView>();
-        captionView.SetText(string.Format(_loc.GetLocalization(LocalizationKeys.PopupOfflineReportProfitTabProfitTitleFormat), _viewModel.ReportModel.HoursPassed));
-        PutNext(captionTransform);
-
         foreach (var itemViewMdoel in _viewModel.SoldProducts)
         {
-            var sellItemTransform = GetOrCreateItemToDisplay(_prefabsHolder.UIOfflineReportPopupItemPrefab);
-            var itemView = sellItemTransform.GetComponent<UIOfflineReportPopupReportItemView>();
-            itemView.SetImageSprite(_spritesProvider.GetProductIcon(itemViewMdoel.ProductKey));
-            itemView.SetLeftText($"x{itemViewMdoel.Amount}");
-            itemView.SetRightText($"+{itemViewMdoel.Profit}");
-            PutNext(sellItemTransform);
+            PutNextReportItem(_spritesProvider.GetProductIcon(itemViewMdoel.ProductKey), $"x{FormattingHelper.ToCommaSeparatedNumber(itemViewMdoel.Amount)}", $"+{FormattingHelper.ToCommaSeparatedNumber(itemViewMdoel.Profit)}$");
         }
+
+        PutNextReportItem(null, _loc.GetLocalization(LocalizationKeys.PopupOfflineReportProfitTabOverallProfit), TextAlignmentOptions.Right, $"{FormattingHelper.ToCommaSeparatedNumber(_viewModel.TotalProfitFromSell)}$", TextAlignmentOptions.Right);
+    }
+
+    private void PutNextReportItem(Sprite iconSprite, string lextText, TextAlignmentOptions leftTextAlignment, string rightText, TextAlignmentOptions rightTextAlignment)
+    {
+        var itemTransform = GetOrCreateItemToDisplay(_prefabsHolder.UIOfflineReportPopupItemPrefab);
+        var itemView = itemTransform.GetComponent<UIOfflineReportPopupReportItemView>();
+        itemView.SetImageSprite(iconSprite);
+        itemView.SetLeftText(lextText, leftTextAlignment);
+        itemView.SetRightText(rightText, rightTextAlignment);
+        PutNext(itemTransform);
+    }
+
+    private void PutNextReportItem(Sprite iconSprite, string lextText, string rightText)
+    {
+        PutNextReportItem(iconSprite, lextText, TextAlignmentOptions.Left, rightText, TextAlignmentOptions.Right);
+    }
+
+    private void PutNextCaption(string captionText)
+    {
+        var captionTransform = GetOrCreateItemToDisplay(_prefabsHolder.UIOfflineReportPopupCaptionPrefab);
+        var captionView = captionTransform.GetComponent<UIOfflineReportPopupCaptionItemView>();
+        captionView.SetText(captionText);
+        PutNext(captionTransform);
     }
 
     private void ClearDisplayedItems()
@@ -117,13 +136,17 @@ public class UIOfflineReportPopupMediator : IMediator
             _cachedItemsByPrefab[displayedItem.Prefab].Enqueue(displayedItem.Transform);
         }
 
+        _putPointer = TopPadding;
+        _popupView.SetContentHeight(0);
         _displayedItems.Clear();
     }
 
     private void PutNext(RectTransform itemTransform)
     {
-        itemTransform.anchoredPosition = new Vector2(0, _putPointer);
-        _putPointer -= (int)itemTransform.rect.height;
+        itemTransform.anchoredPosition = new Vector2(0, -_putPointer);
+        _putPointer += (int)itemTransform.rect.height;
+
+        _popupView.SetContentHeight(_putPointer);
     }
 
     private RectTransform GetOrCreateItemToDisplay(GameObject prefab)

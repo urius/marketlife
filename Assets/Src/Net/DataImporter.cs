@@ -19,6 +19,7 @@ public class DataImporter
         var shopModel = new ShopModel(
             designModel,
             shopObjects,
+            new Dictionary<Vector2Int, int>(),
             new ShopPersonalModel(),
             warehouseModel);
 
@@ -40,12 +41,25 @@ public class DataImporter
         var warehouseModel = ToWarehouseModel(dataDto.warehouse);
         var designModel = ToDesignModel(dataDto.design);
         var shopObjects = ToObjectsModel(dataDto.objects);
+        var unwashes = ToUnwashesModel(dataDto.unwashes);
 
         return new ShopModel(
             designModel,
             shopObjects,
+            unwashes,
             personalModel,
             warehouseModel);
+    }
+
+    private Dictionary<Vector2Int, int> ToUnwashesModel(string[] unwashes)
+    {
+        var result = new Dictionary<Vector2Int, int>();
+        if (unwashes != null)
+        {
+            ParseCoordsArrayAndFill(result, unwashes, (c, s) => int.Parse(s));
+        }
+
+        return result;
     }
 
     private ShopPersonalModel ToPersonalModel(string[] personal)
@@ -88,16 +102,7 @@ public class DataImporter
     private Dictionary<Vector2Int, ShopObjectModelBase> ToObjectsModel(string[] objects)
     {
         var result = new Dictionary<Vector2Int, ShopObjectModelBase>();
-
-        var delimiter = '|';
-        var delimiterArr = new[] { delimiter };
-        foreach (var objectStr in objects)
-        {
-            var splitted = objectStr.Split(delimiterArr, 2);
-            var coords = ParseCoords(splitted[0]);
-            result[coords] = CreateShopObject(coords, splitted[1].Split(delimiter));
-        }
-
+        ParseCoordsArrayAndFill(result, objects, (c, s) => CreateShopObject(c, s.Split('|')));
         return result;
     }
 
@@ -105,8 +110,8 @@ public class DataImporter
     {
         var parsedFloors = ParseFloors(designDto);
         var parsedWalls = ParseWalls(designDto);
-        var parsedWindows = ParseCoordsArray(designDto.windows, s => int.Parse(s));
-        var parsedDoors = ParseCoordsArray(designDto.doors, s => int.Parse(s));
+        var parsedWindows = ParseCoordsArray(designDto.windows, (c, s) => int.Parse(s));
+        var parsedDoors = ParseCoordsArray(designDto.doors, (c, s) => int.Parse(s));
 
         return new ShoDesignModel(
             designDto.size_x,
@@ -135,7 +140,7 @@ public class DataImporter
             }
         }
 
-        ParseCoordsArrayAndFill(result, designDto.walls, s => int.Parse(s));
+        ParseCoordsArrayAndFill(result, designDto.walls, (c, s) => int.Parse(s));
 
         return result;
     }
@@ -156,7 +161,7 @@ public class DataImporter
             }
         }
 
-        ParseCoordsArrayAndFill(result, designDto.floors, s => int.Parse(s));
+        ParseCoordsArrayAndFill(result, designDto.floors, (c, s) => int.Parse(s));
 
         return result;
     }
@@ -176,7 +181,7 @@ public class DataImporter
         return result;
     }
 
-    private void ParseCoordsArrayAndFill(Dictionary<Vector2Int, int> result, string[] inputArray, Func<string, int> parseFunc)
+    private void ParseCoordsArrayAndFill<T>(Dictionary<Vector2Int, T> result, string[] inputArray, Func<Vector2Int, string, T> parseFunc)
     {
         var nonStdWalls = ParseCoordsArray(inputArray, parseFunc);
         foreach (var nonStdWall in nonStdWalls)
@@ -185,15 +190,17 @@ public class DataImporter
         }
     }
 
-    private Dictionary<Vector2Int, T> ParseCoordsArray<T>(string[] array, Func<string, T> parseFunc)
+    private Dictionary<Vector2Int, T> ParseCoordsArray<T>(string[] array, Func<Vector2Int, string, T> parseFunc)
     {
         var result = new Dictionary<Vector2Int, T>();
+        var delimiter = '|';
+        var delimiterArr = new[] { delimiter };
         foreach (var item in array)
         {
             if (item.IndexOf(Constants.StandardId) >= 0) continue;
-            var splitted = item.Split('|');
+            var splitted = item.Split(delimiterArr, 2);
             var coords = ParseCoords(splitted[0]);
-            var value = parseFunc(splitted[1]);
+            var value = parseFunc(coords, splitted[1]);
             result[coords] = value;
         }
         return result;

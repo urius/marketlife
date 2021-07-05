@@ -35,7 +35,7 @@ public class ProductSlotModel
 
     public void ChangeProductAmount(int deltaAmount)
     {
-        if (HasProduct)
+        if (HasProduct && deltaAmount != 0)
         {
             if (Product.Amount + deltaAmount <= 0)
             {

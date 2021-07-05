@@ -6,17 +6,21 @@ public class ShopModel
 {
     public event Action<ShopObjectModelBase> ShopObjectPlaced = delegate { };
     public event Action<ShopObjectModelBase> ShopObjectRemoved = delegate { };
+    public event Action<Vector2Int> UnwashAdded = delegate { };
+    public event Action<Vector2Int> UnwashRemoved = delegate { };
     public event Action ShopObjectsChanged = delegate { };
 
     public readonly ShopPersonalModel PersonalModel;
     public readonly ShopWarehouseModel WarehouseModel;
     public readonly ShoDesignModel ShopDesign;
     public readonly Dictionary<Vector2Int, ShopObjectModelBase> ShopObjects;
+    public readonly Dictionary<Vector2Int, int> Unwashes;
     public readonly Dictionary<Vector2Int, (int buildState, ShopObjectModelBase reference)> Grid;
 
     public ShopModel(
         ShoDesignModel shopDesign,
         Dictionary<Vector2Int, ShopObjectModelBase> shopObjects,
+        Dictionary<Vector2Int, int> unwashes,
         ShopPersonalModel personalModel,
         ShopWarehouseModel warehouseModel)
     {
@@ -24,10 +28,39 @@ public class ShopModel
 
         ShopDesign = shopDesign;
         ShopObjects = shopObjects;
+        Unwashes = unwashes;
         PersonalModel = personalModel;
         WarehouseModel = warehouseModel;
 
         RefillGrid();
+    }
+
+    public bool CanPlaceUnwash(Vector2Int coords)
+    {
+        if (Grid.TryGetValue(coords, out var gridItem))
+        {
+            if (gridItem.buildState > 0)
+            {
+                return false;
+            }
+        }
+
+        return !Unwashes.ContainsKey(coords);
+    }
+
+    public bool AddUnwash(Vector2Int coords, int unwashIdIndex)
+    {
+        if (CanPlaceUnwash(coords))
+        {
+            Unwashes[coords] = unwashIdIndex;
+            return true;
+        }
+        return false;
+    }
+
+    public bool RemoveUnwash(Vector2Int coords)
+    {
+        return Unwashes.Remove(coords);
     }
 
     public bool CanPlaceShopObject(ShopObjectModelBase shopObject)

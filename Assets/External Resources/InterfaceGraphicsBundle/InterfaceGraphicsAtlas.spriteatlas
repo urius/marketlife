@@ -32,7 +32,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 46b41057a82fe4010b5245cd9e8b4afa, type: 3}
-    totalSpriteSurfaceArea: 1202171
+    totalSpriteSurfaceArea: 1216003
     bindAsDefault: 0
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -58,6 +58,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: ed347672ec4ad41ffb84217e5144acdc, type: 3}
   - {fileID: 21300000, guid: 848e139269b1f491b86b90be3f143ea7, type: 3}
   - {fileID: 21300000, guid: adb788d29559f4c858092acd11f95c40, type: 3}
+  - {fileID: 21300000, guid: c88fbee28eb4640b2a81ad6de3498756, type: 3}
   - {fileID: 21300000, guid: 9ad1d113978e94c4d9d9d9a20882466c, type: 3}
   - {fileID: 21300000, guid: 523c1d134aa9c453895d41a9ae7e8b80, type: 3}
   - {fileID: 21300000, guid: 1a8906235a76048078f220d0c8e9b813, type: 3}
@@ -98,6 +99,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 72c1b497050c945b3b55a0b6e9c5256e, type: 3}
   - {fileID: 21300000, guid: b8b9e6e7f732f4216952b57fbccabd70, type: 3}
   - {fileID: 21300000, guid: 0b06a12892a0040edad5797c9934b0b6, type: 3}
+  - {fileID: 21300000, guid: 602487483abfc447bb0ac18cc5041939, type: 3}
   - {fileID: 21300000, guid: 1c51f668a9c914425bd79fa7221b5fd4, type: 3}
   - {fileID: 21300000, guid: e0d6196829f8644fab46052bd8744e57, type: 3}
   - {fileID: 21300000, guid: 66c809989c7fa410f9e4e42bc2899662, type: 3}
@@ -119,6 +121,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: e1e1f17ab004e4ce3963afd10c495d59, type: 3}
   - {fileID: 21300000, guid: 0376dcaa29ea041dca0831e29332670c, type: 3}
   - {fileID: 21300000, guid: 5302aaba45dd54fbb99ff82b032d79c4, type: 3}
+  - {fileID: 21300000, guid: 53b664ca0376440818e25ac615434293, type: 3}
   - {fileID: 21300000, guid: c26810ea8951c4f7ba05a5e5dcd641fb, type: 3}
   - {fileID: 21300000, guid: 288ad3fad7fda4d19b158dab317a88f0, type: 3}
   - {fileID: 21300000, guid: 29eb170b0e7ad42eb97645738622e48c, type: 3}
@@ -182,6 +185,7 @@ SpriteAtlas:
   - Window1
   - button_1_small_red
   - Icon_Shelf_1
+  - FootSteps
   - sign_rotate_left
   - Cola
   - window_caption
@@ -222,6 +226,7 @@ SpriteAtlas:
   - button_1_small_orange
   - Chips
   - Carrots_1
+  - Splash_1
   - Candy_1
   - button_1_small_green
   - Icon_Crowd
@@ -243,6 +248,7 @@ SpriteAtlas:
   - popup_content_inner
   - button_1_long_orange
   - Lipsticks_1
+  - Splash_2
   - skin_top_stribe_yellow
   - Icon_Shelf_5
   - top_bar_bg

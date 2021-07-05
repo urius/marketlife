@@ -84,11 +84,13 @@ public class LocalizationKeys
     public static string PopupUpgradesUnlockUpgradeCaption = "popup_upgrades_unlock_upgrade_caption";
     public static string PopupUpgradesUnlockUpgradeFriendsFormat = "popup_upgrades_unlock_upgrade_friends_format";
     public static string PopupUpgradesUnlockUpgradeLevelFormat = "popup_upgrades_unlock_upgrade_level_format";
-    public static string PopupUpgradesMaxLevel = "popup_upgrades_max_level";
+    public static string PopupUpgradesMaxLevel = "popup_upgrades_max_level";    
+    public static string PopupOfflineReportTitleFormat = "popup_offline_report_title_format";
     public static string PopupOfflineReportProfitTab = "popup_offline_report_profit_tab_name";
     public static string PopupOfflineReportPersonalTab = "popup_offline_report_personal_tab_name";
     public static string PopupOfflineReportActivityTab = "popup_offline_report_activity_tab_name";
-    public static string PopupOfflineReportProfitTabProfitTitleFormat = "popup_offline_report_profit_tab_profit_title_format";    
+    public static string PopupOfflineReportProfitTabProfitTitleFormat = "popup_offline_report_profit_tab_profit_title_format";
+    public static string PopupOfflineReportProfitTabOverallProfit = "popup_offline_report_profit_tab_overall_profit";    
     public static string NameShopObjectPrefix = "name_shop_object_";
     public static string NameProductGroupIdPrefix = "name_product_group_id_";
     public static string NameProductIdPrefix = "name_product_id_";

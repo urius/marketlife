@@ -56,6 +56,7 @@ public class ShopDataDto
     public ShopWarehouseDto warehouse;
     public ShopDesignDto design;
     public string[] objects;
+    public string[] unwashes;
 }
 
 public class ExternalDataDto

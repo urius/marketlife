@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 597020638
+CRC: 533003016
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 09c771e49d454f1d0effd77500a7e1d2
+    Hash: 3599e9120daedcbc8075ee82ffced226
   TypeTreeHash:
     serializedVersion: 2
     Hash: 3dbb92f992534c06c4e322444b68580f
@@ -17,10 +17,11 @@ ClassTypes:
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
-- Assets/External Resources/GameplayGraphicsBundle/People/Clothes/Clothes5_Profile.png
+- Assets/External Resources/GameplayGraphicsBundle/Shop/Common/Splash_1.png
 - Assets/External Resources/GameplayGraphicsBundle/Objects/Shelf_2/Shelf_2_floor.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Hair1.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/Clothes7.png
+- Assets/External Resources/GameplayGraphicsBundle/People/Clothes/Clothes5_Profile.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/FootClothes1_Profile.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/EyePupilBase.png
 - Assets/External Resources/GameplayGraphicsBundle/Objects/Shelf_2/Shelf_2_glass_face.png
@@ -62,6 +63,7 @@ Assets:
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Hair8_Profile.png
 - Assets/External Resources/GameplayGraphicsBundle/Objects/Shelf_1/Shelf_1_shadow.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/Clothes4.png
+- Assets/External Resources/GameplayGraphicsBundle/Shop/Common/Splash_2.png
 - Assets/External Resources/GameplayGraphicsBundle/Products/Pizza_1.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Mouth6.png
 - Assets/External Resources/GameplayGraphicsBundle/Objects/Shelf_4/Shelf_4_back.png
@@ -160,6 +162,7 @@ Assets:
 - Assets/External Resources/GameplayGraphicsBundle/Shop/Floors/Floor1.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/Clothes3_Profile.png
 - Assets/External Resources/GameplayGraphicsBundle/Shop/Floors/Floor5.png
+- Assets/External Resources/GameplayGraphicsBundle/Shop/Common/FootSteps.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/Clothes7_Profile.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Mouth5.png
 - Assets/External Resources/GameplayGraphicsBundle/Shop/Walls/Wall4.png

@@ -468,16 +468,10 @@ MonoBehaviour:
   - {fileID: 7658229692330892303}
   - {fileID: 4218703514739293323}
   _productFloors:
-  - ProductPlaceholders:
-    - {fileID: 4218703514709834424}
-    - {fileID: 4218703515441289814}
-    ProductSprites:
+  - ProductSprites:
     - {fileID: 4218703514709834425}
     - {fileID: 4218703515441289815}
-  - ProductPlaceholders:
-    - {fileID: 7658229693678346045}
-    - {fileID: 7658229692330892302}
-    ProductSprites:
+  - ProductSprites:
     - {fileID: 7658229693678346046}
     - {fileID: 7658229692330892303}
 --- !u!210 &7658229692475906033

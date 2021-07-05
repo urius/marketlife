@@ -6,7 +6,7 @@ public struct CalculateForReportCommand
         var playerModel = PlayerModelHolder.Instance.UserModel;
         var playerOfflineReportHolder = PlayerOfflineReportHolder.Instance;
 
-        var (soldFromShelfsProducts, soldFromWarehouseProducts) = playerModel.CalculateSellsToTime(gameStateModel.ServerTime);
+        var (soldFromShelfsProducts, soldFromWarehouseProducts) = playerModel.ProcessOfflineToTime(gameStateModel.ServerTime);
 
         var report = new UserOfflineReportModel(
             playerModel.StatsData.LastVisitTimestamp,

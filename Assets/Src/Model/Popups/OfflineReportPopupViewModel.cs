@@ -38,7 +38,12 @@ public class OfflineReportPopupViewModel : PopupViewModelBase
         var resultDictionary = new Dictionary<ProductConfig, int>(reportModel.SoldFromShelfs.Count);
         foreach (var kvp in reportModel.SoldFromShelfs)
         {
-            resultDictionary[kvp.Key] = reportModel.SoldFromShelfs[kvp.Key] + reportModel.SoldFromWarehouse[kvp.Key];
+            var soldFromShelfsCount = reportModel.SoldFromShelfs[kvp.Key];
+            var soldFromWarehouseCount = reportModel.SoldFromWarehouse[kvp.Key];
+            if (soldFromShelfsCount + soldFromWarehouseCount > 0)
+            {
+                resultDictionary[kvp.Key] = soldFromShelfsCount + soldFromWarehouseCount;
+            }
         }
 
         var result = new List<SoldProductViewModel>(reportModel.SoldFromShelfs.Count);

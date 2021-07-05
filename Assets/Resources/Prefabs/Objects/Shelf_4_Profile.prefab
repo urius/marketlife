@@ -550,16 +550,10 @@ MonoBehaviour:
   - {fileID: 6517623011804166908}
   - {fileID: 6517623010611715540}
   _productFloors:
-  - ProductPlaceholders:
-    - {fileID: 6517623011098824240}
-    - {fileID: 6517623010884348844}
-    ProductSprites:
+  - ProductSprites:
     - {fileID: 6517623011098824247}
     - {fileID: 6517623010884348851}
-  - ProductPlaceholders:
-    - {fileID: 6517623010340687742}
-    - {fileID: 6517623011804166909}
-    ProductSprites:
+  - ProductSprites:
     - {fileID: 6517623010340687741}
     - {fileID: 6517623011804166908}
 --- !u!210 &6517623011961258256

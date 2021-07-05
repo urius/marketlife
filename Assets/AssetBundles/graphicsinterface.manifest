@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3408761510
+CRC: 1904020983
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: a9353a064527070a12eab09f2c1f391f
+    Hash: aedee80b3dc45a556dbb881837d08b01
   TypeTreeHash:
     serializedVersion: 2
     Hash: ba23c2e8f8b3f5319028008a25497317
@@ -81,8 +81,8 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/TopPanel/skin_top_stribe_green.png
 - Assets/External Resources/InterfaceGraphicsBundle/Popups/content_item_skin_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/sign_rotate_left.png
-- Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall6.png
 - Assets/External Resources/InterfaceGraphicsBundle/Popups/UpgradesPopup/sign_upgrade_wh_slot.png
+- Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall6.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Sausage_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Candy_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/sign_4arrows.png
@@ -103,9 +103,10 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Lipsticks_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Pizza_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Perfume_2.png
-- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/sign_doors.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/Splash_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_small_orange.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/bracket.png
+- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/sign_doors.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Chips.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Juice_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/icon_mood.png
@@ -120,6 +121,7 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/Popups/window_caption.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/LimeOn.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/FootSteps.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/ICON_Volume.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_4.png
 - Assets/External Resources/Materials/ParticleStar.mat
@@ -154,4 +156,5 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall8.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Perfumes_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/TopPanel/skin_top_rating_button.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/Splash_2.png
 Dependencies: []

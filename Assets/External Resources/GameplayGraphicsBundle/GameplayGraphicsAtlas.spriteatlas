@@ -32,7 +32,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 5804ef6ef86794aa6ac1d44028fafb7e, type: 3}
-    totalSpriteSurfaceArea: 788297
+    totalSpriteSurfaceArea: 802129
     bindAsDefault: 0
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -128,6 +128,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: da26293a83c6247249dcdefff4807072, type: 3}
   - {fileID: 21300000, guid: 185d746a7c1014866b2106373d9b7d35, type: 3}
   - {fileID: 21300000, guid: 180e9a6aa6af04aedb4c1012cb4e229a, type: 3}
+  - {fileID: 21300000, guid: e70d3faad65ce421db021f95d278cfee, type: 3}
   - {fileID: 21300000, guid: 970b113b06fa34b75b2b994ce3ef2e2d, type: 3}
   - {fileID: 21300000, guid: f78a615bd3a8b48a1b3194a28618724e, type: 3}
   - {fileID: 21300000, guid: 22fcb16bb7b9044ce9280b9c66f9bb46, type: 3}
@@ -150,11 +151,13 @@ SpriteAtlas:
   - {fileID: 21300000, guid: badde4ecc312c40b6ba92b0c253bfb6b, type: 3}
   - {fileID: 21300000, guid: b5aef7ec65b9e49c8a34588e7e0e6a25, type: 3}
   - {fileID: 21300000, guid: a8d70bfc5bafd452a93eb6df0757472f, type: 3}
+  - {fileID: 21300000, guid: 4689790de1dd848dfa0f35b973d64460, type: 3}
   - {fileID: 21300000, guid: c271e21d310284304b21cb81d45c9001, type: 3}
   - {fileID: 21300000, guid: 69919f4db9f964f25a6292abec62522c, type: 3}
   - {fileID: 21300000, guid: 8b09f55d7c72b40328e504f1494612ad, type: 3}
   - {fileID: 21300000, guid: c5545d5d349514955a4871b3cca2e150, type: 3}
   - {fileID: 21300000, guid: 9f161bcdd87c248a8aac5a6eb1df11ec, type: 3}
+  - {fileID: 21300000, guid: 936a62edbe7bb44b6befc2ca1388bd4a, type: 3}
   - {fileID: 21300000, guid: f6aadeedd9eb24b60aa42ad4eed009c6, type: 3}
   - {fileID: 21300000, guid: 0dee902e92ab04d25a869284b6472783, type: 3}
   - {fileID: 21300000, guid: 0adf952e5047b4fbc913498cd99776bc, type: 3}
@@ -275,6 +278,7 @@ SpriteAtlas:
   - Eye1Base
   - Hair7
   - Mouth8
+  - Splash_1
   - Peppers_1
   - Orange
   - FootClothes5
@@ -297,11 +301,13 @@ SpriteAtlas:
   - Water_1
   - Glasses4
   - Clothes5
+  - FootSteps
   - Cola
   - Hair1
   - Shelf_2_glass_face
   - Window2
   - Clothes7
+  - Splash_2
   - Perfumes_1
   - Mouth4
   - Chair_1

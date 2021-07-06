@@ -48,11 +48,31 @@ public class ShopModel
         return !Unwashes.ContainsKey(coords);
     }
 
+    public bool AddRandomUnwash()
+    {
+        var random = new System.Random();
+        var coords = new Vector2Int(-1, -1);
+        foreach (var kvp in Grid)
+        {
+            if (kvp.Value.buildState <= 0 && Unwashes.ContainsKey(kvp.Key) == false)
+            {
+                coords = kvp.Key;
+                if (random.NextDouble() < 0.2f) break;
+            }
+        }
+        if (coords != new Vector2Int(-1, -1))
+        {
+            return AddUnwash(coords, random.Next(1, 4));
+        }
+        return false;
+    }
+
     public bool AddUnwash(Vector2Int coords, int unwashIdIndex)
     {
         if (CanPlaceUnwash(coords))
         {
             Unwashes[coords] = unwashIdIndex;
+            UnwashAdded(coords);
             return true;
         }
         return false;
@@ -60,7 +80,13 @@ public class ShopModel
 
     public bool RemoveUnwash(Vector2Int coords)
     {
-        return Unwashes.Remove(coords);
+        var result = Unwashes.Remove(coords);
+        if (result)
+        {
+            UnwashRemoved(coords);
+        }
+
+        return result;
     }
 
     public bool CanPlaceShopObject(ShopObjectModelBase shopObject)

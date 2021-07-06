@@ -21,6 +21,8 @@ MonoBehaviour:
     type: 3}
   FloorPrefab: {fileID: 1675221126319874769, guid: 0161fd5228c06488f8ac900d1259fb2f,
     type: 3}
+  OnFloorItemPrefab: {fileID: 1675221126319874769, guid: f96bea12d333f4ddc80166332a4cc13e,
+    type: 3}
   WallPrefab: {fileID: 2794988592096314229, guid: a1cf383c968af47f2919b9d89ffd7bc1,
     type: 3}
   WindowPrefab: {fileID: 2794988592096314229, guid: 598d2a741cbc4467f856c2ac47898e88,

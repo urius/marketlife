@@ -18,6 +18,16 @@ public class SpritesProvider
         return GetSprite(SpriteAtlasId.GameplayAtlas, $"Floor{floorId}");
     }
 
+    public Sprite GetUnwashSprite(int numericId)
+    {
+        return GetSprite(SpriteAtlasId.GameplayAtlas, $"Unwash{numericId}");
+    }
+
+    public Sprite GetUnwashIcone(int numericId)
+    {
+        return GetSprite(SpriteAtlasId.InterfaceAtlas, $"Unwash{numericId}");
+    }
+
     public Sprite GetWallSprite(int wallId)
     {
         return GetSprite(SpriteAtlasId.GameplayAtlas, $"Wall{wallId}");

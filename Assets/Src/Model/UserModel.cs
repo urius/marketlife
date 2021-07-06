@@ -41,7 +41,7 @@ public class UserModel
         ProgressModel.AddCash(amount);
     }
 
-    public (Dictionary<ProductConfig, int> SoldFromShelfs, Dictionary<ProductConfig, int> SoldFromWarehouse) ProcessOfflineToTime(int targetTime)
+    public OfflineCalculationResult CalculateOfflineToTime(int targetTime)
     {
         var userShopModel = ShopModel;
         var personalModel = userShopModel.PersonalModel;
@@ -54,6 +54,7 @@ public class UserModel
         var hoursSinceLastVisit = secondsSinceLastVisit / 3600f;
         var hoursCeilSinceLastVisit = (int)Math.Ceiling(hoursSinceLastVisit);
         var soldFromShelfsProducts = new Dictionary<ProductConfig, int>(uniqueProductsOnShelfsCount);
+        var cleanedUnwashesAmount = 0;
         var soldFromWarehouseProducts = new Dictionary<ProductConfig, int>(uniqueProductsOnShelfsCount);
         var restWarehouseProductsForMerchandiser = new Dictionary<ProductConfig, int>(uniqueProductsOnShelfsCount);
         var random = new Random(targetTime);
@@ -63,15 +64,17 @@ public class UserModel
             soldFromWarehouseProducts[productModel.Config] = 0;
             restWarehouseProductsForMerchandiser[productModel.Config] = warehouseModel.GetDeliveredProductAmount(productModel.Config.NumericId, targetTime);
         }
+        var unwashesCountAdded = 0;
         var totalShopSquare = userShopModel.ShopDesign.SizeX * userShopModel.ShopDesign.SizeY;
         for (var i = 0; i < hoursCeilSinceLastVisit; i++)
         {
-            var unwashesCount = userShopModel.Unwashes.Count;
+            var unwashesCount = userShopModel.Unwashes.Count + unwashesCountAdded;
             var moodMultiplier = CalculationHelper.CalculateMood(restUsedShelfsVolume, totalShelfsVolume, unwashesCount, totalShopSquare);
             var hourMultiplier = Math.Min(1, hoursSinceLastVisit - i);
             var buyMultiplier = moodMultiplier * hourMultiplier;
             var iterationStartTime = startCalculationTime + i * 3600;
             var isMerchandiserActive = personalModel.GetMaxEndWorkTimeForPersonalType(PersonalType.Merchandiser) > iterationStartTime;
+            var isCleanerActive = personalModel.GetMaxEndWorkTimeForPersonalType(PersonalType.Cleaner) > iterationStartTime;
 
             var haveProductsOnShefsFlag = false;
             foreach (var productModel in restProductsOnShelfs)
@@ -104,12 +107,13 @@ public class UserModel
 
             if (random.NextDouble() <= moodMultiplier)
             {
-                foreach (var kvp in userShopModel.Grid)
+                if (isCleanerActive)
                 {
-                    if (userShopModel.AddUnwash(kvp.Key, random.Next(0, 3)))
-                    {
-                        break;
-                    }
+                    cleanedUnwashesAmount++;
+                }
+                else
+                {
+                    unwashesCountAdded++;
                 }
             }
 
@@ -119,7 +123,7 @@ public class UserModel
             }
         }
 
-        return (soldFromShelfsProducts, soldFromWarehouseProducts);
+        return new OfflineCalculationResult(soldFromShelfsProducts, soldFromWarehouseProducts, unwashesCountAdded, cleanedUnwashesAmount);
     }
 }
 
@@ -252,5 +256,25 @@ public class UserProgressModel
     private int Decode(string base64Input)
     {
         return int.Parse(Base64Helper.Base64Decode(base64Input));
+    }
+}
+
+public class OfflineCalculationResult
+{
+    public readonly Dictionary<ProductConfig, int> SoldFromShelfs;
+    public readonly Dictionary<ProductConfig, int> SoldFromWarehouse;
+    public readonly int UnwashesAddedAmount;
+    public readonly int UnwashesCleanedAmount;
+
+    public OfflineCalculationResult(
+        Dictionary<ProductConfig, int> soldFromShelfs,
+        Dictionary<ProductConfig, int> soldFromWarehouse,
+        int unwashesAddedAmount,
+        int unwashesCleanedAmount)
+    {
+        SoldFromShelfs = soldFromShelfs;
+        SoldFromWarehouse = soldFromWarehouse;
+        UnwashesAddedAmount = unwashesAddedAmount;
+        UnwashesCleanedAmount = unwashesCleanedAmount;
     }
 }

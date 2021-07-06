@@ -185,7 +185,7 @@ SpriteAtlas:
   - Window1
   - button_1_small_red
   - Icon_Shelf_1
-  - FootSteps
+  - Unwash1
   - sign_rotate_left
   - Cola
   - window_caption
@@ -226,7 +226,7 @@ SpriteAtlas:
   - button_1_small_orange
   - Chips
   - Carrots_1
-  - Splash_1
+  - Unwash2
   - Candy_1
   - button_1_small_green
   - Icon_Crowd
@@ -248,7 +248,7 @@ SpriteAtlas:
   - popup_content_inner
   - button_1_long_orange
   - Lipsticks_1
-  - Splash_2
+  - Unwash3
   - skin_top_stribe_yellow
   - Icon_Shelf_5
   - top_bar_bg

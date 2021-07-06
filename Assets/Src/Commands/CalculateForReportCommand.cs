@@ -6,13 +6,18 @@ public struct CalculateForReportCommand
         var playerModel = PlayerModelHolder.Instance.UserModel;
         var playerOfflineReportHolder = PlayerOfflineReportHolder.Instance;
 
-        var (soldFromShelfsProducts, soldFromWarehouseProducts) = playerModel.ProcessOfflineToTime(gameStateModel.ServerTime);
+        var calculationResult = playerModel.CalculateOfflineToTime(gameStateModel.ServerTime);
+
+        for (var i = 0; i < calculationResult.UnwashesAddedAmount; i++)
+        {
+            playerModel.ShopModel.AddRandomUnwash();
+        }
 
         var report = new UserOfflineReportModel(
             playerModel.StatsData.LastVisitTimestamp,
             gameStateModel.ServerTime,
-            soldFromShelfsProducts,
-            soldFromWarehouseProducts);
+            calculationResult.SoldFromShelfs,
+            calculationResult.SoldFromWarehouse);
         playerOfflineReportHolder.SetReport(report);
 
         if (report.IsEmpty == false)

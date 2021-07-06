@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ public class FloorMediator : MonoBehaviour
     private ShopModel _activeShopModel;
 
     private readonly Dictionary<Vector2Int, SpriteRenderer> _floorSprites = new Dictionary<Vector2Int, SpriteRenderer>();
+    private readonly Dictionary<Vector2Int, SpriteRenderer> _unwashesSprites = new Dictionary<Vector2Int, SpriteRenderer>();
 
     private void Awake()
     {
@@ -24,9 +26,16 @@ public class FloorMediator : MonoBehaviour
 
         if (_gameStateModel.ViewingShopModel != null)
         {
-            ActivateForShopModel(_gameStateModel.ViewingShopModel);
-            ShowFloors(_gameStateModel.ViewingShopModel.ShopDesign.Floors);
+            ActivateAndDisplayShopModel(_gameStateModel.ViewingShopModel);
         }
+    }
+
+    private void ActivateAndDisplayShopModel(ShopModel shopModel)
+    {
+        DeactivateCurrentShopModel();
+        ActivateForShopModel(shopModel);
+        ShowFloors(shopModel.ShopDesign.Floors);
+        ShowUnwashes(shopModel.Unwashes);
     }
 
     private void Activate()
@@ -39,6 +48,8 @@ public class FloorMediator : MonoBehaviour
     {
         _activeShopModel = shopModel;
 
+        _activeShopModel.UnwashAdded += OnUnwashAdded;
+        _activeShopModel.UnwashRemoved += OnUnwashRemoved;
         _activeShopModel.ShopDesign.FloorChanged += OnFloorChanged;
         _activeShopModel.ShopDesign.SizeXChanged += OnSizeChanged;
         _activeShopModel.ShopDesign.SizeYChanged += OnSizeChanged;
@@ -47,9 +58,32 @@ public class FloorMediator : MonoBehaviour
     private void DeactivateCurrentShopModel()
     {
         if (_activeShopModel == null) return;
+        _activeShopModel.UnwashAdded -= OnUnwashAdded;
+        _activeShopModel.UnwashRemoved -= OnUnwashRemoved;
         _activeShopModel.ShopDesign.FloorChanged -= OnFloorChanged;
         _activeShopModel.ShopDesign.SizeXChanged -= OnSizeChanged;
         _activeShopModel.ShopDesign.SizeYChanged -= OnSizeChanged;
+    }
+
+    private void OnUnwashRemoved(Vector2Int coords)
+    {
+        if (_unwashesSprites.ContainsKey(coords))
+        {
+            GameObject.Destroy(_unwashesSprites[coords].gameObject);
+            _unwashesSprites.Remove(coords);
+        }
+    }
+
+    private void OnUnwashAdded(Vector2Int coords)
+    {
+        if (_unwashesSprites.ContainsKey(coords))
+        {
+            _unwashesSprites[coords].sprite = _spritesProvider.GetUnwashSprite(_activeShopModel.Unwashes[coords]);
+        }
+        else
+        {
+            CreateUnwash(coords, _activeShopModel.Unwashes[coords]);
+        }
     }
 
     private void OnSizeChanged(int previousSize, int currentSize)
@@ -82,9 +116,7 @@ public class FloorMediator : MonoBehaviour
 
     private void OnViewingShopModelChanged(ShopModel newShopModel)
     {
-        DeactivateCurrentShopModel();
-        ActivateForShopModel(newShopModel);
-        ShowFloors(newShopModel.ShopDesign.Floors);
+        ActivateAndDisplayShopModel(newShopModel);
     }
 
     private void ShowFloors(Dictionary<Vector2Int, int> floorsDataNew)
@@ -115,5 +147,28 @@ public class FloorMediator : MonoBehaviour
         }
 
         keysToRemove.ForEach(k => _floorSprites.Remove(k));
+    }
+
+    private void ShowUnwashes(Dictionary<Vector2Int, int> unwashesData)
+    {
+        foreach (var unwashSprite in _unwashesSprites)
+        {
+            GameObject.Destroy(unwashSprite.Value.gameObject);
+        }
+        _unwashesSprites.Clear();
+
+        foreach (var kvp in unwashesData)
+        {
+            CreateUnwash(kvp.Key, kvp.Value);
+        }
+    }
+
+    private void CreateUnwash(Vector2Int coords, int numericId)
+    {
+        var go = GameObject.Instantiate(PrefabsHolder.Instance.OnFloorItemPrefab, transform);
+        var spriteRenderer = go.GetComponent<SpriteRenderer>();
+        spriteRenderer.sprite = SpritesProvider.Instance.GetUnwashSprite(numericId);
+        spriteRenderer.transform.position = _gridCalculator.CellToWord(coords);
+        _unwashesSprites[coords] = spriteRenderer;
     }
 }

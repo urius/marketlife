@@ -278,7 +278,7 @@ SpriteAtlas:
   - Eye1Base
   - Hair7
   - Mouth8
-  - Splash_1
+  - Unwash2
   - Peppers_1
   - Orange
   - FootClothes5
@@ -301,13 +301,13 @@ SpriteAtlas:
   - Water_1
   - Glasses4
   - Clothes5
-  - FootSteps
+  - Unwash1
   - Cola
   - Hair1
   - Shelf_2_glass_face
   - Window2
   - Clothes7
-  - Splash_2
+  - Unwash3
   - Perfumes_1
   - Mouth4
   - Chair_1

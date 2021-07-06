@@ -56,7 +56,12 @@ public class DataImporter
         var result = new Dictionary<Vector2Int, int>();
         if (unwashes != null)
         {
-            ParseCoordsArrayAndFill(result, unwashes, (c, s) => int.Parse(s));
+            ParseCoordsArrayAndFill(result, unwashes, (c, s) =>
+            {
+                var result = int.Parse(s);
+                if (result == 0) result++;
+                return result;
+            });
         }
 
         return result;

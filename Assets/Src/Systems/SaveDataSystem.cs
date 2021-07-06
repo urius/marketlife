@@ -56,6 +56,8 @@ public class SaveDataSystem
         _shopModel.ShopObjectsChanged += OnShopObjectsChanged;
         _shopModel.ShopObjectPlaced += OnShopObjectPlaced;
         _shopModel.ShopObjectRemoved += OnShopObjectRemoved;
+        _shopModel.UnwashAdded += OnUnwashAdded;
+        _shopModel.UnwashRemoved += OnUnwashRemoved;
         progressModel.CashChanged += OnCashChanged;
         progressModel.GoldChanged += OnGoldChanged;
         progressModel.ExpChanged += OnExpChanged;
@@ -76,6 +78,16 @@ public class SaveDataSystem
         _gameStateModel.GameStateChanged += OnGameStateChanged;
         _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
         _gameStateModel.PopupRemoved += OnPopupRemoved;
+    }
+
+    private void OnUnwashRemoved(Vector2Int coords)
+    {
+        MarkToSaveField(SaveField.Unwashes);
+    }
+
+    private void OnUnwashAdded(Vector2Int coords)
+    {
+        MarkToSaveField(SaveField.Unwashes);
     }
 
     private void OnPopupRemoved()
@@ -272,5 +284,6 @@ public enum SaveField
     Warehouse = 1 << 2,
     Design = 1 << 3,
     ShopObjects = 1 << 4,
-    All = Progress | Personal | Warehouse | Design | ShopObjects,
+    Unwashes = 1 << 5,
+    All = Progress | Personal | Warehouse | Design | ShopObjects | Unwashes,
 }

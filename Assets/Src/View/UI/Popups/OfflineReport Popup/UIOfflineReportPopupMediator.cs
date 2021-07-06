@@ -40,7 +40,10 @@ public class UIOfflineReportPopupMediator : IMediator
         _popupView = popupGo.GetComponent<UITabbedContentPopupView>();
         _popupView.SetSize(670, 730);
 
-        _popupView.SetTitleText(string.Format(_loc.GetLocalization(LocalizationKeys.PopupOfflineReportTitleFormat), _viewModel.ReportModel.HoursPassed));
+        var titleTimePassedStr = _viewModel.ReportModel.HoursPassed >= 1
+            ? string.Format(_loc.GetLocalization(LocalizationKeys.CommonHoursShortFormat), (int)_viewModel.ReportModel.HoursPassed)
+            : string.Format(_loc.GetLocalization(LocalizationKeys.CommonMinutesShortFormat), _viewModel.ReportModel.MinutesPassed);
+        _popupView.SetTitleText(string.Format(_loc.GetLocalization(LocalizationKeys.PopupOfflineReportTitleFormat), titleTimePassedStr));
         _popupView.SetupTabButtons(_viewModel.Tabs.Select(ToTabName).ToArray());
         ShowTab(0);
 

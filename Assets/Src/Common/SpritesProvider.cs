@@ -20,12 +20,12 @@ public class SpritesProvider
 
     public Sprite GetUnwashSprite(int numericId)
     {
-        return GetSprite(SpriteAtlasId.GameplayAtlas, $"Unwash{numericId}");
+        return GetSprite(SpriteAtlasId.GameplayAtlas, $"Unwashes{numericId}");
     }
 
     public Sprite GetUnwashIcone(int numericId)
     {
-        return GetSprite(SpriteAtlasId.InterfaceAtlas, $"Unwash{numericId}");
+        return GetSprite(SpriteAtlasId.InterfaceAtlas, $"unwash_icon_{numericId}");
     }
 
     public Sprite GetWallSprite(int wallId)

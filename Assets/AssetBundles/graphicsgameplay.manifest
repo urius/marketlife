@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1917318931
+CRC: 4265397152
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 30f56b880bc131e25b0b240921d88f04
+    Hash: 8ae4d9fd09f3b27e7ac39efe0b09f8d5
   TypeTreeHash:
     serializedVersion: 2
     Hash: 3dbb92f992534c06c4e322444b68580f
@@ -17,7 +17,7 @@ ClassTypes:
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
-- Assets/External Resources/GameplayGraphicsBundle/Shop/Common/Unwash2.png
+- Assets/External Resources/GameplayGraphicsBundle/Shop/Common/Unwashes3.png
 - Assets/External Resources/GameplayGraphicsBundle/Objects/Shelf_2/Shelf_2_floor.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Hair1.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/Clothes7.png
@@ -63,7 +63,6 @@ Assets:
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Hair8_Profile.png
 - Assets/External Resources/GameplayGraphicsBundle/Objects/Shelf_1/Shelf_1_shadow.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/Clothes4.png
-- Assets/External Resources/GameplayGraphicsBundle/Shop/Common/Unwash3.png
 - Assets/External Resources/GameplayGraphicsBundle/Products/Pizza_1.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Mouth6.png
 - Assets/External Resources/GameplayGraphicsBundle/Objects/Shelf_4/Shelf_4_back.png
@@ -114,6 +113,7 @@ Assets:
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/FootClothes6.png
 - Assets/External Resources/GameplayGraphicsBundle/Shop/Common/WhiteSquare.png
 - Assets/External Resources/GameplayGraphicsBundle/Products/Notebook.png
+- Assets/External Resources/GameplayGraphicsBundle/Shop/Common/Unwashes2.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Mouth7.png
 - Assets/External Resources/GameplayGraphicsBundle/Products/Juice_2.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Mouth2.png
@@ -122,14 +122,15 @@ Assets:
 - Assets/External Resources/GameplayGraphicsBundle/Products/Fanta.png
 - Assets/External Resources/GameplayGraphicsBundle/Products/Carrots_1.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/HandClothes1.png
-- Assets/External Resources/GameplayGraphicsBundle/Objects/Shelf_5/Shelf_5_front_profile.png
+- Assets/External Resources/GameplayGraphicsBundle/People/Clothes/HandClothes7.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Hair8.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/FootClothes7.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Hair5.png
 - Assets/External Resources/GameplayGraphicsBundle/Shop/Walls/Wall6.png
-- Assets/External Resources/GameplayGraphicsBundle/People/Clothes/HandClothes7.png
+- Assets/External Resources/GameplayGraphicsBundle/Objects/Shelf_5/Shelf_5_front_profile.png
 - Assets/External Resources/GameplayGraphicsBundle/Products/ToothPaste.png
 - Assets/External Resources/GameplayGraphicsBundle/Products/Beer.png
+- Assets/External Resources/GameplayGraphicsBundle/Shop/Common/Unwashes1.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Brow2Base.png
 - Assets/External Resources/GameplayGraphicsBundle/Shop/Floors/Floor2.png
 - Assets/External Resources/GameplayGraphicsBundle/Products/Banana.png
@@ -162,7 +163,6 @@ Assets:
 - Assets/External Resources/GameplayGraphicsBundle/Shop/Floors/Floor1.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/Clothes3_Profile.png
 - Assets/External Resources/GameplayGraphicsBundle/Shop/Floors/Floor5.png
-- Assets/External Resources/GameplayGraphicsBundle/Shop/Common/Unwash1.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/Clothes7_Profile.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Mouth5.png
 - Assets/External Resources/GameplayGraphicsBundle/Shop/Walls/Wall4.png

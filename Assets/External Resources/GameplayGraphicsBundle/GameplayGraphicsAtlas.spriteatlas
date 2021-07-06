@@ -32,7 +32,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 5804ef6ef86794aa6ac1d44028fafb7e, type: 3}
-    totalSpriteSurfaceArea: 802129
+    totalSpriteSurfaceArea: 833739
     bindAsDefault: 0
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -59,6 +59,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 800508c2b7d4447a3bfc1173aa439e7e, type: 3}
   - {fileID: 21300000, guid: e4e974d25f92b4efea36dc07f652dff6, type: 3}
   - {fileID: 21300000, guid: 071384d2a471946b7a69c7b94f24d259, type: 3}
+  - {fileID: 21300000, guid: c88fbee28eb4640b2a81ad6de3498756, type: 3}
   - {fileID: 21300000, guid: 6ded7ef2939564324b5961fcee1bd3e0, type: 3}
   - {fileID: 21300000, guid: 8e13d3938e4694af892b18ad41c6d5e6, type: 3}
   - {fileID: 21300000, guid: 505e4ab35bbef49439afbfe3d6849564, type: 3}
@@ -106,6 +107,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 91c7e7c76ca02419e97b9e0db1857a78, type: 3}
   - {fileID: 21300000, guid: 16e528e786ae446d3a199cd9f554687f, type: 3}
   - {fileID: 21300000, guid: 0d896a384eb60488898df36f53aa597a, type: 3}
+  - {fileID: 21300000, guid: 602487483abfc447bb0ac18cc5041939, type: 3}
   - {fileID: 21300000, guid: 40478e58369a045f09609677e5a6f00e, type: 3}
   - {fileID: 21300000, guid: b5bf8b68a28464840b5d72810cd688c9, type: 3}
   - {fileID: 21300000, guid: d9175788f26da4656ad53c67499f24f7, type: 3}
@@ -128,7 +130,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: da26293a83c6247249dcdefff4807072, type: 3}
   - {fileID: 21300000, guid: 185d746a7c1014866b2106373d9b7d35, type: 3}
   - {fileID: 21300000, guid: 180e9a6aa6af04aedb4c1012cb4e229a, type: 3}
-  - {fileID: 21300000, guid: e70d3faad65ce421db021f95d278cfee, type: 3}
+  - {fileID: 21300000, guid: 53b664ca0376440818e25ac615434293, type: 3}
   - {fileID: 21300000, guid: 970b113b06fa34b75b2b994ce3ef2e2d, type: 3}
   - {fileID: 21300000, guid: f78a615bd3a8b48a1b3194a28618724e, type: 3}
   - {fileID: 21300000, guid: 22fcb16bb7b9044ce9280b9c66f9bb46, type: 3}
@@ -151,13 +153,11 @@ SpriteAtlas:
   - {fileID: 21300000, guid: badde4ecc312c40b6ba92b0c253bfb6b, type: 3}
   - {fileID: 21300000, guid: b5aef7ec65b9e49c8a34588e7e0e6a25, type: 3}
   - {fileID: 21300000, guid: a8d70bfc5bafd452a93eb6df0757472f, type: 3}
-  - {fileID: 21300000, guid: 4689790de1dd848dfa0f35b973d64460, type: 3}
   - {fileID: 21300000, guid: c271e21d310284304b21cb81d45c9001, type: 3}
   - {fileID: 21300000, guid: 69919f4db9f964f25a6292abec62522c, type: 3}
   - {fileID: 21300000, guid: 8b09f55d7c72b40328e504f1494612ad, type: 3}
   - {fileID: 21300000, guid: c5545d5d349514955a4871b3cca2e150, type: 3}
   - {fileID: 21300000, guid: 9f161bcdd87c248a8aac5a6eb1df11ec, type: 3}
-  - {fileID: 21300000, guid: 936a62edbe7bb44b6befc2ca1388bd4a, type: 3}
   - {fileID: 21300000, guid: f6aadeedd9eb24b60aa42ad4eed009c6, type: 3}
   - {fileID: 21300000, guid: 0dee902e92ab04d25a869284b6472783, type: 3}
   - {fileID: 21300000, guid: 0adf952e5047b4fbc913498cd99776bc, type: 3}
@@ -209,6 +209,7 @@ SpriteAtlas:
   - Shelf_4_floor
   - Shelf_2_floor
   - Shelf_5_back
+  - Unwashes1
   - Mouth9
   - Clothes1_Profile
   - HandClothes5
@@ -256,6 +257,7 @@ SpriteAtlas:
   - Floor3
   - Wall8
   - HandClothes3
+  - Unwashes2
   - FootClothes2_Profile
   - Beer
   - Shelf_1_shadow
@@ -278,7 +280,7 @@ SpriteAtlas:
   - Eye1Base
   - Hair7
   - Mouth8
-  - Unwash2
+  - Unwashes3
   - Peppers_1
   - Orange
   - FootClothes5
@@ -301,13 +303,11 @@ SpriteAtlas:
   - Water_1
   - Glasses4
   - Clothes5
-  - Unwash1
   - Cola
   - Hair1
   - Shelf_2_glass_face
   - Window2
   - Clothes7
-  - Unwash3
   - Perfumes_1
   - Mouth4
   - Chair_1

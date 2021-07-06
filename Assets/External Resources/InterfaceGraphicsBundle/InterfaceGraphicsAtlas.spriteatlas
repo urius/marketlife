@@ -58,7 +58,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: ed347672ec4ad41ffb84217e5144acdc, type: 3}
   - {fileID: 21300000, guid: 848e139269b1f491b86b90be3f143ea7, type: 3}
   - {fileID: 21300000, guid: adb788d29559f4c858092acd11f95c40, type: 3}
-  - {fileID: 21300000, guid: c88fbee28eb4640b2a81ad6de3498756, type: 3}
   - {fileID: 21300000, guid: 9ad1d113978e94c4d9d9d9a20882466c, type: 3}
   - {fileID: 21300000, guid: 523c1d134aa9c453895d41a9ae7e8b80, type: 3}
   - {fileID: 21300000, guid: 1a8906235a76048078f220d0c8e9b813, type: 3}
@@ -99,7 +98,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 72c1b497050c945b3b55a0b6e9c5256e, type: 3}
   - {fileID: 21300000, guid: b8b9e6e7f732f4216952b57fbccabd70, type: 3}
   - {fileID: 21300000, guid: 0b06a12892a0040edad5797c9934b0b6, type: 3}
-  - {fileID: 21300000, guid: 602487483abfc447bb0ac18cc5041939, type: 3}
   - {fileID: 21300000, guid: 1c51f668a9c914425bd79fa7221b5fd4, type: 3}
   - {fileID: 21300000, guid: e0d6196829f8644fab46052bd8744e57, type: 3}
   - {fileID: 21300000, guid: 66c809989c7fa410f9e4e42bc2899662, type: 3}
@@ -120,8 +118,8 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 0b104c3a210fa4e5a887802a73a203f9, type: 3}
   - {fileID: 21300000, guid: e1e1f17ab004e4ce3963afd10c495d59, type: 3}
   - {fileID: 21300000, guid: 0376dcaa29ea041dca0831e29332670c, type: 3}
+  - {fileID: 21300000, guid: e70d3faad65ce421db021f95d278cfee, type: 3}
   - {fileID: 21300000, guid: 5302aaba45dd54fbb99ff82b032d79c4, type: 3}
-  - {fileID: 21300000, guid: 53b664ca0376440818e25ac615434293, type: 3}
   - {fileID: 21300000, guid: c26810ea8951c4f7ba05a5e5dcd641fb, type: 3}
   - {fileID: 21300000, guid: 288ad3fad7fda4d19b158dab317a88f0, type: 3}
   - {fileID: 21300000, guid: 29eb170b0e7ad42eb97645738622e48c, type: 3}
@@ -146,8 +144,10 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 060ac0ecae44448819c4be17493d1ef5, type: 3}
   - {fileID: 21300000, guid: a2ad2cec45d444918ac7dd670e9e5d44, type: 3}
   - {fileID: 21300000, guid: a56735fcf4bef4f9091f25446ad512ec, type: 3}
+  - {fileID: 21300000, guid: 4689790de1dd848dfa0f35b973d64460, type: 3}
   - {fileID: 21300000, guid: ae46a12dd16874664a541e6cb3d37583, type: 3}
   - {fileID: 21300000, guid: 298bee2dbf79a4ae58df9f6fe4f45827, type: 3}
+  - {fileID: 21300000, guid: 936a62edbe7bb44b6befc2ca1388bd4a, type: 3}
   - {fileID: 21300000, guid: 333e4e0ee5d2d4b21820b87e983ebe97, type: 3}
   - {fileID: 21300000, guid: dafec13efc0d44426a63df1be62d5a7e, type: 3}
   - {fileID: 21300000, guid: 91c56d4e8df2f45eea493e57150277a0, type: 3}
@@ -185,7 +185,6 @@ SpriteAtlas:
   - Window1
   - button_1_small_red
   - Icon_Shelf_1
-  - Unwash1
   - sign_rotate_left
   - Cola
   - window_caption
@@ -226,7 +225,6 @@ SpriteAtlas:
   - button_1_small_orange
   - Chips
   - Carrots_1
-  - Unwash2
   - Candy_1
   - button_1_small_green
   - Icon_Crowd
@@ -247,8 +245,8 @@ SpriteAtlas:
   - skin_top_rating_button
   - popup_content_inner
   - button_1_long_orange
+  - unwashes_icon_2
   - Lipsticks_1
-  - Unwash3
   - skin_top_stribe_yellow
   - Icon_Shelf_5
   - top_bar_bg
@@ -273,8 +271,10 @@ SpriteAtlas:
   - icon_crystal
   - bottom_panel_bg_interior_mode
   - bottom_panel_item_skin
+  - unwashes_icon_1
   - Perfume_2
   - Cream_1
+  - unwashes_icon_3
   - Icon_Shelf_2
   - sign_paint_floor
   - Floor4

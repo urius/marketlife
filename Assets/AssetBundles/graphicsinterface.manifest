@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1732724001
+CRC: 2807154165
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: e61d83840477bf1e272b6fb00e4585e5
+    Hash: 765b24c419420dc6ecd807d930c9e782
   TypeTreeHash:
     serializedVersion: 2
     Hash: ba23c2e8f8b3f5319028008a25497317
@@ -34,6 +34,7 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_long_green.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_small_red.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_long_blue.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/unwashes_icon_2.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/Icon_next1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Water_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Cream_1.png
@@ -70,6 +71,7 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall1.png
 - Assets/External Resources/InterfaceGraphicsBundle/Popups/content_skin_2.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/icon_dollar.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/unwashes_icon_3.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Beer.png
 - Assets/External Resources/InterfaceGraphicsBundle/Popups/item_skin_orange.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/icon_save.png
@@ -103,10 +105,9 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Lipsticks_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Pizza_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Perfume_2.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/Unwash2.png
+- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/sign_doors.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_small_orange.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/bracket.png
-- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/sign_doors.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Chips.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Juice_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/icon_mood.png
@@ -121,7 +122,6 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/Popups/window_caption.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/LimeOn.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/Unwash1.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/ICON_Volume.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_4.png
 - Assets/External Resources/Materials/ParticleStar.mat
@@ -150,11 +150,11 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Eggs_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_3.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Sushi.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/unwashes_icon_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/hint_skin.png
 - Assets/External Resources/InterfaceGraphicsBundle/TopPanel/skin_top_stribe_blue.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Doors/Door1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall8.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Perfumes_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/TopPanel/skin_top_rating_button.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/Unwash3.png
 Dependencies: []

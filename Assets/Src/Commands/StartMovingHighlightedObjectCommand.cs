@@ -17,7 +17,7 @@ public struct StartMovingHighlightedObjectCommand
         }
         else if (highlightState.IsHighlightedDecoration)
         {
-            var coords = highlightState.HighlightedDecorationCoords;
+            var coords = highlightState.HighlightedCoords;
             var shopDesign = shopModel.ShopDesign;
             var decorationType = shopDesign.GetDecorationType(coords);
             int numericId;

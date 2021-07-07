@@ -168,8 +168,6 @@ public class GameStateModel
 
         HighlightState = new HighlightState()
         {
-            IsHighlighted = true,
-            HighlightedDecorationCoords = Vector2Int.zero,
             HighlightedShopObject = shopObjectModel,
         };
         shopObjectModel.TriggerHighlighted(true);
@@ -182,9 +180,20 @@ public class GameStateModel
         ResetHighlightedState(isSilent: true);
         HighlightState = new HighlightState()
         {
-            IsHighlighted = true,
-            HighlightedDecorationCoords = coords,
-            HighlightedShopObject = null,
+            IsHighlightedDecoration = true,
+            HighlightedCoords = coords,
+        };
+
+        HighlightStateChanged();
+    }
+
+    public void SetHighlightedUnwashOn(Vector2Int coords)
+    {
+        ResetHighlightedState(isSilent: true);
+        HighlightState = new HighlightState()
+        {
+            IsHighlightedUnwash = true,
+            HighlightedCoords = coords,
         };
 
         HighlightStateChanged();
@@ -200,18 +209,19 @@ public class GameStateModel
 
 public struct HighlightState
 {
-    public bool IsHighlighted;
-    public Vector2Int HighlightedDecorationCoords;
+    public bool IsHighlightedDecoration;
+    public bool IsHighlightedUnwash;
     public ShopObjectModelBase HighlightedShopObject;
+    public Vector2Int HighlightedCoords;
 
     public static HighlightState Default => new HighlightState()
     {
-        IsHighlighted = false,
-        HighlightedDecorationCoords = Vector2Int.zero,
+        HighlightedCoords = Vector2Int.zero,
         HighlightedShopObject = null
     };
 
-    public bool IsHighlightedDecoration => IsHighlighted == true && HighlightedDecorationCoords != Vector2Int.zero;
+
+    public bool IsHighlighted => IsHighlightedDecoration || IsHighlightedUnwash || HighlightedShopObject != null;
 }
 
 public enum GameStateName

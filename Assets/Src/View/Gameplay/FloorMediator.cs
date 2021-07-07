@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +8,7 @@ public class FloorMediator : MonoBehaviour
     private SpritesProvider _spritesProvider;
     private IMediator _currentPlacingFloorMediator;
     private ShopModel _activeShopModel;
-
+    private SpriteRenderer _highlightedUnwashSpriteRenderer;
     private readonly Dictionary<Vector2Int, SpriteRenderer> _floorSprites = new Dictionary<Vector2Int, SpriteRenderer>();
     private readonly Dictionary<Vector2Int, SpriteRenderer> _unwashesSprites = new Dictionary<Vector2Int, SpriteRenderer>();
 
@@ -42,6 +41,7 @@ public class FloorMediator : MonoBehaviour
     {
         _gameStateModel.ViewingShopModelChanged += OnViewingShopModelChanged;
         _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
+        _gameStateModel.HighlightStateChanged += OnHighlightStateChanged;
     }
 
     private void ActivateForShopModel(ShopModel shopModel)
@@ -63,6 +63,24 @@ public class FloorMediator : MonoBehaviour
         _activeShopModel.ShopDesign.FloorChanged -= OnFloorChanged;
         _activeShopModel.ShopDesign.SizeXChanged -= OnSizeChanged;
         _activeShopModel.ShopDesign.SizeYChanged -= OnSizeChanged;
+    }
+
+    private void OnHighlightStateChanged()
+    {
+        if (_highlightedUnwashSpriteRenderer != null)
+        {
+            _highlightedUnwashSpriteRenderer.color = Color.white;
+            _highlightedUnwashSpriteRenderer = null;
+        }
+
+        if (_gameStateModel.HighlightState.IsHighlightedUnwash)
+        {
+            if (_unwashesSprites.TryGetValue(_gameStateModel.HighlightState.HighlightedCoords, out var spriteRenderer))
+            {
+                _highlightedUnwashSpriteRenderer = spriteRenderer;
+                _highlightedUnwashSpriteRenderer.color = new Color(1, 0, 0, 0.5f);
+            }
+        }
     }
 
     private void OnUnwashRemoved(Vector2Int coords)

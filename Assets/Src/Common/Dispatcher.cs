@@ -34,6 +34,7 @@ public class Dispatcher
     public Action<Vector2, bool, int> UIRequestFlyingPrice = delegate { };
     public Action<Vector2, string> UIRequestFlyingText = delegate { };    
     public Action<Vector2, string, int> UIRequestFlyingProduct = delegate { };
+    public Action<Vector2, int> UIRequestFlyingExp = delegate { };
     public Action UIRequestRemoveCurrentPopup = delegate { };
     public Action<RectTransform, Vector2, ProductConfig> UIOrderProductClicked = delegate { };
     public Action<RectTransform, Vector2, int, ProductModel> UIRequestOrderProductAnimation = delegate { };

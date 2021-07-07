@@ -45,7 +45,7 @@ public class PerimeterMediator : MonoBehaviour
     {
         if (_gameStateModel.HighlightState.IsHighlightedDecoration)
         {
-            HighlightDecorationOn(_gameStateModel.HighlightState.HighlightedDecorationCoords);
+            HighlightDecorationOn(_gameStateModel.HighlightState.HighlightedCoords);
         }
         else
         {

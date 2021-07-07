@@ -234,9 +234,10 @@ public class UserProgressModel
         return false;
     }
 
-    public void SetExp(int newValue)
+    public void AddExp(int amount)
     {
         var valueBefore = ExpAmount;
+        var newValue = valueBefore + amount;
         _expEncoded = Encode(newValue);
         ExpChanged(valueBefore, newValue);
     }

@@ -61,6 +61,7 @@ public abstract class ShopObjectModelBase
 
     public void TriggerHighlighted(bool isHighlighted)
     {
+        if (isHighlighted == IsHighlighted) return;
         IsHighlighted = isHighlighted;
         HighlightStateChanged(isHighlighted);
     }

@@ -108,7 +108,7 @@ public abstract class ShopObjectMediatorBase
 
     private void SetIsHighlighted(bool isHovered)
     {
-        _currentView.SetAllSpritesColor(isHovered ? new Color(0, 1, 0, 0.5f) : Color.white);
+        _currentView.SetAllSpritesColor(isHovered ? new Color(0, 1, 1, 0.5f) : Color.white);
     }
 
     private void OnSideChanged(int previousSide, int newSide)

@@ -21,7 +21,7 @@ public struct RequestRemovePopupCommand
             else
             {
                 var shopDesign = shopModel.ShopDesign;
-                var coords = highlightState.HighlightedDecorationCoords;
+                var coords = highlightState.HighlightedCoords;
                 var decorationType = shopDesign.GetDecorationType(coords);
                 if (decorationType == ShopDecorationObjectType.Door
                     && shopDesign.Doors.Count <= 1)

@@ -33,6 +33,7 @@ public class UIFlyingTextsMediator : IMediator
         _dispatcher.UIRequestFlyingPrice += OnUIRequestFlyingPrice;
         _dispatcher.UIRequestFlyingText += OnUIRequestFlyingText;
         _dispatcher.UIRequestFlyingProduct += OnUIRequestFlyingProduct;
+        _dispatcher.UIRequestFlyingExp += OnUIRequestFlyingExp;
         _dispatcher.CameraMoved += OnCameraMoved;
     }
 
@@ -41,24 +42,32 @@ public class UIFlyingTextsMediator : IMediator
         _dispatcher.UIRequestFlyingPrice -= OnUIRequestFlyingPrice;
         _dispatcher.UIRequestFlyingText -= OnUIRequestFlyingText;
         _dispatcher.UIRequestFlyingProduct -= OnUIRequestFlyingProduct;
+        _dispatcher.UIRequestFlyingExp -= OnUIRequestFlyingExp;
         _dispatcher.CameraMoved -= OnCameraMoved;
+    }
+
+    private void OnUIRequestFlyingExp(Vector2 screenPoint, int expAmount)
+    {
+        var icon = _spritesProvider.GetStarIcon(isBig: false);
+        var view = CreateFlyingTextWithIcon(screenPoint, icon, expAmount);
+        ShowAsFlyingText(view, screenPoint);
     }
 
     private void OnUIRequestFlyingProduct(Vector2 screenPoint, string productKey, int amount)
     {
         var icon = _spritesProvider.GetProductIcon(productKey);
-        var flyingPriceView = CreateFlyingPrice(screenPoint, icon, amount);
+        var flyingPriceView = CreateFlyingTextWithIcon(screenPoint, icon, amount);
         ShowAsFlyingText(flyingPriceView, screenPoint, amount < 0);
     }
 
     private void OnUIRequestFlyingPrice(Vector2 screenPoint, bool isGold, int amount)
     {
         var priceIcon = isGold ? _spritesProvider.GetGoldIcon() : _spritesProvider.GetCashIcon();
-        var flyingPriceView = CreateFlyingPrice(screenPoint, priceIcon, amount);
+        var flyingPriceView = CreateFlyingTextWithIcon(screenPoint, priceIcon, amount);
         ShowAsFlyingText(flyingPriceView, screenPoint);
     }
 
-    private UIFlyingTextView CreateFlyingPrice(Vector2 screenPoint, Sprite image, int amount)
+    private UIFlyingTextView CreateFlyingTextWithIcon(Vector2 screenPoint, Sprite image, int amount)
     {
         var flyingPriceGo = GameObject.Instantiate(_prefabsHolder.UIFlyingTextImagePrefab, _contentTransform);
         var flyingPriceView = flyingPriceGo.GetComponent<UIFlyingTextImageView>();

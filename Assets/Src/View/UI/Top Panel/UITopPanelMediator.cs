@@ -1,3 +1,4 @@
+using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -53,6 +54,12 @@ public class UITopPanelMediator : MonoBehaviour
 
         _playerProgressModel.CashChanged += OnCashChanged;
         _playerProgressModel.GoldChanged += OnGoldChanged;
+        _playerProgressModel.ExpChanged += OnExpChanged;
+    }
+
+    private void OnExpChanged(int previousValue, int currentValue)
+    {
+        _expBarView.SetAmountAnimatedAsync(currentValue);
     }
 
     private void OnCashChanged(int previousValue, int currentValue)

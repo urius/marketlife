@@ -5,6 +5,7 @@ public struct ProcessHighlightCommand
     public void Execute(Vector2Int coords)
     {
         var gameStateModel = GameStateModel.Instance;
+        var gameState = gameStateModel.GameState;
 
         if (gameStateModel.PlacingState != PlacingStateName.None && gameStateModel.PlacingState != PlacingStateName.PlacingProduct)
         {
@@ -32,7 +33,11 @@ public struct ProcessHighlightCommand
             {
                 gameStateModel.SetHighlightedShopObject(shopObjectData.reference);
             }
-            else if (shopModel.ShopDesign.IsHighlightableDecorationOn(coords))
+            else if (gameState != GameStateName.ShopInterior && shopModel.Unwashes.TryGetValue(coords, out var unwashNumericId))
+            {
+                gameStateModel.SetHighlightedUnwashOn(coords);
+            }
+            else if (gameState != GameStateName.ShopSimulation && shopModel.ShopDesign.IsHighlightableDecorationOn(coords))
             {
                 gameStateModel.SetHighlightedDecorationOn(coords);
             }

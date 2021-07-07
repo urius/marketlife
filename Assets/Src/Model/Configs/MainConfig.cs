@@ -7,6 +7,7 @@ public class MainConfig : IProductsConfig, IShelfsConfig, IFloorsConfig, IWallsC
     public readonly int GameplayAtlasVersion;
     public readonly int InterfaceAtlasVersion;
     public readonly int AutoPlacePriceGold;
+    public readonly int RemoveUnwashesRewardExp;    
     public readonly int QuickDeliverPriceGoldPerMinute;
 
     public readonly Dictionary<string, ProductConfig> ProductsConfig;
@@ -26,6 +27,7 @@ public class MainConfig : IProductsConfig, IShelfsConfig, IFloorsConfig, IWallsC
         int gameplayAtlasVersion,
         int interfaceAtlasVersion,
         int autoPlacePriceGold,
+        int removeUnwashesRewardExp,
         int quickDeliverPriceGoldPerMinute,
         Dictionary<string, ProductConfig> productsConfig,
         Dictionary<string, ItemConfig<ShelfConfigDto>> shelfsConfig,
@@ -43,6 +45,7 @@ public class MainConfig : IProductsConfig, IShelfsConfig, IFloorsConfig, IWallsC
         GameplayAtlasVersion = gameplayAtlasVersion;
         InterfaceAtlasVersion = interfaceAtlasVersion;
         AutoPlacePriceGold = autoPlacePriceGold;
+        RemoveUnwashesRewardExp = removeUnwashesRewardExp;
         QuickDeliverPriceGoldPerMinute = quickDeliverPriceGoldPerMinute;
         ProductsConfig = productsConfig;
         ShelfsConfig = shelfsConfig;

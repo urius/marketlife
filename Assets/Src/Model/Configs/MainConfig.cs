@@ -300,6 +300,12 @@ public class ProductConfig
         return (int)Math.Ceiling((amount / (float)_amountIn1000Volume) * SellPricePer1000v);
     }
 
+    public Price GetPriceForAmount(int amount)
+    {
+        var newValue = (int)Math.Ceiling((amount / (float)_amountIn1000Volume) * PricePer1000v.Value);
+        return new Price(newValue, PricePer1000v.IsGold);
+    }
+
     public float GetDemandForVolume(int volume)
     {
         return (int)(DemandPer1000v / (volume * 0.001) * 100) * 0.01f;

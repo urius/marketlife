@@ -41,6 +41,11 @@ public class UserModel
         ProgressModel.AddCash(amount);
     }
 
+    public void AddExp(int amount)
+    {
+        ProgressModel.AddExp(amount);
+    }
+
     public OfflineCalculationResult CalculateOfflineToTime(int targetTime)
     {
         var userShopModel = ShopModel;

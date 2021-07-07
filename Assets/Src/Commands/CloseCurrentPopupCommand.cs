@@ -17,6 +17,7 @@ public struct CloseCurrentPopupCommand
             warehouseModel.RemoveUndeliveredProducts(offlineReport.SoldFromWarehouse, gameStateModel.ServerTime);
             userShopModel.RemoveProducts(offlineReport.SoldFromShelfs);
             playerModel.AddCash(offlineReport.SellProfit); //TODO Animate cash adding
+            playerModel.AddExp(offlineReport.ExpToAdd); //TODO Animate exp adding ?
         }
 
         gameStateModel.RemoveCurrentPopupIfNeeded();

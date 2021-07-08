@@ -64,6 +64,7 @@ public class LocalizationKeys
     public static string CommonMinutesShortFormat = "common_minutes_short_format";
     public static string CommonHoursShortFormat = "common_hours_short_format";
     public static string CommonPersonalNamePrefix = "common_personal_name_";
+    public static string HintTopPanelExpFomat = "hint_top_panel_exp_format";    
     public static string PopupRemoveObjectTitle = "popup_remove_object_title";
     public static string PopupRemoveObjectText = "popup_remove_object_text";
     public static string PopupRemoveProductTitle = "popup_remove_product_title";

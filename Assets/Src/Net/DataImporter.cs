@@ -80,7 +80,8 @@ public class DataImporter
 
     private UserProgressModel ToProgressModel(ShopProgressDto progress)
     {
-        return new UserProgressModel(progress.cash, progress.gold, progress.exp, progress.level);
+        var levelsConfig = GameConfigManager.Instance.LevelsConfig;
+        return new UserProgressModel(levelsConfig, progress.cash, progress.gold, progress.exp);
     }
 
     private ShopWarehouseModel ToWarehouseModel(ShopWarehouseDto warehouseDto)
@@ -263,8 +264,9 @@ public class DataImporter
 
     private UserProgressModel ToProgressModelOld(GetDataOldResponseDataDto data)
     {
+        var levelsConfig = GameConfigManager.Instance.LevelsConfig;
         return new UserProgressModel(
-            int.Parse(data.cash),
+            levelsConfig,
             int.Parse(data.gold),
             int.Parse(data.exp),
             int.Parse(data.level));

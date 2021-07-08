@@ -24,7 +24,9 @@ public class UIHintableView : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (_isEnabled && !_isShowing)
+        if (_isEnabled
+            && !_isShowing
+            && (!string.IsNullOrEmpty(_localizationKey) || !string.IsNullOrEmpty(DisplayText)))
         {
             Show();
         }

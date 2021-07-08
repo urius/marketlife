@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class ShelfModel : ShopObjectModelBase
 {
-    public event Action<int> ProductIsSetOnSlot = delegate { };
-    public event Action<int, ProductModel> ProductRemovedFromSlot = delegate { };
-    public event Action<int, int> ProductAmountChangedOnSlot = delegate { };
+    public event Action<ShelfModel, int> ProductIsSetOnSlot = delegate { };
+    public event Action<ShelfModel, int, ProductModel> ProductRemovedFromSlot = delegate { };
+    public event Action<ShelfModel, int, int> ProductAmountChangedOnSlot = delegate { };
 
     public readonly int PartVolume;
     public readonly int PartsCount;
@@ -32,17 +32,17 @@ public class ShelfModel : ShopObjectModelBase
 
     private void OnSlotProductSet(int slotIndex)
     {
-        ProductIsSetOnSlot(slotIndex);
+        ProductIsSetOnSlot(this, slotIndex);
     }
 
     private void OnSlotProductRemoved(int slotIndex, ProductModel removedProduct)
     {
-        ProductRemovedFromSlot(slotIndex, removedProduct);
+        ProductRemovedFromSlot(this, slotIndex, removedProduct);
     }
 
     private void OnSlotProductAmountChanged(int slotIndex, int amountDelta)
     {
-        ProductAmountChangedOnSlot(slotIndex, amountDelta);
+        ProductAmountChangedOnSlot(this, slotIndex, amountDelta);
     }
 
     public float GetFullnessOnFloor(int partIndex)

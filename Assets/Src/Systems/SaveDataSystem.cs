@@ -13,12 +13,8 @@ public class SaveDataSystem
     private bool _saveInProgress = false;
     private UserModel _playerModel;
 
-    private static SaveDataSystem _internalRef;
-
     public SaveDataSystem()
     {
-        _internalRef = this;
-
         _gameStateModel = GameStateModel.Instance;
         _dispatcher = Dispatcher.Instance;
     }
@@ -189,17 +185,17 @@ public class SaveDataSystem
         shelfModel.ProductRemovedFromSlot -= OnShelfProductRemovedFromSlot;
     }
 
-    private void OnShelfProductRemovedFromSlot(int slotIndex, ProductModel productModel)
+    private void OnShelfProductRemovedFromSlot(ShelfModel shelfModel, int slotIndex, ProductModel productModel)
     {
         MarkToSaveField(SaveField.ShopObjects);
     }
 
-    private void OnShelfProductAmountChangedOnSlot(int slotIndex, int deltaAmount)
+    private void OnShelfProductAmountChangedOnSlot(ShelfModel shelfModel, int slotIndex, int deltaAmount)
     {
         MarkToSaveField(SaveField.ShopObjects);
     }
 
-    private void OnShelfProductIsSetOnSlot(int slotIndex)
+    private void OnShelfProductIsSetOnSlot(ShelfModel shelfModel, int slotIndex)
     {
         MarkToSaveField(SaveField.ShopObjects);
     }

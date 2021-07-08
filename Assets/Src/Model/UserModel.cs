@@ -159,19 +159,23 @@ public class UserProgressModel
     public int Cash => Decode(_cashEncoded);
     public int Gold => Decode(_goldEncoded);
     public int ExpAmount => Decode(_expEncoded);
-    public int Level => Decode(_levelEncoded);
+    public int Level { get; private set; }
+    public int CurrentLevelMinExp { get; private set; }
+    public int NextLevelMinExp { get; private set; }
+    public float LevelProgress => (ExpAmount - CurrentLevelMinExp) / (float)(NextLevelMinExp - CurrentLevelMinExp);
 
+    private readonly ILevelsConfig _levelsConfig;
     private string _cashEncoded;
     private string _goldEncoded;
     private string _expEncoded;
-    private string _levelEncoded;
 
-    public UserProgressModel(int cash, int gold, int expAmount, int level)
+    public UserProgressModel(ILevelsConfig levelsConfig, int cash, int gold, int expAmount)
     {
+        _levelsConfig = levelsConfig;
         _cashEncoded = Encode(cash);
         _goldEncoded = Encode(gold);
         _expEncoded = Encode(expAmount);
-        _levelEncoded = Encode(level);
+        UpdateLevel(_levelsConfig.GetLevelByExp(expAmount));
     }
 
     public void SetCash(int newValue)
@@ -244,14 +248,25 @@ public class UserProgressModel
         var valueBefore = ExpAmount;
         var newValue = valueBefore + amount;
         _expEncoded = Encode(newValue);
+        var levelForNewExp = _levelsConfig.GetLevelByExp(newValue);
+        if (levelForNewExp != Level)
+        {
+            UpdateLevel(levelForNewExp);
+        }
+
         ExpChanged(valueBefore, newValue);
     }
 
-    public void SetLevel(int newValue)
+    private void UpdateLevel(int level)
     {
-        var valueBefore = Level;
-        _levelEncoded = Encode(newValue);
-        LevelChanged(valueBefore, newValue);
+        var levelBefore = Level;
+        Level = level;
+        CurrentLevelMinExp = _levelsConfig.GetExpByLevel(level);
+        NextLevelMinExp = _levelsConfig.GetExpByLevel(level + 1);
+        if (levelBefore > 0 && levelBefore != Level)
+        {
+            LevelChanged(levelBefore, Level);
+        }
     }
 
     private string Encode(int input)

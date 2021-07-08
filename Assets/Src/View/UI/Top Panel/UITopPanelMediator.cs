@@ -1,24 +1,30 @@
-using System;
 using Cysharp.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 
 public class UITopPanelMediator : MonoBehaviour
 {
     [SerializeField] private UITopPanelBarView _crystalsBarView;
     [SerializeField] private UITopPanelBarView _cashBarView;
-    [SerializeField] private UITopPanelBarView _expBarView;
-    [SerializeField] private UITopPanelBarView _moodBarView;
+    [SerializeField] private UITopPanelBarWithProgressView _expBarView;
+    [SerializeField] private TMP_Text _levelText;
+    [SerializeField] private UITopPanelBarWithProgressView _moodBarView;
 
     private GameStateModel _gameStateModel;
     private Dispatcher _dispatcher;
     private PlayerModelHolder _playerModelHolder;
+    private LocalizationManager _loc;
+    private SpritesProvider _spritesProvider;
     private UserProgressModel _playerProgressModel;
+    private ShopModel _playerShopModel;
 
     private void Awake()
     {
         _gameStateModel = GameStateModel.Instance;
         _dispatcher = Dispatcher.Instance;
         _playerModelHolder = PlayerModelHolder.Instance;
+        _loc = LocalizationManager.Instance;
+        _spritesProvider = SpritesProvider.Instance;
     }
 
     public async void Start()
@@ -26,6 +32,7 @@ public class UITopPanelMediator : MonoBehaviour
         await _gameStateModel.GameDataLoadedTask;
 
         _playerProgressModel = _playerModelHolder.UserModel.ProgressModel;
+        _playerShopModel = _playerModelHolder.UserModel.ShopModel;
 
         Initialize();
     }
@@ -42,10 +49,63 @@ public class UITopPanelMediator : MonoBehaviour
 
         _crystalsBarView.Amount = progressModel.Gold;
         _cashBarView.Amount = progressModel.Cash;
-        _expBarView.Amount = progressModel.ExpAmount;
-        //_moodBarView.Amount = progressModel; TODO: calculate mood
+        UpdateExp();
+        SetLevel(progressModel.Level);
+        UpdateMood();
 
         Activate();
+    }
+
+    private void UpdateMood(bool animated = false)
+    {
+        var moodPercent = (int)(_playerShopModel.MoodMultiplier * 100);
+        if (animated)
+        {
+            _moodBarView.SetAmountAnimatedAsync(moodPercent);
+            _moodBarView.SetProgressAnimated(_playerShopModel.MoodMultiplier);
+        }
+        else
+        {
+            _moodBarView.Amount = moodPercent;
+            _moodBarView.SetProgress(_playerShopModel.MoodMultiplier);
+        }
+
+        if (moodPercent >= 70)
+        {
+            _moodBarView.SetProgressBarImageSprite(_spritesProvider.GetTopStribeRed());
+        }
+        else if (moodPercent <= 30)
+        {
+            _moodBarView.SetProgressBarImageSprite(_spritesProvider.GetTopStribeRed());
+        }
+        else
+        {
+            _moodBarView.SetProgressBarImageSprite(_spritesProvider.GetTopStribeYellow());
+        }
+    }
+
+    private void UpdateExp(bool animated = false)
+    {
+        var expAmount = _playerProgressModel.ExpAmount;
+        var levelProgress = _playerProgressModel.LevelProgress;
+        var progresPercent = (int)(_playerProgressModel.LevelProgress * 100);
+        var restExpForLevelup = _playerProgressModel.NextLevelMinExp - expAmount;
+        _expBarView.HintableView.DisplayText = string.Format(_loc.GetLocalization(LocalizationKeys.HintTopPanelExpFomat), progresPercent, restExpForLevelup);
+        if (animated)
+        {
+            _expBarView.SetAmountAnimatedAsync(expAmount);
+            _expBarView.SetProgressAnimated(levelProgress);
+        }
+        else
+        {
+            _expBarView.Amount = expAmount;
+            _expBarView.SetProgress(levelProgress);
+        }
+    }
+
+    private void SetLevel(int level)
+    {
+        _levelText.text = level.ToString();
     }
 
     private void Activate()
@@ -55,11 +115,23 @@ public class UITopPanelMediator : MonoBehaviour
         _playerProgressModel.CashChanged += OnCashChanged;
         _playerProgressModel.GoldChanged += OnGoldChanged;
         _playerProgressModel.ExpChanged += OnExpChanged;
+        _playerProgressModel.LevelChanged += OnLevelChanged;
+        _playerShopModel.MoodChanged += OnMoodChanged;
+    }
+
+    private void OnMoodChanged(float delta)
+    {
+        UpdateMood(animated: true);
+    }
+
+    private void OnLevelChanged(int prevValue, int currentValue)
+    {
+        SetLevel(currentValue);
     }
 
     private void OnExpChanged(int previousValue, int currentValue)
     {
-        _expBarView.SetAmountAnimatedAsync(currentValue);
+        UpdateExp(animated: true);
     }
 
     private void OnCashChanged(int previousValue, int currentValue)

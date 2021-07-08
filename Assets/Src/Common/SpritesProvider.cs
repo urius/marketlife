@@ -128,6 +128,21 @@ public class SpritesProvider
         return GetSprite(SpriteAtlasId.InterfaceAtlas, "sign_friends");
     }
 
+    public Sprite GetTopStribeGreen()
+    {
+        return GetSprite(SpriteAtlasId.InterfaceAtlas, "skin_top_stribe_green");
+    }
+
+    public Sprite GetTopStribeRed()
+    {
+        return GetSprite(SpriteAtlasId.InterfaceAtlas, "skin_top_stribe_red");
+    }
+
+    public Sprite GetTopStribeYellow()
+    {
+        return GetSprite(SpriteAtlasId.InterfaceAtlas, "skin_top_stribe_yellow");
+    }
+
     public Sprite GetUpgradeIcon(UpgradeType upgradeType)
     {
         return upgradeType switch

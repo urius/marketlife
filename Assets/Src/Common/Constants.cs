@@ -12,5 +12,6 @@ public class Constants
     public const string FieldWarehouse = "warehouse";    
     public const string FieldDesign = "design";
     public const string FieldShopObjects = "objects";
-    public const string FieldUnwashes = "unwashes";    
+    public const string FieldUnwashes = "unwashes";
+    public const string LevelsMultiplier = "multiplier";    
 }

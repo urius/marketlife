@@ -11,6 +11,12 @@ public class UITopPanelBarView : MonoBehaviour
     [SerializeField] private TMP_Text _text;
     [SerializeField] private Button _button;
     [SerializeField] private RectTransform _icon;
+    [SerializeField] private UIHintableView _hintableView;
+    public UIHintableView HintableView => _hintableView;
+    [SerializeField]
+    private string _format = "{0:n0}";
+
+    protected const float ChangeAmountDuration = 1.2f;
 
     private const float AnimationInDurationSec = 0.4f;
     private const float AnimationOutDurationSec = 0.6f;
@@ -30,18 +36,20 @@ public class UITopPanelBarView : MonoBehaviour
         set
         {
             _amount = value;
-            _text.text = string.Format("{0:n0}", value);
+            _text.text = string.Format(_format, value);
         }
     }
 
-    public UniTask SetAmountAnimatedAsync(int targetAmount)
+    public UniTask SetAmountAnimatedAsync(float targetAmount)
     {
+        if (targetAmount == _amount) return UniTask.CompletedTask;
+
         var animateIconTask = (targetAmount > _amount) ? JumpIconAsync() : RotateIconAsync();
 
         _text.color = (targetAmount > _amount) ? Color.green : Color.yellow;
         var tsc = new UniTaskCompletionSource();
         LeanTween.cancel(_text.gameObject);
-        var changeTextDuration = 3 * AnimationInDurationSec;
+        var changeTextDuration = ChangeAmountDuration;
         LeanTween.value(_text.gameObject, f => Amount = (int)f, _amount, targetAmount, changeTextDuration)
             .setEaseInOutSine()
             .setOnComplete(() => tsc.TrySetResult());

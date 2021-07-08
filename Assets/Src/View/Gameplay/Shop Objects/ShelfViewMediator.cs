@@ -55,20 +55,20 @@ public class ShelfViewMediator : ShopObjectMediatorBase
         _shelfModel.ProductAmountChangedOnSlot -= OnProductAmountChangedOnSlot;
     }
 
-    private void OnProductIsSetOnSlot(int slotIndex)
+    private void OnProductIsSetOnSlot(ShelfModel shelfModel, int slotIndex)
     {
         UpdateProductViewOnSlot(slotIndex);
         var product = _shelfModel.Slots[slotIndex].Product;
         RequestFlyingProduct(product.Config.Key, product.Amount);
     }
 
-    private void OnProductRemovedFromSlot(int slotIndex, ProductModel removedProduct)
+    private void OnProductRemovedFromSlot(ShelfModel shelfModel, int slotIndex, ProductModel removedProduct)
     {
         UpdateProductViewOnSlot(slotIndex);
         RequestFlyingProduct(removedProduct.Config.Key, -removedProduct.Amount);
     }
 
-    private void OnProductAmountChangedOnSlot(int slotIndex, int deltaAmount)
+    private void OnProductAmountChangedOnSlot(ShelfModel shelfModel, int slotIndex, int deltaAmount)
     {
         UpdateProductViewOnSlot(slotIndex);
         var product = _shelfModel.Slots[slotIndex].Product;

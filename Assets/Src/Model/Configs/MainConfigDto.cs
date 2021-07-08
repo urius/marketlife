@@ -15,6 +15,7 @@ public class MainConfigDto
     public Dictionary<string, ShopDecorationConfigDto> DoorsConfig;
     public Dictionary<string, ProductConfigDto> ProductsConfig;
     public Dictionary<string, PersonalConfigDto> PersonalConfig;
+    public Dictionary<string, float> LevelsConfig;
     public List<UpgradeConfigDto> WarehouseVolumeUpgradesConfig; //Workarond for AOT on WebGL
     public UpgradeConfigDto[] WarehouseSlotsUpgradesConfig;
     public UpgradeConfigDto[] ExtendShopXUpgradesConfig;

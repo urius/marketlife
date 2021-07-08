@@ -1,13 +1,23 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
-public class MainConfig : IProductsConfig, IShelfsConfig, IFloorsConfig, IWallsConfig, IWindowsConfig, IDoorsConfig, IPersonalConfig, IUpgradesConfig
+public class MainConfig :
+    IProductsConfig,
+    IShelfsConfig,
+    IFloorsConfig,
+    IWallsConfig,
+    IWindowsConfig,
+    IDoorsConfig,
+    IPersonalConfig,
+    IUpgradesConfig,
+    ILevelsConfig
 {
     public readonly int GameplayAtlasVersion;
     public readonly int InterfaceAtlasVersion;
     public readonly int AutoPlacePriceGold;
-    public readonly int RemoveUnwashesRewardExp;    
+    public readonly int RemoveUnwashesRewardExp;
     public readonly int QuickDeliverPriceGoldPerMinute;
 
     public readonly Dictionary<string, ProductConfig> ProductsConfig;
@@ -22,6 +32,8 @@ public class MainConfig : IProductsConfig, IShelfsConfig, IFloorsConfig, IWallsC
     public readonly UpgradeConfig[] WarehouseSlotsUpgradesConfig;
     public readonly UpgradeConfig[] ExtendShopXUpgradesConfig;
     public readonly UpgradeConfig[] ExtendShopYUpgradesConfig;
+
+    private readonly float[] _levelsConfig;
 
     public MainConfig(
         int gameplayAtlasVersion,
@@ -40,7 +52,8 @@ public class MainConfig : IProductsConfig, IShelfsConfig, IFloorsConfig, IWallsC
         UpgradeConfig[] warehouseVolumeUpgradesConfig,
         UpgradeConfig[] warehouseSlotsUpgradesConfig,
         UpgradeConfig[] extendShopXUpgradesConfig,
-        UpgradeConfig[] extendShopYUpgradesConfig)
+        UpgradeConfig[] extendShopYUpgradesConfig,
+        float[] levelsConfig)
     {
         GameplayAtlasVersion = gameplayAtlasVersion;
         InterfaceAtlasVersion = interfaceAtlasVersion;
@@ -59,6 +72,7 @@ public class MainConfig : IProductsConfig, IShelfsConfig, IFloorsConfig, IWallsC
         WarehouseSlotsUpgradesConfig = warehouseSlotsUpgradesConfig;
         ExtendShopXUpgradesConfig = extendShopXUpgradesConfig;
         ExtendShopYUpgradesConfig = extendShopYUpgradesConfig;
+        _levelsConfig = levelsConfig;
     }
 
     public UpgradeConfig GetCurrentUpgradeForValue(UpgradeType upgradeType, int value)
@@ -190,6 +204,34 @@ public class MainConfig : IProductsConfig, IShelfsConfig, IFloorsConfig, IWallsC
     public ItemConfig<ShopDecorationConfigDto> GetDoorConfigByNumericId(int doorNumericId)
     {
         return DoorsConfig[$"d_{doorNumericId}"];
+    }
+
+    public int GetExpByLevel(int level)
+    {
+        if (level <= 0) return 0;
+        if (_levelsConfig.Length > level)
+        {
+            return (int)_levelsConfig[level];
+        }
+        else
+        {
+            var multiplier = _levelsConfig[0];
+            var lastDefinedLevelIndex = _levelsConfig.Length - 1;
+            var extraLevels = level - lastDefinedLevelIndex;
+            var pow = Math.Pow(multiplier, extraLevels);
+            var resultRaw = (int)(_levelsConfig[lastDefinedLevelIndex] * pow);
+            return (int)(1000 * Math.Ceiling(resultRaw * 0.001f));
+        }
+    }
+
+    public int GetLevelByExp(int exp)
+    {
+        var result = 1;
+        while (GetExpByLevel(result + 1) <= exp)
+        {
+            result++;
+        }
+        return result;
     }
 
     private IEnumerable<ItemConfig<T>> GetConfigsForLevel<T>(Dictionary<string, ItemConfig<T>> configsDictionary, int level)
@@ -469,4 +511,10 @@ public interface IUpgradesConfig
 {
     UpgradeConfig GetCurrentUpgradeForValue(UpgradeType upgradeType, int value);
     UpgradeConfig GetNextUpgradeForValue(UpgradeType upgradeType, int value);
+}
+
+public interface ILevelsConfig
+{
+    int GetExpByLevel(int level);
+    int GetLevelByExp(int exp);
 }

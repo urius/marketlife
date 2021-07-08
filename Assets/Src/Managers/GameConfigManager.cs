@@ -14,6 +14,7 @@ public class GameConfigManager : ScriptableObject
     public IProductsConfig ProductsConfig => MainConfig;
     public IPersonalConfig PersonalConfig => MainConfig;
     public IUpgradesConfig UpgradesConfig => MainConfig;
+    public ILevelsConfig LevelsConfig => MainConfig;
 
     public async UniTask<bool> LoadConfigAsync()
     {
@@ -37,6 +38,7 @@ public class GameConfigManager : ScriptableObject
         var doorsConfig = ConvertToConfigs(mainConfigDto.DoorsConfig);
         var productsConfig = ToProductsConfigs(mainConfigDto.ProductsConfig);
         var personalConfig = ToPersonalConfigs(mainConfigDto.PersonalConfig);
+        var levelsConfig = ToLevelsConfig(mainConfigDto.LevelsConfig);
 
         return new MainConfig(
             mainConfigDto.GameplayAtlasVersion,
@@ -55,7 +57,27 @@ public class GameConfigManager : ScriptableObject
             ToUpgradeConfigs(UpgradeType.WarehouseVolume, mainConfigDto.WarehouseVolumeUpgradesConfig),
             ToUpgradeConfigs(UpgradeType.WarehouseSlots, mainConfigDto.WarehouseSlotsUpgradesConfig),
             ToUpgradeConfigs(UpgradeType.ExpandX, mainConfigDto.ExtendShopXUpgradesConfig),
-            ToUpgradeConfigs(UpgradeType.ExpandY, mainConfigDto.ExtendShopYUpgradesConfig));
+            ToUpgradeConfigs(UpgradeType.ExpandY, mainConfigDto.ExtendShopYUpgradesConfig),
+            levelsConfig);
+    }
+
+    private float[] ToLevelsConfig(Dictionary<string, float> levelsConfig)
+    {
+        var result = new float[levelsConfig.Count + 1];
+        result[1] = 0;
+        foreach (var kvp in levelsConfig)
+        {
+            if (kvp.Key == Constants.LevelsMultiplier)
+            {
+                result[0] = kvp.Value;
+            }
+            else
+            {
+                var index = int.Parse(kvp.Key.Split('_')[1]);
+                result[index] = kvp.Value;
+            }
+        }
+        return result;
     }
 
     private UpgradeConfig[] ToUpgradeConfigs(UpgradeType upgradeType, IList<UpgradeConfigDto> upgradesConfigsDto)

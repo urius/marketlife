@@ -19,8 +19,8 @@ public class ShopModel
     public readonly Dictionary<Vector2Int, (int buildState, ShopObjectModelBase reference)> Grid;
 
     private float _moodMultiplier;
-    private int _totalShelfsVolume;
-    private int _usedShelfsVolume;
+    private int _totalFreeShelfSlots;
+    private int _totalUsedShelfSlots;
 
     public ShopModel(
         ShoDesignModel shopDesign,
@@ -45,6 +45,8 @@ public class ShopModel
     }
 
     public float MoodMultiplier => _moodMultiplier;
+    public int SlotsFullnessPercent => (int)(100 * ((float)_totalUsedShelfSlots / (_totalUsedShelfSlots + _totalFreeShelfSlots)));
+    public int ClarityPercent => (int)(100 * (1f - (float)Unwashes.Count / (ShopDesign.SizeX * ShopDesign.SizeY)));
 
     public bool CanPlaceUnwash(Vector2Int coords)
     {
@@ -127,8 +129,20 @@ public class ShopModel
         ShopObjects[shopObject.Coords] = shopObject;
         if (shopObject.Type == ShopObjectType.Shelf)
         {
-            SubscribeOnShelfModel(shopObject as ShelfModel);
-            RecalculateMood();
+            var shelfModel = shopObject as ShelfModel;
+            SubscribeOnShelfModel(shelfModel);
+            foreach (var slot in shelfModel.Slots)
+            {
+                if (slot.HasProduct)
+                {
+                    _totalUsedShelfSlots++;
+                }
+                else
+                {
+                    _totalFreeShelfSlots++;
+                }
+            }
+            UpdateMood();
         }
 
         RefillGrid();
@@ -157,8 +171,20 @@ public class ShopModel
             ShopObjects.Remove(shopObject.Coords);
             if (shopObject.Type == ShopObjectType.Shelf)
             {
-                UnsubscribeFromShelfModel(shopObject as ShelfModel);
-                RecalculateMood();
+                var shelfModel = shopObject as ShelfModel;
+                UnsubscribeFromShelfModel(shelfModel);
+                foreach (var slot in shelfModel.Slots)
+                {
+                    if (slot.HasProduct)
+                    {
+                        _totalUsedShelfSlots--;
+                    }
+                    else
+                    {
+                        _totalFreeShelfSlots--;
+                    }
+                }
+                UpdateMood();
             }
 
             RefillGrid();
@@ -394,45 +420,55 @@ public class ShopModel
 
     private void RecalculateMood()
     {
-        (_, _totalShelfsVolume, _usedShelfsVolume) = GetAllProductsInfo();
+        _totalUsedShelfSlots = 0;
+        _totalFreeShelfSlots = 0;
+        foreach (var kvp in ShopObjects)
+        {
+            if (kvp.Value.Type == ShopObjectType.Shelf)
+            {
+                var shelfModel = kvp.Value as ShelfModel;
+                foreach (var slot in shelfModel.Slots)
+                {
+                    if (slot.HasProduct)
+                    {
+                        _totalUsedShelfSlots++;
+                    }
+                    else
+                    {
+                        _totalFreeShelfSlots++;
+                    }
+                }
+            }
+        }
         UpdateMood();
     }
 
     private void SubscribeOnShelfModel(ShelfModel shelfModel)
     {
         shelfModel.ProductIsSetOnSlot += OnShelfProductIsSetOnSlot;
-        shelfModel.ProductAmountChangedOnSlot += OnShelfProductAmountChangedOnSlot;
         shelfModel.ProductRemovedFromSlot += OnShelfProductRemovedFromSlot;
     }
 
     private void UnsubscribeFromShelfModel(ShelfModel shelfModel)
     {
         shelfModel.ProductIsSetOnSlot -= OnShelfProductIsSetOnSlot;
-        shelfModel.ProductAmountChangedOnSlot -= OnShelfProductAmountChangedOnSlot;
         shelfModel.ProductRemovedFromSlot -= OnShelfProductRemovedFromSlot;
     }
 
     private void OnShelfProductIsSetOnSlot(ShelfModel shelfModel, int slotIndex)
     {
-        var product = shelfModel.Slots[slotIndex].Product;
-        var newVolume = product.Amount * product.Config.Volume;
-        _usedShelfsVolume = Math.Min(_usedShelfsVolume + newVolume, _totalShelfsVolume);
-        UpdateMood();
-    }
-
-    private void OnShelfProductAmountChangedOnSlot(ShelfModel shelfModel, int slotIndex, int deltaAmount)
-    {
-        var product = shelfModel.Slots[slotIndex].Product;
-        var newVolume = deltaAmount * product.Config.Volume;
-        _usedShelfsVolume = Math.Min(_usedShelfsVolume + newVolume, _totalShelfsVolume);
-        _usedShelfsVolume = Math.Max(0, _usedShelfsVolume);
-        UpdateMood();
+        if (shelfModel.Slots[slotIndex].HasProduct && shelfModel.Slots[slotIndex].Product.Amount > 0)
+        {
+            _totalUsedShelfSlots++;
+            _totalFreeShelfSlots--;
+            UpdateMood();
+        }
     }
 
     private void OnShelfProductRemovedFromSlot(ShelfModel shelfModel, int slotIndex, ProductModel productModel)
     {
-        var newVolume = productModel.Amount * productModel.Config.Volume;
-        _usedShelfsVolume = Math.Max(_usedShelfsVolume + newVolume, _totalShelfsVolume);
+        _totalUsedShelfSlots--;
+        _totalFreeShelfSlots++;
         UpdateMood();
     }
 
@@ -441,7 +477,7 @@ public class ShopModel
         var totalShopSquare = ShopDesign.SizeX * ShopDesign.SizeY;
         var unwashesCount = Unwashes.Count;
         var moodMultiplierBefore = _moodMultiplier;
-        _moodMultiplier = CalculationHelper.CalculateMood(_usedShelfsVolume, _totalShelfsVolume, unwashesCount, totalShopSquare);
+        _moodMultiplier = CalculationHelper.CalculateMood(_totalUsedShelfSlots, _totalFreeShelfSlots + _totalUsedShelfSlots, unwashesCount, totalShopSquare);
         MoodChanged(_moodMultiplier - moodMultiplierBefore);
     }
 

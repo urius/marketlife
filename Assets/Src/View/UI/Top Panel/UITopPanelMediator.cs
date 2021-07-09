@@ -58,6 +58,7 @@ public class UITopPanelMediator : MonoBehaviour
 
     private void UpdateMood(bool animated = false)
     {
+        UpdateMoodHint();
         var moodPercent = (int)(_playerShopModel.MoodMultiplier * 100);
         if (animated)
         {
@@ -72,7 +73,7 @@ public class UITopPanelMediator : MonoBehaviour
 
         if (moodPercent >= 70)
         {
-            _moodBarView.SetProgressBarImageSprite(_spritesProvider.GetTopStribeRed());
+            _moodBarView.SetProgressBarImageSprite(_spritesProvider.GetTopStribeGreen());
         }
         else if (moodPercent <= 30)
         {
@@ -82,6 +83,11 @@ public class UITopPanelMediator : MonoBehaviour
         {
             _moodBarView.SetProgressBarImageSprite(_spritesProvider.GetTopStribeYellow());
         }
+    }
+
+    private void UpdateMoodHint()
+    {
+        _moodBarView.HintableView.DisplayText = string.Format(_loc.GetLocalization(LocalizationKeys.HintTopPanelMoodFormat), _playerShopModel.SlotsFullnessPercent, _playerShopModel.ClarityPercent);
     }
 
     private void UpdateExp(bool animated = false)

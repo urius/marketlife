@@ -42,6 +42,7 @@ public class EventsHandleSystem
         _dispatcher.UIShelfContentRemoveProductClicked += OnUIShelfContentRemoveProductClicked;
         _dispatcher.UIWarehousePopupSlotClicked += OnUIWarehousePopupSlotClicked;
         _dispatcher.UIUpgradePopupBuyClicked += OnUIUpgradePopupBuyClicked;
+        _dispatcher.UITopPanelLevelUpAnimationFinished += OnUITopPanelLevelUpAnimationFinished;
         _dispatcher.MouseCellCoordsUpdated += OnMouseCellCoordsUpdated;
         _dispatcher.BottomPanelInteriorClicked += BottomPanelInteriorClicked;
         _dispatcher.BottomPanelManageButtonClicked += BottomPanelManageClicked;
@@ -52,6 +53,11 @@ public class EventsHandleSystem
 
         _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
         _gameStateModel.GameStateChanged += OnGameStateChanged;
+    }
+
+    private void OnUITopPanelLevelUpAnimationFinished()
+    {
+        new ShowLevelUpPopupCommand().Execute();
     }
 
     private void OnUIBottomPanelAutoPlaceClicked()

@@ -160,6 +160,7 @@ public class UserProgressModel
     public int Gold => Decode(_goldEncoded);
     public int ExpAmount => Decode(_expEncoded);
     public int Level { get; private set; }
+    public int PreviousLevel { get; private set; }
     public int CurrentLevelMinExp { get; private set; }
     public int NextLevelMinExp { get; private set; }
     public float LevelProgress => (ExpAmount - CurrentLevelMinExp) / (float)(NextLevelMinExp - CurrentLevelMinExp);
@@ -259,13 +260,13 @@ public class UserProgressModel
 
     private void UpdateLevel(int level)
     {
-        var levelBefore = Level;
+        PreviousLevel = Level;
         Level = level;
         CurrentLevelMinExp = _levelsConfig.GetExpByLevel(level);
         NextLevelMinExp = _levelsConfig.GetExpByLevel(level + 1);
-        if (levelBefore > 0 && levelBefore != Level)
+        if (PreviousLevel > 0 && PreviousLevel != Level)
         {
-            LevelChanged(levelBefore, Level);
+            LevelChanged(PreviousLevel, Level);
         }
     }
 

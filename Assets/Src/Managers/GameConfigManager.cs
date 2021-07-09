@@ -12,6 +12,11 @@ public class GameConfigManager : ScriptableObject
 
     public MainConfig MainConfig { get; private set; }
     public IProductsConfig ProductsConfig => MainConfig;
+    public IShelfsConfig ShelfsConfig => MainConfig;
+    public IFloorsConfig FloorsConfig => MainConfig;
+    public IWallsConfig WallsConfig => MainConfig;
+    public IWindowsConfig WindowsConfig => MainConfig;
+    public IDoorsConfig DoorsConfig => MainConfig;
     public IPersonalConfig PersonalConfig => MainConfig;
     public IUpgradesConfig UpgradesConfig => MainConfig;
     public ILevelsConfig LevelsConfig => MainConfig;

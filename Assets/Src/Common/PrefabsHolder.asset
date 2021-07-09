@@ -51,6 +51,8 @@ MonoBehaviour:
     type: 3}
   Shelf5ProfilePrefab: {fileID: 8402292013250654598, guid: b1b731eaca1e24bc08c20c5368eb6f14,
     type: 3}
+  UIRaycastsBlocker: {fileID: 8390160868129214309, guid: 092e92334f79f42bcb5614acf7e70f7c,
+    type: 3}
   UIBottomPanelScrollItemPrefab: {fileID: 875298350171009047, guid: bf774f8a333124ccd8cf0619d9ddcf62,
     type: 3}
   UIHintPrefab: {fileID: 7042431327963569682, guid: 0f4ec624a6e5a4274a5aafd6c3fb6e18,
@@ -66,6 +68,8 @@ MonoBehaviour:
   UIPlacingProductPrefab: {fileID: 3510333535774996464, guid: 4e7f8e23cc19c49b99ebcdd582113e07,
     type: 3}
   UIContentPopupPrefab: {fileID: 5173990274866861764, guid: cdcf6da1c70f14a30baf46a6758bea09,
+    type: 3}
+  UIContentPopupPlusPrefab: {fileID: 1657176778564376226, guid: dada4749e469446f7aef99f94827a928,
     type: 3}
   UITabbedContentPopupPrefab: {fileID: 6701860279966104194, guid: 39782c310484f40029acb648d8fccfb2,
     type: 3}

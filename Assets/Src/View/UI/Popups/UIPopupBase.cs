@@ -18,7 +18,7 @@ public abstract class UIPopupBase : MonoBehaviour
 
     private CanvasGroup _popupBodyCanvasGroup;
 
-    public void Awake()
+    public virtual void Awake()
     {
         _popupBodyCanvasGroup = _popupBodyRectTransform.gameObject.GetComponent<CanvasGroup>();
 

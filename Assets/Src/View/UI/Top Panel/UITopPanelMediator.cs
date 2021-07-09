@@ -37,12 +37,6 @@ public class UITopPanelMediator : MonoBehaviour
         Initialize();
     }
 
-    private void OnPlayerShopModelSet()
-    {
-        _gameStateModel.PlayerShopModelWasSet -= OnPlayerShopModelSet;
-        Initialize();
-    }
-
     private void Initialize()
     {
         var progressModel = _playerProgressModel;
@@ -130,9 +124,12 @@ public class UITopPanelMediator : MonoBehaviour
         UpdateMood(animated: true);
     }
 
-    private void OnLevelChanged(int prevValue, int currentValue)
+    private async void OnLevelChanged(int prevValue, int currentValue)
     {
-        SetLevel(currentValue);
+        _dispatcher.UIRequestBlockRaycasts();
+        await ShowNewLevelAnimationAsync(currentValue);
+        _dispatcher.UIRequestUnblockRaycasts();
+        _dispatcher.UITopPanelLevelUpAnimationFinished();
     }
 
     private void OnExpChanged(int previousValue, int currentValue)
@@ -162,7 +159,7 @@ public class UITopPanelMediator : MonoBehaviour
         }
     }
 
-    private UniTask ShowNewLevelAnimationAsync()
+    private UniTask ShowNewLevelAnimationAsync(int level)
     {
         var tcs = new UniTaskCompletionSource();
         var psPrefab = PrefabsHolder.Instance.GetRemotePrefab(PrefabsHolder.PSStarsName);
@@ -170,6 +167,7 @@ public class UITopPanelMediator : MonoBehaviour
         var ps = psGo.GetComponent<ParticleSystem>();
         LeanTween.delayedCall(ps.main.duration, async () =>
         {
+            SetLevel(level);
             await _expBarView.JumpAndSaltoIconAsync();
             tcs.TrySetResult();
         });

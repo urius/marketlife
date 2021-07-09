@@ -12,4 +12,5 @@ public enum PopupType
     Warehouse,
     Upgrades,
     OfflineReport,
+    LevelUp,
 }

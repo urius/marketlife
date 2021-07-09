@@ -35,6 +35,7 @@ public class PrefabsHolder : ScriptableObject
     public GameObject Shelf5ProfilePrefab;
 
     //Interface
+    public GameObject UIRaycastsBlocker;
     public GameObject UIBottomPanelScrollItemPrefab;
     public GameObject UIHintPrefab;
     public GameObject UIShelfActionsPrefab;
@@ -43,6 +44,7 @@ public class PrefabsHolder : ScriptableObject
     public GameObject UITextPopupPrefab;
     public GameObject UIPlacingProductPrefab;
     public GameObject UIContentPopupPrefab;
+    public GameObject UIContentPopupPlusPrefab;
     public GameObject UITabbedContentPopupPrefab;
     public GameObject UIOrderProductPopupItemPrefab;
     public GameObject UIShelfContentPopupItemPrefab;

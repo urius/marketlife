@@ -4,15 +4,18 @@ using UnityEngine;
 public class Dispatcher
 {
     public Action<Vector3> CameraMoved = delegate { };
-    public Action MouseMoved = delegate { };    
+    public Action MouseMoved = delegate { };
 
     public Action UIGameViewMouseDown = delegate { };
     public Action UIGameViewMouseUp = delegate { };
     public Action UIGameViewMouseClick = delegate { };
     public Action UIGameViewMouseEnter = delegate { };
     public Action UIGameViewMouseExit = delegate { };
-    public Action UIBottomPanelPointerEnter = delegate { };    
+    public Action UIBottomPanelPointerEnter = delegate { };
     public Action UIBottomPanelPointerExit = delegate { };
+    public Action UIRequestBlockRaycasts = delegate { };
+    public Action UIRequestUnblockRaycasts = delegate { };
+    public Action UITopPanelLevelUpAnimationFinished = delegate { };
 
     public Action<int> UIBottomPanelPlaceShelfClicked = delegate { };
     public Action<int> UIBottomPanelPlaceFloorClicked = delegate { };
@@ -22,7 +25,7 @@ public class Dispatcher
     public Action<int> UIBottomPanelWarehouseSlotClicked = delegate { };
     public Action<int> UIBottomPanelWarehouseQuickDeliverClicked = delegate { };
     public Action<int> UIBottomPanelWarehouseRemoveProductClicked = delegate { };
-    public Action UIBottomPanelAutoPlaceClicked = delegate { };    
+    public Action UIBottomPanelAutoPlaceClicked = delegate { };
 
     public Action UIActionsRotateRightClicked = delegate { };
     public Action UIActionsRotateLeftClicked = delegate { };
@@ -32,7 +35,7 @@ public class Dispatcher
 
     public Action<bool> UIRequestBlinkMoney = delegate { };
     public Action<Vector2, bool, int> UIRequestFlyingPrice = delegate { };
-    public Action<Vector2, string> UIRequestFlyingText = delegate { };    
+    public Action<Vector2, string> UIRequestFlyingText = delegate { };
     public Action<Vector2, string, int> UIRequestFlyingProduct = delegate { };
     public Action<Vector2, int> UIRequestFlyingExp = delegate { };
     public Action UIRequestRemoveCurrentPopup = delegate { };
@@ -41,13 +44,13 @@ public class Dispatcher
     public Action<ShelfContentPopupViewModel, int> UIShelfContentAddProductClicked = delegate { };
     public Action<ShelfContentPopupViewModel, int> UIShelfContentRemoveProductClicked = delegate { };
     public Action<WarehousePopupViewModel, int> UIWarehousePopupSlotClicked = delegate { };
-    public Action<UpgradesPopupItemViewModelBase> UIUpgradePopupBuyClicked = delegate { };    
+    public Action<UpgradesPopupItemViewModelBase> UIUpgradePopupBuyClicked = delegate { };
 
     public Action<Vector2Int> MouseCellCoordsUpdated = delegate { };
     public Action RequestForceMouseCellPositionUpdate = delegate { };
-    
+
     public Action BottomPanelInteriorClicked = delegate { };
-    public Action BottomPanelManageButtonClicked = delegate { };    
+    public Action BottomPanelManageButtonClicked = delegate { };
     public Action BottomPanelInteriorCloseClicked = delegate { };
     public Action BottomPanlelFinishPlacingClicked = delegate { };
     public Action BottomPanelRotateRightClicked = delegate { };

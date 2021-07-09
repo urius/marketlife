@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 public class MainConfig :
     IProductsConfig,
@@ -83,6 +82,22 @@ public class MainConfig :
     public UpgradeConfig GetNextUpgradeForValue(UpgradeType upgradeType, int value)
     {
         return GetNextUpgradeForValueInternal(GetUpgradesFor(upgradeType), value);
+    }
+
+    public IEnumerable<UpgradeConfig> GetAllUpgradesBytype(UpgradeType upgradeType)
+    {
+        switch(upgradeType)
+        {
+            case UpgradeType.ExpandX:
+                return ExtendShopXUpgradesConfig;
+            case UpgradeType.ExpandY:
+                return ExtendShopYUpgradesConfig;
+            case UpgradeType.WarehouseSlots:
+                return WarehouseSlotsUpgradesConfig;
+            case UpgradeType.WarehouseVolume:
+                return WarehouseVolumeUpgradesConfig;
+        }
+        return Enumerable.Empty<UpgradeConfig>();
     }
 
     public IEnumerable<ItemConfig<ShelfConfigDto>> GetShelfConfigsForLevel(int level)
@@ -283,7 +298,8 @@ public class MainConfig :
     }
 }
 
-public class ItemConfig<TConfigDto> where TConfigDto : PlaceableItemConfigDto
+public class ItemConfig<TConfigDto> : IUnlockableConfig
+    where TConfigDto : PlaceableItemConfigDto
 {
     public readonly int NumericId;
     public readonly TConfigDto ConfigDto;
@@ -295,14 +311,15 @@ public class ItemConfig<TConfigDto> where TConfigDto : PlaceableItemConfigDto
         ConfigDto = configDto;
         Price = Price.FromString(configDto.price);
     }
+
+    public int UnlockLevel => ConfigDto.unlock_level;
 }
 
-public class ProductConfig
+public class ProductConfig : IUnlockableConfig
 {
     public readonly int NumericId;
     public readonly string Key;//Sprite name
     public readonly int GroupId;
-    public readonly int UnlockLevel;
     public readonly int Volume;
     public readonly Price PricePer1000v;
     public readonly int ProfitPer1000v;
@@ -336,6 +353,7 @@ public class ProductConfig
     }
 
     public int GroupIndex => GroupId - 1;
+    public int UnlockLevel { get; private set; }
 
     public int GetSellPriceForAmount(int amount)
     {
@@ -383,14 +401,13 @@ public class ProductConfig
     }
 }
 
-public class PersonalConfig
+public class PersonalConfig : IUnlockableConfig
 {
     public readonly string RawIdStr;
     public readonly string TypeIdStr;
     public readonly PersonalType TypeId;
     public readonly int NumericId;
     public readonly string Key;
-    public readonly int UnlockLevel;
     public readonly int WorkHours;
     public readonly Price Price;
 
@@ -407,6 +424,8 @@ public class PersonalConfig
         Price = Price.FromString(dto.price);
     }
 
+    public int UnlockLevel { get; private set; }
+
     private static PersonalType GetPersonalTypeByString(string personalTypeStr)
     {
         return personalTypeStr switch
@@ -419,12 +438,11 @@ public class PersonalConfig
     }
 }
 
-public class UpgradeConfig
+public class UpgradeConfig : IUnlockableConfig
 {
     public readonly UpgradeType UpgradeType;
     public readonly int Value;
     public readonly Price Price;
-    public readonly int UnlockLevel;
     public readonly int UnlockFriends;
 
     public UpgradeConfig(UpgradeType upgradeType, UpgradeConfigDto dto)
@@ -444,6 +462,8 @@ public class UpgradeConfig
         UpgradeType.WarehouseVolume => "add_wh_volume",
         _ => "Undefined upgrade type",
     };
+
+    public int UnlockLevel { get; private set; }
 }
 
 public enum UpgradeType
@@ -511,10 +531,16 @@ public interface IUpgradesConfig
 {
     UpgradeConfig GetCurrentUpgradeForValue(UpgradeType upgradeType, int value);
     UpgradeConfig GetNextUpgradeForValue(UpgradeType upgradeType, int value);
+    IEnumerable<UpgradeConfig> GetAllUpgradesBytype(UpgradeType upgradeType);
 }
 
 public interface ILevelsConfig
 {
     int GetExpByLevel(int level);
     int GetLevelByExp(int exp);
+}
+
+public interface IUnlockableConfig
+{
+    int UnlockLevel { get; }
 }

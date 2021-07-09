@@ -126,7 +126,7 @@ public class UIOfflineReportPopupMediator : IMediator
     private void PutNextCaption(string captionText)
     {
         var captionTransform = GetOrCreateItemToDisplay(_prefabsHolder.UIOfflineReportPopupCaptionPrefab);
-        var captionView = captionTransform.GetComponent<UIOfflineReportPopupCaptionItemView>();
+        var captionView = captionTransform.GetComponent<UIPopupCaptionItemView>();
         captionView.SetText(captionText);
         PutNext(captionTransform);
     }

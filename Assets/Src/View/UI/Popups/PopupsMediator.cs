@@ -50,6 +50,9 @@ public class PopupsMediator : IMediator
             case PopupType.OfflineReport:
                 newMediator = new UIOfflineReportPopupMediator(_contentTransform);
                 break;
+            case PopupType.LevelUp:
+                newMediator = new UILevelUpPopupMediator(_contentTransform);
+                break;
         };
         newMediator.Mediate();
         _popupMediators.Push(newMediator);

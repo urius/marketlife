@@ -75,12 +75,46 @@ public class ShowLevelUpPopupCommand
     private IReadOnlyList<UpgradeConfig> GetNewUpgradesConfigs(int previousLevel, int currentLevel)
     {
         var configs = GameConfigManager.Instance.UpgradesConfig;
-        var expandXUpgrades = configs.GetAllUpgradesBytype(UpgradeType.ExpandX)
-            .Concat(configs.GetAllUpgradesBytype(UpgradeType.ExpandY))
-            .Concat(configs.GetAllUpgradesBytype(UpgradeType.WarehouseSlots))
-            .Concat(configs.GetAllUpgradesBytype(UpgradeType.WarehouseVolume))
-            .Where(c => c.UnlockLevel > previousLevel && c.UnlockLevel <= currentLevel);
-        return expandXUpgrades.ToArray();
+        var expandXUpgrades = GetMaxLevelUPgradeConfigForLEvels(configs.GetAllUpgradesBytype(UpgradeType.ExpandX), previousLevel, currentLevel);
+        var expandYUpgrades = GetMaxLevelUPgradeConfigForLEvels(configs.GetAllUpgradesBytype(UpgradeType.ExpandY), previousLevel, currentLevel);
+        var warehouseSlotsUpgrades = GetMaxLevelUPgradeConfigForLEvels(configs.GetAllUpgradesBytype(UpgradeType.WarehouseSlots), previousLevel, currentLevel);
+        var warehouseVolumeUpgrades = GetMaxLevelUPgradeConfigForLEvels(configs.GetAllUpgradesBytype(UpgradeType.WarehouseVolume), previousLevel, currentLevel);
+
+        var result = new List<UpgradeConfig>(4);
+        if (expandXUpgrades != null)
+        {
+            result.Add(expandXUpgrades);
+        }
+        if (expandYUpgrades != null)
+        {
+            result.Add(expandYUpgrades);
+        }
+        if (warehouseSlotsUpgrades != null)
+        {
+            result.Add(warehouseSlotsUpgrades);
+        }
+        if (warehouseVolumeUpgrades != null)
+        {
+            result.Add(warehouseVolumeUpgrades);
+        }
+        return result;
+    }
+
+    private UpgradeConfig GetMaxLevelUPgradeConfigForLEvels(IEnumerable<UpgradeConfig> configs, int previousLevel, int currentLevel)
+    {
+        var configsForLevels = configs.Where(c => c.UnlockLevel > previousLevel && c.UnlockLevel <= currentLevel);
+        var result = configsForLevels.FirstOrDefault();
+        if (result != null)
+        {
+            foreach (var config in configsForLevels)
+            {
+                if (config.UnlockLevel > result.UnlockLevel)
+                {
+                    result = config;
+                }
+            }
+        }
+        return result;
     }
 
     private IReadOnlyList<T> FilterConfigsByMinLevel<T>(IEnumerable<T> configsForCurrentLevel, int minLevel)

@@ -234,7 +234,7 @@ public class UIUpgradesPopupMediator : IMediator
 
             itemView.SetTitleText(
                 string.Format(
-                    _loc.GetLocalization($"{LocalizationKeys.PopupUpgradesUpgradeTitleFormat}{upgradeConfig.UpgradeTypeStr}"),
+                    _loc.GetLocalization($"{LocalizationKeys.CommonUpgradeNameFormat}{upgradeConfig.UpgradeTypeStr}"),
                     upgradeConfig.Value
                     ));
             itemView.SetDescriptionText(_loc.GetLocalization($"{LocalizationKeys.PopupUpgradesUpgradeDescriptionPrefix}{upgradeConfig.UpgradeTypeStr}"));

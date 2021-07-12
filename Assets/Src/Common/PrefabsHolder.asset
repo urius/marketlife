@@ -81,7 +81,7 @@ MonoBehaviour:
     type: 3}
   UIUpgradePopupItemPrefab: {fileID: 4432199906071516380, guid: 092f72bf224594d2bb7b0b58b513d05c,
     type: 3}
-  UIOfflineReportPopupCaptionPrefab: {fileID: 903694468076398614, guid: 248d6f2cc300f494abeb0f666d89aef9,
+  UIPopupContentCaptionItemPrefab: {fileID: 903694468076398614, guid: 248d6f2cc300f494abeb0f666d89aef9,
     type: 3}
   UIOfflineReportPopupItemPrefab: {fileID: 2115822142520817706, guid: 3e71c03c80fce465f85ff1b365052c7d,
     type: 3}

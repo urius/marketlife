@@ -13,7 +13,7 @@ public class UILevelUpPopupItemView : MonoBehaviour
         _image.sprite = sprite;
     }
 
-    public void SetLeftText(string text, TextAlignmentOptions alignmentOptions = TextAlignmentOptions.Left)
+    public void SetText(string text, TextAlignmentOptions alignmentOptions = TextAlignmentOptions.Left)
     {
         _leftText.alignment = alignmentOptions;
         _leftText.text = text;

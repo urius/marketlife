@@ -20,8 +20,10 @@ public class UIRootCanvasMediator : MonoBehaviour
     private UIFlyingTextsMediator _flyingTextsMediator;
     private PlacingProductMediator _placingProductMediator;
     private PopupsMediator _popupsMediator;
+    private PrefabsHolder _prefabsHolder;
     private Vector3 _mouseDownPosition;
     private int _mouseDownFramesCount;
+    private GameObject _raycastsBlocker;
 
     private void Awake()
     {
@@ -35,6 +37,7 @@ public class UIRootCanvasMediator : MonoBehaviour
         var popupCanvasRectTransform = _popupsCanvas.transform as RectTransform;
         _placingProductMediator = new PlacingProductMediator(popupCanvasRectTransform);
         _popupsMediator = new PopupsMediator(popupCanvasRectTransform);
+        _prefabsHolder = PrefabsHolder.Instance;
 
         PoolCanvasProvider.Instance.SetupPoolCanvas(_poolCanvas);
     }
@@ -47,6 +50,8 @@ public class UIRootCanvasMediator : MonoBehaviour
         _gameViewPanel.PointerUp += OnPointerUp;
         _gameViewPanel.PointerEnter += OnPointerEnter;
         _gameViewPanel.PointerExit += OnPointerExit;
+        _dispatcher.UIRequestBlockRaycasts += OnUIRequestBlockRaycasts;
+        _dispatcher.UIRequestUnblockRaycasts += OnUIRequestUnblockRaycasts;
 
         _saveIconMediator.Mediate();
         _bottomPanelMediator.Mediate();
@@ -54,6 +59,20 @@ public class UIRootCanvasMediator : MonoBehaviour
         _flyingTextsMediator.Mediate();
         _placingProductMediator.Mediate();
         _popupsMediator.Mediate();
+    }
+
+    private void OnUIRequestBlockRaycasts()
+    {
+        _raycastsBlocker = GameObject.Instantiate(_prefabsHolder.UIRaycastsBlocker, transform);
+    }
+
+    private void OnUIRequestUnblockRaycasts()
+    {
+        if (_raycastsBlocker != null)
+        {
+            GameObject.Destroy(_raycastsBlocker);
+            _raycastsBlocker = null;
+        }
     }
 
     private void OnPointerEnter()

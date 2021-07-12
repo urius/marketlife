@@ -11,11 +11,6 @@ public class LevelUpPopupViewModel : PopupViewModelBase
     public IReadOnlyList<PersonalConfig> NewPersonal;
     public IReadOnlyList<UpgradeConfig> NewUpgrades;
 
-    public LevelUpPopupViewModel()
-    {
-
-    }
-
     public LevelUpPopupViewModel(
         IReadOnlyList<ProductConfig> newProducts,
         IReadOnlyList<ItemConfig<ShelfConfigDto>> newShelfs,
@@ -36,5 +31,6 @@ public class LevelUpPopupViewModel : PopupViewModelBase
         NewUpgrades = newUpgrades;
     }
 
+    public bool HasNewDecor => NewFloors.Count > 0 || NewWalls.Count > 0 || NewWindows.Count > 0 || NewDoors.Count > 0;
     public override PopupType PopupType => PopupType.LevelUp;
 }

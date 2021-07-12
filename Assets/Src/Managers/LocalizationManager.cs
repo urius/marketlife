@@ -64,6 +64,8 @@ public class LocalizationKeys
     public static string CommonMinutesShortFormat = "common_minutes_short_format";
     public static string CommonHoursShortFormat = "common_hours_short_format";
     public static string CommonPersonalNamePrefix = "common_personal_name_";
+    public static string CommonContinue = "common_continue";
+    public static string CommonUpgradeNameFormat = "common_upgrade_name_format_";
     public static string HintTopPanelExpFomat = "hint_top_panel_exp_format";
     public static string HintTopPanelMoodFormat = "hint_top_panel_mood_format";    
     public static string PopupRemoveObjectTitle = "popup_remove_object_title";
@@ -83,7 +85,6 @@ public class LocalizationKeys
     public static string PopupUpgradesPersonalTab = "popup_upgrades_personal_tab_name";
     public static string PopupUpgradesPersonalDescriptionPrefix = "popup_upgrades_personal_description_";
     public static string PopupUpgradesUpgradeDescriptionPrefix = "popup_upgrades_upgrade_description_";
-    public static string PopupUpgradesUpgradeTitleFormat = "popup_upgrades_upgrade_title_format_";
     public static string PopupUpgradesPersonalIsWorkingFormat = "popup_upgrades_personal_is_working_format";
     public static string PopupUpgradesUnlockUpgradeCaption = "popup_upgrades_unlock_upgrade_caption";
     public static string PopupUpgradesUnlockUpgradeFriendsFormat = "popup_upgrades_unlock_upgrade_friends_format";
@@ -94,6 +95,18 @@ public class LocalizationKeys
     public static string PopupOfflineReportPersonalTab = "popup_offline_report_personal_tab_name";
     public static string PopupOfflineReportActivityTab = "popup_offline_report_activity_tab_name";
     public static string PopupOfflineReportProfitTabOverallProfit = "popup_offline_report_profit_tab_overall_profit";
+    public static string PopupLevelUpTitle = "popup_levelup_title";
+    public static string PopupLevelUpMessage = "popup_levelup_message";
+    public static string PopupLevelUpNewProducts = "popup_levelup_new_products";
+    public static string PopupLevelUpNewShelfs = "popup_levelup_new_shelfs";
+    public static string PopupLevelUpNewDecor = "popup_levelup_new_decor";
+    public static string PopupLevelUpFloorFormat = "popup_levelup_floor_format";
+    public static string PopupLevelUpWallFormat = "popup_levelup_wall_format";
+    public static string PopupLevelUpWindowFormat = "popup_levelup_window_format";
+    public static string PopupLevelUpDoorFormat = "popup_levelup_door_format";
+    public static string PopupLevelUpNewPersonal = "popup_levelup_new_personal";
+    public static string PopupLevelUpNewUpgrades = "popup_levelup_new_upgrades";
+
     public static string NameShopObjectPrefix = "name_shop_object_";
     public static string NameProductGroupIdPrefix = "name_product_group_id_";
     public static string NameProductIdPrefix = "name_product_id_";

@@ -27,5 +27,6 @@ public struct LoadAssetsCommand
 
         bundle = await loadAudioBundleTask;
         var sounds = bundle.LoadAllAssets<AudioClip>();
+        AudioManager.Instance.SetSounds(sounds);
     }
 }

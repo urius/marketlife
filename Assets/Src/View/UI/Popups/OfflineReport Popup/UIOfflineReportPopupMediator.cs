@@ -41,6 +41,7 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
         _popupView.SetupTabButtons(_viewModel.Tabs.Select(ToTabName).ToArray());
         ShowTab(0);
 
+        AudioManager.Instance.PlaySound(SoundNames.PopupOpen);
         await _popupView.Appear2Async();
 
         Activate();

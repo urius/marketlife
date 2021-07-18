@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: AssetBundlesLoader
   m_EditorClassIdentifier: 
   _assetBundlesURL: https://devman.ru/marketVK/unity/AssetBundles
+  _assetBundlesWebGLURL: https://devman.ru/marketVK/unity/AssetBundles/WebGL
+  _assetBundlesOSXURL: https://devman.ru/marketVK/unity/AssetBundles/OSX

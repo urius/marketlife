@@ -43,7 +43,7 @@ public class debugFaceAnimations : MonoBehaviour
         Debug.Log("debugFaceAnimations start");
 
         await new LoadConfigsCommand().ExecuteAsync();
-        await new LoadGraphicsCommand().ExecuteAsync();
+        await new LoadAssetsCommand().ExecuteAsync();
 
         _hairNumMax = GraphicsManager.Instance.GetAllIncrementiveSprites(SpriteAtlasId.GameplayAtlas, HumanHeadView.HAIR_PREFIX).Length;
         _glassesNumMax = GraphicsManager.Instance.GetAllIncrementiveSprites(SpriteAtlasId.GameplayAtlas, HumanHeadView.GLASSES_PREFIX).Length;

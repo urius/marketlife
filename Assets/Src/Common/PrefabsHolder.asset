@@ -81,7 +81,11 @@ MonoBehaviour:
     type: 3}
   UIUpgradePopupItemPrefab: {fileID: 4432199906071516380, guid: 092f72bf224594d2bb7b0b58b513d05c,
     type: 3}
-  UIPopupContentCaptionItemPrefab: {fileID: 903694468076398614, guid: 248d6f2cc300f494abeb0f666d89aef9,
+  UIOfflineReportPopupCaptionItemPrefab: {fileID: 903694468076398614, guid: 248d6f2cc300f494abeb0f666d89aef9,
     type: 3}
   UIOfflineReportPopupItemPrefab: {fileID: 2115822142520817706, guid: 3e71c03c80fce465f85ff1b365052c7d,
+    type: 3}
+  UILevelUpPopupCaptionItemPrefab: {fileID: 4175141950551408558, guid: 3277be06040b14015bd49ab3fb65cf1f,
+    type: 3}
+  UILevelUpPopupItemPrefab: {fileID: 8962895989521118303, guid: 69cefdf56323845f7989adedbb3d7909,
     type: 3}

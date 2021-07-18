@@ -48,6 +48,7 @@ public class GameConfigManager : ScriptableObject
         return new MainConfig(
             mainConfigDto.GameplayAtlasVersion,
             mainConfigDto.InterfaceAtlasVersion,
+            mainConfigDto.AudioBundleVersion,
             mainConfigDto.AutoPlacePriceGold,
             mainConfigDto.RemoveUnwashesRewardExp,
             mainConfigDto.QuickDeliverPriceGoldPerMinute,

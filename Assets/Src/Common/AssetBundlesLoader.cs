@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -9,7 +8,8 @@ public class AssetBundlesLoader : ScriptableObject
 {
     public static AssetBundlesLoader Instance { get; private set; }
 
-    [SerializeField] private string _assetBundlesURL;
+    [SerializeField] private string _assetBundlesWebGLURL;
+    [SerializeField] private string _assetBundlesOSXURL;
 
     private Dictionary<string, AssetBundle> _bundlesByName = new Dictionary<string, AssetBundle>();
 
@@ -23,7 +23,7 @@ public class AssetBundlesLoader : ScriptableObject
         return null;
     }
 
-    public async UniTask<AssetBundle> LoadOrGetBundle(string name, int version)
+    public async UniTask<AssetBundle> LoadOrGetBundle(string name, int version = -1)
     {
         if (_bundlesByName == null)
         {
@@ -36,10 +36,10 @@ public class AssetBundlesLoader : ScriptableObject
             return _bundlesByName[name];
         }
 
-        var fullUrl = $"{_assetBundlesURL}/{name}";
+        var fullUrl = $"{GetUrl()}/{name}";
         var versionParameterName = $"bundleversion_{name}";
         var lastSavedVersion = PlayerPrefs.GetInt(versionParameterName);
-        if (lastSavedVersion != version)
+        if (lastSavedVersion != version || version < 0)
         {
             Caching.ClearAllCachedVersions(name);
             PlayerPrefs.SetInt(versionParameterName, version);
@@ -59,6 +59,16 @@ public class AssetBundlesLoader : ScriptableObject
 
             return assetBundle;
         }
+    }
+
+    private string GetUrl()
+    {
+        return Application.platform switch
+        {
+            RuntimePlatform.OSXEditor => _assetBundlesOSXURL,
+            RuntimePlatform.WebGLPlayer => _assetBundlesWebGLURL,
+            _ => throw new System.Exception($"AssetBundlesLoader {nameof(GetUrl)}: Unsupported platform type: {Application.platform}"),
+        };
     }
 
     private void OnEnable()

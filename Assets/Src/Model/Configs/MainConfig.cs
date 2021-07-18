@@ -15,6 +15,7 @@ public class MainConfig :
 {
     public readonly int GameplayAtlasVersion;
     public readonly int InterfaceAtlasVersion;
+    public readonly int AudioBundleVersion;
     public readonly int AutoPlacePriceGold;
     public readonly int RemoveUnwashesRewardExp;
     public readonly int QuickDeliverPriceGoldPerMinute;
@@ -37,6 +38,7 @@ public class MainConfig :
     public MainConfig(
         int gameplayAtlasVersion,
         int interfaceAtlasVersion,
+        int audioBundleVersion,
         int autoPlacePriceGold,
         int removeUnwashesRewardExp,
         int quickDeliverPriceGoldPerMinute,
@@ -56,6 +58,7 @@ public class MainConfig :
     {
         GameplayAtlasVersion = gameplayAtlasVersion;
         InterfaceAtlasVersion = interfaceAtlasVersion;
+        AudioBundleVersion = audioBundleVersion;
         AutoPlacePriceGold = autoPlacePriceGold;
         RemoveUnwashesRewardExp = removeUnwashesRewardExp;
         QuickDeliverPriceGoldPerMinute = quickDeliverPriceGoldPerMinute;
@@ -369,6 +372,12 @@ public class ProductConfig : IUnlockableConfig
     public float GetDemandForVolume(int volume)
     {
         return (int)(DemandPer1000v / (volume * 0.001) * 100) * 0.01f;
+    }
+
+    public float GetDemandPercentForVolume(int volume)
+    {
+        var demand = GetDemandForVolume(volume);
+        return (int)(demand * 100);
     }
 
     public int GetAmountInVolume(int volume)

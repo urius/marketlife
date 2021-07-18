@@ -32,7 +32,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 5804ef6ef86794aa6ac1d44028fafb7e, type: 3}
-    totalSpriteSurfaceArea: 833739
+    totalSpriteSurfaceArea: 853060
     bindAsDefault: 0
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -54,6 +54,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: e8cb05227720f4a0684e1be061e56386, type: 3}
   - {fileID: 21300000, guid: 219557221500e44a5a762698fccf8b77, type: 3}
   - {fileID: 21300000, guid: 3c1e6b82fc9894ba7acaf88432ca513a, type: 3}
+  - {fileID: 21300000, guid: 26fe6c8213efb4606aef8062f7558bb7, type: 3}
   - {fileID: 21300000, guid: 571ffe925737a4e6690e8d4552e2f856, type: 3}
   - {fileID: 21300000, guid: 2d68c8a295cde48cc94f6448f775a1b9, type: 3}
   - {fileID: 21300000, guid: 800508c2b7d4447a3bfc1173aa439e7e, type: 3}
@@ -204,6 +205,7 @@ SpriteAtlas:
   - Clothes6
   - Shelf_1_back
   - Hair8
+  - FloorFrame
   - Fanta
   - Wall2
   - Shelf_4_floor

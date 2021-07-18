@@ -1,0 +1,49 @@
+ManifestFileVersion: 0
+CRC: 208731353
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 812afc7cffa8c7824633fbb8e1684b8b
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 9a2ca7bdbd1871f7131daf57de908e0c
+HashAppended: 0
+ClassTypes:
+- Class: 83
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/External Resources/Sounds/close_button_1.mp3
+- Assets/External Resources/Sounds/rotate_object_1.mp3
+- Assets/External Resources/Sounds/button_3.mp3
+- Assets/External Resources/Sounds/delete.mp3
+- Assets/External Resources/Sounds/cleaning_2.mp3
+- Assets/External Resources/Sounds/cleaning_1.mp3
+- Assets/External Resources/Sounds/put_product_1.mp3
+- Assets/External Resources/Sounds/coin_1.mp3
+- Assets/External Resources/Sounds/cashbox_2.mp3
+- Assets/External Resources/Sounds/scroll_open_1.mp3
+- Assets/External Resources/Sounds/new_level.mp3
+- Assets/External Resources/Sounds/button_negative_2.mp3
+- Assets/External Resources/Sounds/cleaning_3.mp3
+- Assets/External Resources/Sounds/negative_1.mp3
+- Assets/External Resources/Sounds/close_button_3.mp3
+- Assets/External Resources/Sounds/new_message_1.mp3
+- Assets/External Resources/Sounds/shopper_take.ogg
+- Assets/External Resources/Sounds/shopper_take.mp3
+- Assets/External Resources/Sounds/product_drops_1.mp3
+- Assets/External Resources/Sounds/cashbox_1.mp3
+- Assets/External Resources/Sounds/starsfall.mp3
+- Assets/External Resources/Sounds/object_placement_1.mp3
+- Assets/External Resources/Sounds/score.mp3
+- Assets/External Resources/Sounds/click_1.mp3
+- Assets/External Resources/Sounds/product_drops_2.mp3
+- Assets/External Resources/Sounds/negative_2.mp3
+- Assets/External Resources/Sounds/cleaning.mp3
+- Assets/External Resources/Sounds/button_2.mp3
+- Assets/External Resources/Sounds/button_5.mp3
+- Assets/External Resources/Sounds/button_4.mp3
+- Assets/External Resources/Sounds/scroll_close_1.mp3
+- Assets/External Resources/Sounds/button_1.mp3
+- Assets/External Resources/Sounds/take_product_1.mp3
+Dependencies: []

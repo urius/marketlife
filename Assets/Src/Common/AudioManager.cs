@@ -39,4 +39,8 @@ public class AudioManager
 public class SoundNames
 {
     public static string PopupOpen = "scroll_open_1";
+    public static string PopupClose = "scroll_close_1";
+    public static string StarsFall = "starsfall";
+    public static string NewLevel = "new_level";
+    public static string ScoreTick = "score";
 }

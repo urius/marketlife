@@ -153,8 +153,8 @@ public class UserProgressModel
 {
     public event Action<int, int> CashChanged = delegate { };
     public event Action<int, int> GoldChanged = delegate { };
-    public event Action<int, int> ExpChanged = delegate { };
-    public event Action<int, int> LevelChanged = delegate { };
+    public event Action<int> ExpChanged = delegate { };
+    public event Action<int> LevelChanged = delegate { };
 
     public int Cash => Decode(_cashEncoded);
     public int Gold => Decode(_goldEncoded);
@@ -254,8 +254,7 @@ public class UserProgressModel
         {
             UpdateLevel(levelForNewExp);
         }
-
-        ExpChanged(valueBefore, newValue);
+        ExpChanged(newValue - valueBefore);
     }
 
     private void UpdateLevel(int level)
@@ -266,7 +265,7 @@ public class UserProgressModel
         NextLevelMinExp = _levelsConfig.GetExpByLevel(level + 1);
         if (PreviousLevel > 0 && PreviousLevel != Level)
         {
-            LevelChanged(PreviousLevel, Level);
+            LevelChanged(Level - PreviousLevel);
         }
     }
 

@@ -40,7 +40,7 @@ public class UILevelUpPopupMediator : UIContentPopupMediator
     {
         if (_viewModel.NewProducts.Count > 0)
         {
-            PutCation(_loc.GetLocalization(LocalizationKeys.PopupLevelUpNewProducts));
+            PutCaption(_loc.GetLocalization(LocalizationKeys.PopupLevelUpNewProducts));
             foreach (var product in _viewModel.NewProducts)
             {
                 var productName = _loc.GetLocalization($"{LocalizationKeys.NameProductIdPrefix}{product.NumericId}");
@@ -51,7 +51,7 @@ public class UILevelUpPopupMediator : UIContentPopupMediator
 
         if (_viewModel.NewShelfs.Count > 0)
         {
-            PutCation(_loc.GetLocalization(LocalizationKeys.PopupLevelUpNewShelfs));
+            PutCaption(_loc.GetLocalization(LocalizationKeys.PopupLevelUpNewShelfs));
             foreach (var shelf in _viewModel.NewShelfs)
             {
                 PutItem(_spritesProvider.GetShelfIcon(shelf.NumericId), _loc.GetLocalization($"{LocalizationKeys.NameShopObjectPrefix}s_{shelf.NumericId}"));
@@ -60,7 +60,7 @@ public class UILevelUpPopupMediator : UIContentPopupMediator
 
         if (_viewModel.HasNewDecor)
         {
-            PutCation(_loc.GetLocalization(LocalizationKeys.PopupLevelUpNewDecor));
+            PutCaption(_loc.GetLocalization(LocalizationKeys.PopupLevelUpNewDecor));
             foreach (var floor in _viewModel.NewFloors)
             {
                 PutItem(_spritesProvider.GetFloorIcon(floor.NumericId), string.Format(_loc.GetLocalization(LocalizationKeys.PopupLevelUpFloorFormat), floor.NumericId));
@@ -84,7 +84,7 @@ public class UILevelUpPopupMediator : UIContentPopupMediator
 
         if (_viewModel.NewPersonal.Count > 0)
         {
-            PutCation(_loc.GetLocalization(LocalizationKeys.PopupLevelUpNewPersonal));
+            PutCaption(_loc.GetLocalization(LocalizationKeys.PopupLevelUpNewPersonal));
             foreach (var personal in _viewModel.NewPersonal)
             {
                 PutItem(_spritesProvider.GetPersonalIcon(personal.Key), _loc.GetLocalization($"{LocalizationKeys.CommonPersonalNamePrefix}{personal.TypeIdStr}"));
@@ -93,7 +93,7 @@ public class UILevelUpPopupMediator : UIContentPopupMediator
 
         if (_viewModel.NewUpgrades.Count > 0)
         {
-            PutCation(_loc.GetLocalization(LocalizationKeys.PopupLevelUpNewUpgrades));
+            PutCaption(_loc.GetLocalization(LocalizationKeys.PopupLevelUpNewUpgrades));
             foreach (var upgrade in _viewModel.NewUpgrades)
             {
                 var upgradeName = string.Format(
@@ -112,7 +112,7 @@ public class UILevelUpPopupMediator : UIContentPopupMediator
         itemView.SetText(text);
     }
 
-    private void PutCation(string text)
+    private void PutCaption(string text)
     {
         var captionRect = GetOrCreateItemToDisplay(_prefabsHolder.UILevelUpPopupCaptionItemPrefab);
         var captionView = captionRect.GetComponent<UIPopupCaptionItemView>();

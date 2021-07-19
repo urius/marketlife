@@ -37,6 +37,8 @@ public abstract class UIPopupBase : MonoBehaviour
 
     public UniTask AppearAsync()
     {
+        AudioManager.Instance.PlaySound(SoundNames.PopupOpen);
+
         var tcs = new UniTaskCompletionSource();
         LeanTween.value(gameObject, a => _popupBodyCanvasGroup.alpha = a, 0, 1, 0.5f * AppearDurationSec);
         LeanTween.value(gameObject, p => _popupBodyRectTransform.anchoredPosition = p, new Vector2(0, -300), Vector2.zero, AppearDurationSec)
@@ -47,6 +49,8 @@ public abstract class UIPopupBase : MonoBehaviour
 
     public UniTask DisppearAsync()
     {
+        AudioManager.Instance.PlaySound(SoundNames.PopupClose);
+
         var tcs = new UniTaskCompletionSource();
         _blockRaycastsImage.color = _blockRaycastsImage.color.SetAlpha(0);
         LeanTween.value(gameObject, a => _popupBodyCanvasGroup.alpha = a, 1, 0, DisppearDurationSec);
@@ -58,6 +62,8 @@ public abstract class UIPopupBase : MonoBehaviour
 
     public UniTask Appear2Async()
     {
+        AudioManager.Instance.PlaySound(SoundNames.PopupOpen);
+
         var tcs = new UniTaskCompletionSource();
         var targetSize = _popupBodyRectTransform.sizeDelta;
         var startSize = new Vector2(targetSize.x, 0);
@@ -70,6 +76,8 @@ public abstract class UIPopupBase : MonoBehaviour
 
     public UniTask Disppear2Async()
     {
+        AudioManager.Instance.PlaySound(SoundNames.PopupClose);
+
         var tcs = new UniTaskCompletionSource();
         var startSize = _popupBodyRectTransform.sizeDelta;
         var targetSize = new Vector2(startSize.x, 0);

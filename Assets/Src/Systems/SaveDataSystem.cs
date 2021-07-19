@@ -245,12 +245,12 @@ public class SaveDataSystem
         MarkToSaveField(SaveField.Design);
     }
 
-    private void OnLevelChanged(int previousValue, int currentValue)
+    private void OnLevelChanged(int delta)
     {
         MarkToSaveField(SaveField.Progress);
     }
 
-    private void OnExpChanged(int previousValue, int currentValue)
+    private void OnExpChanged(int delta)
     {
         MarkToSaveField(SaveField.Progress);
     }

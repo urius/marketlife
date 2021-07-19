@@ -62,7 +62,6 @@ public class UIOrderProductsPopupMediator : IMediator
 
         ShowTab(0);
 
-        AudioManager.Instance.PlaySound(SoundNames.PopupOpen);
         await _popupView.Appear2Async();
 
         Activate();

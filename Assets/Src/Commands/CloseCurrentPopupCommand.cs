@@ -12,12 +12,12 @@ public struct CloseCurrentPopupCommand
             var warehouseModel = userShopModel.WarehouseModel;
             var offlineReport = PlayerOfflineReportHolder.Instance.PlayerOfflineReport;
 
-            gameStateModel.SetGameState(GameStateName.ShopSimulation);
-
-            warehouseModel.RemoveUndeliveredProducts(offlineReport.SoldFromWarehouse, gameStateModel.ServerTime);
+            warehouseModel.RemoveDeliveredProducts(offlineReport.SoldFromWarehouse, gameStateModel.ServerTime);
             userShopModel.RemoveProducts(offlineReport.SoldFromShelfs);
             playerModel.AddCash(offlineReport.SellProfit); //TODO Animate cash adding
             playerModel.AddExp(offlineReport.ExpToAdd); //TODO Animate exp adding ?
+
+            gameStateModel.SetGameState(GameStateName.ShopSimulation);
         }
 
         gameStateModel.RemoveCurrentPopupIfNeeded();

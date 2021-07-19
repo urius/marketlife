@@ -15,8 +15,10 @@ public class UITopPanelMediator : MonoBehaviour
     private PlayerModelHolder _playerModelHolder;
     private LocalizationManager _loc;
     private SpritesProvider _spritesProvider;
+    private AudioManager _audioManager;
     private UserProgressModel _playerProgressModel;
     private ShopModel _playerShopModel;
+    private bool _isLevelUpInProgress;
 
     private void Awake()
     {
@@ -25,6 +27,8 @@ public class UITopPanelMediator : MonoBehaviour
         _playerModelHolder = PlayerModelHolder.Instance;
         _loc = LocalizationManager.Instance;
         _spritesProvider = SpritesProvider.Instance;
+        _audioManager = AudioManager.Instance;
+
     }
 
     public async void Start()
@@ -39,15 +43,18 @@ public class UITopPanelMediator : MonoBehaviour
 
     private void Initialize()
     {
-        var progressModel = _playerProgressModel;
-
-        _crystalsBarView.Amount = progressModel.Gold;
-        _cashBarView.Amount = progressModel.Cash;
-        UpdateExp();
-        SetLevel(progressModel.Level);
-        UpdateMood();
+        SetLevel(_playerProgressModel.Level);
+        UpdateValues();
 
         Activate();
+    }
+
+    private void UpdateValues()
+    {
+        _crystalsBarView.Amount = _playerProgressModel.Gold;
+        _cashBarView.Amount = _playerProgressModel.Cash;
+        UpdateExp();
+        UpdateMood();
     }
 
     private void UpdateMood(bool animated = false)
@@ -86,11 +93,9 @@ public class UITopPanelMediator : MonoBehaviour
 
     private void UpdateExp(bool animated = false)
     {
+        UpdateExpHint();
         var expAmount = _playerProgressModel.ExpAmount;
         var levelProgress = _playerProgressModel.LevelProgress;
-        var progresPercent = (int)(_playerProgressModel.LevelProgress * 100);
-        var restExpForLevelup = _playerProgressModel.NextLevelMinExp - expAmount;
-        _expBarView.HintableView.DisplayText = string.Format(_loc.GetLocalization(LocalizationKeys.HintTopPanelExpFomat), progresPercent, restExpForLevelup);
         if (animated)
         {
             _expBarView.SetAmountAnimatedAsync(expAmount);
@@ -103,6 +108,14 @@ public class UITopPanelMediator : MonoBehaviour
         }
     }
 
+    private void UpdateExpHint()
+    {
+        var expAmount = _playerProgressModel.ExpAmount;
+        var progresPercent = (int)(_playerProgressModel.LevelProgress * 100);
+        var restExpForLevelup = _playerProgressModel.NextLevelMinExp - expAmount;
+        _expBarView.HintableView.DisplayText = string.Format(_loc.GetLocalization(LocalizationKeys.HintTopPanelExpFomat), progresPercent, restExpForLevelup);
+    }
+
     private void SetLevel(int level)
     {
         _levelText.text = level.ToString();
@@ -112,6 +125,7 @@ public class UITopPanelMediator : MonoBehaviour
     {
         _dispatcher.UIRequestBlinkMoney += OnUIRequestBlinkMoney;
 
+        _gameStateModel.GameStateChanged += OnGameStateChanged;
         _playerProgressModel.CashChanged += OnCashChanged;
         _playerProgressModel.GoldChanged += OnGoldChanged;
         _playerProgressModel.ExpChanged += OnExpChanged;
@@ -119,32 +133,79 @@ public class UITopPanelMediator : MonoBehaviour
         _playerShopModel.MoodChanged += OnMoodChanged;
     }
 
-    private void OnMoodChanged(float delta)
+    private void OnGameStateChanged(GameStateName previousState, GameStateName currentState)
     {
-        UpdateMood(animated: true);
+        if (previousState == GameStateName.ReadyForStart)
+        {
+            _cashBarView.SetAmountAnimatedAsync(_playerProgressModel.Cash);
+            _crystalsBarView.SetAmountAnimatedAsync(_playerProgressModel.Gold);
+            UpdateMood(animated: true);
+            if (_isLevelUpInProgress == false)
+            {
+                UpdateExp(animated: true);
+            }
+        }
     }
 
-    private async void OnLevelChanged(int prevValue, int currentValue)
+    private async void OnLevelChanged(int delta)
     {
+        _isLevelUpInProgress = true;
         _dispatcher.UIRequestBlockRaycasts();
-        await ShowNewLevelAnimationAsync(currentValue);
+        await AnimateFillExpToMaxOnLevelAsync();
+        _expBarView.SetProgress(0);
+        var updateExpTask = UpdateExpLevelUpModeAsync();
+        await ShowNewLevelAnimationAsync(_playerProgressModel.Level);
+        await updateExpTask;
         _dispatcher.UIRequestUnblockRaycasts();
         _dispatcher.UITopPanelLevelUpAnimationFinished();
+        _isLevelUpInProgress = false;
     }
 
-    private void OnExpChanged(int previousValue, int currentValue)
+    public UniTask AnimateFillExpToMaxOnLevelAsync()
     {
-        UpdateExp(animated: true);
+        var setAmountTask = _expBarView.SetAmountAnimatedAsync(_playerProgressModel.CurrentLevelMinExp);
+        var setProgressTask = _expBarView.SetProgressAnimatedAsync(1);
+        return UniTask.WhenAll(setAmountTask, setProgressTask);
     }
 
-    private void OnCashChanged(int previousValue, int currentValue)
+    private UniTask UpdateExpLevelUpModeAsync()
     {
-        _cashBarView.SetAmountAnimatedAsync(currentValue);
+        UpdateExpHint();
+        var setAmountTask = _expBarView.SetAmountAnimatedAsync(_playerProgressModel.ExpAmount, needToAnimateIcon: false);
+        var setProgressTask = _expBarView.SetProgressAnimatedAsync(_playerProgressModel.LevelProgress);
+        return UniTask.WhenAll(setAmountTask, setProgressTask);
     }
 
     private void OnGoldChanged(int previousValue, int currentValue)
     {
-        _crystalsBarView.SetAmountAnimatedAsync(currentValue);
+        if (_gameStateModel.IsRealtimeState)
+        {
+            _crystalsBarView.SetAmountAnimatedAsync(currentValue);
+        }
+    }
+
+    private void OnCashChanged(int previousValue, int currentValue)
+    {
+        if (_gameStateModel.IsRealtimeState)
+        {
+            _cashBarView.SetAmountAnimatedAsync(currentValue);
+        }
+    }
+
+    private void OnExpChanged(int delta)
+    {
+        if (_gameStateModel.IsRealtimeState && _isLevelUpInProgress == false)
+        {
+            UpdateExp(animated: true);
+        }
+    }
+
+    private void OnMoodChanged(float delta)
+    {
+        if (_gameStateModel.IsRealtimeState)
+        {
+            UpdateMood(animated: true);
+        }
     }
 
     private async void OnUIRequestBlinkMoney(bool isGold)
@@ -165,9 +226,11 @@ public class UITopPanelMediator : MonoBehaviour
         var psPrefab = PrefabsHolder.Instance.GetRemotePrefab(PrefabsHolder.PSStarsName);
         var psGo = GameObject.Instantiate(psPrefab, _expBarView.transform);
         var ps = psGo.GetComponent<ParticleSystem>();
+        _audioManager.PlaySound(SoundNames.StarsFall);
         LeanTween.delayedCall(ps.main.duration, async () =>
         {
             SetLevel(level);
+            _audioManager.PlaySound(SoundNames.NewLevel);
             await _expBarView.JumpAndSaltoIconAsync();
             tcs.TrySetResult();
         });

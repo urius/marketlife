@@ -16,7 +16,7 @@ public class UITopPanelBarView : MonoBehaviour
     [SerializeField]
     private string _format = "{0:n0}";
 
-    protected const float ChangeAmountDuration = 1.2f;
+    public const float ChangeAmountDuration = 1.2f;
 
     private const float AnimationInDurationSec = 0.4f;
     private const float AnimationOutDurationSec = 0.6f;
@@ -27,6 +27,7 @@ public class UITopPanelBarView : MonoBehaviour
     private Vector3 _iconDefaultRotation;
     private Vector2 _buttonDefaultAnchoredPosition;
     private Color _startTextColor;
+    private AudioManager _audioManager;
     private bool _isAnimationInProgress;
     private int _amount;
 
@@ -35,16 +36,24 @@ public class UITopPanelBarView : MonoBehaviour
         get => _amount;
         set
         {
-            _amount = value;
-            _text.text = string.Format(_format, value);
+            if (_amount != value)
+            {
+                _audioManager.PlaySound(SoundNames.ScoreTick);
+                _amount = value;
+                _text.text = string.Format(_format, value);
+            }
         }
     }
 
-    public UniTask SetAmountAnimatedAsync(float targetAmount)
+    public UniTask SetAmountAnimatedAsync(float targetAmount, bool needToAnimateIcon = true)
     {
         if (targetAmount == _amount) return UniTask.CompletedTask;
 
-        var animateIconTask = (targetAmount > _amount) ? JumpIconAsync() : RotateIconAsync();
+        var animateIconTask = needToAnimateIcon
+            ? ((targetAmount > _amount)
+                ? JumpIconAsync()
+                : RotateIconAsync())
+            : UniTask.CompletedTask;
 
         _text.color = (targetAmount > _amount) ? Color.green : Color.yellow;
         var tsc = new UniTaskCompletionSource();
@@ -63,6 +72,8 @@ public class UITopPanelBarView : MonoBehaviour
         _iconDefaultAnchoredPosition = _icon.anchoredPosition;
         _iconDefaultRotation = _icon.eulerAngles;
         _startTextColor = _text.color;
+
+        _audioManager = AudioManager.Instance;
 
         if (_button != null)
         {

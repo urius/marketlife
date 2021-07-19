@@ -769,7 +769,7 @@ public class ShopWarehouseModel
         SlotsAdded(amount);
     }
 
-    public Dictionary<ProductConfig, int> RemoveUndeliveredProducts(IReadOnlyDictionary<ProductConfig, int> productsToRemove, int targetTimestamp)
+    public Dictionary<ProductConfig, int> RemoveDeliveredProducts(IReadOnlyDictionary<ProductConfig, int> productsToRemove, int targetTimestamp)
     {
         var restProductsToRemove = new Dictionary<ProductConfig, int>(productsToRemove.Count);
         foreach (var inputProductToRemove in productsToRemove)

@@ -23,6 +23,7 @@ public class GameStateModel
 
     public Task GameDataLoadedTask => _dataLoadedTcs.Task;
     public GameStateName GameState { get; private set; } = GameStateName.Initializing;
+    public bool IsRealtimeState => GameState == GameStateName.ShopSimulation;
     public PlacingStateName PlacingState { get; private set; } = PlacingStateName.None;
     public int PlacingDecorationNumericId => _placingIntParameter;
     public int PlacingProductWarehouseSlotIndex => _placingIntParameter;

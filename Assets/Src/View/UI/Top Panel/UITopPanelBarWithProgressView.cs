@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,5 +21,18 @@ public class UITopPanelBarWithProgressView : UITopPanelBarView
     {
         LeanTween.cancel(_progressImage.gameObject);
         _progressImage.transform.LeanScaleX(Math.Max(0, progress), ChangeAmountDuration);
+    }
+
+    public UniTask SetProgressAnimatedAsync(float progress, float duration = -1)
+    {
+        if (duration < 0)
+        {
+            duration = ChangeAmountDuration;
+        }
+        var result = new UniTaskCompletionSource();
+        LeanTween.cancel(_progressImage.gameObject);
+        _progressImage.transform.LeanScaleX(Math.Max(0, progress), duration);
+        LeanTween.delayedCall(duration, () => result.TrySetResult());
+        return result.Task;
     }
 }

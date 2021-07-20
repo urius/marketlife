@@ -4,17 +4,48 @@ using UnityEngine;
 public class RootGameViewMediator : MonoBehaviour
 {
     [SerializeField] private Grid _grid;
+    [SerializeField] private SpriteRenderer _guiCursorRenderer;
 
     private UpdatesProvider _updatesProvider;
+    private Dispatcher _dispatcher;
+    private GameStateModel _gameStateModel;
     private GridCalculator _gridCalculator;
     private int NextSecondUpdate;
 
     private void Awake()
     {
         _updatesProvider = UpdatesProvider.Instance;
+        _dispatcher = Dispatcher.Instance;
+        _gameStateModel = GameStateModel.Instance;
 
         SetupGridCalculator();
         NextSecondUpdate = (int)Time.realtimeSinceStartup + 1;
+
+        Activate();
+    }
+
+    private void Activate()
+    {
+        _dispatcher.MouseCellCoordsUpdated += OnMouseCellCoordsUpdated;
+        _gameStateModel.GameStateChanged += OnGameStateChanged;
+    }
+
+    private void OnGameStateChanged(GameStateName previousState, GameStateName currentState)
+    {
+        switch (currentState)
+        {
+            case GameStateName.ShopSimulation:
+                _guiCursorRenderer.color = Color.green;
+                break;
+            case GameStateName.ShopInterior:
+                _guiCursorRenderer.color = Color.blue;
+                break;
+        }
+    }
+
+    private void OnMouseCellCoordsUpdated(Vector2Int cellCoords)
+    {
+        _guiCursorRenderer.transform.position = _gridCalculator.CellToWord(cellCoords);
     }
 
     private void FixedUpdate()
@@ -26,6 +57,13 @@ public class RootGameViewMediator : MonoBehaviour
             NextSecondUpdate = (int)Time.realtimeSinceStartup + 1;
             _updatesProvider.CallRealtimeSecondUpdate();
         }
+        UpdateCursorAnimation();
+    }
+
+    private void UpdateCursorAnimation()
+    {
+        var alpha = (1 + (float)Math.Sin(Time.frameCount * 0.2f)) * 0.25f + 0.5f;
+        _guiCursorRenderer.color = _guiCursorRenderer.color.SetAlpha(alpha);
     }
 
     private void SetupGridCalculator()

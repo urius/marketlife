@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3940349718
+CRC: 1559309647
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: ab00048fb00924bb19264f08acb2bec0
+    Hash: 4278ae4ca09cefe7035d87f8e2367deb
   TypeTreeHash:
     serializedVersion: 2
     Hash: 3dbb92f992534c06c4e322444b68580f
@@ -50,11 +50,12 @@ Assets:
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/FootClothes6_Profile.png
 - Assets/External Resources/GameplayGraphicsBundle/Shop/Walls/Wall8.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Hair2_Profile.png
-- Assets/External Resources/GameplayGraphicsBundle/Shop/Windows/Window2.png
+- Assets/External Resources/GameplayGraphicsBundle/Shop/Common/FloorFrame.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/Clothes2.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Mouth8.png
 - Assets/External Resources/GameplayGraphicsBundle/Objects/CashDesk_1/CashDeskBase.png
 - Assets/External Resources/GameplayGraphicsBundle/Shop/Walls/Wall7.png
+- Assets/External Resources/GameplayGraphicsBundle/Shop/Windows/Window2.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Mouth4.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Hair3.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/Clothes1_Profile.png

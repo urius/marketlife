@@ -37,40 +37,42 @@ public abstract class UIPopupBase : MonoBehaviour
 
     public UniTask AppearAsync()
     {
-        AudioManager.Instance.PlaySound(SoundNames.PopupOpen);
-
         var tcs = new UniTaskCompletionSource();
+        _popupBodyCanvasGroup.alpha = 0;
         LeanTween.value(gameObject, a => _popupBodyCanvasGroup.alpha = a, 0, 1, 0.5f * AppearDurationSec);
         LeanTween.value(gameObject, p => _popupBodyRectTransform.anchoredPosition = p, new Vector2(0, -300), Vector2.zero, AppearDurationSec)
             .setEaseOutBack()
             .setOnComplete(() => tcs.TrySetResult());
+
+        AudioManager.Instance.PlaySound(SoundNames.PopupOpen);
         return tcs.Task;
     }
 
     public UniTask DisppearAsync()
     {
-        AudioManager.Instance.PlaySound(SoundNames.PopupClose);
-
         var tcs = new UniTaskCompletionSource();
         _blockRaycastsImage.color = _blockRaycastsImage.color.SetAlpha(0);
         LeanTween.value(gameObject, a => _popupBodyCanvasGroup.alpha = a, 1, 0, DisppearDurationSec);
         LeanTween.value(gameObject, p => _popupBodyRectTransform.anchoredPosition = p, Vector2.zero, new Vector2(0, 300), DisppearDurationSec)
             .setEaseInBack()
             .setOnComplete(() => tcs.TrySetResult());
+
+        AudioManager.Instance.PlaySound(SoundNames.PopupClose);
         return tcs.Task;
     }
 
     public UniTask Appear2Async()
     {
-        AudioManager.Instance.PlaySound(SoundNames.PopupOpen);
-
         var tcs = new UniTaskCompletionSource();
         var targetSize = _popupBodyRectTransform.sizeDelta;
         var startSize = new Vector2(targetSize.x, 0);
+        _popupBodyCanvasGroup.alpha = 0;
         LeanTween.value(gameObject, a => _popupBodyCanvasGroup.alpha = a, 0, 1, 0.5f * AppearDurationSec);
         LeanTween.value(gameObject, p => _popupBodyRectTransform.sizeDelta = p, startSize, targetSize, AppearDurationSec)
             .setEaseOutBack()
             .setOnComplete(() => tcs.TrySetResult());
+
+        AudioManager.Instance.PlaySound(SoundNames.PopupOpen);
         return tcs.Task;
     }
 

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class UILevelUpPopupMediator : UIContentPopupMediator
@@ -9,6 +8,8 @@ public class UILevelUpPopupMediator : UIContentPopupMediator
     private readonly GameStateModel _gameStateModel;
     private readonly LocalizationManager _loc;
     private readonly SpritesProvider _spritesProvider;
+    private readonly Dispatcher _dispatcher;
+    private readonly UserProgressModel _playerProgressModel;
 
     private UIContentPopupPlusView _popupView;
     private LevelUpPopupViewModel _viewModel;
@@ -21,6 +22,8 @@ public class UILevelUpPopupMediator : UIContentPopupMediator
         _gameStateModel = GameStateModel.Instance;
         _loc = LocalizationManager.Instance;
         _spritesProvider = SpritesProvider.Instance;
+        _dispatcher = Dispatcher.Instance;
+        _playerProgressModel = PlayerModelHolder.Instance.UserModel.ProgressModel;
     }
 
     protected override UIContentPopupView PopupView => _popupView;
@@ -31,9 +34,47 @@ public class UILevelUpPopupMediator : UIContentPopupMediator
         var popupGo = GameObject.Instantiate(_prefabsHolder.UIContentPopupPlusPrefab, _parentTransform);
         _popupView = popupGo.GetComponent<UIContentPopupPlusView>();
 
-        SetupContent();
+        Setup();
 
         await _popupView.Appear2Async();
+
+        Activate();
+    }
+
+    private void Setup()
+    {
+        _popupView.SetTitleText(_loc.GetLocalization(LocalizationKeys.PopupLevelUpTitle));
+        _popupView.SetCaptionText(string.Format(_loc.GetLocalization(LocalizationKeys.PopupLevelUpMessage), _playerProgressModel.Level));
+        _popupView.SetupButtonsAmount(haveCloseButton: false, 1);
+        _popupView.SetupButton(0, _spritesProvider.GetGreenButtonSprite(), _loc.GetLocalization(LocalizationKeys.CommonContinue));
+
+        SetupContent();
+    }
+
+    public override async void Unmediate()
+    {
+        base.Unmediate();
+
+        Deactivate();
+
+        await _popupView.Disppear2Async();
+
+        GameObject.Destroy(_popupView.gameObject);
+    }
+
+    private void Activate()
+    {
+        _popupView.Button1Clicked += OnContinueButtonCLicked;
+    }
+
+    private void Deactivate()
+    {
+        _popupView.Button1Clicked -= OnContinueButtonCLicked;
+    }
+
+    private void OnContinueButtonCLicked()
+    {
+        _dispatcher.UIRequestRemoveCurrentPopup();
     }
 
     private void SetupContent()
@@ -106,7 +147,7 @@ public class UILevelUpPopupMediator : UIContentPopupMediator
 
     private void PutItem(Sprite sprite, string text)
     {
-        var itemRect = GetOrCreateItemToDisplay(_prefabsHolder.UILevelUpPopupCaptionItemPrefab);
+        var itemRect = GetOrCreateItemToDisplay(_prefabsHolder.UILevelUpPopupItemPrefab);
         var itemView = itemRect.GetComponent<UILevelUpPopupItemView>();
         itemView.SetImageSprite(sprite);
         itemView.SetText(text);
@@ -117,14 +158,5 @@ public class UILevelUpPopupMediator : UIContentPopupMediator
         var captionRect = GetOrCreateItemToDisplay(_prefabsHolder.UILevelUpPopupCaptionItemPrefab);
         var captionView = captionRect.GetComponent<UIPopupCaptionItemView>();
         captionView.SetText(text);
-    }
-
-    public override async void Unmediate()
-    {
-        base.Unmediate();
-
-        await _popupView.Disppear2Async();
-
-        GameObject.Destroy(_popupView);
     }
 }

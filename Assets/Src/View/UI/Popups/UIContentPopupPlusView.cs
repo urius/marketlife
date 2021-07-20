@@ -37,7 +37,7 @@ public class UIContentPopupPlusView : UIContentPopupView
         }
     }
 
-    public void SetCationTExt(string text)
+    public void SetCaptionText(string text)
     {
         _captionText.text = text;
     }

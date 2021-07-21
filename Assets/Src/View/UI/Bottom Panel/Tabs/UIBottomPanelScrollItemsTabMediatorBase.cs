@@ -13,6 +13,7 @@ public abstract class UIBottomPanelScrollItemsTabMediatorBase<TViewModel> : UINo
 
     private readonly UpdatesProvider _updatesProvider;
     private readonly ViewsCache _viewsCache;
+    private readonly AudioManager _audioManager;
     private readonly ScrollBoxView _scrollBoxView;
 
     private TViewModel[] _viewModels;
@@ -26,6 +27,7 @@ public abstract class UIBottomPanelScrollItemsTabMediatorBase<TViewModel> : UINo
     {
         _updatesProvider = UpdatesProvider.Instance;
         _viewsCache = ViewsCache.Instance;
+        _audioManager = AudioManager.Instance;
 
         View = view;
         _slotWidth = View.ScrollBoxView.SlotWidth;
@@ -213,5 +215,6 @@ public abstract class UIBottomPanelScrollItemsTabMediatorBase<TViewModel> : UINo
     {
         var viewModel = DisplayedItems.First(t => t.View == itemView).ViewModel;
         HandleClick(viewModel);
+        _audioManager.PlaySound(SoundNames.Button5);
     }
 }

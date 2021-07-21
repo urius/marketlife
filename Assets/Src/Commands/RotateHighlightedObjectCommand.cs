@@ -5,6 +5,7 @@ public struct RotateHighlightedObjectCommand
         var gameStateMOdel = GameStateModel.Instance;
         var shopModel = gameStateMOdel.ViewingShopModel;
         var higlightState = gameStateMOdel.HighlightState;
+        var audioManager = AudioManager.Instance;
 
         if (higlightState.HighlightedShopObject != null)
         {
@@ -12,10 +13,12 @@ public struct RotateHighlightedObjectCommand
             if (shopModel.CanRotateShopObject(shopObjectModel, deltaSide))
             {
                 shopModel.RotateShopObject(shopObjectModel, deltaSide);
+                audioManager.PlaySound(SoundNames.Rotate);
             }
             else if (shopModel.CanRotateShopObject(shopObjectModel, 2 * deltaSide))
             {
                 shopModel.RotateShopObject(shopObjectModel, 2 * deltaSide);
+                audioManager.PlaySound(SoundNames.Rotate);
             }
             else
             {

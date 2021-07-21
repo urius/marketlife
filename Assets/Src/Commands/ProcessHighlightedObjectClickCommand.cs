@@ -35,6 +35,7 @@ public struct ProcessHighlightedObjectClickCommand
         var mainConfig = GameConfigManager.Instance.MainConfig;
         var dispatcher = Dispatcher.Instance;
         var screenCalculator = ScreenCalculator.Instance;
+        var audioManager = AudioManager.Instance;
 
         var coords = highlightState.HighlightedCoords;
         shopModel.RemoveUnwash(coords);
@@ -42,5 +43,7 @@ public struct ProcessHighlightedObjectClickCommand
 
         var screenPoint = screenCalculator.CellToScreenPoint(coords);
         dispatcher.UIRequestFlyingExp(screenPoint, mainConfig.RemoveUnwashesRewardExp);
+
+        audioManager.PlayRandomSound(SoundNames.Clean1, SoundNames.Clean2, SoundNames.Clean3, SoundNames.Clean4);
     }
 }

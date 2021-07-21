@@ -8,6 +8,8 @@ public struct RemoveProductFromShelfCommand
         var targetShelfSlot = shelfModel.Slots[shelfSlotIndex];
         var targetProduct = targetShelfSlot.Product;
         var warehouseModel = GameStateModel.Instance.PlayerShopModel.WarehouseModel;
+        var audioManager = AudioManager.Instance;
+
         var removedProductAmount = 0;
         foreach (var slot in warehouseModel.Slots)
         {
@@ -43,6 +45,7 @@ public struct RemoveProductFromShelfCommand
         if (removedProductAmount > 0)
         {
             targetShelfSlot.ChangeProductAmount(-removedProductAmount);
+            audioManager.PlaySound(SoundNames.Remove2);
         }
     }
 }

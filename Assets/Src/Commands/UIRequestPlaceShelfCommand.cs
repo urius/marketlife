@@ -4,6 +4,8 @@ public struct UIRequestPlaceShelfCommand
     {
         var shelfConfig = GameConfigManager.Instance.MainConfig.GetShelfConfigByNumericId(shelfNumericId);
         var gameStateModel = GameStateModel.Instance;
+        var audioManager = AudioManager.Instance;
+
         if (gameStateModel.PlacingState != PlacingStateName.None) return;
 
         Dispatcher.Instance.RequestForceMouseCellPositionUpdate();

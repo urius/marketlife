@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -9,6 +8,7 @@ public class BottomPanelMediator : UINotMonoMediatorBase
     private readonly Dispatcher _dispatcher;
     private readonly GameStateModel _gameStateModel;
     private readonly GameConfigManager _configManager;
+    private readonly AudioManager _audioManager;
     private readonly Dictionary<GameStateName, IMediator> _lastTabMediatorForState = new Dictionary<GameStateName, IMediator>();
 
     private IMediator _currentTabMediator;
@@ -20,6 +20,7 @@ public class BottomPanelMediator : UINotMonoMediatorBase
         _dispatcher = Dispatcher.Instance;
         _gameStateModel = GameStateModel.Instance;
         _configManager = GameConfigManager.Instance;
+        _audioManager = AudioManager.Instance;
     }
 
     public override async void Mediate()
@@ -33,6 +34,11 @@ public class BottomPanelMediator : UINotMonoMediatorBase
         _view.SetAutoPlacePriceGold(_configManager.MainConfig.AutoPlacePriceGold);
 
         await ShowBgAndTopButtonsForStateAsync(_gameStateModel.GameState);
+    }
+
+    private void PlayButtonSound()
+    {
+        _audioManager.PlaySound(SoundNames.Button5);
     }
 
     private IMediator GetTabMediatorForGameState(GameStateName gameState)
@@ -83,11 +89,13 @@ public class BottomPanelMediator : UINotMonoMediatorBase
     private void OnAutoPlaceClicked()
     {
         _dispatcher.UIBottomPanelAutoPlaceClicked();
+        PlayButtonSound();
     }
 
     private void OnManageButtonClicked()
     {
         _dispatcher.BottomPanelManageButtonClicked();
+        PlayButtonSound();
     }
 
     private void OnBottomPanelPointerEnter()
@@ -194,50 +202,60 @@ public class BottomPanelMediator : UINotMonoMediatorBase
     private void OnInteriorButtonClicked()
     {
         _dispatcher.BottomPanelInteriorClicked();
+        PlayButtonSound();
     }
 
     private void OnInteriorObjectsButtonClicked()
     {
         SwowTab(new UIBottomPanelShelfsTabMediator(_view));
+        PlayButtonSound();
     }
 
     private void OnInteriorFloorsButtonClicked()
     {
         SwowTab(new UIBottomPanelFloorsTabMediator(_view));
+        PlayButtonSound();
     }
 
     private void OnInteriorWallsButtonClicked()
     {
         SwowTab(new UIBottomPanelWallsTabMediator(_view));
+        PlayButtonSound();
     }
 
     private void OnInteriorWindowsButtonClicked()
     {
         SwowTab(new UIBottomPanelWindowsTabMediator(_view));
+        PlayButtonSound();
     }
 
     private void OnInteriorDoorsButtonClicked()
     {
         SwowTab(new UIBottomPanelDoorsTabMediator(_view));
+        PlayButtonSound();
     }
 
     private void OnInteriorCloseButtonClicked()
     {
         _dispatcher.BottomPanelInteriorCloseClicked();
+        PlayButtonSound();
     }
 
     private void OnRotateRightButtonClicked()
     {
         _dispatcher.BottomPanelRotateRightClicked();
+        PlayButtonSound();
     }
 
     private void OnRotateLeftButtonClicked()
     {
         _dispatcher.BottomPanelRotateLeftClicked();
+        PlayButtonSound();
     }
 
     private void OnFinishPlacingButtonClicked()
     {
         _dispatcher.BottomPanlelFinishPlacingClicked();
+        PlayButtonSound();
     }
 }

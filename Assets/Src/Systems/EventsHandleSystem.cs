@@ -125,7 +125,7 @@ public class EventsHandleSystem
 
     private void OnUIRemovePopupResult(bool result)
     {
-        new HandleRemovePopupResult().Execute(result);
+        new HandleRemovePopupResultCommand().Execute(result);
     }
 
     private void OnUIActionsRemoveClicked()

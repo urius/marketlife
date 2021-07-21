@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public struct HandleRemovePopupResult
+public struct HandleRemovePopupResultCommand
 {
     public void Execute(bool result)
     {
@@ -9,6 +9,8 @@ public struct HandleRemovePopupResult
         var shopModel = gameStateModel.PlayerShopModel;
         var dispatcher = Dispatcher.Instance;
         var screenCalculator = ScreenCalculator.Instance;
+        var audioManader = AudioManager.Instance;
+
         if (result)
         {
             var popupModel = gameStateModel.ShowingPopupModel;
@@ -18,16 +20,25 @@ public struct HandleRemovePopupResult
                 var shopObjectModel = removeShopObjectPopupViewModel.ShopObjectModel;
                 shopModel.RemoveShopObject(shopObjectModel);
                 coords = shopObjectModel.Coords;
+                audioManader.PlaySound(SoundNames.Remove);
             }
             else if (popupModel is RemoveShopDecorationPopupViewModel removeShopDecorationPopupViewModel)
             {
                 coords = removeShopDecorationPopupViewModel.ObjectCoords;
                 var removeResult = shopModel.TryRemoveDecoration(coords);
-                if (removeResult == false) return;
+                if (removeResult == false)
+                {
+                    return;
+                }
+                else
+                {
+                    audioManader.PlaySound(SoundNames.Remove);
+                }
             }
             else if (popupModel is RemoveProductPopupViewModel removeProductPopupViewModel)
             {
                 shopModel.WarehouseModel.Slots[removeProductPopupViewModel.SlotIndex].RemoveProduct();
+                audioManader.PlaySound(SoundNames.Remove);
             }
 
             if (popupModel is IConfirmRemoveWithRefundPopupViewModel confirmRemoveWithRefundViewModel)

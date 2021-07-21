@@ -218,6 +218,8 @@ public class UITopPanelMediator : MonoBehaviour
         {
             await _cashBarView.BlinkAmountAsync();
         }
+
+        _audioManager.PlaySound(SoundNames.Negative3);
     }
 
     private UniTask ShowNewLevelAnimationAsync(int level)

@@ -7,40 +7,56 @@ public struct PlaceObjectCommand
     {
         var gameStateModel = GameStateModel.Instance;
         var mouseCellCoords = MouseCellCoordsProvider.Instance.MouseCellCoords;
+        var audioManager = AudioManager.Instance;
+
+        var placeResult = false;
         switch (gameStateModel.PlacingState)
         {
             case PlacingStateName.PlacingNewShopObject:
-                PlaceNewShopObject();
+                placeResult = PlaceNewShopObject();
                 break;
             case PlacingStateName.MovingShopObject:
-                PlaceMovingShopObject();
+                placeResult = PlaceMovingShopObject();
                 break;
             case PlacingStateName.PlacingNewFloor:
-                PlaceNewDecoration(mouseCellCoords, ShopDecorationObjectType.Floor, gameStateModel.PlacingDecorationNumericId);
+                placeResult = PlaceNewDecoration(mouseCellCoords, ShopDecorationObjectType.Floor, gameStateModel.PlacingDecorationNumericId);
                 break;
             case PlacingStateName.PlacingNewWall:
-                PlaceNewDecoration(mouseCellCoords, ShopDecorationObjectType.Wall, gameStateModel.PlacingDecorationNumericId);
+                placeResult = PlaceNewDecoration(mouseCellCoords, ShopDecorationObjectType.Wall, gameStateModel.PlacingDecorationNumericId);
                 break;
             case PlacingStateName.PlacingNewWindow:
-                PlaceNewDecoration(mouseCellCoords, ShopDecorationObjectType.Window, gameStateModel.PlacingDecorationNumericId);
+                placeResult = PlaceNewDecoration(mouseCellCoords, ShopDecorationObjectType.Window, gameStateModel.PlacingDecorationNumericId);
                 break;
             case PlacingStateName.MovingWindow:
-                PlaceMovingDecoration(mouseCellCoords, ShopDecorationObjectType.Window, gameStateModel.PlacingDecorationNumericId);
+                placeResult = PlaceMovingDecoration(mouseCellCoords, ShopDecorationObjectType.Window, gameStateModel.PlacingDecorationNumericId);
                 break;
             case PlacingStateName.PlacingNewDoor:
-                PlaceNewDecoration(mouseCellCoords, ShopDecorationObjectType.Door, gameStateModel.PlacingDecorationNumericId);
+                placeResult = PlaceNewDecoration(mouseCellCoords, ShopDecorationObjectType.Door, gameStateModel.PlacingDecorationNumericId);
                 break;
             case PlacingStateName.MovingDoor:
-                PlaceMovingDecoration(mouseCellCoords, ShopDecorationObjectType.Door, gameStateModel.PlacingDecorationNumericId);
+                placeResult = PlaceMovingDecoration(mouseCellCoords, ShopDecorationObjectType.Door, gameStateModel.PlacingDecorationNumericId);
                 break;
             case PlacingStateName.PlacingProduct:
-                PlaceProductOnHighlightedShelf();
+                placeResult = PlaceProductOnHighlightedShelf();
                 break;
+        }
+
+        if (placeResult)
+        {
+            if (gameStateModel.PlacingState == PlacingStateName.PlacingProduct)
+            {
+                audioManager.PlaySound(SoundNames.ProductPut);
+            }
+            else
+            {
+                audioManager.PlaySound(SoundNames.Place);
+            }
         }
     }
 
-    private void PlaceProductOnHighlightedShelf()
+    private bool PlaceProductOnHighlightedShelf()
     {
+        var result = false;
         var dispatcher = Dispatcher.Instance;
         var gameStateModel = GameStateModel.Instance;
         var shopModel = gameStateModel.ViewingShopModel;
@@ -48,6 +64,7 @@ public struct PlaceObjectCommand
         var highlightedShopObject = highlightState.HighlightedShopObject;
         var loc = LocalizationManager.Instance;
         var screenCalculator = ScreenCalculator.Instance;
+        var audioManager = AudioManager.Instance;
 
         if (highlightState.IsHighlighted
             && highlightedShopObject != null
@@ -68,6 +85,7 @@ public struct PlaceObjectCommand
                         {
                             productOnShelf.Amount += neededAmount;
                             placingProduct.Amount -= neededAmount;
+                            result = true;
                             break;
                         }
                         else
@@ -87,6 +105,7 @@ public struct PlaceObjectCommand
                     if (shelf.TrySetProductOn(i, productToPlace))
                     {
                         placingProduct.Amount -= neededAmount;
+                        result = true;
                         break;
                     }
                 }
@@ -100,11 +119,14 @@ public struct PlaceObjectCommand
             if (flyingTextToShow != null)
             {
                 dispatcher.UIRequestFlyingText(screenCalculator.CellToScreenPoint(shelf.Coords), flyingTextToShow);
+                audioManager.PlaySound(SoundNames.Negative1);
             }
         }
+
+        return result;
     }
 
-    private void PlaceNewShopObject()
+    private bool PlaceNewShopObject()
     {
         var gameStateModel = GameStateModel.Instance;
         var shopModel = gameStateModel.ViewingShopModel;
@@ -112,6 +134,7 @@ public struct PlaceObjectCommand
         var screenCalculator = ScreenCalculator.Instance;
         var dispatcher = Dispatcher.Instance;
         var localiationManager = LocalizationManager.Instance;
+        var audioManager = AudioManager.Instance;
 
         var screenCoords = screenCalculator.CellToScreenPoint(shopObject.Coords);
         if (shopModel.CanPlaceShopObject(shopObject))
@@ -123,6 +146,7 @@ public struct PlaceObjectCommand
 
                 var clonedShopObject = gameStateModel.PlacingShopObjectModel.Clone();
                 shopModel.PlaceShopObject(clonedShopObject);
+                return true;
             }
             else
             {
@@ -133,23 +157,37 @@ public struct PlaceObjectCommand
         else
         {
             dispatcher.UIRequestFlyingText(screenCoords, localiationManager.GetLocalization(LocalizationKeys.FlyingTextWrongPlace));
+            audioManager.PlaySound(SoundNames.Negative1);
         }
+        return false;
     }
 
-    private void PlaceMovingShopObject()
+    private bool PlaceMovingShopObject()
     {
         var gameStateModel = GameStateModel.Instance;
-        var shopModel = gameStateModel.ViewingShopModel;
-
         var shopObject = gameStateModel.PlacingShopObjectModel;
+        var shopModel = gameStateModel.ViewingShopModel;
+        var audioManager = AudioManager.Instance;
+        var screenCalculator = ScreenCalculator.Instance;
+        var dispatcher = Dispatcher.Instance;
+        var screenCoords = screenCalculator.CellToScreenPoint(shopObject.Coords);
+        var localiationManager = LocalizationManager.Instance;
+
         if (shopModel.CanPlaceShopObject(shopObject))
         {
             shopModel.PlaceShopObject(shopObject);
             gameStateModel.ResetPlacingState();
+            return true;
         }
+        else
+        {
+            dispatcher.UIRequestFlyingText(screenCoords, localiationManager.GetLocalization(LocalizationKeys.FlyingTextWrongPlace));
+            audioManager.PlaySound(SoundNames.Negative1);
+        }
+        return false;
     }
 
-    private void PlaceNewDecoration(Vector2Int coords, ShopDecorationObjectType decorationType, int numericId)
+    private bool PlaceNewDecoration(Vector2Int coords, ShopDecorationObjectType decorationType, int numericId)
     {
         var gameStateModel = GameStateModel.Instance;
         var shopModel = gameStateModel.ViewingShopModel;
@@ -158,6 +196,7 @@ public struct PlaceObjectCommand
         var decorationConfig = mainConfig.GetDecorationConfigBuNumericId(decorationType, numericId);
         var dispatcher = Dispatcher.Instance;
         var localiationManager = LocalizationManager.Instance;
+        var audioManager = AudioManager.Instance;
 
         var screenCoords = screenCalculator.CellToScreenPoint(coords);
         if (shopModel.CanPlaceDecoration(decorationType, coords, numericId))
@@ -166,8 +205,7 @@ public struct PlaceObjectCommand
             if (TrySpendMoneyOrBlink(price))
             {
                 dispatcher.UIRequestFlyingPrice(screenCoords, price.IsGold, -price.Value);
-
-                shopModel.TryPlaceDecoration(decorationType, coords, numericId);
+                return shopModel.TryPlaceDecoration(decorationType, coords, numericId);
             }
             else
             {
@@ -178,18 +216,34 @@ public struct PlaceObjectCommand
         else
         {
             dispatcher.UIRequestFlyingText(screenCoords, localiationManager.GetLocalization(LocalizationKeys.FlyingTextWrongPlace));
+            audioManager.PlaySound(SoundNames.Negative1);
         }
+
+        return false;
     }
 
-    private void PlaceMovingDecoration(Vector2Int coords, ShopDecorationObjectType decorationType, int numericId)
+    private bool PlaceMovingDecoration(Vector2Int coords, ShopDecorationObjectType decorationType, int numericId)
     {
         var gameStateModel = GameStateModel.Instance;
         var shopModel = gameStateModel.ViewingShopModel;
 
+        var screenCalculator = ScreenCalculator.Instance;
+        var dispatcher = Dispatcher.Instance;
+        var screenCoords = screenCalculator.CellToScreenPoint(coords);
+        var localiationManager = LocalizationManager.Instance;
+        var audioManager = AudioManager.Instance;
+
         if (shopModel.TryPlaceDecoration(decorationType, coords, numericId))
         {
             gameStateModel.ResetPlacingState();
+            return true;
         }
+        else
+        {
+            dispatcher.UIRequestFlyingText(screenCoords, localiationManager.GetLocalization(LocalizationKeys.FlyingTextWrongPlace));
+            audioManager.PlaySound(SoundNames.Negative1);
+        }
+        return false;
     }
 
     private bool TrySpendMoneyOrBlink(Price price)

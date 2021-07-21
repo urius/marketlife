@@ -3,6 +3,7 @@ public struct UIRequestPlacingDecorationCommand
     public void Execute(ShopDecorationObjectType decorationType, int numericId)
     {
         var gameStateModel = GameStateModel.Instance;
+        var audioManager = AudioManager.Instance;
         if (gameStateModel.PlacingState != PlacingStateName.None) return;
 
         Dispatcher.Instance.RequestForceMouseCellPositionUpdate();

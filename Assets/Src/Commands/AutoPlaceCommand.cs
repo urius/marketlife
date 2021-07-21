@@ -9,6 +9,7 @@ public struct AutoPlaceCommand
         var mainConfig = GameConfigManager.Instance.MainConfig;
         var dispatcher = Dispatcher.Instance;
         var gameStateModel = GameStateModel.Instance;
+        var audioManager = AudioManager.Instance;
 
         if (playerModel.ProgressModel.CanSpendGold(mainConfig.AutoPlacePriceGold))
         {
@@ -18,6 +19,7 @@ public struct AutoPlaceCommand
             if (productsAdded)
             {
                 playerModel.ProgressModel.TrySpendGold(mainConfig.AutoPlacePriceGold);
+                audioManager.PlaySound(SoundNames.ProductPut);
             }
             gameStateModel.ResetPlacingState();
         }

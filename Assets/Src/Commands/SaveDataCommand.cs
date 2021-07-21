@@ -7,7 +7,6 @@ public struct SaveDataCommand
 {
     public async UniTask<bool> Execute(SaveField saveFields)
     {
-        return true;
         if (saveFields == SaveField.None) return true;
 
         Debug.Log("---SaveDataCommand: " + saveFields);

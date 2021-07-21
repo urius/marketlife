@@ -8,6 +8,7 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
     private readonly GameConfigManager _configManager;
     private readonly UpdatesProvider _updatesProvider;
     private readonly LocalizationManager _loc;
+    private readonly AudioManager _audioManager;
     private readonly Dispatcher _dispatcher;
     private readonly SpritesProvider _spritesProvider;
     private readonly GameStateModel _gameStateModel;
@@ -23,6 +24,7 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
         _warehouseModel = PlayerModelHolder.Instance.ShopModel.WarehouseModel;
         _configManager = GameConfigManager.Instance;
         _loc = LocalizationManager.Instance;
+        _audioManager = AudioManager.Instance;
     }
 
     public override void Mediate()
@@ -72,6 +74,7 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
         var slotModel = _warehouseModel.Slots[slotIndex];
         var animator = new UIOrderProductFromPopupAnimator(rectTransform, screenPosition, GetViewByViewModel(slotModel), productModel);
         _orderProductAnimatorsBySlotIndex[slotIndex] = animator;
+        _audioManager.PlaySound(SoundNames.ProductDrop3);
         await animator.AnimateAsync();
         _orderProductAnimatorsBySlotIndex.Remove(slotIndex);
     }
@@ -149,8 +152,16 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
         if (view != null)
         {
             UpdateSlotView(view, slotmodel);
+            _audioManager.PlaySound(SoundNames.ProductDrop1);
+            LeanTween.delayedCall(0.5f, PlayProductDropSound);
+            //LeanTween.delayedCall(0.7f, PlayProductDropSound);
             await view.AnimateJumpAsync();
         }
+    }
+
+    private void PlayProductDropSound()
+    {
+        _audioManager.PlaySound(SoundNames.ProductDrop2);
     }
 
     private void OnProductRemoved(int slotIndex, ProductModel removedProduct)
@@ -231,10 +242,17 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
         foreach (var displayedItem in DisplayedItems)
         {
             if (_orderProductAnimatorsBySlotIndex.ContainsKey(displayedItem.ViewModel.Index)) continue;
-            if (displayedItem.ViewModel.HasProduct
-                && (displayedItem.ViewModel.Product.DeliverTime - _gameStateModel.ServerTime) >= -1)
+            if (displayedItem.ViewModel.HasProduct)
             {
-                UpdateSlotView(displayedItem.View, displayedItem.ViewModel);
+                var restDeliverTime = displayedItem.ViewModel.Product.DeliverTime - _gameStateModel.ServerTime;
+                if (restDeliverTime >= -1)
+                {
+                    UpdateSlotView(displayedItem.View, displayedItem.ViewModel);
+                    if (restDeliverTime == 0)
+                    {
+                        _audioManager.PlaySound(SoundNames.Delivered);
+                    }
+                }
             }
         }
     }

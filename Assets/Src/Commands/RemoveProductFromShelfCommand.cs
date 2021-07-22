@@ -46,6 +46,9 @@ public struct RemoveProductFromShelfCommand
         {
             targetShelfSlot.ChangeProductAmount(-removedProductAmount);
             audioManager.PlaySound(SoundNames.Remove2);
+        } else
+        {
+            audioManager.PlaySound(SoundNames.Negative1);
         }
     }
 }

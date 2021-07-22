@@ -178,23 +178,39 @@ public class UITopPanelMediator : MonoBehaviour
 
     private void OnGoldChanged(int previousValue, int currentValue)
     {
-        if (_gameStateModel.IsRealtimeState)
+        if (_gameStateModel.IsGameplayState)
         {
             _crystalsBarView.SetAmountAnimatedAsync(currentValue);
+            if (previousValue > currentValue)
+            {
+                _audioManager.PlaySound(SoundNames.Cash1);
+            }
+            else if (currentValue > previousValue)
+            {
+                _audioManager.PlaySound(SoundNames.Cash2);
+            }
         }
     }
 
     private void OnCashChanged(int previousValue, int currentValue)
     {
-        if (_gameStateModel.IsRealtimeState)
+        if (_gameStateModel.IsGameplayState)
         {
             _cashBarView.SetAmountAnimatedAsync(currentValue);
+            if (previousValue > currentValue)
+            {
+                _audioManager.PlaySound(SoundNames.Cash1);
+            }
+            else if (currentValue > previousValue)
+            {
+                _audioManager.PlaySound(SoundNames.Cash2);
+            }
         }
     }
 
     private void OnExpChanged(int delta)
     {
-        if (_gameStateModel.IsRealtimeState && _isLevelUpInProgress == false)
+        if (_gameStateModel.IsGameplayState && _isLevelUpInProgress == false)
         {
             UpdateExp(animated: true);
         }
@@ -202,7 +218,7 @@ public class UITopPanelMediator : MonoBehaviour
 
     private void OnMoodChanged(float delta)
     {
-        if (_gameStateModel.IsRealtimeState)
+        if (_gameStateModel.IsGameplayState)
         {
             UpdateMood(animated: true);
         }

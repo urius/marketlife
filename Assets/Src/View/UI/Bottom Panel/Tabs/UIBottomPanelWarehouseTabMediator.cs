@@ -74,7 +74,6 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
         var slotModel = _warehouseModel.Slots[slotIndex];
         var animator = new UIOrderProductFromPopupAnimator(rectTransform, screenPosition, GetViewByViewModel(slotModel), productModel);
         _orderProductAnimatorsBySlotIndex[slotIndex] = animator;
-        _audioManager.PlaySound(SoundNames.ProductDrop3);
         await animator.AnimateAsync();
         _orderProductAnimatorsBySlotIndex.Remove(slotIndex);
     }

@@ -67,4 +67,6 @@ public class SoundNames
     public static string Clean2 = "cleaning_1";
     public static string Clean3 = "cleaning_2";
     public static string Clean4 = "cleaning_3";
+    public static string Cash1 = "cashbox_1";
+    public static string Cash2 = "cashbox_2";
 }

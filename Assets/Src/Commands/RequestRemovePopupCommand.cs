@@ -3,7 +3,8 @@ public struct RequestRemovePopupCommand
     public void Execute()
     {
         var gameStateModel = GameStateModel.Instance;
-        var shopModel = gameStateModel.PlayerShopModel;
+        var playerModelHolder = PlayerModelHolder.Instance;
+        var shopModel = playerModelHolder.ShopModel;
         var loc = LocalizationManager.Instance;
 
         if (gameStateModel.HighlightState.IsHighlighted)
@@ -55,8 +56,9 @@ public struct RequestRemovePopupCommand
 
     public void Execute(int slotIndex)
     {
+        var playerModelHolder = PlayerModelHolder.Instance;
         var gameStateModel = GameStateModel.Instance;
-        var slotModel = gameStateModel.PlayerShopModel.WarehouseModel.Slots[slotIndex];
+        var slotModel = playerModelHolder.ShopModel.WarehouseModel.Slots[slotIndex];
         var loc = LocalizationManager.Instance;
 
         var titletext = loc.GetLocalization(LocalizationKeys.PopupRemoveProductTitle);

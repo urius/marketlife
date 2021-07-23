@@ -39,7 +39,7 @@ public class FloorMediator : MonoBehaviour
 
     private void Activate()
     {
-        _gameStateModel.ViewingShopModelChanged += OnViewingShopModelChanged;
+        _gameStateModel.ViewingUserModelChanged += OnViewingUserModelChanged;
         _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
         _gameStateModel.HighlightStateChanged += OnHighlightStateChanged;
     }
@@ -132,9 +132,9 @@ public class FloorMediator : MonoBehaviour
         }
     }
 
-    private void OnViewingShopModelChanged(ShopModel newShopModel)
+    private void OnViewingUserModelChanged(UserModel userModel)
     {
-        ActivateAndDisplayShopModel(newShopModel);
+        ActivateAndDisplayShopModel(userModel.ShopModel);
     }
 
     private void ShowFloors(Dictionary<Vector2Int, int> floorsDataNew)

@@ -7,6 +7,7 @@ public class UserModel
     public readonly UserProgressModel ProgressModel;
     public readonly ShopModel ShopModel;
     public readonly UserStatsData StatsData;
+    public readonly UserSessionDataModel SessionDataModel;
 
     public UserModel(string uid, UserProgressModel progressModel, ShopModel shopModel, UserStatsData statsData)
     {
@@ -14,6 +15,7 @@ public class UserModel
         ProgressModel = progressModel;
         ShopModel = shopModel;
         StatsData = statsData;
+        SessionDataModel = new UserSessionDataModel();
     }
 
     public bool CanSpendMoney(string price)

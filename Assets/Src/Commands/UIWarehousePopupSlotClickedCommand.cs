@@ -7,7 +7,9 @@ public struct UIWarehousePopupSlotClickedCommand
         var targetShelfSlot = popupModel.TargetShelfSlot;
 
         var gameStateModel = GameStateModel.Instance;
-        var warehouseTargetSlot = gameStateModel.PlayerShopModel.WarehouseModel.Slots[warehouseSlotIndex];
+
+        var playerModelHolder = PlayerModelHolder.Instance;
+        var warehouseTargetSlot = playerModelHolder.ShopModel.WarehouseModel.Slots[warehouseSlotIndex];
         if (warehouseTargetSlot.HasProduct)
         {
             var targetProduct = warehouseTargetSlot.Product;

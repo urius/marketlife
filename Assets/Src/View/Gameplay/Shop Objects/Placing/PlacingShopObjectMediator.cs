@@ -73,7 +73,7 @@ public class PlacingShopObjectMediator : ShopObjectMediatorBase
         UpdateDisplayBuildMatrix();
     }
 
-    private void OnCoordsChanged(Vector2Int oldCoords, Vector2Int newCoords)
+    private void OnCoordsChanged(PositionableObjectModelBase shopObject, Vector2Int oldCoords, Vector2Int newCoords)
     {
         UpdateDisplayBuildMatrix();
     }

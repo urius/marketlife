@@ -10,7 +10,8 @@ public class RootGameViewMediator : MonoBehaviour
     private Dispatcher _dispatcher;
     private GameStateModel _gameStateModel;
     private GridCalculator _gridCalculator;
-    private int NextSecondUpdate;
+    private int NextRealtimeSecondUpdate;
+    private int NextGameplaySecondUpdate;
 
     private void Awake()
     {
@@ -19,7 +20,8 @@ public class RootGameViewMediator : MonoBehaviour
         _gameStateModel = GameStateModel.Instance;
 
         SetupGridCalculator();
-        NextSecondUpdate = (int)Time.realtimeSinceStartup + 1;
+        NextRealtimeSecondUpdate = (int)Time.realtimeSinceStartup + 1;
+        NextGameplaySecondUpdate = NextRealtimeSecondUpdate;
 
         Activate();
     }
@@ -50,11 +52,19 @@ public class RootGameViewMediator : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _updatesProvider.CallGameplayUpdate();
-        _updatesProvider.CallRealtimeUpdate();
-        if (Time.realtimeSinceStartup >= NextSecondUpdate)
+        if (_gameStateModel.IsGamePaused == false)
         {
-            NextSecondUpdate = (int)Time.realtimeSinceStartup + 1;
+            _updatesProvider.CallGameplayUpdate();
+            if (Time.realtimeSinceStartup >= NextGameplaySecondUpdate)
+            {
+                NextGameplaySecondUpdate = (int)Time.realtimeSinceStartup + 1;
+                _updatesProvider.CallGameplaySecondUpdate();
+            }
+        }
+        _updatesProvider.CallRealtimeUpdate();
+        if (Time.realtimeSinceStartup >= NextRealtimeSecondUpdate)
+        {
+            NextRealtimeSecondUpdate = (int)Time.realtimeSinceStartup + 1;
             _updatesProvider.CallRealtimeSecondUpdate();
         }
         UpdateCursorAnimation();

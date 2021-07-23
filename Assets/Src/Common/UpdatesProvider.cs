@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 public class UpdatesProvider
 {
@@ -9,6 +8,7 @@ public class UpdatesProvider
     public event Action RealtimeUpdate = delegate { };
     public event Action GametimeUpdate = delegate { };
     public event Action RealtimeSecondUpdate = delegate { };
+    public event Action GameplaySecondUpdate = delegate { };
 
     public void CallRealtimeUpdate()
     {
@@ -23,5 +23,10 @@ public class UpdatesProvider
     public void CallRealtimeSecondUpdate()
     {
         RealtimeSecondUpdate();
+    }
+
+    public void CallGameplaySecondUpdate()
+    {
+        GameplaySecondUpdate();
     }
 }

@@ -63,7 +63,7 @@ public class ShopObjectsMediator : MonoBehaviour
 
     private void Activate()
     {
-        _gameStateModel.ViewingShopModelChanged += OnViewingShopModelChanged;
+        _gameStateModel.ViewingUserModelChanged += OnViewingUserModelChanged;
         _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
     }
 
@@ -86,9 +86,9 @@ public class ShopObjectsMediator : MonoBehaviour
         }
     }
 
-    private void OnViewingShopModelChanged(ShopModel newShopModel)
+    private void OnViewingUserModelChanged(UserModel userModel)
     {
-        HandleNewShopModel(newShopModel);
+        HandleNewShopModel(userModel.ShopModel);
     }
 
     private void DisplayShopObjects(Dictionary<Vector2Int, ShopObjectModelBase> newShopObjectsData)

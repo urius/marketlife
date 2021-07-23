@@ -40,7 +40,8 @@ public struct UIUpgradePopupBuyClickCommand
 
     private bool ApplyUpgarde(UpgradeConfig upgradeConfig)
     {
-        var shopModel = GameStateModel.Instance.PlayerShopModel;
+        var playerModelHolder = PlayerModelHolder.Instance;
+        var shopModel = playerModelHolder.ShopModel;
 
         switch (upgradeConfig.UpgradeType)
         {

@@ -6,7 +6,7 @@ public struct HandleRemovePopupResultCommand
     {
         var gameStateModel = GameStateModel.Instance;
         var playerModel = PlayerModelHolder.Instance.UserModel;
-        var shopModel = gameStateModel.PlayerShopModel;
+        var shopModel = gameStateModel.ViewingShopModel;
         var dispatcher = Dispatcher.Instance;
         var screenCalculator = ScreenCalculator.Instance;
         var audioManader = AudioManager.Instance;

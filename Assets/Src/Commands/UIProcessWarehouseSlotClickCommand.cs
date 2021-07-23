@@ -3,8 +3,8 @@ public struct UIProcessWarehouseSlotClickCommand
     public void Execute(int slotIndex)
     {
         var gameStateModel = GameStateModel.Instance;
-        var warehouseModel = gameStateModel.PlayerShopModel.WarehouseModel;
-        var audioManager = AudioManager.Instance;
+        var playerModelHolder = PlayerModelHolder.Instance;
+        var warehouseModel = playerModelHolder.ShopModel.WarehouseModel;
 
         var slotModel = warehouseModel.Slots[slotIndex];
         if (slotModel.Product != null)

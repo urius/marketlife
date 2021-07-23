@@ -6,7 +6,7 @@ public static class MatrixExtensions
 {
     public static int[][] Rotate(this int[][] originalMarix, int deltaSide)
     {
-        if (deltaSide == 0)
+        if (deltaSide == 0 || (originalMarix.Length == 1 && originalMarix[0].Length == 1))
         {
             return originalMarix;
         }

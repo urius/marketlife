@@ -7,7 +7,7 @@ public struct OrderProductCommand
         var dispatcher = Dispatcher.Instance;
         var playerModel = PlayerModelHolder.Instance.UserModel;
         var gameStateModel = GameStateModel.Instance;
-        var shopModel = gameStateModel.PlayerShopModel;
+        var shopModel = playerModel.ShopModel;
         var warehouseVolume = shopModel.WarehouseModel.Volume;
 
         var price = productConfig.GetPriceForVolume(warehouseVolume);

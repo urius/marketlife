@@ -5,6 +5,7 @@ public class PlacingProductMediator : IMediator
     private readonly RectTransform _contentTransform;
     private readonly Dispatcher _dispatcher;
     private readonly GameStateModel _gameStateModel;
+    private readonly PlayerModelHolder _playerModelHolder;
     private readonly PrefabsHolder _prefabsHolder;
     private readonly SpritesProvider _spritesProvider;
     private readonly ScreenCalculator _screenCalculator;
@@ -18,6 +19,7 @@ public class PlacingProductMediator : IMediator
 
         _dispatcher = Dispatcher.Instance;
         _gameStateModel = GameStateModel.Instance;
+        _playerModelHolder = PlayerModelHolder.Instance;
         _prefabsHolder = PrefabsHolder.Instance;
         _spritesProvider = SpritesProvider.Instance;
         _screenCalculator = ScreenCalculator.Instance;
@@ -37,7 +39,7 @@ public class PlacingProductMediator : IMediator
     {
         if (currentState == PlacingStateName.PlacingProduct)
         {
-            _placingProductModel = _gameStateModel.PlayerShopModel.WarehouseModel.Slots[_gameStateModel.PlacingProductWarehouseSlotIndex].Product;
+            _placingProductModel = _playerModelHolder.ShopModel.WarehouseModel.Slots[_gameStateModel.PlacingProductWarehouseSlotIndex].Product;
             var go = GameObject.Instantiate(_prefabsHolder.UIPlacingProductPrefab, _contentTransform);
             _placingProductView = go.GetComponent<PlacingProductView>();
             SetupView();

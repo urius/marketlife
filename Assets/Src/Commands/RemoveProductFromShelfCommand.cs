@@ -7,7 +7,7 @@ public struct RemoveProductFromShelfCommand
         var shelfModel = popupModel.ShelfModel;
         var targetShelfSlot = shelfModel.Slots[shelfSlotIndex];
         var targetProduct = targetShelfSlot.Product;
-        var warehouseModel = GameStateModel.Instance.PlayerShopModel.WarehouseModel;
+        var warehouseModel = PlayerModelHolder.Instance.ShopModel.WarehouseModel;
         var audioManager = AudioManager.Instance;
 
         var removedProductAmount = 0;

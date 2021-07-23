@@ -31,7 +31,7 @@ public class PerimeterMediator : MonoBehaviour
 
     private void Activate()
     {
-        _gameStateModel.ViewingShopModelChanged += OnViewingShopModelChanged;
+        _gameStateModel.ViewingUserModelChanged += OnViewingUserModelChanged;
         _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
         _gameStateModel.HighlightStateChanged += OnHighlightStateChanged;
     }
@@ -107,11 +107,11 @@ public class PerimeterMediator : MonoBehaviour
         }
     }
 
-    private void OnViewingShopModelChanged(ShopModel newShopModel)
+    private void OnViewingUserModelChanged(UserModel userModel)
     {
         DeactivateCurrentShopModel();
-        ActivateForShopModel(newShopModel);
-        ShowPerimeterDesign(newShopModel.ShopDesign);
+        ActivateForShopModel(userModel.ShopModel);
+        ShowPerimeterDesign(userModel.ShopModel.ShopDesign);
     }
 
     private void ActivateForShopModel(ShopModel shopModel)

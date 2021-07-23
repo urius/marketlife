@@ -97,7 +97,9 @@ public class UIWarehousePopupMediator : IMediator
     {
         var itemSize = (_prefabsHolder.UIWarehousePopupItemPrefab.transform as RectTransform).sizeDelta;
         var maxColumns = _popupSize.x / (int)itemSize.x;
-        var warehouseSlots = _gameStateModel.PlayerShopModel.WarehouseModel.Slots;
+
+        var playerModelHolder = PlayerModelHolder.Instance;
+        var warehouseSlots = playerModelHolder.ShopModel.WarehouseModel.Slots;
         var i = 0;
         foreach (var slot in warehouseSlots)
         {

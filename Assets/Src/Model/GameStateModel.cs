@@ -10,8 +10,7 @@ public class GameStateModel
 
     public event Action<GameStateName, GameStateName> GameStateChanged = delegate { };
     public event Action<PlacingStateName, PlacingStateName> PlacingStateChanged = delegate { };
-    public event Action<ShopModel> ViewingShopModelChanged = delegate { };
-    public event Action PlayerShopModelWasSet = delegate { };
+    public event Action<UserModel> ViewingUserModelChanged = delegate { };
     public event Action HighlightStateChanged = delegate { };
     public event Action PopupShown = delegate { };
 
@@ -22,15 +21,16 @@ public class GameStateModel
     private readonly Stack<PopupViewModelBase> _showingPopupModelsStack = new Stack<PopupViewModelBase>();
 
     public Task GameDataLoadedTask => _dataLoadedTcs.Task;
+    public bool IsGamePaused { get; private set; } = false;
     public GameStateName GameState { get; private set; } = GameStateName.Initializing;
-    public bool IsRealtimeState => GameState == GameStateName.ShopSimulation;
-    public bool IsGameplayState => GameState == GameStateName.ShopSimulation || GameState == GameStateName.ShopInterior;
+    public bool IsSimulationState => GameState == GameStateName.ShopSimulation;
+    public bool IsPlayingState => GameState == GameStateName.ShopSimulation || GameState == GameStateName.ShopInterior;
     public PlacingStateName PlacingState { get; private set; } = PlacingStateName.None;
     public int PlacingDecorationNumericId => _placingIntParameter;
     public int PlacingProductWarehouseSlotIndex => _placingIntParameter;
     public ShopObjectModelBase PlacingShopObjectModel { get; private set; }
-    public ShopModel ViewingShopModel { get; private set; }
-    public ShopModel PlayerShopModel { get; private set; }
+    public UserModel ViewingUserModel { get; private set; }
+    public ShopModel ViewingShopModel => ViewingUserModel?.ShopModel;
     public HighlightState HighlightState { get; private set; } = HighlightState.Default;
     public PopupViewModelBase ShowingPopupModel => _showingPopupModelsStack.Count > 0 ? _showingPopupModelsStack.Peek() : null;
     public int ServerTime
@@ -42,7 +42,6 @@ public class GameStateModel
             return result;
         }
     }
-
     private int _lastCheckedServerTime;
     private float _realtimeSinceStartupCheckpoint;
 
@@ -69,6 +68,7 @@ public class GameStateModel
     public void ShowPopup(PopupViewModelBase popupModel)
     {
         _showingPopupModelsStack.Push(popupModel);
+        UpdatePausedState();
         PopupShown();
     }
 
@@ -78,8 +78,14 @@ public class GameStateModel
         if (ShowingPopupModel != null)
         {
             _showingPopupModelsStack.Pop();
+            UpdatePausedState();
             PopupRemoved();
         }
+    }
+
+    private void UpdatePausedState()
+    {
+        IsGamePaused = _showingPopupModelsStack.Count > 0;
     }
 
     public void ResetPlacingState()
@@ -125,20 +131,10 @@ public class GameStateModel
         SetPlacingState(PlacingStateName.PlacingProduct);
     }
 
-    public void SetViewingShopModel(ShopModel shopModel)
+    public void SetViewingUserModel(UserModel userModel)
     {
-        ViewingShopModel = shopModel;
-        ViewingShopModelChanged(ViewingShopModel);
-    }
-
-    public void SetPlayerShopModel(ShopModel shopModel)
-    {
-        if (PlayerShopModel != null)
-        {
-            throw new InvalidOperationException("GameStateModel.SetPlayerShopModel(): PlayerShopModel already setup");
-        }
-        PlayerShopModel = shopModel;
-        PlayerShopModelWasSet();
+        ViewingUserModel = userModel;
+        ViewingUserModelChanged(ViewingUserModel);
     }
 
     public void ResetHighlightedState(bool isSilent = false)

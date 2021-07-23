@@ -28,7 +28,7 @@ public class UIUpgradesPopupMediator : IMediator
         _parentTransform = parentTransform;
         _gameStateModel = GameStateModel.Instance;
         _playerModel = PlayerModelHolder.Instance.UserModel;
-        _personalModel = _gameStateModel.PlayerShopModel.PersonalModel;
+        _personalModel = _playerModel.ShopModel.PersonalModel;
         _prefabsHolder = PrefabsHolder.Instance;
         _loc = LocalizationManager.Instance;
         _spritesProvider = SpritesProvider.Instance;

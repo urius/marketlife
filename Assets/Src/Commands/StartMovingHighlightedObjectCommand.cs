@@ -4,7 +4,8 @@ public struct StartMovingHighlightedObjectCommand
     {
         var gameStateModel = GameStateModel.Instance;
         var highlightState = gameStateModel.HighlightState;
-        var shopModel = gameStateModel.PlayerShopModel;
+        var playerModelHolder = PlayerModelHolder.Instance;
+        var shopModel = playerModelHolder.ShopModel;
 
         if (gameStateModel.PlacingState != PlacingStateName.None) return;
 

@@ -116,7 +116,7 @@ public abstract class ShopObjectMediatorBase
         UpdateView();
     }
 
-    private void OnCoordsChanged(Vector2Int oldCoords, Vector2Int newCoords)
+    private void OnCoordsChanged(PositionableObjectModelBase shopObject, Vector2Int oldCoords, Vector2Int newCoords)
     {
         UpdatePosition();
     }

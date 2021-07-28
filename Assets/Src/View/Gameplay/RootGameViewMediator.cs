@@ -47,7 +47,7 @@ public class RootGameViewMediator : MonoBehaviour
 
     private void OnMouseCellCoordsUpdated(Vector2Int cellCoords)
     {
-        _guiCursorRenderer.transform.position = _gridCalculator.CellToWord(cellCoords);
+        _guiCursorRenderer.transform.position = _gridCalculator.CellToWorld(cellCoords);
     }
 
     private void FixedUpdate()
@@ -87,6 +87,22 @@ public class RootGameViewMediator : MonoBehaviour
         if (_gridCalculator == null)
         {
             SetupGridCalculator();
+        }
+
+        return;
+        var playerModel = PlayerModelHolder.Instance.UserModel;
+        if (playerModel != null)
+        {
+            foreach (var customer in playerModel.SessionDataModel.Customers)
+            {
+                if (customer.Path != null)
+                {
+                    foreach (var step in customer.Path)
+                    {
+                        Gizmos.DrawSphere(_gridCalculator.CellToWorld(step), 0.5f);
+                    }
+                }
+            }
         }
     }
 }

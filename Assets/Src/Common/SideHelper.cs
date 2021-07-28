@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public class SideHelper
 {
@@ -67,7 +68,7 @@ public class SideHelper
 
         if (twoSidesMode)
         {
-            switch(result)
+            switch (result)
             {
                 case 1:
                     result = 3;
@@ -79,5 +80,39 @@ public class SideHelper
         }
 
         return result;
+    }
+
+    public static Vector2Int SideToVector(int side)
+    {
+        return side switch
+        {
+            1 => new Vector2Int(0, -1),
+            2 => new Vector2Int(1, 0),
+            3 => new Vector2Int(0, 1),
+            4 => new Vector2Int(-1, 0),
+            _ => Vector2Int.zero,
+        };
+    }
+
+    public static int VectorToSide(Vector2Int vector)
+    {
+        if (vector.y < 0)
+        {
+            return 1;
+        }
+        if (vector.x > 0)
+        {
+            return 2;
+        }
+        if (vector.y > 0)
+        {
+            return 3;
+        }
+        if (vector.x < 0)
+        {
+            return 4;
+        }
+
+        return 1;
     }
 }

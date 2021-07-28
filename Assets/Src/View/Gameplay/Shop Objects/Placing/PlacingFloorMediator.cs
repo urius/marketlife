@@ -60,7 +60,7 @@ public class PlacingFloorMediator : IMediator
 
     private void UpdatePosition(Vector2Int cellCoords)
     {
-        _currentPlacingSprite.transform.position = _gridCalculator.CellToWord(cellCoords); ;
+        _currentPlacingSprite.transform.position = _gridCalculator.CellToWorld(cellCoords); ;
     }
 
     private void UpdateBuildAvailability(Vector2Int mouseCellCoords)

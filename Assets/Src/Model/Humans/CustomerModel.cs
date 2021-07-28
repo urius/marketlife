@@ -1,9 +1,17 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CustomerModel : PositionableObjectModelBase
 {
+    public event Action AnimationStateChanged = delegate { };
+
     private static int[][] _matrix = new int[][] { new int[] { 1 } };
+
+    public CustomerLifetimeState LifetimeState;
+    public int ShelfsVisited = 0;
+    public Vector2Int TargetCell;
 
     private readonly List<ProductModel> _products = new List<ProductModel>(5);
 
@@ -12,7 +20,7 @@ public class CustomerModel : PositionableObjectModelBase
     private int _bottomClothesId;
     private int _glassesId;
     private Mood _mood;
-    private CustumerState _state;
+    private CustomerAnimationState _animationState;
     private Vector2Int[] _path;
     private int _pathStepIndex;
 
@@ -38,7 +46,10 @@ public class CustomerModel : PositionableObjectModelBase
     public int BottomClothesId => _bottomClothesId;
     public int GlassesId => _glassesId;
     public Mood Mood => _mood;
-    public CustumerState State => _state;
+    public CustomerAnimationState AnimationState => _animationState;
+    public bool HaveUnwalkedPath => _path != null && _pathStepIndex < _path.Length - 1;
+    public Vector2Int[] Path => _path;
+    public IReadOnlyList<ProductModel> Products => _products;
 
     public void SetPath(Vector2Int[] path)
     {
@@ -47,24 +58,95 @@ public class CustomerModel : PositionableObjectModelBase
         Coords = _path[_pathStepIndex];
     }
 
-    public bool MakeStep()
+    public bool TryGetNextStepCoords(out Vector2Int result)
     {
-        if (_path != null && _path.Length > 0 && _pathStepIndex < _path.Length - 1)
+        result = Vector2Int.zero;
+        if (HaveUnwalkedPath)
         {
-            _pathStepIndex++;
-            Coords = _path[_pathStepIndex];
+            result = _path[_pathStepIndex + 1];
             return true;
         }
+
         return false;
+    }
+
+    public void AddProduct(ProductConfig config, int amount)
+    {
+        foreach (var product in _products)
+        {
+            if (product.Config.NumericId == config.NumericId)
+            {
+                product.Amount += amount;
+                return;
+            }
+        }
+        _products.Add(new ProductModel(config, amount));
+    }
+
+    public bool MakeStep()
+    {
+        if (HaveUnwalkedPath)
+        {
+            _pathStepIndex++;
+            var newCoords = _path[_pathStepIndex];
+            Side = SideHelper.VectorToSide(newCoords - Coords);
+            Coords = newCoords;
+            SetAnimationState(CustomerAnimationState.Moving);
+            return true;
+        }
+        SetAnimationState(CustomerAnimationState.Idle);
+        return false;
+    }
+
+    public void ToIdleState()
+    {
+        SetAnimationState(CustomerAnimationState.Idle);
+    }
+
+    public void ToThinkingState()
+    {
+        SetAnimationState(CustomerAnimationState.Thinking);
+    }
+
+    public void ToTakingProductState()
+    {
+        SetAnimationState(CustomerAnimationState.TakingProduct);
+    }
+
+    public void InsertNextStep(Vector2Int stepcoords)
+    {
+        var newpath = new Vector2Int[] { stepcoords }.Concat(_path.Take(_pathStepIndex)).ToArray();
+        SetPath(newpath);
+    }
+
+    private void SetAnimationState(CustomerAnimationState newAnimationState)
+    {
+        if (_animationState != newAnimationState)
+        {
+            _animationState = newAnimationState;
+            AnimationStateChanged();
+        }
     }
 }
 
-public enum CustumerState
+public enum CustomerAnimationState
 {
     Idle,
     Moving,
+    Thinking,
     TakingProduct,
     Paying,
+}
+
+public enum CustomerLifetimeState
+{
+    Default,
+    MovingToShelf,
+    WatchingShelf,
+    TakingProductFromShelf,
+    MovingToCashDesk,
+    PayingOnCashDesk,
+    MovingToExit,
 }
 
 public enum Mood

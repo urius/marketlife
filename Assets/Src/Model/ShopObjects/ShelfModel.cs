@@ -30,6 +30,8 @@ public class ShelfModel : ShopObjectModelBase
         }
     }
 
+    public Vector2Int EntryCoords => Coords + SideHelper.SideToVector(Side);
+
     private void OnSlotProductSet(int slotIndex)
     {
         ProductIsSetOnSlot(this, slotIndex);

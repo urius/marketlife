@@ -46,6 +46,8 @@ public class Dispatcher
     public Action<WarehousePopupViewModel, int> UIWarehousePopupSlotClicked = delegate { };
     public Action<UpgradesPopupItemViewModelBase> UIUpgradePopupBuyClicked = delegate { };
 
+    public Action<CustomerModel> CustomerAnimationEnded = delegate { };    
+
     public Action<Vector2Int> MouseCellCoordsUpdated = delegate { };
     public Action RequestForceMouseCellPositionUpdate = delegate { };
 

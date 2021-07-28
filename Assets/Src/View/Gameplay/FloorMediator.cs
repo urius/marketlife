@@ -145,7 +145,7 @@ public class FloorMediator : MonoBehaviour
             if (!_floorSprites.ContainsKey(kvp.Key))
             {
                 var floorSprite = viewsFactory.CreateFloor(transform, kvp.Value);
-                floorSprite.transform.position = _gridCalculator.CellToWord(kvp.Key);
+                floorSprite.transform.position = _gridCalculator.CellToWorld(kvp.Key);
                 _floorSprites[kvp.Key] = floorSprite;
             }
             else
@@ -186,7 +186,7 @@ public class FloorMediator : MonoBehaviour
         var go = GameObject.Instantiate(PrefabsHolder.Instance.OnFloorItemPrefab, transform);
         var spriteRenderer = go.GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = SpritesProvider.Instance.GetUnwashSprite(numericId);
-        spriteRenderer.transform.position = _gridCalculator.CellToWord(coords);
+        spriteRenderer.transform.position = _gridCalculator.CellToWorld(coords);
         _unwashesSprites[coords] = spriteRenderer;
     }
 }

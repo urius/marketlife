@@ -134,7 +134,7 @@ public class ShopObjectsMediator : MonoBehaviour
         {
             var squareGo = GameObject.Instantiate(PrefabsHolder.Instance.WhiteSquarePrefab, transform);
             _debugSquaresList.Add(squareGo);
-            squareGo.transform.position = GridCalculator.Instance.CellToWord(kvp.Key);
+            squareGo.transform.position = GridCalculator.Instance.CellToWorld(kvp.Key);
             var sr = squareGo.GetComponent<SpriteRenderer>();
             var buildState = kvp.Value.buildState;
             sr.color = sr.color.SetRGBA((buildState == 1) ? 1 : 0, (buildState == 0) ? 1 : 0, (buildState == -1) ? 1 : 0, 0.5f);

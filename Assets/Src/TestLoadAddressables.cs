@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 using UnityEngine.U2D;
 using UnityEngine.UI;
 
-public class TestLoadAddressables : MonoBehaviour
+public class Test : MonoBehaviour
 {
     [SerializeField] private string _adressableSpriteAtlasName;
     [SerializeField] private Image _testImage;

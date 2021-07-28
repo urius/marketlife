@@ -46,15 +46,15 @@ public class UserSessionDataModel
 
     public bool HaveCustomerAt(Vector2Int coords)
     {
-        return _customersByCoords.TryGetValue(coords, out var _);
+        return _customersByCoords.ContainsKey(coords);
     }
 
-    private void UnsubscribeFromCustomer(CustomerModel model)
+    private void SubscribeForCustomer(CustomerModel model)
     {
         model.CoordsChanged += OnCustomerCoordsChanged;
     }
 
-    private void SubscribeForCustomer(CustomerModel model)
+    private void UnsubscribeFromCustomer(CustomerModel model)
     {
         model.CoordsChanged -= OnCustomerCoordsChanged;
     }

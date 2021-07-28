@@ -5,9 +5,11 @@ public class PerimeterMediator : MonoBehaviour
 {
     private GameStateModel _gameStateModel;
     private SpritesProvider _spritesProvider;
+    private UpdatesProvider _updatesProvider;
     private IMediator _currentPlacingWallMediator;
-    private ShopModel _activeShopModel;
+    private UserModel _activeUserModel;
     private SpriteRenderer _highlightedSpriteRenderer;
+
     private readonly Dictionary<Vector2Int, SpriteRenderer> _wallViews = new Dictionary<Vector2Int, SpriteRenderer>();
     private readonly Dictionary<Vector2Int, (Transform transform, SpriteRenderer spriteRenderer)> _windowViews = new Dictionary<Vector2Int, (Transform transform, SpriteRenderer sprite)>();
     private readonly Dictionary<Vector2Int, DoorView> _doorViews = new Dictionary<Vector2Int, DoorView>();
@@ -16,15 +18,16 @@ public class PerimeterMediator : MonoBehaviour
     {
         _gameStateModel = GameStateModel.Instance;
         _spritesProvider = SpritesProvider.Instance;
+        _updatesProvider = UpdatesProvider.Instance;
     }
 
     private void Start()
     {
         Activate();
 
-        if (_gameStateModel.ViewingShopModel != null)
+        if (_gameStateModel.ViewingUserModel != null)
         {
-            ActivateForShopModel(_gameStateModel.ViewingShopModel);
+            ActivateForUserModel(_gameStateModel.ViewingUserModel);
             ShowPerimeterDesign(_gameStateModel.ViewingShopModel.ShopDesign);
         }
     }
@@ -34,6 +37,75 @@ public class PerimeterMediator : MonoBehaviour
         _gameStateModel.ViewingUserModelChanged += OnViewingUserModelChanged;
         _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
         _gameStateModel.HighlightStateChanged += OnHighlightStateChanged;
+        _gameStateModel.GameStateChanged += OnGameStateChanged;
+        _updatesProvider.GameplaySecondUpdate += OnGameplaySecondUpdate;
+    }
+
+    private void OnGameplaySecondUpdate()
+    {
+        if (_activeUserModel != null)
+        {
+            foreach (var kvp in _doorViews)
+            {
+                var doorOusidePoint = kvp.Key;
+                if (_activeUserModel.SessionDataModel.HaveCustomerAt(doorOusidePoint)
+                    || _activeUserModel.SessionDataModel.HaveCustomerAt(GetDoorInsidePoint(doorOusidePoint)))
+                {
+                    SetDoorOpenState(kvp.Key, isOpenState: true);
+                }
+                else
+                {
+                    SetDoorOpenState(kvp.Key, isOpenState: false);
+                }
+            }
+        }
+    }
+
+    private void OnGameStateChanged(GameStateName prevState, GameStateName currentState)
+    {
+        foreach (var kvp in _doorViews)
+        {
+            SetDoorOpenState(kvp.Key, isOpenState: false);
+        }
+    }
+
+    private Vector2Int GetDoorInsidePoint(Vector2Int doorOusidePoint)
+    {
+        var result = doorOusidePoint;
+        if (result.x == -1) result.x = 0;
+        if (result.y == -1) result.y = 0;
+        return result;
+    }
+
+    private void SetDoorOpenState(Vector2Int doorCoords, bool isOpenState)
+    {
+        if (_doorViews.ContainsKey(doorCoords))
+        {
+            var view = _doorViews[doorCoords];
+            var isRight = doorCoords.y < doorCoords.x;
+            if (isRight)
+            {
+                if (isOpenState)
+                {
+                    WallsHelper.ToLeftState(view.transform);
+                }
+                else
+                {
+                    WallsHelper.ToRightState(view.transform);
+                }
+            }
+            else
+            {
+                if (isOpenState)
+                {
+                    WallsHelper.ToRightState(view.transform);
+                }
+                else
+                {
+                    WallsHelper.ToLeftState(view.transform);
+                }
+            }
+        }
     }
 
     private void OnHighlightStateChanged()
@@ -109,35 +181,38 @@ public class PerimeterMediator : MonoBehaviour
 
     private void OnViewingUserModelChanged(UserModel userModel)
     {
-        DeactivateCurrentShopModel();
-        ActivateForShopModel(userModel.ShopModel);
+        DeactivateCurrentUserModel();
+        ActivateForUserModel(userModel);
         ShowPerimeterDesign(userModel.ShopModel.ShopDesign);
     }
 
-    private void ActivateForShopModel(ShopModel shopModel)
+    private void ActivateForUserModel(UserModel userModel)
     {
-        _activeShopModel = shopModel;
+        _activeUserModel = userModel;
+        var shopModel = userModel.ShopModel;
 
-        _activeShopModel.ShopDesign.WallChanged += OnWallChanged;
-        _activeShopModel.ShopDesign.WindowChanged += OnWindowChanged;
-        _activeShopModel.ShopDesign.DoorChanged += OnDoorChanged;
-        _activeShopModel.ShopDesign.SizeXChanged += OnSizeChanged;
-        _activeShopModel.ShopDesign.SizeYChanged += OnSizeChanged;
+        shopModel.ShopDesign.WallChanged += OnWallChanged;
+        shopModel.ShopDesign.WindowChanged += OnWindowChanged;
+        shopModel.ShopDesign.DoorChanged += OnDoorChanged;
+        shopModel.ShopDesign.SizeXChanged += OnSizeChanged;
+        shopModel.ShopDesign.SizeYChanged += OnSizeChanged;
     }
 
-    private void DeactivateCurrentShopModel()
+    private void DeactivateCurrentUserModel()
     {
-        if (_activeShopModel == null) return;
-        _activeShopModel.ShopDesign.WallChanged -= OnWallChanged;
-        _activeShopModel.ShopDesign.WindowChanged -= OnWindowChanged;
-        _activeShopModel.ShopDesign.DoorChanged -= OnDoorChanged;
-        _activeShopModel.ShopDesign.SizeXChanged -= OnSizeChanged;
-        _activeShopModel.ShopDesign.SizeYChanged -= OnSizeChanged;
+        if (_activeUserModel == null) return;
+        var shopModel = _activeUserModel.ShopModel;
+
+        shopModel.ShopDesign.WallChanged -= OnWallChanged;
+        shopModel.ShopDesign.WindowChanged -= OnWindowChanged;
+        shopModel.ShopDesign.DoorChanged -= OnDoorChanged;
+        shopModel.ShopDesign.SizeXChanged -= OnSizeChanged;
+        shopModel.ShopDesign.SizeYChanged -= OnSizeChanged;
     }
 
     private void OnSizeChanged(int previousSize, int currentSize)
     {
-        ShowPerimeterDesign(_activeShopModel.ShopDesign);
+        ShowPerimeterDesign(_activeUserModel.ShopModel.ShopDesign);
     }
 
     private void OnWallChanged(Vector2Int cellCords, int numericId)

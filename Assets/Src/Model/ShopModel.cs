@@ -395,6 +395,11 @@ public class ShopModel
         return 0;
     }
 
+    public bool IsBuiltOnCell(Vector2Int cellCoords)
+    {
+        return (Grid.ContainsKey(cellCoords) && Grid[cellCoords].buildState > 0);
+    }
+
     private void Activate()
     {
         foreach (var kvp in ShopObjects)
@@ -711,6 +716,11 @@ public class ShoDesignModel
     {
         var type = GetDecorationType(coords);
         return type == ShopDecorationObjectType.Window || type == ShopDecorationObjectType.Door;
+    }
+
+    public bool IsCellInside(Vector2Int cellCoords)
+    {
+        return cellCoords.x >= 0 && cellCoords.y >= 0 && cellCoords.x < SizeX && cellCoords.y < SizeY;
     }
 
     private bool IsWallCoords(Vector2Int cellCoords)

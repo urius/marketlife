@@ -158,6 +158,8 @@ public class UserProgressModel
     public event Action<int> ExpChanged = delegate { };
     public event Action<int> LevelChanged = delegate { };
 
+    public int DelayedCash = 0;
+
     public int Cash => Decode(_cashEncoded);
     public int Gold => Decode(_goldEncoded);
     public int ExpAmount => Decode(_expEncoded);

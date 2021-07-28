@@ -133,6 +133,6 @@ public abstract class ShopObjectMediatorBase
 
     private void UpdatePosition()
     {
-        _currentView.transform.position = GridCalculator.Instance.CellToWord(Model.Coords);
+        _currentView.transform.position = GridCalculator.Instance.CellToWorld(Model.Coords);
     }
 }

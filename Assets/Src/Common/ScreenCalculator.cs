@@ -25,7 +25,7 @@ public class ScreenCalculator
 
     public Vector3 CellToScreenPoint(Vector2Int cellCoords)
     {
-        var worldPoint = GridCalculator.Instance.CellToWord(cellCoords);
+        var worldPoint = GridCalculator.Instance.CellToWorld(cellCoords);
         return WorldToScreenPoint(worldPoint);
     }
 

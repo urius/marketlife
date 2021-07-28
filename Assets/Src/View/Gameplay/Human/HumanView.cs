@@ -1,10 +1,12 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class HumanView : MonoBehaviour
 {
     public const string CLOTHES_PREFIX = "Clothes";
     public const string FOOT_CLOTHES_PREFIX = "FootClothes";
 
+    [SerializeField] private SortingGroup _sortingGroup;
     [SerializeField] private HumanHeadView _headViewFaceSide;
     [SerializeField] private HumanHeadViewProfile _headViewProfile;
     [SerializeField] private Animator _faceSideBodyAnimator;
@@ -39,13 +41,22 @@ public class HumanView : MonoBehaviour
     private BodyState _bodyState = BodyState.Idle;
     private int _faceAnimationIndex = 0;
 
-    void Start()
+    void Awake()
     {
         _spritesProvider = SpritesProvider.Instance;
 
+        ShowSide(2);
+    }
+
+    void Start()
+    {
         SetupSkins(1, 1, 1);
         SetGlasses(0);
-        ShowSide(2);
+    }
+
+    public void SetSortingLayer(string layerName)
+    {
+        _sortingGroup.sortingLayerName = layerName;
     }
 
     public void SetBodyState(BodyState state)
@@ -114,7 +125,7 @@ public class HumanView : MonoBehaviour
     public void ShowSide(int side)
     {
         side = Mathf.Clamp(side, 1, 4);
-        switch(side)
+        switch (side)
         {
             case 1:
                 _faceSideGO.SetActive(false);

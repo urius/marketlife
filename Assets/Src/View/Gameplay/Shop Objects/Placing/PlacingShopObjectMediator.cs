@@ -93,7 +93,7 @@ public class PlacingShopObjectMediator : ShopObjectMediatorBase
         var coords = Model.Coords + localCoords;
         var buildState = _viewingShopModel.GetCellBuildState(coords);
 
-        _buildMatrixSquares[flatIndex].transform.position = _gridCalculator.CellToWord(coords);
+        _buildMatrixSquares[flatIndex].transform.position = _gridCalculator.CellToWorld(coords);
         _buildMatrixSquares[flatIndex].color = GetBuildColor(value, buildState);
     }
 

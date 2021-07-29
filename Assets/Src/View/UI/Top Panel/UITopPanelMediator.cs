@@ -226,6 +226,8 @@ public class UITopPanelMediator : MonoBehaviour
 
     private async void OnUIRequestBlinkMoney(bool isGold)
     {
+        _audioManager.PlaySound(SoundNames.Negative3);
+
         if (isGold)
         {
             await _crystalsBarView.BlinkAmountAsync();
@@ -234,8 +236,6 @@ public class UITopPanelMediator : MonoBehaviour
         {
             await _cashBarView.BlinkAmountAsync();
         }
-
-        _audioManager.PlaySound(SoundNames.Negative3);
     }
 
     private UniTask ShowNewLevelAnimationAsync(int level)

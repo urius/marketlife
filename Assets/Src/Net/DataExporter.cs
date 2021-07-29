@@ -10,7 +10,7 @@ public class DataExporter
 
     public ShopProgressDto ExportProgress(UserProgressModel progressModel)
     {
-        return new ShopProgressDto(progressModel.Cash, progressModel.Gold, progressModel.ExpAmount, progressModel.Level);
+        return new ShopProgressDto(progressModel.Cash + progressModel.DelayedCash, progressModel.Gold, progressModel.ExpAmount, progressModel.Level);
     }
 
     public string[] ExportPersonal(ShopModel shopModel)

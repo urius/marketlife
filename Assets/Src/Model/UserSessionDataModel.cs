@@ -36,6 +36,7 @@ public class UserSessionDataModel
     {
         if (_customers.Remove(model))
         {
+            _customersByCoords.Remove(model.Coords);
             UnsubscribeFromCustomer(model);
             CustomerRemoved(model);
             return true;
@@ -47,6 +48,12 @@ public class UserSessionDataModel
     public bool HaveCustomerAt(Vector2Int coords)
     {
         return _customersByCoords.ContainsKey(coords);
+    }
+
+    public CustomerModel GetCustomerAt(Vector2Int coords)
+    {
+        _customersByCoords.TryGetValue(coords, out var result);
+        return result;
     }
 
     private void SubscribeForCustomer(CustomerModel model)

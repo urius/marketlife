@@ -91,7 +91,7 @@ public class UserModel
                     haveProductsOnShefsFlag = true;
 
                     var productConfig = productModel.Config;
-                    var demandedRestAmountToSell = (int)(productConfig.Demand * buyMultiplier);
+                    var demandedRestAmountToSell = CalculationHelper.GetIntegerDemand(productConfig.Demand * buyMultiplier);
 
                     if (isMerchandiserActive && restWarehouseProductsForMerchandiser[productConfig] > 0)
                     {

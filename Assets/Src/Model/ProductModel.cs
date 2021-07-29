@@ -47,4 +47,6 @@ public class ProductModel
             DeliveryTimeChanged(value - previousValue);
         }
     }
+
+    public int SellPrice => Config.GetSellPriceForAmount(Amount);
 }

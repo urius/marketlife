@@ -6,12 +6,14 @@ using UnityEngine;
 public class CustomerModel : PositionableObjectModelBase
 {
     public event Action AnimationStateChanged = delegate { };
+    public event Action MoodChanged = delegate { };
 
     private static int[][] _matrix = new int[][] { new int[] { 1 } };
 
     public CustomerLifetimeState LifetimeState;
     public int ShelfsVisited = 0;
     public Vector2Int TargetCell;
+    public int ChangeMoodCooldown = 3;
 
     private readonly List<ProductModel> _products = new List<ProductModel>(5);
 
@@ -58,6 +60,13 @@ public class CustomerModel : PositionableObjectModelBase
         Coords = _path[_pathStepIndex];
     }
 
+    public void ChangeMood(Mood mood)
+    {
+        _mood = mood;
+        ChangeMoodCooldown = UnityEngine.Random.Range(2, 5);
+        MoodChanged();
+    }
+
     public bool TryGetNextStepCoords(out Vector2Int result)
     {
         result = Vector2Int.zero;
@@ -81,6 +90,17 @@ public class CustomerModel : PositionableObjectModelBase
             }
         }
         _products.Add(new ProductModel(config, amount));
+    }
+
+    public ProductModel TakeNextProduct()
+    {
+        if (_products.Count > 0)
+        {
+            var result = _products[0];
+            _products.Remove(_products[0]);
+            return result;
+        }
+        return null;
     }
 
     public bool MakeStep()
@@ -113,9 +133,15 @@ public class CustomerModel : PositionableObjectModelBase
         SetAnimationState(CustomerAnimationState.TakingProduct);
     }
 
+    public void ToPayingState()
+    {
+        SetAnimationState(CustomerAnimationState.Paying);
+    }
+
     public void InsertNextStep(Vector2Int stepcoords)
     {
-        var newpath = new Vector2Int[] { stepcoords }.Concat(_path.Take(_pathStepIndex)).ToArray();
+        var restPath = _path.Skip(_pathStepIndex).ToArray();
+        var newpath = new Vector2Int[] { Coords, stepcoords }.Concat(restPath).ToArray();
         SetPath(newpath);
     }
 

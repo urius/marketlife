@@ -40,6 +40,11 @@ public class HumanView : MonoBehaviour
 
     private BodyState _bodyState = BodyState.Idle;
     private int _faceAnimationIndex = 0;
+    private int _hairId = 1;
+    private int _bodyClothesId = 1;
+    private int _footClothesId = 1;
+    private int _glassesId = 0;
+    private bool _isStarted = false;
 
     void Awake()
     {
@@ -50,8 +55,9 @@ public class HumanView : MonoBehaviour
 
     void Start()
     {
-        SetupSkins(1, 1, 1);
-        SetGlasses(0);
+        _isStarted = true;
+        SetupSkins(_hairId, _bodyClothesId, _footClothesId);
+        SetGlasses(_glassesId);
     }
 
     public void SetSortingLayer(string layerName)
@@ -79,11 +85,18 @@ public class HumanView : MonoBehaviour
 
     public void SetGlasses(int glassesId)
     {
+        _glassesId = glassesId;
+        if (_isStarted == false) return;
         _headViewFaceSide.SetGlasses(glassesId);
     }
 
     public void SetupSkins(int hairId, int bodyClothesId, int footClothesId)
     {
+        _hairId = hairId;
+        _bodyClothesId = bodyClothesId;
+        _footClothesId = footClothesId;
+        if (_isStarted == false) return;
+
         SetHair(hairId);
 
         var handSkinSpriteName = "HandSkinWhite";

@@ -89,7 +89,7 @@ public class MainConfig :
 
     public IEnumerable<UpgradeConfig> GetAllUpgradesBytype(UpgradeType upgradeType)
     {
-        switch(upgradeType)
+        switch (upgradeType)
         {
             case UpgradeType.ExpandX:
                 return ExtendShopXUpgradesConfig;
@@ -350,7 +350,7 @@ public class ProductConfig : IUnlockableConfig
         SellPricePer1000v = PricePer1000v.IsGold ? ProfitPer1000v : PricePer1000v.Value + ProfitPer1000v;
         SellPrice = (float)SellPricePer1000v / _amountIn1000Volume;
 
-        Demand = (int)(DemandPer1000v * _amountIn1000Volume);
+        Demand = (int)((DemandPer1000v * _amountIn1000Volume) * 100) * 0.01f;
 
         DeliverTimeSeconds = GetTotalSeconds(dto.deliver);
     }

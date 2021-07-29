@@ -24,4 +24,16 @@ public class CalculationHelper
         var result = volumeValue * unwashesValue;
         return result;
     }
+
+    public static int GetIntegerDemand(float demandMultiplier)
+    {
+        if (demandMultiplier > 1)
+        {
+            return (int)demandMultiplier;
+        }
+        else
+        {
+            return (Random.Range(0, 1f) <= demandMultiplier) ? 1 : 0;
+        }
+    }
 }

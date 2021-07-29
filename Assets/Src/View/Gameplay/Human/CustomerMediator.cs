@@ -37,6 +37,8 @@ public class CustomerMediator : IMediator
         var humanGo = GameObject.Instantiate(_prefabsHolder.Human, _parentTransform);
         _humanView = humanGo.GetComponent<HumanView>();
         _humanView.SetSortingLayer(SortingLayers.OrderableOutside);
+        _humanView.SetupSkins(_customerModel.HairId, _customerModel.TopClothesId, _customerModel.BottomClothesId);
+        _humanView.SetGlasses(_customerModel.GlassesId);
 
         _humanView.transform.position = _gridCalculator.CellToWorld(_customerModel.Coords);
 
@@ -55,6 +57,7 @@ public class CustomerMediator : IMediator
         _customerModel.CoordsChanged += OnCoordsChanged;
         _customerModel.SideChanged += OnSideChanged;
         _customerModel.AnimationStateChanged += OnAnimationStateChanged;
+        _customerModel.MoodChanged += OnMoodChanged;
         _updatesProvider.GametimeUpdate += OnGameplayTimeUpdate;
     }
 
@@ -63,7 +66,13 @@ public class CustomerMediator : IMediator
         _customerModel.CoordsChanged -= OnCoordsChanged;
         _customerModel.SideChanged -= OnSideChanged;
         _customerModel.AnimationStateChanged -= OnAnimationStateChanged;
+        _customerModel.MoodChanged -= OnMoodChanged;
         _updatesProvider.GametimeUpdate -= OnGameplayTimeUpdate;
+    }
+
+    private void OnMoodChanged()
+    {
+        _humanView.ShowFaceAnimation((int)_customerModel.Mood);
     }
 
     private void OnAnimationStateChanged()
@@ -71,7 +80,7 @@ public class CustomerMediator : IMediator
         switch (_customerModel.AnimationState)
         {
             case CustomerAnimationState.Thinking:
-                _animationCooldownFrames = UnityEngine.Random.Range(100, 300);
+                _animationCooldownFrames = UnityEngine.Random.Range(100, 200);
                 _humanView.SetBodyState(BodyState.Idle);
                 _gameplayTimeUpdateDelegate = WaitingDelegate;
                 break;
@@ -80,6 +89,16 @@ public class CustomerMediator : IMediator
                 break;
             case CustomerAnimationState.Moving:
                 _humanView.SetBodyState(BodyState.Walking);
+                break;
+            case CustomerAnimationState.TakingProduct:
+                _animationCooldownFrames = 100;
+                _humanView.SetBodyState(BodyState.Taking);
+                _gameplayTimeUpdateDelegate = WaitingDelegate;
+                break;
+            case CustomerAnimationState.Paying:
+                _animationCooldownFrames = 120;
+                _humanView.SetBodyState(BodyState.Taking);
+                _gameplayTimeUpdateDelegate = WaitingDelegate;
                 break;
         }
     }
@@ -98,8 +117,8 @@ public class CustomerMediator : IMediator
     {
         _startWorldCoords = _gridCalculator.CellToWorld(prevCoords);
         _targetWorldCoords = _gridCalculator.CellToWorld(currentCoords);
-        _moveDirection = (_targetWorldCoords - _gridCalculator.CellToWorld(prevCoords)).normalized * 0.025f;
-        _needToChangeSortingLayer = _shopDesignModel.IsCellInside(currentCoords) && _shopDesignModel.IsCellInside(prevCoords) == false;
+        _moveDirection = (_targetWorldCoords - _gridCalculator.CellToWorld(prevCoords)).normalized * 0.04f;
+        _needToChangeSortingLayer = _shopDesignModel.IsCellInside(currentCoords) != _shopDesignModel.IsCellInside(prevCoords);
 
         _humanView.SetBodyState(BodyState.Walking);
         _gameplayTimeUpdateDelegate = MovingAnimationDelegate;

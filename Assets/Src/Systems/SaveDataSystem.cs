@@ -1,23 +1,29 @@
 using System;
 using System.Threading.Tasks;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class SaveDataSystem
 {
+    private const int DefaultSaveCooldownSeconds = 5;
+
     private readonly GameStateModel _gameStateModel;
     private readonly Dispatcher _dispatcher;
+    private readonly UpdatesProvider _updatesProvider;
 
     private SaveField _saveFieldsData = SaveField.None;
     private ShopModel _shopModel;
     private bool _saveInProgress = false;
     private UserModel _playerModel;
+    private int _saveCooldownSeconds = 0;
 
     public SaveDataSystem()
     {
         _gameStateModel = GameStateModel.Instance;
         _dispatcher = Dispatcher.Instance;
+        _updatesProvider = UpdatesProvider.Instance;
     }
+
+    public bool NeedToSave => _saveFieldsData != SaveField.None;
 
     public async void Start()
     {
@@ -32,6 +38,10 @@ public class SaveDataSystem
     public void MarkToSaveField(SaveField field)
     {
         _saveFieldsData |= field;
+        if (_saveCooldownSeconds > 0)
+        {
+            UpdateSaveCooldownIfNeeded();
+        }
         //Debug.Log("MarkToSaveField:" + _saveFieldsData);
     }
 
@@ -54,6 +64,7 @@ public class SaveDataSystem
         _shopModel.ShopObjectRemoved += OnShopObjectRemoved;
         _shopModel.UnwashAdded += OnUnwashAdded;
         _shopModel.UnwashRemoved += OnUnwashRemoved;
+
         progressModel.CashChanged += OnCashChanged;
         progressModel.GoldChanged += OnGoldChanged;
         progressModel.ExpChanged += OnExpChanged;
@@ -74,6 +85,27 @@ public class SaveDataSystem
         _gameStateModel.GameStateChanged += OnGameStateChanged;
         _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
         _gameStateModel.PopupRemoved += OnPopupRemoved;
+
+        _updatesProvider.RealtimeSecondUpdate += OnRealtimeSecondUpdate;
+    }
+
+    private async void OnRealtimeSecondUpdate()
+    {
+        if (NeedToSave && _saveCooldownSeconds > 0)
+        {
+            if (_saveInProgress == false)
+            {
+                _saveInProgress = true;
+                _dispatcher.SaveStateChanged(_saveInProgress);
+            }
+
+            _saveCooldownSeconds--;
+            if (_saveCooldownSeconds <= 0)
+            {
+                _saveCooldownSeconds = 0;
+                await SaveAsync();
+            }
+        }
     }
 
     private void OnUnwashRemoved(Vector2Int coords)
@@ -90,7 +122,7 @@ public class SaveDataSystem
     {
         if (CheckSaveUserDataconditions())
         {
-            SaveIfNeeded();
+            UpdateSaveCooldownIfNeeded();
         }
     }
 
@@ -98,7 +130,7 @@ public class SaveDataSystem
     {
         if (CheckSaveUserDataconditions())
         {
-            SaveIfNeeded();
+            UpdateSaveCooldownIfNeeded();
         }
     }
 
@@ -106,7 +138,7 @@ public class SaveDataSystem
     {
         if (previousState != GameStateName.ReadyForStart && CheckSaveUserDataconditions())
         {
-            SaveIfNeeded();
+            UpdateSaveCooldownIfNeeded();
         }
     }
 
@@ -117,29 +149,19 @@ public class SaveDataSystem
              && _gameStateModel.PlacingState == PlacingStateName.None;
     }
 
-    private async void SaveIfNeeded()
+    private void UpdateSaveCooldownIfNeeded()
     {
-        if (_saveFieldsData != SaveField.None)
+        if (NeedToSave)
         {
-            if (!_saveInProgress)
-            {
-                await SaveAsync();
-                SaveIfNeeded();
-            }
+            _saveCooldownSeconds = DefaultSaveCooldownSeconds;
         }
     }
 
     private async Task SaveAsync()
     {
-        _saveInProgress = true;
-        _dispatcher.SaveStateChanged(_saveInProgress);
-        await UniTask.Delay(1000);
-
         var saveFieldsData = _saveFieldsData;
         _saveFieldsData = SaveField.None;
         await new SaveDataCommand().Execute(saveFieldsData);
-
-        await UniTask.Delay(4000);
 
         _saveInProgress = false;
         _dispatcher.SaveStateChanged(_saveInProgress);

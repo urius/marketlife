@@ -14,5 +14,5 @@ public class Constants
     public const string FieldShopObjects = "objects";
     public const string FieldUnwashes = "unwashes";
     public const string LevelsMultiplier = "multiplier";    
-    public const int MaxCostumersCount = 5;
+    public const int MaxCustomersCount = 15;
 }

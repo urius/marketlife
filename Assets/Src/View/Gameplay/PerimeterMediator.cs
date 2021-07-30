@@ -43,7 +43,26 @@ public class PerimeterMediator : MonoBehaviour
 
     private void OnGameplaySecondUpdate()
     {
-        if (_activeUserModel != null)
+        UpdateDoorsState();
+    }
+
+    private void OnGameStateChanged(GameStateName prevState, GameStateName currentState)
+    {
+        if (_gameStateModel.IsSimulationState == false)
+        {
+            foreach (var kvp in _doorViews)
+            {
+                SetDoorOpenState(kvp.Key, isOpenState: false);
+            }
+        } else
+        {
+            UpdateDoorsState();
+        }
+    }
+
+    private void UpdateDoorsState()
+    {
+        if (_gameStateModel.IsSimulationState && _activeUserModel != null)
         {
             foreach (var kvp in _doorViews)
             {
@@ -58,14 +77,6 @@ public class PerimeterMediator : MonoBehaviour
                     SetDoorOpenState(kvp.Key, isOpenState: false);
                 }
             }
-        }
-    }
-
-    private void OnGameStateChanged(GameStateName prevState, GameStateName currentState)
-    {
-        foreach (var kvp in _doorViews)
-        {
-            SetDoorOpenState(kvp.Key, isOpenState: false);
         }
     }
 
@@ -255,6 +266,10 @@ public class PerimeterMediator : MonoBehaviour
                 var doorView = new ViewsFactory().CreateDoor(transform, numericId);
                 WallsHelper.PlaceAsWallLike(doorView.transform, cellCords);
                 _doorViews[cellCords] = doorView;
+            }
+            if (_wallViews.TryGetValue(cellCords, out var wallView))
+            {
+                wallView.gameObject.SetActive(false);
             }
         }
         else if (_doorViews.TryGetValue(cellCords, out var doorView))

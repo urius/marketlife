@@ -9,8 +9,8 @@ public class UserSessionDataModel
 
     public int SpawnCooldown = 0;
 
-    private readonly List<CustomerModel> _customers = new List<CustomerModel>(Constants.MaxCostumersCount);
-    private readonly Dictionary<Vector2Int, CustomerModel> _customersByCoords = new Dictionary<Vector2Int, CustomerModel>(Constants.MaxCostumersCount);
+    private readonly List<CustomerModel> _customers = new List<CustomerModel>(Constants.MaxCustomersCount);
+    private readonly Dictionary<Vector2Int, CustomerModel> _customersByCoords = new Dictionary<Vector2Int, CustomerModel>(Constants.MaxCustomersCount);
 
     public UserSessionDataModel()
     {

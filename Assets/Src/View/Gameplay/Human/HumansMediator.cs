@@ -5,7 +5,7 @@ using UnityEngine;
 public class HumansMediator : MonoBehaviour
 {
     private GameStateModel _gameStateModel;
-    private Dictionary<CustomerModel, CustomerMediator> _mediatorsByModel = new Dictionary<CustomerModel, CustomerMediator>(Constants.MaxCostumersCount);
+    private Dictionary<CustomerModel, CustomerMediator> _mediatorsByModel = new Dictionary<CustomerModel, CustomerMediator>(Constants.MaxCustomersCount);
     private UserSessionDataModel _currentSessionModel;
 
     private void Awake()

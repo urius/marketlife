@@ -12,6 +12,7 @@ public class CustomerMediator : IMediator
 
     private readonly Transform _parentTransform;
     private readonly CustomerModel _customerModel;
+    private readonly GameStateModel _gameStateModel;
     private readonly PrefabsHolder _prefabsHolder;
     private readonly GridCalculator _gridCalculator;
     private readonly UpdatesProvider _updatesProvider;
@@ -19,12 +20,14 @@ public class CustomerMediator : IMediator
     private readonly ShoDesignModel _shopDesignModel;
 
     private HumanView _humanView;
+    private bool _isActive;
 
     public CustomerMediator(Transform parentTransform, CustomerModel customerModel)
     {
         _parentTransform = parentTransform;
         _customerModel = customerModel;
 
+        _gameStateModel = GameStateModel.Instance;
         _prefabsHolder = PrefabsHolder.Instance;
         _gridCalculator = GridCalculator.Instance;
         _updatesProvider = UpdatesProvider.Instance;
@@ -42,6 +45,8 @@ public class CustomerMediator : IMediator
 
         _humanView.transform.position = _gridCalculator.CellToWorld(_customerModel.Coords);
 
+        _isActive = _gameStateModel.IsSimulationState;
+
         Activate();
     }
 
@@ -54,6 +59,7 @@ public class CustomerMediator : IMediator
 
     private void Activate()
     {
+        _gameStateModel.GameStateChanged += OnGameStateChanged;
         _customerModel.CoordsChanged += OnCoordsChanged;
         _customerModel.SideChanged += OnSideChanged;
         _customerModel.AnimationStateChanged += OnAnimationStateChanged;
@@ -63,11 +69,18 @@ public class CustomerMediator : IMediator
 
     private void Deactivate()
     {
+        _gameStateModel.GameStateChanged -= OnGameStateChanged;
         _customerModel.CoordsChanged -= OnCoordsChanged;
         _customerModel.SideChanged -= OnSideChanged;
         _customerModel.AnimationStateChanged -= OnAnimationStateChanged;
         _customerModel.MoodChanged -= OnMoodChanged;
         _updatesProvider.GametimeUpdate -= OnGameplayTimeUpdate;
+    }
+
+    private void OnGameStateChanged(GameStateName prevState, GameStateName currentState)
+    {
+        _isActive = _gameStateModel.IsSimulationState;
+        _humanView.gameObject.SetActive(_isActive);
     }
 
     private void OnMoodChanged()
@@ -110,7 +123,10 @@ public class CustomerMediator : IMediator
 
     private void OnGameplayTimeUpdate()
     {
-        _gameplayTimeUpdateDelegate?.Invoke();
+        if (_isActive)
+        {
+            _gameplayTimeUpdateDelegate?.Invoke();
+        }
     }
 
     private void OnCoordsChanged(PositionableObjectModelBase customerModel, Vector2Int prevCoords, Vector2Int currentCoords)

@@ -96,7 +96,9 @@ public class HumansControlSystem
 
     private bool CanSpawnMoreCustomers()
     {
-        var maxCustomersAmount = Math.Max(1, _viewingShopModel.MoodMultiplier * Constants.MaxCostumersCount);
+        var shopDesignModel = _viewingShopModel.ShopDesign;
+        var shopSquare = shopDesignModel.SizeX * shopDesignModel.SizeY;
+        var maxCustomersAmount = Math.Min(Constants.MaxCustomersCount, Math.Max(1, _viewingShopModel.MoodMultiplier * shopSquare * 0.07f));
         if (maxCustomersAmount > _viewingSessionDataModel.Customers.Count)
         {
             return true;
@@ -225,16 +227,24 @@ public class HumansControlSystem
         }
         else if (customer.Products.Count > 0)
         {
-            var productToPay = customer.TakeNextProduct();
-            var sellPrice = productToPay.SellPrice;
-            _viewingUserModel.ProgressModel.AddCash(sellPrice);
-            _viewingUserModel.ProgressModel.DelayedCash = Math.Max(0, _viewingUserModel.ProgressModel.DelayedCash - sellPrice);
-            customer.ToPayingState();
+            if (_viewingShopModel.ShopObjects.TryGetValue(customer.TargetCell, out var shopObjetModel)
+                && shopObjetModel.Type == ShopObjectType.CashDesk)
+            {
+                var productToPay = customer.TakeNextProduct();
+                var sellPrice = productToPay.SellPrice;
+                _viewingUserModel.ProgressModel.AddCash(sellPrice);
+                _viewingUserModel.ProgressModel.DelayedCash = Math.Max(0, _viewingUserModel.ProgressModel.DelayedCash - sellPrice);
+                customer.ToPayingState();
 
-            var screenPoint = _screenCalculator.CellToScreenPoint(customer.Coords);
-            _dispatcher.UIRequestFlyingProduct(screenPoint, productToPay.Config.Key, -productToPay.Amount);
-            screenPoint = _screenCalculator.CellToScreenPoint(customer.TargetCell);
-            _dispatcher.UIRequestFlyingPrice(screenPoint, false, sellPrice);
+                var screenPoint = _screenCalculator.CellToScreenPoint(customer.Coords);
+                _dispatcher.UIRequestFlyingProduct(screenPoint, productToPay.Config.Key, -productToPay.Amount);
+                screenPoint = _screenCalculator.CellToScreenPoint(customer.TargetCell);
+                _dispatcher.UIRequestFlyingPrice(screenPoint, false, sellPrice);
+            }
+            else
+            {
+                MoveToRandomCashDesk(customer);
+            }
         }
         else
         {
@@ -365,7 +375,7 @@ public class HumansControlSystem
         customer.TargetCell = exitPoint;
         customer.SetPath(path);
         customer.LifetimeState = CustomerLifetimeState.MovingToExit;
-        customer.MakeStep();
+        ProcessMoving(customer);
     }
 
     private void MoveToRandomCashDesk(CustomerModel customer)
@@ -453,17 +463,36 @@ public class HumansControlSystem
         if (_gameStateModel.IsSimulationState)
         {
             UpdateShelfsList();
-        }
-
-        if (currentState != GameStateName.ShopSimulation)
-        {
-            Update();
+            UpdateUnitsAfterChangingState();
         }
     }
 
-    private void Update()
+    private void UpdateUnitsAfterChangingState()
     {
-        //TODO Remove custumers from wrong places
+        var customersToRemove = new Queue<CustomerModel>();
+        foreach (var customer in _viewingSessionDataModel.Customers)
+        {
+            if (_viewingShopModel.GetCellBuildState(customer.Coords) > 0)
+            {
+                customersToRemove.Enqueue(customer);
+            }
+            else
+            {
+                if (customer.HaveUnwalkedPath)
+                {
+                    var path = Pathfinder.FindPath(_cellsProvider, customer.Coords, customer.Path[customer.Path.Length - 1]);
+                    if (path != null && path.Length > 0)
+                    {
+                        customer.SetPath(path);
+                    }
+                }
+            }
+        }
+
+        while (customersToRemove.Count > 0)
+        {
+            _viewingSessionDataModel.RemoveCustomer(customersToRemove.Dequeue());
+        }
     }
 }
 

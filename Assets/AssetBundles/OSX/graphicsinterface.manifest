@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1155584526
+CRC: 1914784941
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: e1e4248c34c3f4d5bdc83f13f7c70fa6
+    Hash: 4156350abc9a2189fa97e182196b1557
   TypeTreeHash:
     serializedVersion: 2
     Hash: ba23c2e8f8b3f5319028008a25497317
@@ -86,6 +86,7 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/Popups/UpgradesPopup/sign_upgrade_wh_slot.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall6.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Sausage_1.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/white_circle_200.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Candy_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/sign_4arrows.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/Icon_Up3.png

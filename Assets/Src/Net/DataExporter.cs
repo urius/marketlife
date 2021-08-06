@@ -66,6 +66,11 @@ public class DataExporter
         return ExportCoordsDictionary(shopModel.Unwashes, i => i.ToString());
     }
 
+    public int[] ExportTutorialSteps(UserModel userModel)
+    {
+        return userModel.TutorialSteps.ToArray();
+    }
+
     private string ExportShopObject(ShopObjectModelBase shopObjectModel)
     {
         string objectIdStr = null;

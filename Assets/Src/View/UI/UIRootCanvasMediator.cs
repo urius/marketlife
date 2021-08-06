@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class UIRootCanvasMediator : MonoBehaviour
@@ -20,6 +21,7 @@ public class UIRootCanvasMediator : MonoBehaviour
     private UIFlyingTextsMediator _flyingTextsMediator;
     private PlacingProductMediator _placingProductMediator;
     private PopupsMediator _popupsMediator;
+    private TutorialMediator _tutorialMediator;
     private PrefabsHolder _prefabsHolder;
     private Vector3 _mouseDownPosition;
     private int _mouseDownFramesCount;
@@ -29,6 +31,7 @@ public class UIRootCanvasMediator : MonoBehaviour
     {
         _dispatcher = Dispatcher.Instance;
         _gameStateModel = GameStateModel.Instance;
+        _prefabsHolder = PrefabsHolder.Instance;
 
         _saveIconMediator = new UISaveIconMediator(_saveIconView);
         _bottomPanelMediator = new BottomPanelMediator(_bottomPanelView);
@@ -37,7 +40,7 @@ public class UIRootCanvasMediator : MonoBehaviour
         var popupCanvasRectTransform = _popupsCanvas.transform as RectTransform;
         _placingProductMediator = new PlacingProductMediator(popupCanvasRectTransform);
         _popupsMediator = new PopupsMediator(popupCanvasRectTransform);
-        _prefabsHolder = PrefabsHolder.Instance;
+        _tutorialMediator = new TutorialMediator(transform as RectTransform);
 
         PoolCanvasProvider.Instance.SetupPoolCanvas(_poolCanvas);
     }

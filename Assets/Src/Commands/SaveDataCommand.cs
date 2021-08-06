@@ -64,6 +64,11 @@ public struct SaveDataCommand
             result[Constants.FieldUnwashes] = dataExporter.ExportUnwashes(shopModel);
         }
 
+        if (CheckSaveField(saveFields, SaveField.TutorialSteps))
+        {
+            result[Constants.FieldTutorialSteps] = dataExporter.ExportTutorialSteps(userModel);
+        }
+
         return result;
     }
 

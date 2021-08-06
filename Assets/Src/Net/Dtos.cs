@@ -42,14 +42,15 @@ public struct BoolSuccessResponseDto
 public struct GetDataResponseDto
 {
     public string uid;
-    public ShopDataDto data;
+    public UserDataDto data;
     public ExternalDataDto external_data;
     public int days_play;
     public int first_visit_time;
     public int last_visit_time;
+    public int[] tutorial_steps;
 }
 
-public class ShopDataDto
+public class UserDataDto
 {
     public ShopProgressDto progress;
     public string[] personal;

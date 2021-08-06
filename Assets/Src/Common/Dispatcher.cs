@@ -16,6 +16,7 @@ public class Dispatcher
     public Action UIRequestBlockRaycasts = delegate { };
     public Action UIRequestUnblockRaycasts = delegate { };
     public Action UITopPanelLevelUpAnimationFinished = delegate { };
+    public Action<int> UIRequestShowTutorialStep = delegate { };    
 
     public Action<int> UIBottomPanelPlaceShelfClicked = delegate { };
     public Action<int> UIBottomPanelPlaceFloorClicked = delegate { };

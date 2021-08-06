@@ -5,5 +5,6 @@ public struct InitializeSystemsCommand
         new EventsHandleSystem().Start();
         new SaveDataSystem().Start();
         new HumansControlSystem().Start();
+        new TutorialSystem().Start();
     }
 }

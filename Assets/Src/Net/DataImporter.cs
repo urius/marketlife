@@ -23,7 +23,7 @@ public class DataImporter
             new ShopPersonalModel(),
             warehouseModel);
 
-        return new UserModel(dto.data.uid, shopProgress, shopModel, new UserStatsData());
+        return new UserModel(dto.data.uid, shopProgress, shopModel, new UserStatsData(), null);
     }
 
     public UserModel Import(GetDataResponseDto deserializedData)
@@ -32,10 +32,10 @@ public class DataImporter
         var shopModel = ToShopModel(dataDto);
         var shopProgress = ToProgressModel(dataDto.progress);
         var statsData = new UserStatsData(deserializedData.first_visit_time, deserializedData.last_visit_time, deserializedData.days_play);
-        return new UserModel(deserializedData.uid, shopProgress, shopModel, statsData);
+        return new UserModel(deserializedData.uid, shopProgress, shopModel, statsData, deserializedData.tutorial_steps);
     }
 
-    private ShopModel ToShopModel(ShopDataDto dataDto)
+    private ShopModel ToShopModel(UserDataDto dataDto)
     {
         var personalModel = ToPersonalModel(dataDto.personal);
         var warehouseModel = ToWarehouseModel(dataDto.warehouse);

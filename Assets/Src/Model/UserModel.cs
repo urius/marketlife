@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class UserModel
 {
@@ -8,14 +9,16 @@ public class UserModel
     public readonly ShopModel ShopModel;
     public readonly UserStatsData StatsData;
     public readonly UserSessionDataModel SessionDataModel;
+    public readonly List<int> TutorialSteps;
 
-    public UserModel(string uid, UserProgressModel progressModel, ShopModel shopModel, UserStatsData statsData)
+    public UserModel(string uid, UserProgressModel progressModel, ShopModel shopModel, UserStatsData statsData, int[] tutorialSteps)
     {
         Uid = uid;
         ProgressModel = progressModel;
         ShopModel = shopModel;
         StatsData = statsData;
         SessionDataModel = new UserSessionDataModel();
+        TutorialSteps = new List<int>(tutorialSteps ?? Enumerable.Empty<int>());
     }
 
     public bool CanSpendMoney(string price)

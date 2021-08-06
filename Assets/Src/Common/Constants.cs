@@ -13,6 +13,8 @@ public class Constants
     public const string FieldDesign = "design";
     public const string FieldShopObjects = "objects";
     public const string FieldUnwashes = "unwashes";
+    public const string FieldTutorialSteps = "tutorial_steps";
+    
     public const string LevelsMultiplier = "multiplier";    
     public const int MaxCustomersCount = 15;
 }

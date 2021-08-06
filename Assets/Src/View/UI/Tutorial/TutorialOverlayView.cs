@@ -49,6 +49,32 @@ public class TutorialOverlayView : MonoBehaviour
         _messageText.text = messageText;
 
         CorrectPopupSize();
+
+        SetQuadrant(4);
+    }
+
+    public void SetQuadrant(int quadrant)
+    {
+        var manHeight = 100;
+        var offsetValues = new Vector2(_popupBodyRect.rect.width * 0.5f + 100, _popupBodyRect.rect.height * 0.5f);
+        switch (quadrant)
+        {
+            case 0:
+                offsetValues = Vector2.zero;
+                break;
+            case 2:
+                offsetValues.y = -offsetValues.y - manHeight;
+                break;
+            case 3:
+                offsetValues.y = -offsetValues.y - manHeight;
+                offsetValues.x = -offsetValues.x;
+                break;
+            case 4:
+                offsetValues.x = -offsetValues.x;
+                break;
+        }
+
+        _popupBodyRect.anchoredPosition = offsetValues;
     }
 
     public void DisableHighlight()

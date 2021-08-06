@@ -13,8 +13,9 @@ public class GameStateModel
     public event Action<UserModel> ViewingUserModelChanged = delegate { };
     public event Action HighlightStateChanged = delegate { };
     public event Action PopupShown = delegate { };
-
     public event Action PopupRemoved = delegate { };
+    public event Action TutorialStepShown = delegate { };
+    public event Action TutorialStepRemoved = delegate { };
 
     private TaskCompletionSource<bool> _dataLoadedTcs = new TaskCompletionSource<bool>();
     private int _placingIntParameter = -1;
@@ -33,6 +34,7 @@ public class GameStateModel
     public ShopModel ViewingShopModel => ViewingUserModel?.ShopModel;
     public HighlightState HighlightState { get; private set; } = HighlightState.Default;
     public PopupViewModelBase ShowingPopupModel => _showingPopupModelsStack.Count > 0 ? _showingPopupModelsStack.Peek() : null;
+    public TutorialStepViewModel ShowingTutorialModel { get; private set; }
     public int ServerTime
     {
         get
@@ -72,7 +74,6 @@ public class GameStateModel
         PopupShown();
     }
 
-
     public void RemoveCurrentPopupIfNeeded()
     {
         if (ShowingPopupModel != null)
@@ -83,9 +84,26 @@ public class GameStateModel
         }
     }
 
+    public void ShowTutorialStep(TutorialStepViewModel tutorialStepViewModel)
+    {
+        RemoveCurrentTutorialStepIfNeeded();
+        ShowingTutorialModel = tutorialStepViewModel;
+        UpdatePausedState();
+        TutorialStepShown();
+    }
+
+    public void RemoveCurrentTutorialStepIfNeeded()
+    {
+        if (ShowingTutorialModel != null)
+        {
+            ShowingTutorialModel = null;
+            TutorialStepRemoved();
+        }
+    }
+
     private void UpdatePausedState()
     {
-        IsGamePaused = _showingPopupModelsStack.Count > 0;
+        IsGamePaused = _showingPopupModelsStack.Count > 0 || ShowingTutorialModel != null;
     }
 
     public void ResetPlacingState()

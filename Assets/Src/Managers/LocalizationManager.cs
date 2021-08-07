@@ -106,6 +106,9 @@ public class LocalizationKeys
     public static string PopupLevelUpDoorFormat = "popup_levelup_door_format";
     public static string PopupLevelUpNewPersonal = "popup_levelup_new_personal";
     public static string PopupLevelUpNewUpgrades = "popup_levelup_new_upgrades";
+    public static string TutorialTitleDefault = "tutorial_title_default";
+    public static string TutorialMessagePrefix = "tutorial_message_";
+    public static string TutorialButtonPrefix = "tutorial_button_";
 
     public static string NameShopObjectPrefix = "name_shop_object_";
     public static string NameProductGroupIdPrefix = "name_product_group_id_";

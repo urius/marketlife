@@ -4,7 +4,7 @@ using UnityEngine;
 public class TutorialMediator : IMediator
 {
     private readonly RectTransform _parentTransform;
-    private readonly Dispatcher _dispatcher;
+    private readonly GameStateModel _gameStateModel;
 
     private IMediator _currentTutorialStepMediator;
 
@@ -12,7 +12,7 @@ public class TutorialMediator : IMediator
     {
         _parentTransform = parentTransform;
 
-        _dispatcher = Dispatcher.Instance;
+        _gameStateModel = GameStateModel.Instance;
     }
 
     public void Mediate()
@@ -27,22 +27,29 @@ public class TutorialMediator : IMediator
 
     private void Activate()
     {
-        _dispatcher.UIRequestShowTutorialStep += OnUIRequestShowTutorialStep;
+        _gameStateModel.TutorialStepShown += OnTutorialStepShown;
+        _gameStateModel.TutorialStepRemoved += OnTutorialStepRemoved;
     }
 
     private void Deactivate()
     {
-        _dispatcher.UIRequestShowTutorialStep -= OnUIRequestShowTutorialStep;
+        _gameStateModel.TutorialStepShown -= OnTutorialStepShown;
+        _gameStateModel.TutorialStepRemoved -= OnTutorialStepRemoved;
     }
 
-    private void OnUIRequestShowTutorialStep(int stepIndex)
+    private void OnTutorialStepShown()
+    {
+        var stepIndex = _gameStateModel.ShowingTutorialModel.StepIndex;
+        _currentTutorialStepMediator = CreateTutorialStepMediator(stepIndex);
+        _currentTutorialStepMediator.Mediate();
+    }
+
+    private void OnTutorialStepRemoved()
     {
         if (_currentTutorialStepMediator != null)
         {
             _currentTutorialStepMediator.Unmediate();
         }
-
-        _currentTutorialStepMediator = CreateTutorialStepMediator(stepIndex);
     }
 
     private IMediator CreateTutorialStepMediator(int stepIndex)

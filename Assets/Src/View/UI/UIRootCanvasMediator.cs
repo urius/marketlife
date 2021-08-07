@@ -62,6 +62,7 @@ public class UIRootCanvasMediator : MonoBehaviour
         _flyingTextsMediator.Mediate();
         _placingProductMediator.Mediate();
         _popupsMediator.Mediate();
+        _tutorialMediator.Mediate();
     }
 
     private void OnUIRequestBlockRaycasts()

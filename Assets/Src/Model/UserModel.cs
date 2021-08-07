@@ -4,6 +4,8 @@ using System.Linq;
 
 public class UserModel
 {
+    public Action<int> TutorialStepPassed = delegate { };
+
     public readonly string Uid;
     public readonly UserProgressModel ProgressModel;
     public readonly ShopModel ShopModel;
@@ -19,6 +21,15 @@ public class UserModel
         StatsData = statsData;
         SessionDataModel = new UserSessionDataModel();
         TutorialSteps = new List<int>(tutorialSteps ?? Enumerable.Empty<int>());
+    }
+
+    public void AddPassedTutorialStep(int stepIndex)
+    {
+        if (TutorialSteps.Contains(stepIndex) == false)
+        {
+            TutorialSteps.Add(stepIndex);
+            TutorialStepPassed(stepIndex);
+        }
     }
 
     public bool IsTutorialStepPassed(int stepIndex)

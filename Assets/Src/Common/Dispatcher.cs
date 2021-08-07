@@ -16,7 +16,6 @@ public class Dispatcher
     public Action UIRequestBlockRaycasts = delegate { };
     public Action UIRequestUnblockRaycasts = delegate { };
     public Action UITopPanelLevelUpAnimationFinished = delegate { };
-    public Action<int> UIRequestShowTutorialStep = delegate { };    
 
     public Action<int> UIBottomPanelPlaceShelfClicked = delegate { };
     public Action<int> UIBottomPanelPlaceFloorClicked = delegate { };
@@ -46,6 +45,7 @@ public class Dispatcher
     public Action<ShelfContentPopupViewModel, int> UIShelfContentRemoveProductClicked = delegate { };
     public Action<WarehousePopupViewModel, int> UIWarehousePopupSlotClicked = delegate { };
     public Action<UpgradesPopupItemViewModelBase> UIUpgradePopupBuyClicked = delegate { };
+    public Action UITutorialCloseClicked = delegate { };    
 
     public Action<CustomerModel> CustomerAnimationEnded = delegate { };    
 

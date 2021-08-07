@@ -38,6 +38,15 @@ public class TutorialSystem
         _gameStateModel.PopupShown += OnPopupShown;
         _gameStateModel.PopupRemoved += OnPopupRemoved;
         _gameStateModel.TutorialStepRemoved += OnTutorialStepRemoved;
+        _dispatcher.UITutorialCloseClicked += OnUITutorialCloseClicked;
+    }
+
+    private void OnUITutorialCloseClicked()
+    {
+        _playerModel.AddPassedTutorialStep(_gameStateModel.ShowingTutorialModel.StepIndex);
+        UpdateOpenedSteps();
+
+        _gameStateModel.RemoveCurrentTutorialStepIfNeeded();
     }
 
     private void UpdateOpenedSteps()

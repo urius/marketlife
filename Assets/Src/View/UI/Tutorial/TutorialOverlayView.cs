@@ -29,6 +29,7 @@ public class TutorialOverlayView : MonoBehaviour
     public void Awake()
     {
         _bgDefaultColor = _bgImage.color;
+        _bgImage.color = _bgImage.color.SetAlpha(0);
 
         _messageText.enableWordWrapping = false;
 
@@ -39,18 +40,22 @@ public class TutorialOverlayView : MonoBehaviour
     {
         DisableHighlight();
         Appear();
-
-        SetTexts("test title", "askjdasl;dj ;jsa;lf\n asd;jasl\n asdjhskja KHFGJHS \nfsayuf");
     }
 
-    public void SetTexts(string titleText, string messageText)
+    public void Appear()
+    {
+        _popupBodyCanvasGroup.alpha = 0;
+        LeanTween.value(gameObject, c => { _bgImage.color = c; }, _bgDefaultColor.SetAlpha(0), _bgDefaultColor, 0.6f);
+        LeanTween.value(gameObject, a => { _popupBodyCanvasGroup.alpha = a; }, 0f, 1f, 0.2f).setDelay(0.6f);
+    }
+
+    public void SetTexts(string titleText, string messageText, string buttontext)
     {
         _titleText.text = titleText;
         _messageText.text = messageText;
+        _okButtonText.text = buttontext;
 
         CorrectPopupSize();
-
-        SetQuadrant(4);
     }
 
     public void SetQuadrant(int quadrant)
@@ -80,11 +85,6 @@ public class TutorialOverlayView : MonoBehaviour
     public void DisableHighlight()
     {
         SetHighlightSize(Vector2.zero);
-    }
-
-    public void Appear()
-    {
-        LeanTween.value(gameObject, c => { _bgImage.color = c; }, _bgDefaultColor.SetAlpha(0), _bgDefaultColor, 0.8f);
     }
 
     public void HighlightScreenPoint(Vector3 screenPoint, Vector2 size)
@@ -122,7 +122,7 @@ public class TutorialOverlayView : MonoBehaviour
         var anchorXMult = 1 / (textRectTransform.anchorMax.x - textRectTransform.anchorMin.x);
         var anchorYMult = 1 / (textRectTransform.anchorMax.y - textRectTransform.anchorMin.y);
         size.x = _messageText.textBounds.size.x * anchorXMult + textRectTransform.offsetMin.x - textRectTransform.offsetMax.x + 1;
-        size.y = _messageText.textBounds.size.y * anchorYMult + textRectTransform.offsetMin.y - textRectTransform.offsetMax.y;
+        size.y = _messageText.textBounds.size.y * anchorYMult + textRectTransform.offsetMin.y - textRectTransform.offsetMax.y + 20;
         _popupBodyRect.sizeDelta = size;
     }
 }

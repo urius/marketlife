@@ -65,6 +65,8 @@ public class SaveDataSystem
         _shopModel.UnwashAdded += OnUnwashAdded;
         _shopModel.UnwashRemoved += OnUnwashRemoved;
 
+        _playerModel.TutorialStepPassed += OnTutorialStepPassed;
+
         progressModel.CashChanged += OnCashChanged;
         progressModel.GoldChanged += OnGoldChanged;
         progressModel.ExpChanged += OnExpChanged;
@@ -87,6 +89,12 @@ public class SaveDataSystem
         _gameStateModel.PopupRemoved += OnPopupRemoved;
 
         _updatesProvider.RealtimeSecondUpdate += OnRealtimeSecondUpdate;
+    }
+
+    private void OnTutorialStepPassed(int stepIndex)
+    {
+        //todo uncomment
+        //MarkToSaveField(SaveField.TutorialSteps);
     }
 
     private async void OnRealtimeSecondUpdate()

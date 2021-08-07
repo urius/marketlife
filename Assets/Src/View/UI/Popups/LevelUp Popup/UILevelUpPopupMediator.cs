@@ -28,27 +28,13 @@ public class UILevelUpPopupMediator : UIContentPopupMediator
 
     protected override UIContentPopupView PopupView => _popupView;
 
-    public override async void Mediate()
+    public override void Mediate()
     {
+        _dispatcher.UIRequestBlockRaycasts();
+
         _viewModel = _gameStateModel.ShowingPopupModel as LevelUpPopupViewModel;
-        var popupGo = GameObject.Instantiate(_prefabsHolder.UIContentPopupPlusPrefab, _parentTransform);
-        _popupView = popupGo.GetComponent<UIContentPopupPlusView>();
-
-        Setup();
-
-        await _popupView.Appear2Async();
 
         Activate();
-    }
-
-    private void Setup()
-    {
-        _popupView.SetTitleText(_loc.GetLocalization(LocalizationKeys.PopupLevelUpTitle));
-        _popupView.SetCaptionText(string.Format(_loc.GetLocalization(LocalizationKeys.PopupLevelUpMessage), _playerProgressModel.Level));
-        _popupView.SetupButtonsAmount(haveCloseButton: false, 1);
-        _popupView.SetupButton(0, _spritesProvider.GetGreenButtonSprite(), _loc.GetLocalization(LocalizationKeys.CommonContinue));
-
-        SetupContent();
     }
 
     public override async void Unmediate()
@@ -64,12 +50,44 @@ public class UILevelUpPopupMediator : UIContentPopupMediator
 
     private void Activate()
     {
+        _dispatcher.UITopPanelLevelUpAnimationFinished += OnUITopPanelLevelUpAnimationFinished;
+    }
+
+    private async void OnUITopPanelLevelUpAnimationFinished()
+    {
+        _dispatcher.UIRequestUnblockRaycasts();
+
+        _dispatcher.UITopPanelLevelUpAnimationFinished -= OnUITopPanelLevelUpAnimationFinished;
+
+        var popupGo = GameObject.Instantiate(_prefabsHolder.UIContentPopupPlusPrefab, _parentTransform);
+        _popupView = popupGo.GetComponent<UIContentPopupPlusView>();
+
+        Setup();
+
+        await _popupView.Appear2Async();
+
+        ActivatePopup();
+    }
+
+    private void Setup()
+    {
+        _popupView.SetTitleText(_loc.GetLocalization(LocalizationKeys.PopupLevelUpTitle));
+        _popupView.SetCaptionText(string.Format(_loc.GetLocalization(LocalizationKeys.PopupLevelUpMessage), _playerProgressModel.Level));
+        _popupView.SetupButtonsAmount(haveCloseButton: false, 1);
+        _popupView.SetupButton(0, _spritesProvider.GetGreenButtonSprite(), _loc.GetLocalization(LocalizationKeys.CommonContinue));
+
+        SetupContent();
+    }
+
+    private void ActivatePopup()
+    {
         _popupView.Button1Clicked += OnContinueButtonCLicked;
     }
 
     private void Deactivate()
     {
         _popupView.Button1Clicked -= OnContinueButtonCLicked;
+        _dispatcher.UITopPanelLevelUpAnimationFinished -= OnUITopPanelLevelUpAnimationFinished;
     }
 
     private void OnContinueButtonCLicked()

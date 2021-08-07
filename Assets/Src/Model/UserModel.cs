@@ -21,6 +21,11 @@ public class UserModel
         TutorialSteps = new List<int>(tutorialSteps ?? Enumerable.Empty<int>());
     }
 
+    public bool IsTutorialStepPassed(int stepIndex)
+    {
+        return TutorialSteps.Contains(stepIndex);
+    }
+
     public bool CanSpendMoney(string price)
     {
         return CanSpendMoney(Price.FromString(price));

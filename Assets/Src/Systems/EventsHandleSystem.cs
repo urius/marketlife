@@ -1,9 +1,11 @@
+using System;
 using UnityEngine;
 
 public class EventsHandleSystem
 {
     private readonly Dispatcher _dispatcher;
     private readonly GameStateModel _gameStateModel;
+    private UserModel _playerModel;
 
     public EventsHandleSystem()
     {
@@ -11,9 +13,11 @@ public class EventsHandleSystem
         _gameStateModel = GameStateModel.Instance;
     }
 
-    public void Start()
+    public async void Start()
     {
         Activate();
+        await _gameStateModel.GameDataLoadedTask;
+        ActivateAfterLoad();
     }
 
     private void Activate()
@@ -41,7 +45,6 @@ public class EventsHandleSystem
         _dispatcher.UIShelfContentRemoveProductClicked += OnUIShelfContentRemoveProductClicked;
         _dispatcher.UIWarehousePopupSlotClicked += OnUIWarehousePopupSlotClicked;
         _dispatcher.UIUpgradePopupBuyClicked += OnUIUpgradePopupBuyClicked;
-        _dispatcher.UITopPanelLevelUpAnimationFinished += OnUITopPanelLevelUpAnimationFinished;
         _dispatcher.MouseCellCoordsUpdated += OnMouseCellCoordsUpdated;
         _dispatcher.BottomPanelInteriorClicked += BottomPanelInteriorClicked;
         _dispatcher.BottomPanelManageButtonClicked += BottomPanelManageClicked;
@@ -54,7 +57,13 @@ public class EventsHandleSystem
         _gameStateModel.GameStateChanged += OnGameStateChanged;
     }
 
-    private void OnUITopPanelLevelUpAnimationFinished()
+    private void ActivateAfterLoad()
+    {
+        _playerModel = PlayerModelHolder.Instance.UserModel;
+        _playerModel.ProgressModel.LevelChanged += OnLevelChanged;
+    }
+
+    private void OnLevelChanged(int delta)
     {
         new ShowLevelUpPopupCommand().Execute();
     }

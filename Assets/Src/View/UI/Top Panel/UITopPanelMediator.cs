@@ -28,7 +28,6 @@ public class UITopPanelMediator : MonoBehaviour
         _loc = LocalizationManager.Instance;
         _spritesProvider = SpritesProvider.Instance;
         _audioManager = AudioManager.Instance;
-
     }
 
     public async void Start()
@@ -150,13 +149,11 @@ public class UITopPanelMediator : MonoBehaviour
     private async void OnLevelChanged(int delta)
     {
         _isLevelUpInProgress = true;
-        _dispatcher.UIRequestBlockRaycasts();
         await AnimateFillExpToMaxOnLevelAsync();
         _expBarView.SetProgress(0);
         var updateExpTask = UpdateExpLevelUpModeAsync();
         await ShowNewLevelAnimationAsync(_playerProgressModel.Level);
         await updateExpTask;
-        _dispatcher.UIRequestUnblockRaycasts();
         _dispatcher.UITopPanelLevelUpAnimationFinished();
         _isLevelUpInProgress = false;
     }

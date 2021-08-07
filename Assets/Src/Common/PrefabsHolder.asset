@@ -89,3 +89,5 @@ MonoBehaviour:
     type: 3}
   UILevelUpPopupItemPrefab: {fileID: 8962895989521118303, guid: 69cefdf56323845f7989adedbb3d7909,
     type: 3}
+  UITutorialOverlayPrefab: {fileID: 8653518662204626099, guid: b00dc557eafba43a594a43eccee82883,
+    type: 3}

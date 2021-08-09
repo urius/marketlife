@@ -21,12 +21,12 @@ public class UIBottomPanelShelfsTabMediator : UIBottomPanelScrollItemsTabMediato
     public override void Mediate()
     {
         base.Mediate();
-        View.SetDecorationButtonSelected(View.InteriorObjectsButton);
+        View.SetButtonSelected(View.InteriorObjectsButton);
     }
 
     public override void Unmediate()
     {
-        View.SetDecorationButtonUnselected(View.InteriorObjectsButton);
+        View.SetButtonUnselected(View.InteriorObjectsButton);
         base.Unmediate();
     }
 

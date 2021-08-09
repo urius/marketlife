@@ -162,12 +162,12 @@ public class BottomPanelView : MonoBehaviour, IPointerEnterHandler, IPointerExit
         };
     }
 
-    public void SetDecorationButtonSelected(Button buttonToDisable)
+    public void SetButtonSelected(Button buttonToDisable)
     {
         buttonToDisable.interactable = false;
     }
 
-    public void SetDecorationButtonUnselected(Button buttonToDisable)
+    public void SetButtonUnselected(Button buttonToDisable)
     {
         buttonToDisable.interactable = true;
     }

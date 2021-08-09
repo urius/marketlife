@@ -31,12 +31,13 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
     {
         base.Mediate();
         Activate();
+        View.SetButtonSelected(View.WarehouseButton);
     }
 
     public override void Unmediate()
     {
+        View.SetButtonUnselected(View.WarehouseButton);
         Deactivate();
-
         base.Unmediate();
     }
 

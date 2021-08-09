@@ -51,10 +51,18 @@ public class Dispatcher
 
     public Action<Vector2Int> MouseCellCoordsUpdated = delegate { };
     public Action RequestForceMouseCellPositionUpdate = delegate { };
-
+    
+    public Action BottomPanelFriendsClicked = delegate { };
+    public Action BottomPanelWarehouseClicked = delegate { };
     public Action BottomPanelInteriorClicked = delegate { };
     public Action BottomPanelManageButtonClicked = delegate { };
     public Action BottomPanelInteriorCloseClicked = delegate { };
+    public Action BottomPanelInteriorShelfsClicked = delegate { };
+    public Action BottomPanelInteriorFloorsClicked = delegate { };
+    public Action BottomPanelInteriorWallsClicked = delegate { };
+    public Action BottomPanelInteriorWindowsClicked = delegate { };
+    public Action BottomPanelInteriorDoorsClicked = delegate { };
+    
     public Action BottomPanlelFinishPlacingClicked = delegate { };
     public Action BottomPanelRotateRightClicked = delegate { };
     public Action BottomPanelRotateLeftClicked = delegate { };

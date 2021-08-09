@@ -46,9 +46,16 @@ public class EventsHandleSystem
         _dispatcher.UIWarehousePopupSlotClicked += OnUIWarehousePopupSlotClicked;
         _dispatcher.UIUpgradePopupBuyClicked += OnUIUpgradePopupBuyClicked;
         _dispatcher.MouseCellCoordsUpdated += OnMouseCellCoordsUpdated;
+        _dispatcher.BottomPanelFriendsClicked += OnBottomPanelFriendsClicked;
+        _dispatcher.BottomPanelWarehouseClicked += OnBottomPanelWarehouseClicked;
         _dispatcher.BottomPanelInteriorClicked += BottomPanelInteriorClicked;
         _dispatcher.BottomPanelManageButtonClicked += BottomPanelManageClicked;
-        _dispatcher.BottomPanelInteriorCloseClicked += BottomPanelInteriorCloseClicked;
+        _dispatcher.BottomPanelInteriorCloseClicked += OnBottomPanelInteriorCloseClicked;
+        _dispatcher.BottomPanelInteriorShelfsClicked += OnBottomPanelInteriorShelfsClicked;
+        _dispatcher.BottomPanelInteriorFloorsClicked += OnBottomPanelInteriorFloorsClicked;
+        _dispatcher.BottomPanelInteriorWallsClicked += OnBottomPanelInteriorWallsClicked;
+        _dispatcher.BottomPanelInteriorWindowsClicked += OnBottomPanelInteriorWindowsClicked;
+        _dispatcher.BottomPanelInteriorDoorsClicked += OnBottomPanelInteriorDoorsClicked;
         _dispatcher.BottomPanlelFinishPlacingClicked += BottomPanelFinishPlacingClicked;
         _dispatcher.BottomPanelRotateRightClicked += BottomPanelRotateRightClicked;
         _dispatcher.BottomPanelRotateLeftClicked += BottomPanelRotateLeftClicked;
@@ -183,6 +190,16 @@ public class EventsHandleSystem
         _gameStateModel.ResetPlacingState();
     }
 
+    private void OnBottomPanelFriendsClicked()
+    {
+        _gameStateModel.BottomPanelViewModel.SetSimulationTab(BottomPanelSimulationModeTab.Friends);
+    }
+
+    private void OnBottomPanelWarehouseClicked()
+    {
+        _gameStateModel.BottomPanelViewModel.SetSimulationTab(BottomPanelSimulationModeTab.Warehouse);
+    }
+
     private void BottomPanelInteriorClicked()
     {
         _gameStateModel.SetGameState(GameStateName.ShopInterior);
@@ -193,9 +210,34 @@ public class EventsHandleSystem
         new UIShowManagePopupCommand().Execute();
     }
 
-    private void BottomPanelInteriorCloseClicked()
+    private void OnBottomPanelInteriorCloseClicked()
     {
         _gameStateModel.SetGameState(GameStateName.ShopSimulation);
+    }
+
+    private void OnBottomPanelInteriorShelfsClicked()
+    {
+        _gameStateModel.BottomPanelViewModel.SetInteriorTab(BottomPanelInteriorModeTab.Shelfs);
+    }
+
+    private void OnBottomPanelInteriorFloorsClicked()
+    {
+        _gameStateModel.BottomPanelViewModel.SetInteriorTab(BottomPanelInteriorModeTab.Floors);
+    }
+
+    private void OnBottomPanelInteriorWallsClicked()
+    {
+        _gameStateModel.BottomPanelViewModel.SetInteriorTab(BottomPanelInteriorModeTab.Walls);
+    }
+
+    private void OnBottomPanelInteriorWindowsClicked()
+    {
+        _gameStateModel.BottomPanelViewModel.SetInteriorTab(BottomPanelInteriorModeTab.Windows);
+    }
+
+    private void OnBottomPanelInteriorDoorsClicked()
+    {
+        _gameStateModel.BottomPanelViewModel.SetInteriorTab(BottomPanelInteriorModeTab.Doors);
     }
 
     private void OnMouseCellCoordsUpdated(Vector2Int newCoords)

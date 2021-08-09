@@ -93,7 +93,7 @@ public class TutorialSystem
             0 => HasNoOpenedPopups()
                 && HasNoPlacingMode()
                 && CheckGameState(GameStateName.ShopSimulation),
-            _ => throw new ArgumentException($"CheckTutorialConditions: {nameof(tutorialStepIndex)} {tutorialStepIndex} is not supported"),
+            _ => false//throw new ArgumentException($"CheckTutorialConditions: {nameof(tutorialStepIndex)} {tutorialStepIndex} is not supported"),
         };
     }
 

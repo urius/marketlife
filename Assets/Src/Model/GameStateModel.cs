@@ -17,9 +17,17 @@ public class GameStateModel
     public event Action TutorialStepShown = delegate { };
     public event Action TutorialStepRemoved = delegate { };
 
+    public readonly BottomPanelViewModel BottomPanelViewModel;
+
     private TaskCompletionSource<bool> _dataLoadedTcs = new TaskCompletionSource<bool>();
     private int _placingIntParameter = -1;
-    private readonly Stack<PopupViewModelBase> _showingPopupModelsStack = new Stack<PopupViewModelBase>();
+    private readonly Stack<PopupViewModelBase> _showingPopupModelsStack;
+
+    public GameStateModel()
+    {
+        BottomPanelViewModel = new BottomPanelViewModel();
+        _showingPopupModelsStack = new Stack<PopupViewModelBase>();
+    }
 
     public Task GameDataLoadedTask => _dataLoadedTcs.Task;
     public bool IsGamePaused { get; private set; } = false;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -7,6 +8,7 @@ public class BottomPanelMediator : UINotMonoMediatorBase
     private readonly BottomPanelView _view;
     private readonly Dispatcher _dispatcher;
     private readonly GameStateModel _gameStateModel;
+    private readonly BottomPanelViewModel _viewModel;
     private readonly GameConfigManager _configManager;
     private readonly AudioManager _audioManager;
     private readonly Dictionary<GameStateName, IMediator> _lastTabMediatorForState = new Dictionary<GameStateName, IMediator>();
@@ -19,6 +21,7 @@ public class BottomPanelMediator : UINotMonoMediatorBase
         _view = view;
         _dispatcher = Dispatcher.Instance;
         _gameStateModel = GameStateModel.Instance;
+        _viewModel = _gameStateModel.BottomPanelViewModel;
         _configManager = GameConfigManager.Instance;
         _audioManager = AudioManager.Instance;
     }
@@ -28,9 +31,7 @@ public class BottomPanelMediator : UINotMonoMediatorBase
         base.Mediate();
 
         Activate();
-
-        _currentTabMediator = GetTabMediatorForGameState(_gameStateModel.GameState);
-        _currentTabMediator?.Mediate();
+        UpdateTabMediator();
         _view.SetAutoPlacePriceGold(_configManager.MainConfig.AutoPlacePriceGold);
 
         await ShowBgAndTopButtonsForStateAsync(_gameStateModel.GameState);
@@ -43,32 +44,43 @@ public class BottomPanelMediator : UINotMonoMediatorBase
 
     private IMediator GetTabMediatorForGameState(GameStateName gameState)
     {
-        IMediator result = null;
-        if (_lastTabMediatorForState.ContainsKey(gameState))
+        return gameState switch
         {
-            result = _lastTabMediatorForState[gameState];
-        }
-        else
-        {
-            switch (gameState)
-            {
-                case GameStateName.ShopInterior:
-                    result = new UIBottomPanelShelfsTabMediator(_view);
-                    break;
-                case GameStateName.ShopSimulation:
-                    result = new UIBottomPanelWarehouseTabMediator(_view);
-                    break;
-            }
-        }
-        _lastTabMediatorForState[gameState] = result;
+            GameStateName.ShopSimulation => GetSimulationModeTabMediator(),
+            GameStateName.ShopInterior => GetInteriorModeTabMediator(),
+            _ => null,
+        };
+    }
 
-        return result;
+    private IMediator GetSimulationModeTabMediator()
+    {
+        return _viewModel.SimulationModeTab switch
+        {
+            BottomPanelSimulationModeTab.Friends => null, //todo friends mediator
+            BottomPanelSimulationModeTab.Warehouse => new UIBottomPanelWarehouseTabMediator(_view),
+            _ => throw new InvalidOperationException($"{nameof(GetSimulationModeTabMediator)}i: interior tab {_viewModel.InteriorModeTab} is not supported"),
+        };
+    }
+
+    private IMediator GetInteriorModeTabMediator()
+    {
+        return _viewModel.InteriorModeTab switch
+        {
+            BottomPanelInteriorModeTab.Shelfs => new UIBottomPanelShelfsTabMediator(_view),
+            BottomPanelInteriorModeTab.Floors => new UIBottomPanelFloorsTabMediator(_view),
+            BottomPanelInteriorModeTab.Walls => new UIBottomPanelWallsTabMediator(_view),
+            BottomPanelInteriorModeTab.Windows => new UIBottomPanelWindowsTabMediator(_view),
+            BottomPanelInteriorModeTab.Doors => new UIBottomPanelDoorsTabMediator(_view),
+            _ => throw new InvalidOperationException($"{nameof(GetInteriorModeTabMediator)}: interior tab {_viewModel.InteriorModeTab} is not supported"),
+        };
     }
 
     private void Activate()
     {
         _view.PointerEnter += OnBottomPanelPointerEnter;
         _view.PointerExit += OnBottomPanelPointerExit;
+        _view.FriendsButtonClicked += OnFriendsButtonClicked;
+        _view.WarehouseButtonClicked += OnWarehouseButtonClicked;
         _view.InteriorButtonClicked += OnInteriorButtonClicked;
         _view.ManageButtonClicked += OnManageButtonClicked;
         _view.InteriorCloseButtonClicked += OnInteriorCloseButtonClicked;
@@ -82,8 +94,21 @@ public class BottomPanelMediator : UINotMonoMediatorBase
         _view.RotateLeftClicked += OnRotateLeftButtonClicked;
         _view.AutoPlaceClicked += OnAutoPlaceClicked;
 
+        _viewModel.SimulationTabChanged += OnSimulationTabChanged;
+        _viewModel.InteriorTabChanged += OnInteriorTabChanged;
+
         _gameStateModel.GameStateChanged += OnGameStateChanged;
         _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
+    }
+
+    private void OnSimulationTabChanged()
+    {
+        UpdateTabMediator();
+    }
+
+    private void OnInteriorTabChanged()
+    {
+        UpdateTabMediator();
     }
 
     private void OnAutoPlaceClicked()
@@ -150,9 +175,11 @@ public class BottomPanelMediator : UINotMonoMediatorBase
 
     private async void OnGameStateChanged(GameStateName previousState, GameStateName newState)
     {
-        _currentTabMediator?.Unmediate();
-        _currentTabMediator = GetTabMediatorForGameState(_gameStateModel.GameState);
-        _currentTabMediator?.Mediate();
+        if (_gameStateModel.IsPlayingState)
+        {
+            UpdateTabMediator();
+        }
+
         if (newState == GameStateName.ShopSimulation || newState == GameStateName.ShopInterior)
         {
             using (_view.SetBlockedDisposable())
@@ -161,6 +188,13 @@ public class BottomPanelMediator : UINotMonoMediatorBase
                 await ShowBgAndTopButtonsForStateAsync(newState);
             }
         }
+    }
+
+    private void UpdateTabMediator()
+    {
+        _currentTabMediator?.Unmediate();
+        _currentTabMediator = GetTabMediatorForGameState(_gameStateModel.GameState);
+        _currentTabMediator?.Mediate();
     }
 
     private UniTask ShowBgAndTopButtonsForStateAsync(GameStateName newState)
@@ -197,6 +231,16 @@ public class BottomPanelMediator : UINotMonoMediatorBase
         _currentTabMediator = tabMediator;
         _lastTabMediatorForState[_gameStateModel.GameState] = _currentTabMediator;
         _currentTabMediator.Mediate();
+    }    
+
+    private void OnFriendsButtonClicked()
+    {
+        _dispatcher.BottomPanelFriendsClicked();
+    }
+
+    private void OnWarehouseButtonClicked()
+    {
+        _dispatcher.BottomPanelWarehouseClicked();
     }
 
     private void OnInteriorButtonClicked()
@@ -207,31 +251,31 @@ public class BottomPanelMediator : UINotMonoMediatorBase
 
     private void OnInteriorObjectsButtonClicked()
     {
-        SwowTab(new UIBottomPanelShelfsTabMediator(_view));
+        _dispatcher.BottomPanelInteriorShelfsClicked();
         PlayButtonSound();
     }
 
     private void OnInteriorFloorsButtonClicked()
     {
-        SwowTab(new UIBottomPanelFloorsTabMediator(_view));
+        _dispatcher.BottomPanelInteriorFloorsClicked();
         PlayButtonSound();
     }
 
     private void OnInteriorWallsButtonClicked()
     {
-        SwowTab(new UIBottomPanelWallsTabMediator(_view));
+        _dispatcher.BottomPanelInteriorWallsClicked();
         PlayButtonSound();
     }
 
     private void OnInteriorWindowsButtonClicked()
     {
-        SwowTab(new UIBottomPanelWindowsTabMediator(_view));
+        _dispatcher.BottomPanelInteriorWindowsClicked();
         PlayButtonSound();
     }
 
     private void OnInteriorDoorsButtonClicked()
     {
-        SwowTab(new UIBottomPanelDoorsTabMediator(_view));
+        _dispatcher.BottomPanelInteriorDoorsClicked();
         PlayButtonSound();
     }
 

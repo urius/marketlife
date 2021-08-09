@@ -19,12 +19,12 @@ public class UIBottomPanelWallsTabMediator : UIBottomPanelScrollItemsTabMediator
     public override void Mediate()
     {
         base.Mediate();
-        View.SetDecorationButtonSelected(View.InteriorWallsButton);
+        View.SetButtonSelected(View.InteriorWallsButton);
     }
 
     public override void Unmediate()
     {
-        View.SetDecorationButtonUnselected(View.InteriorWallsButton);
+        View.SetButtonUnselected(View.InteriorWallsButton);
         base.Unmediate();
     }
 

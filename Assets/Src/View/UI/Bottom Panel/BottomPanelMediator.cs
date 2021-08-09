@@ -11,6 +11,7 @@ public class BottomPanelMediator : UINotMonoMediatorBase
     private readonly BottomPanelViewModel _viewModel;
     private readonly GameConfigManager _configManager;
     private readonly AudioManager _audioManager;
+    private readonly TutorialUIElementsProvider _tutorialUIElementsProvider;
     private readonly Dictionary<GameStateName, IMediator> _lastTabMediatorForState = new Dictionary<GameStateName, IMediator>();
 
     private IMediator _currentTabMediator;
@@ -24,6 +25,7 @@ public class BottomPanelMediator : UINotMonoMediatorBase
         _viewModel = _gameStateModel.BottomPanelViewModel;
         _configManager = GameConfigManager.Instance;
         _audioManager = AudioManager.Instance;
+        _tutorialUIElementsProvider = TutorialUIElementsProvider.Instance;
     }
 
     public override async void Mediate()
@@ -33,6 +35,8 @@ public class BottomPanelMediator : UINotMonoMediatorBase
         Activate();
         UpdateTabMediator();
         _view.SetAutoPlacePriceGold(_configManager.MainConfig.AutoPlacePriceGold);
+
+        _tutorialUIElementsProvider.SetElement(TutorialUIElement.BottomPanelWarehouseButton, _view.WarehouseButton.transform as RectTransform);
 
         await ShowBgAndTopButtonsForStateAsync(_gameStateModel.GameState);
     }

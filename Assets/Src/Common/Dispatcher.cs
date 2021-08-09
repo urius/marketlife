@@ -45,7 +45,7 @@ public class Dispatcher
     public Action<ShelfContentPopupViewModel, int> UIShelfContentRemoveProductClicked = delegate { };
     public Action<WarehousePopupViewModel, int> UIWarehousePopupSlotClicked = delegate { };
     public Action<UpgradesPopupItemViewModelBase> UIUpgradePopupBuyClicked = delegate { };
-    public Action UITutorialCloseClicked = delegate { };    
+    public Action TutorialActionPerformed = delegate { };    
 
     public Action<CustomerModel> CustomerAnimationEnded = delegate { };    
 
@@ -62,7 +62,8 @@ public class Dispatcher
     public Action BottomPanelInteriorWallsClicked = delegate { };
     public Action BottomPanelInteriorWindowsClicked = delegate { };
     public Action BottomPanelInteriorDoorsClicked = delegate { };
-    
+    public Action BottomPanelWarehouseTabOpened = delegate { };    
+
     public Action BottomPanlelFinishPlacingClicked = delegate { };
     public Action BottomPanelRotateRightClicked = delegate { };
     public Action BottomPanelRotateLeftClicked = delegate { };

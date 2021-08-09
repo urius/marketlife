@@ -32,6 +32,8 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
         base.Mediate();
         Activate();
         View.SetButtonSelected(View.WarehouseButton);
+
+        _dispatcher.BottomPanelWarehouseTabOpened();
     }
 
     public override void Unmediate()

@@ -38,7 +38,7 @@ public class TutorialSystem
         _gameStateModel.PopupShown += OnPopupShown;
         _gameStateModel.PopupRemoved += OnPopupRemoved;
         _gameStateModel.TutorialStepRemoved += OnTutorialStepRemoved;
-        _dispatcher.UITutorialCloseClicked += OnUITutorialCloseClicked;
+        _dispatcher.TutorialActionPerformed += OnUITutorialCloseClicked;
     }
 
     private void OnUITutorialCloseClicked()
@@ -73,16 +73,19 @@ public class TutorialSystem
         }
     }
 
-    private void ShowTutorialIfNeeded()
+    private bool ShowTutorialIfNeeded(bool immediateMode = false)
     {
+        if (_gameStateModel.ShowingTutorialModel != null) return false;
         foreach (var tutorialStepIndex in _openTutorialSteps)
         {
             if (CheckTutorialConditions(tutorialStepIndex))
             {
-                _gameStateModel.ShowTutorialStep(new TutorialStepViewModel(tutorialStepIndex));
-                break;
+                _gameStateModel.ShowTutorialStep(new TutorialStepViewModel(tutorialStepIndex, immediateMode));
+                return true;
             }
         }
+
+        return false;
     }
 
     private bool CheckTutorialConditions(int tutorialStepIndex)
@@ -93,6 +96,10 @@ public class TutorialSystem
             0 => HasNoOpenedPopups()
                 && HasNoPlacingMode()
                 && CheckGameState(GameStateName.ShopSimulation),
+            1 => HasNoOpenedPopups()
+                && HasNoPlacingMode()
+                && CheckGameState(GameStateName.ShopSimulation)
+                && _gameStateModel.BottomPanelViewModel.SimulationModeTab != BottomPanelSimulationModeTab.Warehouse,
             _ => false//throw new ArgumentException($"CheckTutorialConditions: {nameof(tutorialStepIndex)} {tutorialStepIndex} is not supported"),
         };
     }
@@ -134,6 +141,6 @@ public class TutorialSystem
 
     private void OnTutorialStepRemoved()
     {
-        ShowTutorialIfNeeded();
+        ShowTutorialIfNeeded(immediateMode: true);
     }
 }

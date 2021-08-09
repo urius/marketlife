@@ -8,6 +8,7 @@ public class TutorialOverlayView : MonoBehaviour
     public event Action Clicked = delegate { };
 
     [SerializeField] private RectTransform _rootRect;
+    [SerializeField] private Image _rootImage;
     [SerializeField] private RectTransform _highlightRect;
     [SerializeField] private RectTransform _bgRect;
     [SerializeField] private Image _bgImage;
@@ -18,44 +19,75 @@ public class TutorialOverlayView : MonoBehaviour
     [SerializeField] private Button _okButton;
     [SerializeField] private Text _okButtonText;
 
+
     private Camera _camera;
     private Color _bgDefaultColor;
 
     public void Setup(Camera camera)
     {
-        _camera = camera;
+           _camera = camera;
+    }
+
+    public bool AreClicksBlocked => _rootImage.raycastTarget;
+
+    public void SetClickBlockState(bool isBlocked)
+    {
+        _rootImage.raycastTarget = isBlocked;
     }
 
     public void Awake()
     {
         _bgDefaultColor = _bgImage.color;
         _bgImage.color = _bgImage.color.SetAlpha(0);
+        _popupBodyCanvasGroup.alpha = 0;
 
         _messageText.enableWordWrapping = false;
+
+        DisableHighlight();
 
         _okButton.AddOnClickListener(OnClicked);
     }
 
-    public void Start()
+    public void OnDestroy()
     {
-        DisableHighlight();
-        Appear();
+        LeanTween.cancel(gameObject);
     }
 
-    public void Appear()
+    public void Appear(bool animateBgFlag = false, bool animatePopupFlag = false)
     {
-        _popupBodyCanvasGroup.alpha = 0;
-        LeanTween.value(gameObject, c => { _bgImage.color = c; }, _bgDefaultColor.SetAlpha(0), _bgDefaultColor, 0.6f);
-        LeanTween.value(gameObject, a => { _popupBodyCanvasGroup.alpha = a; }, 0f, 1f, 0.2f).setDelay(0.6f);
+        if (animateBgFlag)
+        {
+            LeanTween.value(gameObject, c => { _bgImage.color = c; }, _bgDefaultColor.SetAlpha(0), _bgDefaultColor, 0.5f);
+        }
+        else
+        {
+            _bgImage.color = _bgDefaultColor;
+        }
+
+        if (animatePopupFlag)
+        {
+            LeanTween.value(gameObject, a => { _popupBodyCanvasGroup.alpha = a; }, 0f, 1f, 0.2f).setDelay(0.5f);
+        }
+        else
+        {
+            _popupBodyCanvasGroup.alpha = 1;
+        }
     }
 
-    public void SetTexts(string titleText, string messageText, string buttontext)
+    public void SetTitle(string titleText)
     {
         _titleText.text = titleText;
-        _messageText.text = messageText;
-        _okButtonText.text = buttontext;
+    }
 
+    public void SetMessageText(string messageText)
+    {
+        _messageText.text = messageText;
         CorrectPopupSize();
+    }
+
+    public void SetButtonText(string buttonText)
+    {
+        _okButtonText.text = buttonText;
     }
 
     public void SetQuadrant(int quadrant)
@@ -87,12 +119,24 @@ public class TutorialOverlayView : MonoBehaviour
         SetHighlightSize(Vector2.zero);
     }
 
-    public void HighlightScreenPoint(Vector3 screenPoint, Vector2 size)
+    public void DisableButton()
+    {
+        _okButton.gameObject.SetActive(false);
+    }
+
+    public void HighlightScreenPoint(Vector3 screenPoint, Vector2 size, bool animated = false)
     {
         if (RectTransformUtility.ScreenPointToWorldPointInRectangle(_rootRect, screenPoint, _camera, out var worldPoint))
         {
             _highlightRect.position = worldPoint;
-            SetHighlightSize(size);
+            if (animated)
+            {
+                LeanTween.value(gameObject, v => SetHighlightSize(v), Vector2.zero, size, 0.5f);
+            }
+            else
+            {
+                SetHighlightSize(size);
+            }
         }
     }
 

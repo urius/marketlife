@@ -9,6 +9,7 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
     private readonly UpdatesProvider _updatesProvider;
     private readonly LocalizationManager _loc;
     private readonly AudioManager _audioManager;
+    private readonly TutorialUIElementsProvider _tutorialUIElementsProvider;
     private readonly Dispatcher _dispatcher;
     private readonly SpritesProvider _spritesProvider;
     private readonly GameStateModel _gameStateModel;
@@ -25,6 +26,7 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
         _configManager = GameConfigManager.Instance;
         _loc = LocalizationManager.Instance;
         _audioManager = AudioManager.Instance;
+        _tutorialUIElementsProvider = TutorialUIElementsProvider.Instance;
     }
 
     public override void Mediate()
@@ -32,8 +34,6 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
         base.Mediate();
         Activate();
         View.SetButtonSelected(View.WarehouseButton);
-
-        _dispatcher.BottomPanelWarehouseTabOpened();
     }
 
     public override void Unmediate()
@@ -236,6 +236,12 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
             itemView.SetImage(_spritesProvider.GetOrderIcon());
             itemView.SetTopText(_loc.GetLocalization(LocalizationKeys.BottomPanelWarehouseEmptySlot));
             itemView.SetupMainHint(_loc.GetLocalization(LocalizationKeys.BottomPanelWarehouseEmptySlotHint));
+
+            if (_tutorialUIElementsProvider.HasElement(TutorialUIElement.BottomPanelWarehouseTabFirstFreeSlot) == false
+                && slotModel.HasProduct == false)
+            {
+                _tutorialUIElementsProvider.SetElement(TutorialUIElement.BottomPanelWarehouseTabFirstFreeSlot, itemView.transform as RectTransform);
+            }
         }
     }
 

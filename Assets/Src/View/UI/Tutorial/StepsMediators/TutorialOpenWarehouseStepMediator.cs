@@ -7,6 +7,7 @@ public class TutorialOpenWarehouseStepMediator : TutorialStepMediatorBase
     private readonly ScreenCalculator _screenCalculator;
     private readonly UpdatesProvider _updatesProvider;
     private readonly Dispatcher _dispatcher;
+    private readonly BottomPanelViewModel _bottomPanelViewModel;
 
     private Camera _camera;
     private RectTransform _warehouseButtonRect;
@@ -18,6 +19,7 @@ public class TutorialOpenWarehouseStepMediator : TutorialStepMediatorBase
         _screenCalculator = ScreenCalculator.Instance;
         _updatesProvider = UpdatesProvider.Instance;
         _dispatcher = Dispatcher.Instance;
+        _bottomPanelViewModel = GameStateModel.Instance.BottomPanelViewModel;
     }
 
     public override void Mediate()
@@ -45,13 +47,13 @@ public class TutorialOpenWarehouseStepMediator : TutorialStepMediatorBase
     private void Activate()
     {
         _updatesProvider.RealtimeUpdate += OnRealtimeUpdate;
-        _dispatcher.BottomPanelWarehouseTabOpened += OnWarehouseTabOpened;
+        _bottomPanelViewModel.SimulationTabChanged += OnSimulationTabChanged;
     }
 
     private void Deactivate()
     {
         _updatesProvider.RealtimeUpdate -= OnRealtimeUpdate;
-        _dispatcher.BottomPanelWarehouseTabOpened -= OnWarehouseTabOpened;
+        _bottomPanelViewModel.SimulationTabChanged -= OnSimulationTabChanged;
     }
 
     private void OnRealtimeUpdate()
@@ -60,8 +62,11 @@ public class TutorialOpenWarehouseStepMediator : TutorialStepMediatorBase
         View.SetClickBlockState(!isMouseOverRect);
     }
 
-    private void OnWarehouseTabOpened()
+    private void OnSimulationTabChanged()
     {
-        _dispatcher.TutorialActionPerformed();
+        if (_bottomPanelViewModel.SimulationModeTab == BottomPanelSimulationModeTab.Warehouse)
+        {
+            _dispatcher.TutorialActionPerformed();
+        }
     }
 }

@@ -61,8 +61,7 @@ public class Dispatcher
     public Action BottomPanelInteriorFloorsClicked = delegate { };
     public Action BottomPanelInteriorWallsClicked = delegate { };
     public Action BottomPanelInteriorWindowsClicked = delegate { };
-    public Action BottomPanelInteriorDoorsClicked = delegate { };
-    public Action BottomPanelWarehouseTabOpened = delegate { };    
+    public Action BottomPanelInteriorDoorsClicked = delegate { };   
 
     public Action BottomPanlelFinishPlacingClicked = delegate { };
     public Action BottomPanelRotateRightClicked = delegate { };

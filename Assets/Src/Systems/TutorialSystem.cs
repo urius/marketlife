@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class TutorialSystem
 {
@@ -100,6 +101,11 @@ public class TutorialSystem
                 && HasNoPlacingMode()
                 && CheckGameState(GameStateName.ShopSimulation)
                 && _gameStateModel.BottomPanelViewModel.SimulationModeTab != BottomPanelSimulationModeTab.Warehouse,
+            2 => HasNoOpenedPopups()
+                && HasNoPlacingMode()
+                && CheckGameState(GameStateName.ShopSimulation)
+                && _gameStateModel.BottomPanelViewModel.SimulationModeTab == BottomPanelSimulationModeTab.Warehouse
+                && _playerModel.ShopModel.WarehouseModel.Slots.Any(s => !s.HasProduct),
             _ => false//throw new ArgumentException($"CheckTutorialConditions: {nameof(tutorialStepIndex)} {tutorialStepIndex} is not supported"),
         };
     }

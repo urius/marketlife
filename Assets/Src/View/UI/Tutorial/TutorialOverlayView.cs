@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,7 +26,7 @@ public class TutorialOverlayView : MonoBehaviour
 
     public void Setup(Camera camera)
     {
-           _camera = camera;
+        _camera = camera;
     }
 
     public bool AreClicksBlocked => _rootImage.raycastTarget;
@@ -138,6 +139,28 @@ public class TutorialOverlayView : MonoBehaviour
                 SetHighlightSize(size);
             }
         }
+    }
+
+    public void SetHighlightPosition(Vector3 screenPoint)
+    {
+        if (RectTransformUtility.ScreenPointToWorldPointInRectangle(_rootRect, screenPoint, _camera, out var worldPoint))
+        {
+            _highlightRect.position = worldPoint;
+            UpdateBg();
+        }
+    }
+
+    public UniTask HighlightScreenPointAsync(Vector3 screenPoint, Vector2 size)
+    {
+        var tcs = new UniTaskCompletionSource();
+        if (RectTransformUtility.ScreenPointToWorldPointInRectangle(_rootRect, screenPoint, _camera, out var worldPoint))
+        {
+            _highlightRect.position = worldPoint;
+            LeanTween.value(gameObject, v => SetHighlightSize(v), Vector2.zero, size, 0.5f)
+                .setOnComplete(() => tcs.TrySetResult());
+        }
+
+        return tcs.Task;
     }
 
     public void SetHighlightSize(Vector2 size)

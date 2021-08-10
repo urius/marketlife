@@ -15,6 +15,11 @@ public class TutorialUIElementsProvider
         return result;
     }
 
+    public bool HasElement(TutorialUIElement elementId)
+    {
+        return _elements.ContainsKey(elementId);
+    }
+
     public void SetElement(TutorialUIElement elementId, RectTransform elementRect)
     {
         _elements[elementId] = elementRect;
@@ -25,4 +30,5 @@ public enum TutorialUIElement
 {
     None,
     BottomPanelWarehouseButton,
+    BottomPanelWarehouseTabFirstFreeSlot,
 }

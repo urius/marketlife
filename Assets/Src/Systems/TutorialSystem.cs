@@ -106,6 +106,8 @@ public class TutorialSystem
                 && CheckGameState(GameStateName.ShopSimulation)
                 && _gameStateModel.BottomPanelViewModel.SimulationModeTab == BottomPanelSimulationModeTab.Warehouse
                 && _playerModel.ShopModel.WarehouseModel.Slots.Any(s => !s.HasProduct),
+            3 => HasNoOpenedPopups() == false
+                && _gameStateModel.ShowingPopupModel.PopupType == PopupType.OrderProduct,
             _ => false//throw new ArgumentException($"CheckTutorialConditions: {nameof(tutorialStepIndex)} {tutorialStepIndex} is not supported"),
         };
     }

@@ -59,6 +59,7 @@ public class TutorialMediator : IMediator
             0 => new TutorialWelcomeStepMediator(_parentTransform),
             1 => new TutorialOpenWarehouseStepMediator(_parentTransform),
             2 => new TutorialOpenOrderPopupStepMediator(_parentTransform),
+            3 => new TutorialOrderProductStepMediator(_parentTransform),
             _ => throw new ArgumentException($"No tutorial step with id {stepIndex}"),
         };
     }

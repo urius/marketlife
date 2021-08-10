@@ -18,6 +18,7 @@ public class UIOrderProductsPopupMediator : IMediator
     private readonly UserModel _playerModel;
     private readonly PrefabsHolder _prefabsHolder;
     private readonly PoolCanvasProvider _poolCanvasProvider;
+    private readonly TutorialUIElementsProvider _tutorialUIElementsProvider;
     private readonly LinkedList<(UIOrderProductItemView View, ProductConfig Config)> _displayedItems = new LinkedList<(UIOrderProductItemView, ProductConfig)>();
     private readonly Queue<UIOrderProductItemView> _cachedItems = new Queue<UIOrderProductItemView>();
 
@@ -43,6 +44,7 @@ public class UIOrderProductsPopupMediator : IMediator
         _shopModel = _playerModel.ShopModel;
         _prefabsHolder = PrefabsHolder.Instance;
         _poolCanvasProvider = PoolCanvasProvider.Instance;
+        _tutorialUIElementsProvider = TutorialUIElementsProvider.Instance;
     }
 
     public async void Mediate()
@@ -64,11 +66,15 @@ public class UIOrderProductsPopupMediator : IMediator
 
         await _popupView.Appear2Async();
 
+        _dispatcher.UIOrderPopupAppeared();
+
         Activate();
     }
 
     public async void Unmediate()
     {
+        _tutorialUIElementsProvider.ClearElement(TutorialUIElement.OrderProductsPopupFirstItem);
+
         Deactivate();
         foreach (var itemView in _cachedItems)
         {
@@ -221,6 +227,11 @@ public class UIOrderProductsPopupMediator : IMediator
 
     private void SetupItem(UIOrderProductItemView itemView, ProductConfig config)
     {
+        if (_tutorialUIElementsProvider.HasElement(TutorialUIElement.OrderProductsPopupFirstItem) == false)
+        {
+            _tutorialUIElementsProvider.SetElement(TutorialUIElement.OrderProductsPopupFirstItem, itemView.transform as RectTransform);
+        }
+
         itemView.SetProductIcon(_spritesProvider.GetProductIcon(config.Key));
         var warehouseVolume = _shopModel.WarehouseModel.Volume;
         var price = config.GetPriceForVolume(warehouseVolume);

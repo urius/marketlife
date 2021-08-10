@@ -20,6 +20,11 @@ public class TutorialUIElementsProvider
         return _elements.ContainsKey(elementId);
     }
 
+    public bool ClearElement(TutorialUIElement elementId)
+    {
+        return _elements.Remove(elementId);
+    }
+
     public void SetElement(TutorialUIElement elementId, RectTransform elementRect)
     {
         _elements[elementId] = elementRect;
@@ -31,4 +36,5 @@ public enum TutorialUIElement
     None,
     BottomPanelWarehouseButton,
     BottomPanelWarehouseTabFirstFreeSlot,
+    OrderProductsPopupFirstItem,
 }

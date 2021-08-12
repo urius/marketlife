@@ -51,6 +51,8 @@ MonoBehaviour:
     type: 3}
   Shelf5ProfilePrefab: {fileID: 8402292013250654598, guid: b1b731eaca1e24bc08c20c5368eb6f14,
     type: 3}
+  TutorialCellPointerPrefab: {fileID: 4587819061462832175, guid: 1c2c63ee1e9a24176bfef951b6258aed,
+    type: 3}
   UIRaycastsBlocker: {fileID: 8390160868129214309, guid: 092e92334f79f42bcb5614acf7e70f7c,
     type: 3}
   UIBottomPanelScrollItemPrefab: {fileID: 875298350171009047, guid: bf774f8a333124ccd8cf0619d9ddcf62,

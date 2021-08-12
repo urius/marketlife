@@ -4,7 +4,7 @@ using System.Linq;
 
 public class TutorialSystem
 {
-    private const int LastTutorialStepIndex = 5;
+    private const int LastTutorialStepIndex = 10;
 
     private readonly GameStateModel _gameStateModel;
     private readonly Dispatcher _dispatcher;
@@ -38,16 +38,16 @@ public class TutorialSystem
         _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
         _gameStateModel.PopupShown += OnPopupShown;
         _gameStateModel.PopupRemoved += OnPopupRemoved;
-        _gameStateModel.TutorialStepRemoved += OnTutorialStepRemoved;
-        _dispatcher.TutorialActionPerformed += OnUITutorialCloseClicked;
+        _dispatcher.TutorialActionPerformed += OnUITutorialActionPerformed;
     }
 
-    private void OnUITutorialCloseClicked()
+    private void OnUITutorialActionPerformed()
     {
         _playerModel.AddPassedTutorialStep(_gameStateModel.ShowingTutorialModel.StepIndex);
         UpdateOpenedSteps();
 
         _gameStateModel.RemoveCurrentTutorialStepIfNeeded();
+        ShowTutorialIfNeeded(immediateMode: true);
     }
 
     private void UpdateOpenedSteps()
@@ -92,22 +92,26 @@ public class TutorialSystem
     private bool CheckTutorialConditions(int tutorialStepIndex)
     {
         if (_gameStateModel.ShowingTutorialModel != null) return false;
-        return tutorialStepIndex switch
+        return (TutorialStep)tutorialStepIndex switch
         {
-            0 => HasNoOpenedPopups()
+            TutorialStep.Welcome => HasNoOpenedPopups()
                 && HasNoPlacingMode()
                 && CheckGameState(GameStateName.ShopSimulation),
-            1 => HasNoOpenedPopups()
+            TutorialStep.OpenWarehouse => HasNoOpenedPopups()
                 && HasNoPlacingMode()
                 && CheckGameState(GameStateName.ShopSimulation)
                 && _gameStateModel.BottomPanelViewModel.SimulationModeTab != BottomPanelSimulationModeTab.Warehouse,
-            2 => HasNoOpenedPopups()
+            TutorialStep.OpenOrderPopup => HasNoOpenedPopups()
                 && HasNoPlacingMode()
                 && CheckGameState(GameStateName.ShopSimulation)
                 && _gameStateModel.BottomPanelViewModel.SimulationModeTab == BottomPanelSimulationModeTab.Warehouse
                 && _playerModel.ShopModel.WarehouseModel.Slots.Any(s => !s.HasProduct),
-            3 => HasNoOpenedPopups() == false
+            TutorialStep.OrderProduct => HasNoOpenedPopups() == false
                 && _gameStateModel.ShowingPopupModel.PopupType == PopupType.OrderProduct,
+            TutorialStep.Delivering => HasNoOpenedPopups()
+                && HasNoPlacingMode()
+                && CheckGameState(GameStateName.ShopSimulation)
+                && _playerModel.ShopModel.WarehouseModel.Slots.Any(s => s.HasProduct && s.Product.DeliverTime > _gameStateModel.ServerTime),
             _ => false//throw new ArgumentException($"CheckTutorialConditions: {nameof(tutorialStepIndex)} {tutorialStepIndex} is not supported"),
         };
     }
@@ -146,9 +150,14 @@ public class TutorialSystem
     {
         ShowTutorialIfNeeded();
     }
-
-    private void OnTutorialStepRemoved()
-    {
-        ShowTutorialIfNeeded(immediateMode: true);
-    }
 }
+
+public enum TutorialStep
+{
+    Welcome = 0,
+    OpenWarehouse = 1,
+    OpenOrderPopup = 2,
+    OrderProduct = 3,
+    Delivering = 4,
+}
+

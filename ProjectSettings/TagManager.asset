@@ -62,6 +62,9 @@ TagManager:
   - name: Placing
     uniqueID: 2765621921
     locked: 0
+  - name: GUI
+    uniqueID: 3354345815
+    locked: 0
   - name: GUICursor
     uniqueID: 1496551583
     locked: 0

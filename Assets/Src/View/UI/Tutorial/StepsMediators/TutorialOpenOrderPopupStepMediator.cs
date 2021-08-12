@@ -7,9 +7,7 @@ public class TutorialOpenOrderPopupStepMediator : TutorialStepMediatorBase
     private readonly ScreenCalculator _screenCalculator;
     private readonly UpdatesProvider _updatesProvider;
     private readonly GameStateModel _gameStateModel;
-    private readonly Dispatcher _dispatcher;
 
-    private Camera _camera;
     private RectTransform _emptySlotRect;
     private Vector3 _higlightedSlotSavedPosition;
 
@@ -20,24 +18,18 @@ public class TutorialOpenOrderPopupStepMediator : TutorialStepMediatorBase
         _screenCalculator = ScreenCalculator.Instance;
         _updatesProvider = UpdatesProvider.Instance;
         _gameStateModel = GameStateModel.Instance;
-        _dispatcher = Dispatcher.Instance;
     }
 
     public override void Mediate()
     {
         base.Mediate();
-
-        _camera = Camera.main;
-
         View.DisableButton();
-
         Activate();
     }
 
     public override void Unmediate()
     {
         Deactivate();
-
         base.Unmediate();
     }
 
@@ -57,7 +49,7 @@ public class TutorialOpenOrderPopupStepMediator : TutorialStepMediatorBase
     {
         if (_gameStateModel.ShowingPopupModel.PopupType == PopupType.OrderProduct)
         {
-            _dispatcher.TutorialActionPerformed();
+            DispatchTutorialActionPerformed();
         }
     }
 
@@ -71,17 +63,13 @@ public class TutorialOpenOrderPopupStepMediator : TutorialStepMediatorBase
                 var sideSize = Math.Max(_emptySlotRect.rect.size.x, _emptySlotRect.rect.size.y) * 1.1f;
                 _higlightedSlotSavedPosition = _emptySlotRect.position;
                 View.HighlightScreenPoint(_screenCalculator.WorldToScreenPoint(_emptySlotRect.position), new Vector2(sideSize, sideSize), animated: true);
+                AllowClickOnRectTransform(_emptySlotRect);
             }
         }
-        else
+        else if (_higlightedSlotSavedPosition != _emptySlotRect.position)
         {
-            if (_higlightedSlotSavedPosition != _emptySlotRect.position)
-            {
-                _higlightedSlotSavedPosition = _emptySlotRect.position;
-                View.SetHighlightPosition(_screenCalculator.WorldToScreenPoint(_higlightedSlotSavedPosition));
-            }
-            var isMouseOverRect = RectTransformUtility.RectangleContainsScreenPoint(_emptySlotRect, Input.mousePosition, _camera);
-            View.SetClickBlockState(!isMouseOverRect);
+            _higlightedSlotSavedPosition = _emptySlotRect.position;
+            View.SetHighlightPosition(_screenCalculator.WorldToScreenPoint(_higlightedSlotSavedPosition));
         }
     }
 }

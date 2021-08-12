@@ -41,6 +41,8 @@ public struct ProcessHighlightedObjectClickCommand
         shopModel.RemoveUnwash(coords);
         playerModel.ProgressModel.AddExp(mainConfig.RemoveUnwashesRewardExp);
 
+        gameStateModel.ResetHighlightedState();
+
         var screenPoint = screenCalculator.CellToScreenPoint(coords);
         dispatcher.UIRequestFlyingExp(screenPoint, mainConfig.RemoveUnwashesRewardExp);
 

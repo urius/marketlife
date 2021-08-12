@@ -22,6 +22,7 @@ public struct OrderProductCommand
                 var warehouseSlotIndex = orderProductPopupModel.TargetWarehouseSlotIndex;
                 dispatcher.UIRequestOrderProductAnimation(transform, startAnimationScreenPoint, warehouseSlotIndex, productModel);
                 shopModel.WarehouseModel.Slots[warehouseSlotIndex].SetProduct(productModel);
+                gameStateModel.RemoveCurrentPopupIfNeeded();
             }
         }
         else

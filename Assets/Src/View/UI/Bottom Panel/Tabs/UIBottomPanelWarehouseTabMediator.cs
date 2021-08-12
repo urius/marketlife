@@ -220,6 +220,8 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
                 var quickDeliverPrice = CalculationHelper.GetPriceForDeliver(_configManager.MainConfig.QuickDeliverPriceGoldPerMinute, deltaDeliver);
                 itemView.SetBottomButtonPrice(quickDeliverPrice);
                 itemView.SetupBottomButtonHint(_loc.GetLocalization(LocalizationKeys.BottomPanelWarehouseQuickDeliveryHint));
+
+                _tutorialUIElementsProvider.SetElement(TutorialUIElement.BottomPanelWarehouseTabLastDeliveringSlot, itemView.transform as RectTransform);
             }
             else
             {

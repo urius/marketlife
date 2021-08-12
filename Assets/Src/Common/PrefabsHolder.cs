@@ -34,6 +34,9 @@ public class PrefabsHolder : ScriptableObject
     public GameObject Shelf5Prefab;
     public GameObject Shelf5ProfilePrefab;
 
+    //GUI
+    public GameObject TutorialCellPointerPrefab;
+
     //Interface
     public GameObject UIRaycastsBlocker;
     public GameObject UIBottomPanelScrollItemPrefab;

@@ -132,6 +132,7 @@ public class TutorialOverlayView : MonoBehaviour
             _highlightRect.position = worldPoint;
             if (animated)
             {
+                UpdateBg();
                 LeanTween.value(gameObject, v => SetHighlightSize(v), Vector2.zero, size, 0.5f);
             }
             else

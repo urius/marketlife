@@ -37,4 +37,5 @@ public enum TutorialUIElement
     BottomPanelWarehouseButton,
     BottomPanelWarehouseTabFirstFreeSlot,
     OrderProductsPopupFirstItem,
+    BottomPanelWarehouseTabLastDeliveringSlot,
 }

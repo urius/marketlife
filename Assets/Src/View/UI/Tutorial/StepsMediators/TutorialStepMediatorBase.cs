@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public abstract class TutorialStepMediatorBase : IMediator
@@ -10,6 +9,9 @@ public abstract class TutorialStepMediatorBase : IMediator
 
     private TutorialOverlayView _tutorialOverlayView;
     private TutorialStepViewModel _viewModel;
+    private UpdatesProvider _updatesProvider;
+    private Camera _camera;
+    private RectTransform _allowedClickOnRectTransform;
 
     public TutorialStepMediatorBase(RectTransform parentTransform)
     {
@@ -26,13 +28,15 @@ public abstract class TutorialStepMediatorBase : IMediator
     public virtual void Mediate()
     {
         _viewModel = GameStateModel.Instance.ShowingTutorialModel;
+        _updatesProvider = UpdatesProvider.Instance;
+        _camera = Camera.main;
 
         var tutorialOverlayGo = GameObject.Instantiate(_prefabsHodler.UITutorialOverlayPrefab, _parentTransform);
         _tutorialOverlayView = tutorialOverlayGo.GetComponent<TutorialOverlayView>();
-        _tutorialOverlayView.Setup(Camera.main);
+        _tutorialOverlayView.Setup(_camera);
 
         _tutorialOverlayView.SetTitle(_loc.GetLocalization(LocalizationKeys.TutorialTitleDefault));
-        View.SetMessageText(_loc.GetLocalization($"{LocalizationKeys.TutorialMessagePrefix}{_viewModel.StepIndex}"));
+        _tutorialOverlayView.SetMessageText(_loc.GetLocalization($"{LocalizationKeys.TutorialMessagePrefix}{_viewModel.StepIndex}"));
 
         Activate();
 
@@ -45,6 +49,17 @@ public abstract class TutorialStepMediatorBase : IMediator
         GameObject.Destroy(_tutorialOverlayView.gameObject);
     }
 
+    public void AllowClickOnRectTransform(RectTransform rectTransform)
+    {
+        _allowedClickOnRectTransform = rectTransform;
+        _updatesProvider.RealtimeUpdate += HandleClickOnRectTransform;
+    }
+
+    public void DispatchTutorialActionPerformed()
+    {
+        _dispatcher.TutorialActionPerformed();
+    }
+
     private void Activate()
     {
         _tutorialOverlayView.Clicked += OnViewButtonClicked;
@@ -53,10 +68,17 @@ public abstract class TutorialStepMediatorBase : IMediator
     private void Deactivate()
     {
         _tutorialOverlayView.Clicked -= OnViewButtonClicked;
+        _updatesProvider.RealtimeUpdate -= HandleClickOnRectTransform;
+    }
+
+    private void HandleClickOnRectTransform()
+    {
+        var isMouseOverRect = RectTransformUtility.RectangleContainsScreenPoint(_allowedClickOnRectTransform, Input.mousePosition, _camera);
+        _tutorialOverlayView.SetClickBlockState(!isMouseOverRect);
     }
 
     private void OnViewButtonClicked()
     {
-        _dispatcher.TutorialActionPerformed();
+        DispatchTutorialActionPerformed();
     }
 }

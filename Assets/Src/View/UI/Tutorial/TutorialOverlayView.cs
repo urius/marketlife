@@ -11,6 +11,7 @@ public class TutorialOverlayView : MonoBehaviour
     [SerializeField] private RectTransform _rootRect;
     [SerializeField] private Image _rootImage;
     [SerializeField] private RectTransform _highlightRect;
+    [SerializeField] private Image _highlightImage;
     [SerializeField] private RectTransform _bgRect;
     [SerializeField] private Image _bgImage;
     [SerializeField] private RectTransform _popupBodyRect;
@@ -19,6 +20,9 @@ public class TutorialOverlayView : MonoBehaviour
     [SerializeField] private TMP_Text _messageText;
     [SerializeField] private Button _okButton;
     [SerializeField] private Text _okButtonText;
+    [SerializeField] private Sprite _roundSprite;
+    [SerializeField] private Sprite _roundedSquareSprite;
+    [SerializeField] private RectTransform _manRect;
 
 
     private Camera _camera;
@@ -52,6 +56,22 @@ public class TutorialOverlayView : MonoBehaviour
     public void OnDestroy()
     {
         LeanTween.cancel(gameObject);
+    }
+
+    public void PlaceManLeft()
+    {
+        _manRect.anchoredPosition = new Vector2(80, _manRect.anchoredPosition.y);
+        _manRect.anchorMin = new Vector2(0, _manRect.anchorMin.y);
+        _manRect.anchorMax = new Vector2(0, _manRect.anchorMax.y);
+        _manRect.localScale = new Vector3(-1, 1, 1);
+    }
+
+    public void PlaceManRight()
+    {
+        _manRect.anchoredPosition = new Vector2(-80, _manRect.anchoredPosition.y);
+        _manRect.anchorMin = new Vector2(1, _manRect.anchorMin.y);
+        _manRect.anchorMax = new Vector2(1, _manRect.anchorMax.y);
+        _manRect.localScale = new Vector3(1, 1, 1);
     }
 
     public void Appear(bool animateBgFlag = false, bool animatePopupFlag = false)
@@ -125,7 +145,26 @@ public class TutorialOverlayView : MonoBehaviour
         _okButton.gameObject.SetActive(false);
     }
 
-    public void HighlightScreenPoint(Vector3 screenPoint, Vector2 size, bool animated = false)
+    public void DisablePopup()
+    {
+        _popupBodyRect.gameObject.SetActive(false);
+    }
+
+    public void HighlightScreenRoundArea(Vector3 screenPoint, Vector2 size, bool animated = false)
+    {
+        _highlightImage.sprite = _roundSprite;
+        _highlightImage.type = Image.Type.Simple;
+        HighlightScreenRoundAreaInternal(screenPoint, size, animated);
+    }
+
+    public void HighlightScreenSquareArea(Vector3 screenPoint, Vector2 size, bool animated = false)
+    {
+        _highlightImage.sprite = _roundedSquareSprite;
+        _highlightImage.type = Image.Type.Sliced;
+        HighlightScreenRoundAreaInternal(screenPoint, size, animated);
+    }
+
+    private void HighlightScreenRoundAreaInternal(Vector3 screenPoint, Vector2 size, bool animated)
     {
         if (RectTransformUtility.ScreenPointToWorldPointInRectangle(_rootRect, screenPoint, _camera, out var worldPoint))
         {
@@ -151,18 +190,18 @@ public class TutorialOverlayView : MonoBehaviour
         }
     }
 
-    public UniTask HighlightScreenPointAsync(Vector3 screenPoint, Vector2 size)
-    {
-        var tcs = new UniTaskCompletionSource();
-        if (RectTransformUtility.ScreenPointToWorldPointInRectangle(_rootRect, screenPoint, _camera, out var worldPoint))
-        {
-            _highlightRect.position = worldPoint;
-            LeanTween.value(gameObject, v => SetHighlightSize(v), Vector2.zero, size, 0.5f)
-                .setOnComplete(() => tcs.TrySetResult());
-        }
+    //public UniTask HighlightScreenPointAsync(Vector3 screenPoint, Vector2 size)
+    //{
+    //    var tcs = new UniTaskCompletionSource();
+    //    if (RectTransformUtility.ScreenPointToWorldPointInRectangle(_rootRect, screenPoint, _camera, out var worldPoint))
+    //    {
+    //        _highlightRect.position = worldPoint;
+    //        LeanTween.value(gameObject, v => SetHighlightSize(v), Vector2.zero, size, 0.5f)
+    //            .setOnComplete(() => tcs.TrySetResult());
+    //    }
 
-        return tcs.Task;
-    }
+    //    return tcs.Task;
+    //}
 
     public void SetHighlightSize(Vector2 size)
     {

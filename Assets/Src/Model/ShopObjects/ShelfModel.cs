@@ -32,6 +32,15 @@ public class ShelfModel : ShopObjectModelBase
 
     public Vector2Int EntryCoords => Coords + SideHelper.SideToVector(Side);
 
+    public bool IsEmpty()
+    {
+        foreach (var slot in Slots)
+        {
+            if (slot.HasProduct) return false;
+        }
+        return true;
+    }
+
     private void OnSlotProductSet(int slotIndex)
     {
         ProductIsSetOnSlot(this, slotIndex);

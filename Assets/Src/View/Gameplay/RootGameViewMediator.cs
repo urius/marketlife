@@ -10,6 +10,7 @@ public class RootGameViewMediator : MonoBehaviour
     private Dispatcher _dispatcher;
     private GameStateModel _gameStateModel;
     private GridCalculator _gridCalculator;
+    private TutorialUIElementsProvider _tutorialUIElementsProvider;
     private int NextRealtimeSecondUpdate;
     private int NextGameplaySecondUpdate;
 
@@ -18,7 +19,9 @@ public class RootGameViewMediator : MonoBehaviour
         _updatesProvider = UpdatesProvider.Instance;
         _dispatcher = Dispatcher.Instance;
         _gameStateModel = GameStateModel.Instance;
+        _tutorialUIElementsProvider = TutorialUIElementsProvider.Instance;
 
+        _tutorialUIElementsProvider.SetElement(TutorialUIElement.ShopFloorTransform, transform);
         SetupGridCalculator();
         NextRealtimeSecondUpdate = (int)Time.realtimeSinceStartup + 1;
         NextGameplaySecondUpdate = NextRealtimeSecondUpdate;

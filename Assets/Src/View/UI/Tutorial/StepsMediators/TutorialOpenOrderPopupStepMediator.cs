@@ -57,12 +57,12 @@ public class TutorialOpenOrderPopupStepMediator : TutorialStepMediatorBase
     {
         if (_emptySlotRect == null)
         {
-            _emptySlotRect = _tutorialUIElementsProvider.GetElementRect(TutorialUIElement.BottomPanelWarehouseTabFirstFreeSlot);
+            _emptySlotRect = _tutorialUIElementsProvider.GetElementRectTransform(TutorialUIElement.BottomPanelWarehouseTabFirstFreeSlot);
             if (_emptySlotRect != null)
             {
                 var sideSize = Math.Max(_emptySlotRect.rect.size.x, _emptySlotRect.rect.size.y) * 1.1f;
                 _higlightedSlotSavedPosition = _emptySlotRect.position;
-                View.HighlightScreenPoint(_screenCalculator.WorldToScreenPoint(_emptySlotRect.position), new Vector2(sideSize, sideSize), animated: true);
+                View.HighlightScreenRoundArea(_screenCalculator.WorldToScreenPoint(_emptySlotRect.position), new Vector2(sideSize, sideSize), animated: true);
                 AllowClickOnRectTransform(_emptySlotRect);
             }
         }

@@ -9,6 +9,7 @@ public class FloorMediator : MonoBehaviour
     private IMediator _currentPlacingFloorMediator;
     private ShopModel _activeShopModel;
     private SpriteRenderer _highlightedUnwashSpriteRenderer;
+
     private readonly Dictionary<Vector2Int, SpriteRenderer> _floorSprites = new Dictionary<Vector2Int, SpriteRenderer>();
     private readonly Dictionary<Vector2Int, SpriteRenderer> _unwashesSprites = new Dictionary<Vector2Int, SpriteRenderer>();
 

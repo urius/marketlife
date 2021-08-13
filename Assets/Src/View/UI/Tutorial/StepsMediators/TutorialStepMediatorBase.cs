@@ -12,6 +12,7 @@ public abstract class TutorialStepMediatorBase : IMediator
     private UpdatesProvider _updatesProvider;
     private Camera _camera;
     private RectTransform _allowedClickOnRectTransform;
+    private Rect _allowedClickOnRectArea;
 
     public TutorialStepMediatorBase(RectTransform parentTransform)
     {
@@ -36,10 +37,18 @@ public abstract class TutorialStepMediatorBase : IMediator
         _tutorialOverlayView.Setup(_camera);
 
         _tutorialOverlayView.SetTitle(_loc.GetLocalization(LocalizationKeys.TutorialTitleDefault));
-        _tutorialOverlayView.SetMessageText(_loc.GetLocalization($"{LocalizationKeys.TutorialMessagePrefix}{_viewModel.StepIndex}"));
+        SetupMessage();
 
         Activate();
 
+        if (_viewModel.StepIndex % 2 == 0)
+        {
+            _tutorialOverlayView.PlaceManLeft();
+        }
+        else
+        {
+            _tutorialOverlayView.PlaceManRight();
+        }
         _tutorialOverlayView.Appear(animateBgFlag: !_viewModel.IsImmediate, true);
     }
 
@@ -52,12 +61,30 @@ public abstract class TutorialStepMediatorBase : IMediator
     public void AllowClickOnRectTransform(RectTransform rectTransform)
     {
         _allowedClickOnRectTransform = rectTransform;
+        UnsubscribeAllowClickHandlers();
         _updatesProvider.RealtimeUpdate += HandleClickOnRectTransform;
+    }
+
+    public void AllowClickOnRectArea(Rect rectArea)
+    {
+        _allowedClickOnRectArea = rectArea;
+        UnsubscribeAllowClickHandlers();
+        _updatesProvider.RealtimeUpdate += HandleClickOnRectArea;
     }
 
     public void DispatchTutorialActionPerformed()
     {
         _dispatcher.TutorialActionPerformed();
+    }
+
+    protected virtual void OnViewButtonClicked()
+    {
+        DispatchTutorialActionPerformed();
+    }
+
+    protected virtual void SetupMessage()
+    {
+        _tutorialOverlayView.SetMessageText(_loc.GetLocalization($"{LocalizationKeys.TutorialMessagePrefix}{_viewModel.StepIndex}"));
     }
 
     private void Activate()
@@ -68,7 +95,13 @@ public abstract class TutorialStepMediatorBase : IMediator
     private void Deactivate()
     {
         _tutorialOverlayView.Clicked -= OnViewButtonClicked;
+        UnsubscribeAllowClickHandlers();
+    }
+
+    private void UnsubscribeAllowClickHandlers()
+    {
         _updatesProvider.RealtimeUpdate -= HandleClickOnRectTransform;
+        _updatesProvider.RealtimeUpdate -= HandleClickOnRectArea;
     }
 
     private void HandleClickOnRectTransform()
@@ -77,8 +110,11 @@ public abstract class TutorialStepMediatorBase : IMediator
         _tutorialOverlayView.SetClickBlockState(!isMouseOverRect);
     }
 
-    private void OnViewButtonClicked()
+    private void HandleClickOnRectArea()
     {
-        DispatchTutorialActionPerformed();
+        var mousePosition = Input.mousePosition;
+        var isMouseOverRect = _allowedClickOnRectArea.Contains(new Vector2(mousePosition.x, mousePosition.y));
+        _tutorialOverlayView.SetClickBlockState(!isMouseOverRect);
     }
+
 }

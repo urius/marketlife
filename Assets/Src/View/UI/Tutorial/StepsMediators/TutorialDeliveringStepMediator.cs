@@ -68,18 +68,12 @@ public class TutorialDeliveringStepMediator : TutorialStepMediatorBase
         {
             if (_deliveringRectTransform == null)
             {
-                _deliveringRectTransform = _tutorialUIElementProvider.GetElementRect(TutorialUIElement.BottomPanelWarehouseTabLastDeliveringSlot);
+                _deliveringRectTransform = _tutorialUIElementProvider.GetElementRectTransform(TutorialUIElement.BottomPanelWarehouseTabLastDeliveringSlot);
                 var itemBoundsRect = _deliveringRectTransform.rect;
                 var size = new Vector2(itemBoundsRect.size.x, itemBoundsRect.size.y * 0.4f);
                 var offset = new Vector3(0, itemBoundsRect.size.y * 0.5f);
-                View.HighlightScreenPoint(_screenCalculator.WorldToScreenPoint(_deliveringRectTransform.position) + offset, size, animated: true);
+                View.HighlightScreenRoundArea(_screenCalculator.WorldToScreenPoint(_deliveringRectTransform.position) + offset, size, animated: true);
                 _realtimeSecondUpdateDelegate = WaitForDeliver;
-            }
-            else
-            {
-                var itemBoundsRect = _deliveringRectTransform.rect;
-                var offset = new Vector3(0, itemBoundsRect.size.y * 0.5f);
-                View.SetHighlightPosition(_screenCalculator.WorldToScreenPoint(_deliveringRectTransform.position) + offset);
             }
         }
     }
@@ -92,11 +86,17 @@ public class TutorialDeliveringStepMediator : TutorialStepMediatorBase
 
             var itemBoundsRect = _deliveringRectTransform.rect;
             var size = new Vector2(itemBoundsRect.size.x, itemBoundsRect.size.y) * 1.1f;
-            View.HighlightScreenPoint(_screenCalculator.WorldToScreenPoint(_deliveringRectTransform.position), size, animated: true);
+            View.HighlightScreenRoundArea(_screenCalculator.WorldToScreenPoint(_deliveringRectTransform.position), size, animated: true);
 
             AllowClickOnRectTransform(_deliveringRectTransform);
 
             _realtimeSecondUpdateDelegate = null;
+        }
+        else
+        {
+            var itemBoundsRect = _deliveringRectTransform.rect;
+            var offset = new Vector3(0, itemBoundsRect.size.y * 0.5f);
+            View.SetHighlightPosition(_screenCalculator.WorldToScreenPoint(_deliveringRectTransform.position) + offset);
         }
     }
 

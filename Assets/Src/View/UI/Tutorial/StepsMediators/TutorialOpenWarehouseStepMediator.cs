@@ -22,9 +22,9 @@ public class TutorialOpenWarehouseStepMediator : TutorialStepMediatorBase
         base.Mediate();
 
         View.DisableButton();
-        _warehouseButtonRect = _tutorialUIElementsProvider.GetElementRect(TutorialUIElement.BottomPanelWarehouseButton);
+        _warehouseButtonRect = _tutorialUIElementsProvider.GetElementRectTransform(TutorialUIElement.BottomPanelWarehouseButton);
         var sideSize = Math.Max(_warehouseButtonRect.rect.size.x, _warehouseButtonRect.rect.size.y);
-        View.HighlightScreenPoint(_screenCalculator.WorldToScreenPoint(_warehouseButtonRect.position), new Vector2(sideSize, sideSize), animated: true);
+        View.HighlightScreenRoundArea(_screenCalculator.WorldToScreenPoint(_warehouseButtonRect.position), new Vector2(sideSize, sideSize), animated: true);
         AllowClickOnRectTransform(_warehouseButtonRect);
 
         Activate();

@@ -112,6 +112,10 @@ public class TutorialSystem
                 && HasNoPlacingMode()
                 && CheckGameState(GameStateName.ShopSimulation)
                 && _playerModel.ShopModel.WarehouseModel.Slots.Any(s => s.HasProduct && s.Product.DeliverTime > _gameStateModel.ServerTime),
+            TutorialStep.PlacingProduct => HasNoOpenedPopups()
+                && _gameStateModel.PlacingState == PlacingStateName.PlacingProduct,
+            TutorialStep.ReadyToPlay => HasNoOpenedPopups()
+                && HasNoPlacingMode(),
             _ => false//throw new ArgumentException($"CheckTutorialConditions: {nameof(tutorialStepIndex)} {tutorialStepIndex} is not supported"),
         };
     }
@@ -159,5 +163,7 @@ public enum TutorialStep
     OpenOrderPopup = 2,
     OrderProduct = 3,
     Delivering = 4,
+    PlacingProduct = 5,
+    ReadyToPlay = 6,
 }
 

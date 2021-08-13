@@ -61,6 +61,9 @@ public class TutorialMediator : IMediator
             TutorialStep.OpenOrderPopup => new TutorialOpenOrderPopupStepMediator(_parentTransform),
             TutorialStep.OrderProduct => new TutorialOrderProductStepMediator(_parentTransform),
             TutorialStep.Delivering => new TutorialDeliveringStepMediator(_parentTransform),
+            TutorialStep.PlacingProduct => new TutorialPlacingProductStepMediator(_parentTransform),
+            TutorialStep.ReadyToPlay => new TutorialReadyToPlayStepMediator(_parentTransform),
+            //TutorialStep.Welcome => new TutorialReadyToPlayStepMediator(_parentTransform),//temp
             _ => throw new ArgumentException($"No tutorial step with id {stepIndex}"),
         };
     }

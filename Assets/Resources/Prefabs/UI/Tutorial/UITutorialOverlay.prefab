@@ -866,7 +866,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 7.07}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1, y: 2}
+  m_AnchoredPosition: {x: 1, y: -1}
   m_SizeDelta: {x: 80, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8653518660418060629
@@ -1182,7 +1182,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1, y: -63}
+  m_AnchoredPosition: {x: 2, y: -65}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &8653518660875297604
@@ -1436,16 +1436,16 @@ RectTransform:
   m_GameObject: {fileID: 8653518661168015369}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: -1, y: 1, z: 1}
   m_Children:
   - {fileID: 8653518660867990083}
   - {fileID: 8653518660347492077}
   m_Father: {fileID: 6993359562738450950}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -50, y: 90}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 50, y: 90}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &8653518661168015371
@@ -2050,6 +2050,7 @@ MonoBehaviour:
   _rootRect: {fileID: 8653518662204626100}
   _rootImage: {fileID: 8653518662204626102}
   _highlightRect: {fileID: 8653518660776796672}
+  _highlightImage: {fileID: 8653518660776796674}
   _bgRect: {fileID: 8653518661154772808}
   _bgImage: {fileID: 8653518661154772809}
   _popupBodyRect: {fileID: 6993359562738450950}
@@ -2058,6 +2059,9 @@ MonoBehaviour:
   _messageText: {fileID: 6993359562738451759}
   _okButton: {fileID: 6993359562738451763}
   _okButtonText: {fileID: 6993359562738451769}
+  _roundSprite: {fileID: 21300000, guid: c9e6169b6e75f4fd0a08ef0dd096fdbb, type: 3}
+  _roundedSquareSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  _manRect: {fileID: 8653518661168015370}
 --- !u!222 &8653518662204626103
 CanvasRenderer:
   m_ObjectHideFlags: 0

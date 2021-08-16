@@ -18,11 +18,19 @@ public class InitScript : MonoBehaviour
         //Application.targetFrameRate = 50;
 
         _playerModelHolder = PlayerModelHolder.Instance;
+        _playerModelHolder.UidIsSet += OnUidIsSet;
     }
 
-    private async void Start()
+#if UNITY_EDITOR
+    private void Start()
     {
         _playerModelHolder.SetUid(_debugUid);
+    }
+#endif
+
+    private async void OnUidIsSet()
+    {
+        _playerModelHolder.UidIsSet -= OnUidIsSet;
 
         await new InitializeAndLoadCommand().ExecuteAsync();
     }

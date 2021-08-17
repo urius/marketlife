@@ -27,6 +27,8 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
     private RectTransform _rectTransform;
     private CancellationTokenSource _animationsCts;
 
+    public RectTransform TopTextRectTransform => _topText.transform as RectTransform;
+
     public void Awake()
     {
         _rectTransform = transform as RectTransform;

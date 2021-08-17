@@ -55,12 +55,12 @@ public class TutorialOrderProductStepMediator : TutorialStepMediatorBase
 
     private void OnUIOrderPopupAppeared()
     {
-        //return;
         _itemSlotRect = _tutorialUIElementsProvider.GetElementRectTransform(TutorialUIElement.OrderProductsPopupFirstItem);
         var itemBoundsRect = _itemSlotRect.rect;
-        var size = new Vector2(itemBoundsRect.size.x, itemBoundsRect.size.y * 1.6f);
-        var offset = new Vector3(itemBoundsRect.size.x * 0.5f, -itemBoundsRect.size.y * 0.5f);
-        View.HighlightScreenRoundArea(_screenCalculator.WorldToScreenPoint(_itemSlotRect.position) + offset, size, animated: true);
+        var size = new Vector2(itemBoundsRect.size.x, itemBoundsRect.size.y * 1.5f);
+        var corners = new Vector3[4];
+        _itemSlotRect.GetWorldCorners(corners);
+        View.HighlightScreenRoundArea(_screenCalculator.WorldToScreenPoint((corners[0] + corners[2]) * 0.5f), size, animated: true);
 
         AllowClickOnRectTransform(_itemSlotRect);
     }

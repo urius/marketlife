@@ -222,6 +222,7 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMedi
                 itemView.SetupBottomButtonHint(_loc.GetLocalization(LocalizationKeys.BottomPanelWarehouseQuickDeliveryHint));
 
                 _tutorialUIElementsProvider.SetElement(TutorialUIElement.BottomPanelWarehouseTabLastDeliveringSlot, itemView.transform as RectTransform);
+                _tutorialUIElementsProvider.SetElement(TutorialUIElement.BottomPanelWarehouseTabLastDeliveringSlotTime, itemView.TopTextRectTransform);
             }
             else
             {

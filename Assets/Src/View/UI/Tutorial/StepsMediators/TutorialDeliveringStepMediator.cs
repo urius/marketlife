@@ -11,8 +11,9 @@ public class TutorialDeliveringStepMediator : TutorialStepMediatorBase
     private readonly LocalizationManager _loc;
 
     private Action _realtimeSecondUpdateDelegate;
+    private Action _realtimeUpdateDelegate;
     private int _minDeliverTime;
-    private RectTransform _deliveringRectTransform;
+    private RectTransform _highlightRectTransform;
 
     public TutorialDeliveringStepMediator(RectTransform parentTransform)
         : base(parentTransform)
@@ -44,12 +45,14 @@ public class TutorialDeliveringStepMediator : TutorialStepMediatorBase
 
     private void Activate()
     {
+        _updatesProvider.RealtimeUpdate += OnRealtimeUpdate;
         _updatesProvider.RealtimeSecondUpdate += OnRealtimeSecondUpdate;
         _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
     }
 
     private void Deactivate()
     {
+        _updatesProvider.RealtimeUpdate -= OnRealtimeUpdate;
         _updatesProvider.RealtimeSecondUpdate -= OnRealtimeSecondUpdate;
         _gameStateModel.PlacingStateChanged -= OnPlacingStateChanged;
     }
@@ -64,16 +67,15 @@ public class TutorialDeliveringStepMediator : TutorialStepMediatorBase
 
     private void WaitForHightlightDeliver()
     {
-        if (_tutorialUIElementProvider.HasElement(TutorialUIElement.BottomPanelWarehouseTabLastDeliveringSlot))
+        if (_tutorialUIElementProvider.HasElement(TutorialUIElement.BottomPanelWarehouseTabLastDeliveringSlotTime))
         {
-            if (_deliveringRectTransform == null)
+            if (_highlightRectTransform == null)
             {
-                _deliveringRectTransform = _tutorialUIElementProvider.GetElementRectTransform(TutorialUIElement.BottomPanelWarehouseTabLastDeliveringSlot);
-                var itemBoundsRect = _deliveringRectTransform.rect;
-                var size = new Vector2(itemBoundsRect.size.x, itemBoundsRect.size.y * 0.4f);
-                var offset = new Vector3(0, itemBoundsRect.size.y * 0.5f);
-                View.HighlightScreenRoundArea(_screenCalculator.WorldToScreenPoint(_deliveringRectTransform.position) + offset, size, animated: true);
+                _highlightRectTransform = _tutorialUIElementProvider.GetElementRectTransform(TutorialUIElement.BottomPanelWarehouseTabLastDeliveringSlotTime);
+                View.HighlightScreenRoundArea(GetDeliverTimeHighlightPosition(), _highlightRectTransform.rect.size * 1.5f, animated: true);
+
                 _realtimeSecondUpdateDelegate = WaitForDeliver;
+                _realtimeUpdateDelegate = UpdateDeliverHighlightPosition;
             }
         }
     }
@@ -82,22 +84,34 @@ public class TutorialDeliveringStepMediator : TutorialStepMediatorBase
     {
         if (_gameStateModel.ServerTime >= _minDeliverTime)
         {
+            _realtimeUpdateDelegate = null;
+            _highlightRectTransform = _tutorialUIElementProvider.GetElementRectTransform(TutorialUIElement.BottomPanelWarehouseTabLastDeliveringSlot);
+
             View.SetMessageText(_loc.GetLocalization($"{LocalizationKeys.TutorialMessagePrefix}{ViewModel.StepIndex}_a"));
 
-            var itemBoundsRect = _deliveringRectTransform.rect;
+            var itemBoundsRect = _highlightRectTransform.rect;
             var size = new Vector2(itemBoundsRect.size.x, itemBoundsRect.size.y) * 1.1f;
-            View.HighlightScreenRoundArea(_screenCalculator.WorldToScreenPoint(_deliveringRectTransform.position), size, animated: true);
+            View.HighlightScreenRoundArea(_screenCalculator.WorldToScreenPoint(_highlightRectTransform.position), size, animated: true);
 
-            AllowClickOnRectTransform(_deliveringRectTransform);
+            AllowClickOnRectTransform(_highlightRectTransform);
 
             _realtimeSecondUpdateDelegate = null;
         }
-        else
-        {
-            var itemBoundsRect = _deliveringRectTransform.rect;
-            var offset = new Vector3(0, itemBoundsRect.size.y * 0.5f);
-            View.SetHighlightPosition(_screenCalculator.WorldToScreenPoint(_deliveringRectTransform.position) + offset);
-        }
+    }
+
+    private void UpdateDeliverHighlightPosition()
+    {
+        View.SetHighlightPosition(GetDeliverTimeHighlightPosition());
+    }
+
+    private Vector3 GetDeliverTimeHighlightPosition()
+    {
+        return _screenCalculator.WorldToScreenPoint(_highlightRectTransform.position) + new Vector3(0, _highlightRectTransform.rect.size.y * 0.5f, 0);
+    }
+
+    private void OnRealtimeUpdate()
+    {
+        _realtimeUpdateDelegate?.Invoke();
     }
 
     private void OnRealtimeSecondUpdate()

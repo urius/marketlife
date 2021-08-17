@@ -44,5 +44,6 @@ public enum TutorialUIElement
     BottomPanelWarehouseTabFirstFreeSlot,
     OrderProductsPopupFirstItem,
     BottomPanelWarehouseTabLastDeliveringSlot,
+    BottomPanelWarehouseTabLastDeliveringSlotTime,
     ShopFloorTransform,
 }

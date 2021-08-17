@@ -105,6 +105,7 @@ public class GameStateModel
         if (ShowingTutorialModel != null)
         {
             ShowingTutorialModel = null;
+            UpdatePausedState();
             TutorialStepRemoved();
         }
     }

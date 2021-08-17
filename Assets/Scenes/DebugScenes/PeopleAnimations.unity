@@ -1340,16 +1340,19 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 891505831}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2305d6f2e27f140248f718ab79b80e4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _debugUid: 
   _assetBundlesLoader: {fileID: 11400000, guid: fbf27b609d1b04c23bbb3665f6bf7a19,
     type: 2}
   _prefabsHolder: {fileID: 11400000, guid: ef9b7d8e9f2f24fa5b28642d8858a2d4, type: 2}
+  _urlsHolder: {fileID: 0}
   _graphicsManager: {fileID: 11400000, guid: 3c651c81f401b4f6c9adfecf35f97506, type: 2}
   _gameConfigManager: {fileID: 11400000, guid: 602bdf3847c344182bb11d66994c2ec6, type: 2}
+  _localizationManager: {fileID: 0}
 --- !u!1 &1245984310
 GameObject:
   m_ObjectHideFlags: 0

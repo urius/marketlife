@@ -24,7 +24,7 @@ public class InitScript : MonoBehaviour
 #if UNITY_EDITOR
     private void Start()
     {
-        _playerModelHolder.SetUid(_debugUid);
+        new SetupExternalDebugDataCommand().Execute(_debugUid);
     }
 #endif
 

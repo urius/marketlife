@@ -27,15 +27,7 @@ public class TutorialPlacingProductStepMediator : TutorialStepMediatorBase
         base.Mediate();
 
         View.DisablePopup();
-        var rect = new Rect
-        {
-            width = Screen.width * 0.75f,
-            height = Screen.height * 0.7f,
-            center = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f)
-        };
-        AllowClickOnRectArea(rect);
-        View.HighlightScreenSquareArea(rect.center, rect.size, animated: true);
-
+        SetupHighlight();
         _targetShelfModels = GetEmptyShelfModels();
         DisplayArrowPointers();
 
@@ -66,6 +58,17 @@ public class TutorialPlacingProductStepMediator : TutorialStepMediatorBase
             shelfModel.ProductIsSetOnSlot -= OnShelfProductIsSetOnSlot;
         }
         _gameStateModel.PlacingStateChanged -= OnPlacingStateChanged;
+    }
+
+    private void SetupHighlight()
+    {
+        var corners = new Vector3[4];
+        View.RootRect.GetWorldCorners(corners);
+        var rootTransformRect = View.RootRect.rect;
+        var center = (corners[0] + corners[2]) * 0.5f;
+        var size = new Vector2(rootTransformRect.width * 0.75f, rootTransformRect.height * 0.7f);
+        View.HighlightScreenSquareArea(center, size, animated: true);
+        AllowClickOnRectTransform(View.HighlightRect);
     }
 
     private void OnShelfProductIsSetOnSlot(ShelfModel shelfModel, int slotIndex)

@@ -4,7 +4,6 @@ using UnityEngine;
 public class TutorialOpenOrderPopupStepMediator : TutorialStepMediatorBase
 {
     private readonly TutorialUIElementsProvider _tutorialUIElementsProvider;
-    private readonly ScreenCalculator _screenCalculator;
     private readonly UpdatesProvider _updatesProvider;
     private readonly GameStateModel _gameStateModel;
 
@@ -15,7 +14,6 @@ public class TutorialOpenOrderPopupStepMediator : TutorialStepMediatorBase
         : base(parentTransform)
     {
         _tutorialUIElementsProvider = TutorialUIElementsProvider.Instance;
-        _screenCalculator = ScreenCalculator.Instance;
         _updatesProvider = UpdatesProvider.Instance;
         _gameStateModel = GameStateModel.Instance;
     }
@@ -62,14 +60,14 @@ public class TutorialOpenOrderPopupStepMediator : TutorialStepMediatorBase
             {
                 var sideSize = Math.Max(_emptySlotRect.rect.size.x, _emptySlotRect.rect.size.y) * 1.1f;
                 _higlightedSlotSavedPosition = _emptySlotRect.position;
-                View.HighlightScreenRoundArea(_screenCalculator.WorldToScreenPoint(_emptySlotRect.position), new Vector2(sideSize, sideSize), animated: true);
+                View.HighlightScreenRoundArea(_emptySlotRect.position, new Vector2(sideSize, sideSize), animated: true);
                 AllowClickOnRectTransform(_emptySlotRect);
             }
         }
         else if (_higlightedSlotSavedPosition != _emptySlotRect.position)
         {
             _higlightedSlotSavedPosition = _emptySlotRect.position;
-            View.SetHighlightPosition(_screenCalculator.WorldToScreenPoint(_higlightedSlotSavedPosition));
+            View.SetHighlightPosition(_higlightedSlotSavedPosition);
         }
     }
 }

@@ -4,7 +4,6 @@ using UnityEngine;
 public class TutorialOpenWarehouseStepMediator : TutorialStepMediatorBase
 {
     private readonly TutorialUIElementsProvider _tutorialUIElementsProvider;
-    private readonly ScreenCalculator _screenCalculator;
     private readonly BottomPanelViewModel _bottomPanelViewModel;
 
     private RectTransform _warehouseButtonRect;
@@ -13,8 +12,7 @@ public class TutorialOpenWarehouseStepMediator : TutorialStepMediatorBase
          : base(parentTransform)
     {
         _tutorialUIElementsProvider = TutorialUIElementsProvider.Instance;
-        _screenCalculator = ScreenCalculator.Instance;
-        _bottomPanelViewModel = GameStateModel.Instance.BottomPanelViewModel;
+        _bottomPanelViewModel = GameStateModel.Instance.BottomPanelViewModel;        
     }
 
     public override void Mediate()
@@ -24,7 +22,7 @@ public class TutorialOpenWarehouseStepMediator : TutorialStepMediatorBase
         View.DisableButton();
         _warehouseButtonRect = _tutorialUIElementsProvider.GetElementRectTransform(TutorialUIElement.BottomPanelWarehouseButton);
         var sideSize = Math.Max(_warehouseButtonRect.rect.size.x, _warehouseButtonRect.rect.size.y);
-        View.HighlightScreenRoundArea(_screenCalculator.WorldToScreenPoint(_warehouseButtonRect.position), new Vector2(sideSize, sideSize), animated: true);
+        View.HighlightScreenRoundArea(_warehouseButtonRect.position, new Vector2(sideSize, sideSize), animated: true);
         AllowClickOnRectTransform(_warehouseButtonRect);
 
         Activate();

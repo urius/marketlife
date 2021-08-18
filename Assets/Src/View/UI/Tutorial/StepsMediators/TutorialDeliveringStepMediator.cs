@@ -7,7 +7,6 @@ public class TutorialDeliveringStepMediator : TutorialStepMediatorBase
     private readonly ShopModel _playerShopModel;
     private readonly GameStateModel _gameStateModel;
     private readonly UpdatesProvider _updatesProvider;
-    private readonly ScreenCalculator _screenCalculator;
     private readonly LocalizationManager _loc;
 
     private Action _realtimeSecondUpdateDelegate;
@@ -22,7 +21,6 @@ public class TutorialDeliveringStepMediator : TutorialStepMediatorBase
         _playerShopModel = PlayerModelHolder.Instance.ShopModel;
         _gameStateModel = GameStateModel.Instance;
         _updatesProvider = UpdatesProvider.Instance;
-        _screenCalculator = ScreenCalculator.Instance;
         _loc = LocalizationManager.Instance;
     }
 
@@ -72,7 +70,7 @@ public class TutorialDeliveringStepMediator : TutorialStepMediatorBase
             if (_highlightRectTransform == null)
             {
                 _highlightRectTransform = _tutorialUIElementProvider.GetElementRectTransform(TutorialUIElement.BottomPanelWarehouseTabLastDeliveringSlotTime);
-                View.HighlightScreenRoundArea(GetDeliverTimeHighlightPosition(), _highlightRectTransform.rect.size * 1.5f, animated: true);
+                View.HighlightScreenRoundArea(GetDeliverTimeHighlightWorldPosition(), _highlightRectTransform.rect.size * 1.5f, animated: true);
 
                 _realtimeSecondUpdateDelegate = WaitForDeliver;
                 _realtimeUpdateDelegate = UpdateDeliverHighlightPosition;
@@ -91,7 +89,7 @@ public class TutorialDeliveringStepMediator : TutorialStepMediatorBase
 
             var itemBoundsRect = _highlightRectTransform.rect;
             var size = new Vector2(itemBoundsRect.size.x, itemBoundsRect.size.y) * 1.1f;
-            View.HighlightScreenRoundArea(_screenCalculator.WorldToScreenPoint(_highlightRectTransform.position), size, animated: true);
+            View.HighlightScreenRoundArea(_highlightRectTransform.position, size, animated: true);
 
             AllowClickOnRectTransform(_highlightRectTransform);
 
@@ -101,12 +99,14 @@ public class TutorialDeliveringStepMediator : TutorialStepMediatorBase
 
     private void UpdateDeliverHighlightPosition()
     {
-        View.SetHighlightPosition(GetDeliverTimeHighlightPosition());
+        View.SetHighlightPosition(GetDeliverTimeHighlightWorldPosition());
     }
 
-    private Vector3 GetDeliverTimeHighlightPosition()
+    private Vector3 GetDeliverTimeHighlightWorldPosition()
     {
-        return _screenCalculator.WorldToScreenPoint(_highlightRectTransform.position) + new Vector3(0, _highlightRectTransform.rect.size.y * 0.5f, 0);
+        var corners = new Vector3[4];
+        _highlightRectTransform.GetWorldCorners(corners);
+        return (corners[0] + corners[2]) * 0.5f;
     }
 
     private void OnRealtimeUpdate()

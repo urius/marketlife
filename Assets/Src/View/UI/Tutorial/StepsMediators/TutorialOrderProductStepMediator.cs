@@ -4,7 +4,6 @@ public class TutorialOrderProductStepMediator : TutorialStepMediatorBase
 {
     private readonly Dispatcher _dispatcher;
     private readonly TutorialUIElementsProvider _tutorialUIElementsProvider;
-    private readonly ScreenCalculator _screenCalculator;
     private readonly GameStateModel _gameStateModel;
 
     //
@@ -15,7 +14,6 @@ public class TutorialOrderProductStepMediator : TutorialStepMediatorBase
     {
         _dispatcher = Dispatcher.Instance;
         _tutorialUIElementsProvider = TutorialUIElementsProvider.Instance;
-        _screenCalculator = ScreenCalculator.Instance;
         _gameStateModel = GameStateModel.Instance;
     }
 
@@ -60,7 +58,7 @@ public class TutorialOrderProductStepMediator : TutorialStepMediatorBase
         var size = new Vector2(itemBoundsRect.size.x, itemBoundsRect.size.y * 1.5f);
         var corners = new Vector3[4];
         _itemSlotRect.GetWorldCorners(corners);
-        View.HighlightScreenRoundArea(_screenCalculator.WorldToScreenPoint((corners[0] + corners[2]) * 0.5f), size, animated: true);
+        View.HighlightScreenRoundArea((corners[0] + corners[2]) * 0.5f, size, animated: true);
 
         AllowClickOnRectTransform(_itemSlotRect);
     }

@@ -1,5 +1,4 @@
 using System;
-using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,6 +26,9 @@ public class TutorialOverlayView : MonoBehaviour
 
     private Camera _camera;
     private Color _bgDefaultColor;
+
+    public RectTransform RootRect => _rootRect;
+    public RectTransform HighlightRect => _highlightRect;
 
     public void Setup(Camera camera)
     {
@@ -150,23 +152,24 @@ public class TutorialOverlayView : MonoBehaviour
         _popupBodyRect.gameObject.SetActive(false);
     }
 
-    public void HighlightScreenRoundArea(Vector3 screenPoint, Vector2 size, bool animated = false)
+    public void HighlightScreenRoundArea(Vector3 worldPoint, Vector2 size, bool animated = false)
     {
         _highlightImage.sprite = _roundSprite;
         _highlightImage.type = Image.Type.Simple;
-        HighlightScreenRoundAreaInternal(screenPoint, size, animated);
+        ShowHighlightAreaInternal(worldPoint, size, animated);
     }
 
-    public void HighlightScreenSquareArea(Vector3 screenPoint, Vector2 size, bool animated = false)
+    public void HighlightScreenSquareArea(Vector3 worldPoint, Vector2 size, bool animated = false)
     {
         _highlightImage.sprite = _roundedSquareSprite;
         _highlightImage.type = Image.Type.Sliced;
-        HighlightScreenRoundAreaInternal(screenPoint, size, animated);
+        ShowHighlightAreaInternal(worldPoint, size, animated);
     }
 
-    private void HighlightScreenRoundAreaInternal(Vector3 screenPoint, Vector2 size, bool animated)
+    private void ShowHighlightAreaInternal(Vector3 inputWorldPoint, Vector2 size, bool animated)
     {
-        if (RectTransformUtility.ScreenPointToWorldPointInRectangle(_rootRect, screenPoint, _camera, out var worldPoint))
+        var screenPoint =_camera.WorldToScreenPoint(inputWorldPoint);//todo check redundant
+        if (RectTransformUtility.ScreenPointToWorldPointInRectangle(_rootRect, screenPoint, _camera, out var worldPoint))// todo check redundant
         {
             _highlightRect.position = worldPoint;
             if (animated)
@@ -181,27 +184,15 @@ public class TutorialOverlayView : MonoBehaviour
         }
     }
 
-    public void SetHighlightPosition(Vector3 screenPoint)
+    public void SetHighlightPosition(Vector3 inputWorldPoint)
     {
+        var screenPoint = _camera.WorldToScreenPoint(inputWorldPoint);
         if (RectTransformUtility.ScreenPointToWorldPointInRectangle(_rootRect, screenPoint, _camera, out var worldPoint))
         {
             _highlightRect.position = worldPoint;
             UpdateBg();
         }
     }
-
-    //public UniTask HighlightScreenPointAsync(Vector3 screenPoint, Vector2 size)
-    //{
-    //    var tcs = new UniTaskCompletionSource();
-    //    if (RectTransformUtility.ScreenPointToWorldPointInRectangle(_rootRect, screenPoint, _camera, out var worldPoint))
-    //    {
-    //        _highlightRect.position = worldPoint;
-    //        LeanTween.value(gameObject, v => SetHighlightSize(v), Vector2.zero, size, 0.5f)
-    //            .setOnComplete(() => tcs.TrySetResult());
-    //    }
-
-    //    return tcs.Task;
-    //}
 
     public void SetHighlightSize(Vector2 size)
     {

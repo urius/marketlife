@@ -6,7 +6,9 @@ public abstract class TutorialStepMediatorBase : IMediator
     private readonly PrefabsHolder _prefabsHodler;
     private readonly Dispatcher _dispatcher;
     private readonly LocalizationManager _loc;
+    private readonly ScreenCalculator _screenCalculator;
 
+    //
     private TutorialOverlayView _tutorialOverlayView;
     private TutorialStepViewModel _viewModel;
     private UpdatesProvider _updatesProvider;
@@ -21,10 +23,12 @@ public abstract class TutorialStepMediatorBase : IMediator
         _prefabsHodler = PrefabsHolder.Instance;
         _dispatcher = Dispatcher.Instance;
         _loc = LocalizationManager.Instance;
+        _screenCalculator = ScreenCalculator.Instance;
     }
 
     protected TutorialOverlayView View => _tutorialOverlayView;
     protected TutorialStepViewModel ViewModel => _viewModel;
+    protected Camera Camera => _camera;
 
     public virtual void Mediate()
     {
@@ -62,14 +66,7 @@ public abstract class TutorialStepMediatorBase : IMediator
     {
         _allowedClickOnRectTransform = rectTransform;
         UnsubscribeAllowClickHandlers();
-        _updatesProvider.RealtimeUpdate += HandleClickOnRectTransform;
-    }
-
-    public void AllowClickOnRectArea(Rect rectArea)
-    {
-        _allowedClickOnRectArea = rectArea;
-        UnsubscribeAllowClickHandlers();
-        _updatesProvider.RealtimeUpdate += HandleClickOnRectArea;
+        _updatesProvider.RealtimeUpdate += UpdateClickAvailabilityOnRectTransform;
     }
 
     public void DispatchTutorialActionPerformed()
@@ -100,17 +97,17 @@ public abstract class TutorialStepMediatorBase : IMediator
 
     private void UnsubscribeAllowClickHandlers()
     {
-        _updatesProvider.RealtimeUpdate -= HandleClickOnRectTransform;
-        _updatesProvider.RealtimeUpdate -= HandleClickOnRectArea;
+        _updatesProvider.RealtimeUpdate -= UpdateClickAvailabilityOnRectTransform;
+        _updatesProvider.RealtimeUpdate -= UpdateClickAvailabilityOnRectArea;
     }
 
-    private void HandleClickOnRectTransform()
+    private void UpdateClickAvailabilityOnRectTransform()
     {
         var isMouseOverRect = RectTransformUtility.RectangleContainsScreenPoint(_allowedClickOnRectTransform, Input.mousePosition, _camera);
         _tutorialOverlayView.SetClickBlockState(!isMouseOverRect);
     }
 
-    private void HandleClickOnRectArea()
+    private void UpdateClickAvailabilityOnRectArea()
     {
         var mousePosition = Input.mousePosition;
         var isMouseOverRect = _allowedClickOnRectArea.Contains(new Vector2(mousePosition.x, mousePosition.y));

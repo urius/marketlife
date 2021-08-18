@@ -7,6 +7,7 @@ public class UIRootCanvasMediator : MonoBehaviour
     [SerializeField] private UISaveIconView _saveIconView;
     [SerializeField] private RectTransform _gameViewUiContainerRectTransform;
     [SerializeField] private BottomPanelView _bottomPanelView;
+    [SerializeField] private Canvas _rootCanvas;
     [SerializeField] private Canvas _popupsCanvas;
     [SerializeField] private Canvas _poolCanvas;
 
@@ -42,6 +43,7 @@ public class UIRootCanvasMediator : MonoBehaviour
         _popupsMediator = new PopupsMediator(popupCanvasRectTransform);
         _tutorialMediator = new TutorialMediator(transform as RectTransform);
 
+        RootCanvasProvider.Instance.SetupRootCanvas(_rootCanvas);
         PoolCanvasProvider.Instance.SetupPoolCanvas(_poolCanvas);
     }
 

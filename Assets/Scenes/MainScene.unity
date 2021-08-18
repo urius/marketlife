@@ -3637,6 +3637,7 @@ MonoBehaviour:
   _saveIconView: {fileID: 1143077155}
   _gameViewUiContainerRectTransform: {fileID: 369181484}
   _bottomPanelView: {fileID: 201718866}
+  _rootCanvas: {fileID: 928012321}
   _popupsCanvas: {fileID: 569909812}
   _poolCanvas: {fileID: 756936929}
 --- !u!1 &956516440

@@ -166,7 +166,7 @@ public abstract class UIBottomPanelScrollItemsTabMediatorBase<TView, TViewModel>
         //remove items from right
         while (_shownIndexTo > indexTo)
         {
-            HideItem(DisplayedItems.First.Value);
+            HideItem(DisplayedItems.Last.Value);
             DisplayedItems.RemoveLast();
             _shownIndexTo--;
         }

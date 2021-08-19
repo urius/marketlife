@@ -27,7 +27,7 @@ public class ProductSlotModel
     public void SetProduct(ProductModel product)
     {
         RemoveProduct();
-        if (product == null) return;
+        if (product == null || product.Amount <= 0) return;
         Product = product;
         SubscribeToProduct(Product);
         ProductIsSet(Index);

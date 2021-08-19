@@ -49,7 +49,8 @@ public class LocalizationManager : ScriptableObject
 }
 
 public class LocalizationKeys
-{
+{    
+    public static string HintBottomPanelVisitFriend = "hint_bottom_panel_visit_friend";
     public static string HintBottomPanelShelfDescription = "hint_bottom_panel_shelf_description";
     public static string BottomPanelWarehouseEmptySlot = "bottom_panel_warehouse_empty_slot";
     public static string BottomPanelWarehouseEmptySlotHint = "bottom_panel_warehouse_empty_slot_hint";

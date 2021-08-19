@@ -5,9 +5,15 @@ public struct SetVkFriendsDataCommand
     public void Execute(string friendsDataStr)
     {
         var friendsDataHolder = FriendsDataHolder.Instance;
+        var avatarsManager = AvatarsManager.Instance;
         var deserialisedData = JsonConvert.DeserializeObject<VkFriendsDataDto>(friendsDataStr);
 
-        friendsDataHolder.SetupFriendsData(ToFriendsData(deserialisedData.response.items));
+        var friendsData = ToFriendsData(deserialisedData.response.items);
+        friendsDataHolder.SetupFriendsData(friendsData);
+        foreach (var friendData in friendsData)
+        {
+            avatarsManager.SetupAvatarSettings(friendData.Uid, friendData.Picture50Url);
+        }
     }
 
     private FriendData[] ToFriendsData(VkFriendDataDto[] items)

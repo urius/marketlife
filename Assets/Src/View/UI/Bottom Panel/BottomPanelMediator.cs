@@ -60,7 +60,7 @@ public class BottomPanelMediator : UINotMonoMediatorBase
     {
         return _viewModel.SimulationModeTab switch
         {
-            BottomPanelSimulationModeTab.Friends => null, //todo friends mediator
+            BottomPanelSimulationModeTab.Friends => new UIBottomPanelFriendsTabMediator(_view),
             BottomPanelSimulationModeTab.Warehouse => new UIBottomPanelWarehouseTabMediator(_view),
             _ => throw new InvalidOperationException($"{nameof(GetSimulationModeTabMediator)}i: interior tab {_viewModel.InteriorModeTab} is not supported"),
         };

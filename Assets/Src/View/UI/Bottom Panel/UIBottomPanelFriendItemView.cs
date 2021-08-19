@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class UIBottomPanelFriendItemView : UIBottomPanelScrollItemViewBase
 {
-    public event Action<UIBottomPanelFriendItemView> MainButtonClicked = delegate { };
     public event Action<UIBottomPanelFriendItemView> BottomButtonClicked = delegate { };
 
     [SerializeField] private TMP_Text _topText;
@@ -37,6 +36,11 @@ public class UIBottomPanelFriendItemView : UIBottomPanelScrollItemViewBase
     public void SetMainHintText(string text)
     {
         _mainHintableView.DisplayText = text;
+    }
+
+    public void SetBottomButtonEnabled(bool isEnabled)
+    {
+        _bottomButton.gameObject.SetActive(isEnabled);
     }
 
     private void OnBottomButtonClicked()

@@ -25,6 +25,7 @@ public class Dispatcher
     public Action<int> UIBottomPanelWarehouseSlotClicked = delegate { };
     public Action<int> UIBottomPanelWarehouseQuickDeliverClicked = delegate { };
     public Action<int> UIBottomPanelWarehouseRemoveProductClicked = delegate { };
+    public Action<FriendData> UIBottomPanelFriendClicked = delegate { };
     public Action UIBottomPanelAutoPlaceClicked = delegate { };
 
     public Action UIActionsRotateRightClicked = delegate { };
@@ -40,19 +41,19 @@ public class Dispatcher
     public Action<Vector2, int> UIRequestFlyingExp = delegate { };
     public Action UIRequestRemoveCurrentPopup = delegate { };
     public Action<RectTransform, Vector2, ProductConfig> UIOrderProductClicked = delegate { };
-    public Action UIOrderPopupAppeared = delegate { };    
+    public Action UIOrderPopupAppeared = delegate { };
     public Action<RectTransform, Vector2, int, ProductModel> UIRequestOrderProductAnimation = delegate { };
     public Action<ShelfContentPopupViewModel, int> UIShelfContentAddProductClicked = delegate { };
     public Action<ShelfContentPopupViewModel, int> UIShelfContentRemoveProductClicked = delegate { };
     public Action<WarehousePopupViewModel, int> UIWarehousePopupSlotClicked = delegate { };
     public Action<UpgradesPopupItemViewModelBase> UIUpgradePopupBuyClicked = delegate { };
-    public Action TutorialActionPerformed = delegate { };   
+    public Action TutorialActionPerformed = delegate { };
 
-    public Action<CustomerModel> CustomerAnimationEnded = delegate { };    
+    public Action<CustomerModel> CustomerAnimationEnded = delegate { };
 
     public Action<Vector2Int> MouseCellCoordsUpdated = delegate { };
     public Action RequestForceMouseCellPositionUpdate = delegate { };
-    
+
     public Action BottomPanelFriendsClicked = delegate { };
     public Action BottomPanelWarehouseClicked = delegate { };
     public Action BottomPanelInteriorClicked = delegate { };
@@ -62,7 +63,7 @@ public class Dispatcher
     public Action BottomPanelInteriorFloorsClicked = delegate { };
     public Action BottomPanelInteriorWallsClicked = delegate { };
     public Action BottomPanelInteriorWindowsClicked = delegate { };
-    public Action BottomPanelInteriorDoorsClicked = delegate { };   
+    public Action BottomPanelInteriorDoorsClicked = delegate { };
 
     public Action BottomPanlelFinishPlacingClicked = delegate { };
     public Action BottomPanelRotateRightClicked = delegate { };

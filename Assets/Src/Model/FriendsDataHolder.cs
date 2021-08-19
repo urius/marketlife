@@ -15,7 +15,7 @@ public class FriendsDataHolder
     }
 
     public int InGameFriendsCount => _friends?.Length ?? 0;
-    public IReadOnlyList<FriendData> Friends => _friends;
+    public IReadOnlyList<FriendData> Friends => _friends ?? Array.Empty<FriendData>();
 
     public void SetupFriendsData(FriendData[] friendsData)
     {

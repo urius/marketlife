@@ -103,7 +103,7 @@ public abstract class UIBottomPanelScrollItemsTabMediatorBase<TViewModel> : UINo
 
     protected UIBottomPanelScrollItemView GetOrCreateScrollBoxItemAt(int index)
     {
-        var result = _viewsCache.GetOrCreateScrollBoxItem();
+        var result = _viewsCache.GetOrCreateDefaultScrollBoxItem();
         result.Reset();
         result.transform.SetParent(View.ScrollBoxView.Content);
         result.SetAnchoredPosition(new Vector2(_slotWidth * (0.5f + index), 0));

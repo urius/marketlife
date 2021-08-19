@@ -19,7 +19,7 @@ public class ViewsCache
         _poolCanvasProvider = PoolCanvasProvider.Instance;
     }
 
-    public UIBottomPanelScrollItemView GetOrCreateScrollBoxItem()
+    public UIBottomPanelScrollItemView GetOrCreateDefaultScrollBoxItem()
     {
         if (_cachedScrollBoxItems.Count <= 0)
         {

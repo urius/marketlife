@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class UIBottomPanelWarehouseTabMediator : UIBottomPanelScrollItemsTabMediatorBase<ProductSlotModel>
+public class UIBottomPanelWarehouseTabMediator : UIBottomPanelCommonScrollItemsTabMediatorBase<ProductSlotModel>
 {
     private readonly ShopWarehouseModel _warehouseModel;
     private readonly GameConfigManager _configManager;

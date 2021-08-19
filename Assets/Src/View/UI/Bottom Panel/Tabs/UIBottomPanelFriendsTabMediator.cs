@@ -1,14 +1,17 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class UIBottomPanelFriendsTabMediator : UIBottomPanelScrollItemsTabMediatorBase<FriendData>
+public class UIBottomPanelFriendsTabMediator : UIBottomPanelScrollItemsTabMediatorBase<UIBottomPanelFriendItemView, FriendData>
 {
     private readonly FriendsDataHolder _friendsDataHolder;
 
     public UIBottomPanelFriendsTabMediator(BottomPanelView view) : base(view)
     {
         _friendsDataHolder = FriendsDataHolder.Instance;
+    }
+
+    protected override UIBottomPanelFriendItemView GetOrCreateItem()
+    {
+        throw new System.NotImplementedException();
     }
 
     protected override IEnumerable<FriendData> GetViewModelsToShow()
@@ -21,7 +24,12 @@ public class UIBottomPanelFriendsTabMediator : UIBottomPanelScrollItemsTabMediat
         throw new System.NotImplementedException();
     }
 
-    protected override void SetupItem(UIBottomPanelScrollItemView itemView, FriendData viewModel)
+    protected override void ReturnOrDestroyScrollBoxItem(UIBottomPanelFriendItemView itemView)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    protected override void SetupItem(UIBottomPanelFriendItemView itemView, FriendData viewModel)
     {
         throw new System.NotImplementedException();
     }

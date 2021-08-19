@@ -3,20 +3,19 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIBottomPanelFriendItemView : MonoBehaviour
+public class UIBottomPanelFriendItemView : UIBottomPanelScrollItemViewBase
 {
     public event Action<UIBottomPanelFriendItemView> MainButtonClicked = delegate { };
     public event Action<UIBottomPanelFriendItemView> BottomButtonClicked = delegate { };
 
     [SerializeField] private TMP_Text _topText;
-    [SerializeField] private Button _mainButton;
     [SerializeField] private Image _mainIconImage;
     [SerializeField] private UIHintableView _mainHintableView;
     [SerializeField] private Button _bottomButton;
 
-    public void Awake()
+    public override void Awake()
     {
-        _mainButton.AddOnClickListener(OnMainButtonClicked);
+        base.Awake();
         _bottomButton.AddOnClickListener(OnBottomButtonClicked);
     }
 
@@ -38,11 +37,6 @@ public class UIBottomPanelFriendItemView : MonoBehaviour
     public void SetMainHintText(string text)
     {
         _mainHintableView.DisplayText = text;
-    }
-
-    private void OnMainButtonClicked()
-    {
-        MainButtonClicked(this);
     }
 
     private void OnBottomButtonClicked()

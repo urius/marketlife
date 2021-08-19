@@ -5,16 +5,14 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIBottomPanelScrollItemView : MonoBehaviour
+public class UIBottomPanelScrollItemView : UIBottomPanelScrollItemViewBase
 {
-    public event Action<UIBottomPanelScrollItemView> Clicked = delegate { };
     public event Action<UIBottomPanelScrollItemView> BottomButtonClicked = delegate { };
     public event Action<UIBottomPanelScrollItemView> RemoveButtonClicked = delegate { };
 
     [SerializeField] private UIPriceLabelView _priceLabel;
     [SerializeField] private Image _imageSprite;
     [SerializeField] private RectTransform _imageRectTransform;
-    [SerializeField] private Button _button;
     [SerializeField] private TMP_Text _topText;
     [SerializeField] private RectTransform _percentLineContainerTransform;
     [SerializeField] private Image _percentLineImage;
@@ -24,15 +22,14 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
     [SerializeField] private UIHintableView _bottomButtonHintableView;
     [SerializeField] private Button _removeButton;
 
-    private RectTransform _rectTransform;
     private CancellationTokenSource _animationsCts;
 
     public RectTransform TopTextRectTransform => _topText.transform as RectTransform;
 
-    public void Awake()
+    public override void Awake()
     {
-        _rectTransform = transform as RectTransform;
-        _button.AddOnClickListener(OnButtonClick);
+        base.Awake();
+
         _bottomButton.AddOnClickListener(OnBottomButtonClick);
         _removeButton.AddOnClickListener(OnRemoveClicked);
     }
@@ -41,7 +38,7 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
     {
         CancelAllAnimations();
         _animationsCts = new CancellationTokenSource();
-        await LeanTweenHelper.BounceYAsync(_rectTransform, 40, _animationsCts.Token);
+        await LeanTweenHelper.BounceYAsync(RectTransform, 40, _animationsCts.Token);
         CancelAllAnimations();
     }
 
@@ -147,16 +144,6 @@ public class UIBottomPanelScrollItemView : MonoBehaviour
         _bottomButtonHintableView.SetEnabled(false);
         _removeButton.gameObject.SetActive(false);
         _imageRectTransform.sizeDelta = new Vector2(130, 130);
-    }
-
-    public void SetAnchoredPosition(Vector2 position)
-    {
-        _rectTransform.anchoredPosition = position;
-    }
-
-    private void OnButtonClick()
-    {
-        Clicked(this);
     }
 
     private void OnBottomButtonClick()

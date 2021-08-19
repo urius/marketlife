@@ -248,8 +248,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14be1d18626394aa3ac2885cde15dc64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _button: {fileID: 4831957965063238359}
   _topText: {fileID: 5704722748558575262}
-  _mainButton: {fileID: 4831957965063238359}
   _mainIconImage: {fileID: 6480525130453966599}
   _mainHintableView: {fileID: 2313970469135378430}
   _bottomButton: {fileID: 6994024553890051948}

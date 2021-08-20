@@ -66,13 +66,15 @@ public class DataImporter
     {
         var result = new ShopPersonalModel();
         var personalConfig = GameConfigManager.Instance.PersonalConfig;
-
-        foreach (var personalItem in personal)
+        if (personal != null)
         {
-            var splitted = personalItem.Split('|');
-            var config = personalConfig.GetPersonalConfigByStringId(splitted[0]);
-            var endWorkTime = int.Parse(splitted[1]);
-            result.SetPersonalWorkingTime(config, endWorkTime);
+            foreach (var personalItem in personal)
+            {
+                var splitted = personalItem.Split('|');
+                var config = personalConfig.GetPersonalConfigByStringId(splitted[0]);
+                var endWorkTime = int.Parse(splitted[1]);
+                result.SetPersonalWorkingTime(config, endWorkTime);
+            }
         }
 
         return result;

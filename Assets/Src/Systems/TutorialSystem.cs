@@ -25,7 +25,6 @@ public class TutorialSystem
 
     public async void Start()
     {
-        return;
         await _gameStateModel.GameDataLoadedTask;
 
         _playerModel = _playerModelHolder.UserModel;

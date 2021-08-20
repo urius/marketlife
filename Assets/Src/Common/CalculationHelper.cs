@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CalculationHelper
@@ -35,5 +36,25 @@ public class CalculationHelper
         {
             return (Random.Range(0, 1f) <= demandMultiplier) ? 1 : 0;
         }
+    }
+
+    public static int CalculateExpToAdd(Dictionary<ProductConfig, int> soldProducts)
+    {
+        var result = 0;
+        foreach (var kvp in soldProducts)
+        {
+            result += CalculateExpToAdd(kvp.Key, kvp.Value);
+        }
+        return result;
+    }
+
+    public static int CalculateExpToAdd(ProductConfig productConfig, int amount)
+    {
+        var result = 0;
+        if (amount > 0)
+        {
+            result += System.Math.Max(productConfig.GetSellPriceForAmount(amount) - productConfig.GetPriceForAmount(amount).Value, 0);
+        }
+        return result;
     }
 }

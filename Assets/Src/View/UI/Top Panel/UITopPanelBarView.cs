@@ -29,7 +29,7 @@ public class UITopPanelBarView : MonoBehaviour
     private Color _startTextColor;
     private AudioManager _audioManager;
     private bool _isAnimationInProgress;
-    private int _amount;
+    private int _amount = -1;
 
     public int Amount
     {
@@ -38,7 +38,10 @@ public class UITopPanelBarView : MonoBehaviour
         {
             if (_amount != value)
             {
-                _audioManager.PlaySound(SoundNames.ScoreTick);
+                if (value > 0)
+                {
+                    _audioManager.PlaySound(SoundNames.ScoreTick);
+                }
                 _amount = value;
                 _text.text = string.Format(_format, value);
             }

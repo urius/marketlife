@@ -75,7 +75,7 @@ public class UserModel
 
         var (restProductsOnShelfs, totalShelfsVolume, restUsedShelfsVolume) = userShopModel.GetAllProductsInfo();
         var uniqueProductsOnShelfsCount = restProductsOnShelfs.Length;
-        var startCalculationTime = StatsData.LastVisitTimestamp;
+        var startCalculationTime = StatsData.LastVisitTimestamp > 0 ? StatsData.LastVisitTimestamp : targetTime;
         var secondsSinceLastVisit = targetTime - startCalculationTime;
         var hoursSinceLastVisit = secondsSinceLastVisit / 3600f;
         var hoursCeilSinceLastVisit = (int)Math.Ceiling(hoursSinceLastVisit);

@@ -40,7 +40,7 @@ public class UserOfflineReportModel
         HoursPassed = (0.1f * (int)Math.Ceiling(10 * (TimeTo - TimeFrom) / 3600f));
         MinutesPassed = (int)Math.Ceiling((TimeTo - TimeFrom) / 60f);
         SellProfit = CalculateSellProfit(SoldFromWarehouse) + CalculateSellProfit(SoldFromShelfs);
-        ExpToAdd = CalculateExpToAdd(SoldFromWarehouse) + CalculateExpToAdd(SoldFromShelfs);
+        ExpToAdd = CalculationHelper.CalculateExpToAdd(SoldFromWarehouse) + CalculationHelper.CalculateExpToAdd(SoldFromShelfs);
 
         var hasSoldFromWarehouse = SoldFromWarehouse.Any(kvp => kvp.Value > 0);
         HasSellInfo = SoldFromShelfs.Any(kvp => kvp.Value > 0) || hasSoldFromWarehouse;
@@ -56,16 +56,6 @@ public class UserOfflineReportModel
         foreach (var kvp in soldProducts)
         {
             result += kvp.Key.GetSellPriceForAmount(kvp.Value);
-        }
-        return result;
-    }
-
-    private int CalculateExpToAdd(Dictionary<ProductConfig, int> soldProducts)
-    {
-        var result = 0;
-        foreach (var kvp in soldProducts)
-        {
-            result += Math.Max(kvp.Key.GetSellPriceForAmount(kvp.Value) - kvp.Key.GetPriceForAmount(kvp.Value).Value, 0);
         }
         return result;
     }

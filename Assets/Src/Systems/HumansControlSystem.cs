@@ -234,6 +234,7 @@ public class HumansControlSystem
                 var sellPrice = productToPay.SellPrice;
                 _viewingUserModel.ProgressModel.AddCash(sellPrice);
                 _viewingUserModel.ProgressModel.DelayedCash = Math.Max(0, _viewingUserModel.ProgressModel.DelayedCash - sellPrice);
+                _viewingUserModel.ProgressModel.AddExp(CalculationHelper.CalculateExpToAdd(productToPay.Config, productToPay.Amount));
                 customer.ToPayingState();
 
                 var screenPoint = _screenCalculator.CellToScreenPoint(customer.Coords);

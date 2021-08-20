@@ -32,7 +32,7 @@ public class DataImporter
         var shopModel = ToShopModel(dataDto);
         var shopProgress = ToProgressModel(dataDto.progress);
         var statsData = new UserStatsData(deserializedData.first_visit_time, deserializedData.last_visit_time, deserializedData.days_play);
-        return new UserModel(deserializedData.uid, shopProgress, shopModel, statsData, deserializedData.tutorial_steps);
+        return new UserModel(deserializedData.uid, shopProgress, shopModel, statsData, dataDto.tutorial_steps);
     }
 
     private ShopModel ToShopModel(UserDataDto dataDto)

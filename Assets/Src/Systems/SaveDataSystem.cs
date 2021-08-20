@@ -42,7 +42,6 @@ public class SaveDataSystem
         {
             UpdateSaveCooldownIfNeeded();
         }
-        //Debug.Log("MarkToSaveField:" + _saveFieldsData);
     }
 
     private void Activate()
@@ -93,8 +92,7 @@ public class SaveDataSystem
 
     private void OnTutorialStepPassed(int stepIndex)
     {
-        //todo uncomment
-        //MarkToSaveField(SaveField.TutorialSteps);
+        MarkToSaveField(SaveField.TutorialSteps);
     }
 
     private async void OnRealtimeSecondUpdate()

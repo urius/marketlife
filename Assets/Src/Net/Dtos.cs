@@ -47,7 +47,6 @@ public struct GetDataResponseDto
     public int days_play;
     public int first_visit_time;
     public int last_visit_time;
-    public int[] tutorial_steps;
 }
 
 public class UserDataDto
@@ -58,6 +57,7 @@ public class UserDataDto
     public ShopDesignDto design;
     public string[] objects;
     public string[] unwashes;
+    public int[] tutorial_steps;
 }
 
 public class ExternalDataDto

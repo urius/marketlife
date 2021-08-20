@@ -12,6 +12,8 @@ public struct CloseCurrentPopupCommand
             var warehouseModel = userShopModel.WarehouseModel;
             var offlineReport = PlayerOfflineReportHolder.Instance.PlayerOfflineReport;
 
+            gameStateModel.RemoveCurrentPopupIfNeeded();
+
             warehouseModel.RemoveDeliveredProducts(offlineReport.SoldFromWarehouse, gameStateModel.ServerTime);
             userShopModel.RemoveProducts(offlineReport.SoldFromShelfs);
             playerModel.AddCash(offlineReport.SellProfit); //TODO Animate cash adding
@@ -19,7 +21,9 @@ public struct CloseCurrentPopupCommand
 
             gameStateModel.SetGameState(GameStateName.ShopSimulation);
         }
-
-        gameStateModel.RemoveCurrentPopupIfNeeded();
+        else
+        {
+            gameStateModel.RemoveCurrentPopupIfNeeded();
+        }
     }
 }

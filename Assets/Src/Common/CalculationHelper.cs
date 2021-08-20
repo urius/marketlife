@@ -38,22 +38,33 @@ public class CalculationHelper
         }
     }
 
-    public static int CalculateExpToAdd(Dictionary<ProductConfig, int> soldProducts)
+    public static int CalculateExpToAddOffline(Dictionary<ProductConfig, int> soldProducts)
     {
         var result = 0;
         foreach (var kvp in soldProducts)
         {
-            result += CalculateExpToAdd(kvp.Key, kvp.Value);
+            result += CalculateExpToAddOffline(kvp.Key, kvp.Value);
         }
         return result;
     }
 
-    public static int CalculateExpToAdd(ProductConfig productConfig, int amount)
+    public static int CalculateExpToAddOffline(ProductConfig productConfig, int amount)
     {
         var result = 0;
         if (amount > 0)
         {
-            result += System.Math.Max(productConfig.GetSellPriceForAmount(amount) - productConfig.GetPriceForAmount(amount).Value, 0);
+            result += System.Math.Max(productConfig.GetSellPriceForAmount(amount) - productConfig.GetPriceForAmount(amount).Value, 1);
+        }
+        return result;
+    }
+
+
+    public static int CalculateExpToAddOnline(ProductConfig productConfig, int amount)
+    {
+        var result = 0;
+        if (amount > 0)
+        {
+            result += System.Math.Max(productConfig.GetSellPriceForAmount(amount), 1);
         }
         return result;
     }

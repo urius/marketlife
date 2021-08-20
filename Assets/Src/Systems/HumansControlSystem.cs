@@ -234,7 +234,7 @@ public class HumansControlSystem
                 var sellPrice = productToPay.SellPrice;
                 _viewingUserModel.ProgressModel.AddCash(sellPrice);
                 _viewingUserModel.ProgressModel.DelayedCash = Math.Max(0, _viewingUserModel.ProgressModel.DelayedCash - sellPrice);
-                _viewingUserModel.ProgressModel.AddExp(CalculationHelper.CalculateExpToAdd(productToPay.Config, productToPay.Amount));
+                _viewingUserModel.ProgressModel.AddExp(CalculationHelper.CalculateExpToAddOnline(productToPay.Config, productToPay.Amount));
                 customer.ToPayingState();
 
                 var screenPoint = _screenCalculator.CellToScreenPoint(customer.Coords);
@@ -322,12 +322,13 @@ public class HumansControlSystem
                 if (slot.HasProduct)
                 {
                     var productBuyInfo = GetProductInfoForBuying(slot.Product);
-                    if (productBuyInfo.TakenAmount < productBuyInfo.CanTakeMaxAmount)
+                    var moodMultiplier = _viewingUserModel.ShopModel.MoodMultiplier;
+                    if (productBuyInfo.TakenAmount < productBuyInfo.CanTakeMaxAmount || (moodMultiplier >= 0.5 && Random.Range(0, 2) <= moodMultiplier))
                     {
                         var product = slot.Product;
                         var productConfig = product.Config;
                         var amountIn1000v = productConfig.GetAmountInVolume(1000);
-                        var amountToTake = Math.Min(product.Amount, Math.Min(productBuyInfo.CanTakeMaxAmount - productBuyInfo.TakenAmount, amountIn1000v));
+                        var amountToTake = Math.Min(product.Amount, Math.Max(1, Math.Min(productBuyInfo.CanTakeMaxAmount - productBuyInfo.TakenAmount, amountIn1000v)));
                         customer.AddProduct(productConfig, amountToTake);
                         _viewingUserModel.ProgressModel.DelayedCash += productConfig.GetSellPriceForAmount(amountToTake);
                         slot.ChangeProductAmount(-amountToTake);

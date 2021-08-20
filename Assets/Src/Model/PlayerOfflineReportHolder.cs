@@ -40,7 +40,7 @@ public class UserOfflineReportModel
         HoursPassed = (0.1f * (int)Math.Ceiling(10 * (TimeTo - TimeFrom) / 3600f));
         MinutesPassed = (int)Math.Ceiling((TimeTo - TimeFrom) / 60f);
         SellProfit = CalculateSellProfit(SoldFromWarehouse) + CalculateSellProfit(SoldFromShelfs);
-        ExpToAdd = CalculationHelper.CalculateExpToAdd(SoldFromWarehouse) + CalculationHelper.CalculateExpToAdd(SoldFromShelfs);
+        ExpToAdd = CalculationHelper.CalculateExpToAddOffline(SoldFromWarehouse) + CalculationHelper.CalculateExpToAddOffline(SoldFromShelfs);
 
         var hasSoldFromWarehouse = SoldFromWarehouse.Any(kvp => kvp.Value > 0);
         HasSellInfo = SoldFromShelfs.Any(kvp => kvp.Value > 0) || hasSoldFromWarehouse;

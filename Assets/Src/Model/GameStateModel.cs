@@ -9,6 +9,7 @@ public class GameStateModel
     public static GameStateModel Instance => _instance.Value;
 
     public event Action<GameStateName, GameStateName> GameStateChanged = delegate { };
+    public event Action PausedStateChanged = delegate { };    
     public event Action<PlacingStateName, PlacingStateName> PlacingStateChanged = delegate { };
     public event Action<UserModel> ViewingUserModelChanged = delegate { };
     public event Action HighlightStateChanged = delegate { };
@@ -112,7 +113,12 @@ public class GameStateModel
 
     private void UpdatePausedState()
     {
+        var isPausedBefore = IsGamePaused;
         IsGamePaused = _showingPopupModelsStack.Count > 0 || ShowingTutorialModel != null;
+        if (IsGamePaused != isPausedBefore)
+        {
+            PausedStateChanged();
+        }
     }
 
     public void ResetPlacingState()

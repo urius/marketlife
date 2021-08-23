@@ -44,13 +44,7 @@ public class HumansControlSystem
 
     private void OnViewingUserModelChanged(UserModel userModel)
     {
-        if (_viewingSessionDataModel != null)
-        {
-            foreach (var customer in _viewingSessionDataModel.Customers)
-            {
-                customer.ToIdleState();
-            }
-        }
+        SetAllToIdleState();
 
         _viewingUserModel = userModel;
         _viewingShopModel = userModel.ShopModel;
@@ -58,6 +52,17 @@ public class HumansControlSystem
         _cellsProvider = new WalkableCellsProvider(_viewingShopModel, _viewingSessionDataModel);
         _cellsConsiderHumansProvider = new WalkableCellsConsiderHumansProvider(_viewingShopModel, _viewingSessionDataModel);
         UpdateShelfsList();
+    }
+
+    private void SetAllToIdleState()
+    {
+        if (_viewingSessionDataModel != null)
+        {
+            foreach (var customer in _viewingSessionDataModel.Customers)
+            {
+                customer.ToIdleState();
+            }
+        }
     }
 
     private void UpdateShelfsList()

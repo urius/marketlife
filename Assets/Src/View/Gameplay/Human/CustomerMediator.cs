@@ -63,6 +63,7 @@ public class CustomerMediator : IMediator
     private void Activate()
     {
         _gameStateModel.GameStateChanged += OnGameStateChanged;
+        _gameStateModel.PausedStateChanged += OnPauseStateChanged;
         _customerModel.CoordsChanged += OnCoordsChanged;
         _customerModel.SideChanged += OnSideChanged;
         _customerModel.AnimationStateChanged += OnAnimationStateChanged;
@@ -73,11 +74,24 @@ public class CustomerMediator : IMediator
     private void Deactivate()
     {
         _gameStateModel.GameStateChanged -= OnGameStateChanged;
+        _gameStateModel.PausedStateChanged -= OnPauseStateChanged;
         _customerModel.CoordsChanged -= OnCoordsChanged;
         _customerModel.SideChanged -= OnSideChanged;
         _customerModel.AnimationStateChanged -= OnAnimationStateChanged;
         _customerModel.MoodChanged -= OnMoodChanged;
         _updatesProvider.GametimeUpdate -= OnGameplayTimeUpdate;
+    }
+
+    private void OnPauseStateChanged()
+    {
+        if (_gameStateModel.IsGamePaused)
+        {
+            _humanView.SetBodyState(BodyState.Idle);
+        }
+        else
+        {
+            UpdateAnimationState();
+        }
     }
 
     private void OnGameStateChanged(GameStateName prevState, GameStateName currentState)
@@ -97,7 +111,12 @@ public class CustomerMediator : IMediator
     }
 
     private void OnAnimationStateChanged()
-    {          
+    {
+        UpdateAnimationState();
+    }
+
+    private void UpdateAnimationState()
+    {
         switch (_customerModel.AnimationState)
         {
             case CustomerAnimationState.Thinking:

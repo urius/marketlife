@@ -28,6 +28,5 @@ public struct CalculateForReportCommand
         {
             gameStateModel.SetGameState(GameStateName.ShopSimulation);
         }
-
     }
 }

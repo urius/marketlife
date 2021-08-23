@@ -93,6 +93,10 @@ public class SaveDataSystem
     private void OnTutorialStepPassed(int stepIndex)
     {
         MarkToSaveField(SaveField.TutorialSteps);
+        if (CheckSaveUserDataConditions())
+        {
+            UpdateSaveCooldownIfNeeded();
+        }
     }
 
     private async void OnRealtimeSecondUpdate()
@@ -126,7 +130,7 @@ public class SaveDataSystem
 
     private void OnPopupRemoved()
     {
-        if (CheckSaveUserDataconditions())
+        if (CheckSaveUserDataConditions())
         {
             UpdateSaveCooldownIfNeeded();
         }
@@ -134,7 +138,7 @@ public class SaveDataSystem
 
     private void OnPlacingStateChanged(PlacingStateName previousState, PlacingStateName currentState)
     {
-        if (CheckSaveUserDataconditions())
+        if (CheckSaveUserDataConditions())
         {
             UpdateSaveCooldownIfNeeded();
         }
@@ -142,13 +146,13 @@ public class SaveDataSystem
 
     private void OnGameStateChanged(GameStateName previousState, GameStateName currentState)
     {
-        if (previousState != GameStateName.ReadyForStart && CheckSaveUserDataconditions())
+        if (CheckSaveUserDataConditions())
         {
             UpdateSaveCooldownIfNeeded();
         }
     }
 
-    private bool CheckSaveUserDataconditions()
+    private bool CheckSaveUserDataConditions()
     {
         return (_gameStateModel.GameState == GameStateName.ShopInterior || _gameStateModel.GameState == GameStateName.ShopSimulation)
              && _gameStateModel.ShowingPopupModel == null

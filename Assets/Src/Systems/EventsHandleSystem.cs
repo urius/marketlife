@@ -59,9 +59,22 @@ public class EventsHandleSystem
         _dispatcher.BottomPanlelFinishPlacingClicked += BottomPanelFinishPlacingClicked;
         _dispatcher.BottomPanelRotateRightClicked += BottomPanelRotateRightClicked;
         _dispatcher.BottomPanelRotateLeftClicked += BottomPanelRotateLeftClicked;
+        _dispatcher.UIBottomPanelFriendClicked += OnUIBottomPanelFriendClicked;
 
         _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
         _gameStateModel.GameStateChanged += OnGameStateChanged;
+    }
+
+    private void OnUIBottomPanelFriendClicked(FriendData friendData)
+    {
+        if (friendData.IsApp)
+        {
+            new SwitchToFriendShopCommand().Execute(friendData);
+        }
+        else
+        {
+            //todo invite
+        }
     }
 
     private void ActivateAfterLoad()

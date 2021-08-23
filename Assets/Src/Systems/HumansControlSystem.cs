@@ -44,6 +44,14 @@ public class HumansControlSystem
 
     private void OnViewingUserModelChanged(UserModel userModel)
     {
+        if (_viewingSessionDataModel != null)
+        {
+            foreach (var customer in _viewingSessionDataModel.Customers)
+            {
+                customer.ToIdleState();
+            }
+        }
+
         _viewingUserModel = userModel;
         _viewingShopModel = userModel.ShopModel;
         _viewingSessionDataModel = userModel.SessionDataModel;

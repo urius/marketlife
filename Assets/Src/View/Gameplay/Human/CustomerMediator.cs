@@ -43,7 +43,10 @@ public class CustomerMediator : IMediator
         _humanView.SetupSkins(_customerModel.HairId, _customerModel.TopClothesId, _customerModel.BottomClothesId);
         _humanView.SetGlasses(_customerModel.GlassesId);
 
+        UpdateSortingLayer();
         _humanView.transform.position = _gridCalculator.CellToWorld(_customerModel.Coords);
+        DisplaySide();
+        DisplayMood();
 
         _isActive = _gameStateModel.IsSimulationState;
 
@@ -85,11 +88,16 @@ public class CustomerMediator : IMediator
 
     private void OnMoodChanged()
     {
+        DisplayMood();
+    }
+
+    private void DisplayMood()
+    {
         _humanView.ShowFaceAnimation((int)_customerModel.Mood);
     }
 
     private void OnAnimationStateChanged()
-    {
+    {          
         switch (_customerModel.AnimationState)
         {
             case CustomerAnimationState.Thinking:
@@ -118,7 +126,12 @@ public class CustomerMediator : IMediator
 
     private void OnSideChanged(int prevSide, int currentSide)
     {
-        _humanView.ShowSide(currentSide);
+        DisplaySide();
+    }
+
+    private void DisplaySide()
+    {
+        _humanView.ShowSide(_customerModel.Side);
     }
 
     private void OnGameplayTimeUpdate()
@@ -136,7 +149,6 @@ public class CustomerMediator : IMediator
         _moveDirection = (_targetWorldCoords - _gridCalculator.CellToWorld(prevCoords)).normalized * 0.04f;
         _needToChangeSortingLayer = _shopDesignModel.IsCellInside(currentCoords) != _shopDesignModel.IsCellInside(prevCoords);
 
-        _humanView.SetBodyState(BodyState.Walking);
         _gameplayTimeUpdateDelegate = MovingAnimationDelegate;
     }
 
@@ -150,8 +162,7 @@ public class CustomerMediator : IMediator
             if (passedSqrDistance > restSqrDistance)
             {
                 _needToChangeSortingLayer = false;
-                var sortingLayername = _shopDesignModel.IsCellInside(_customerModel.Coords) ? SortingLayers.Default : SortingLayers.OrderableOutside;
-                _humanView.SetSortingLayer(sortingLayername);
+                UpdateSortingLayer();
             }
         }
         if (restSqrDistance < 0.002f)
@@ -160,6 +171,12 @@ public class CustomerMediator : IMediator
             _gameplayTimeUpdateDelegate = null;
             _dispatcher.CustomerAnimationEnded(_customerModel);
         }
+    }
+
+    private void UpdateSortingLayer()
+    {
+        var sortingLayername = _shopDesignModel.IsCellInside(_customerModel.Coords) ? SortingLayers.Default : SortingLayers.OrderableOutside;
+        _humanView.SetSortingLayer(sortingLayername);
     }
 
     private void WaitingDelegate()

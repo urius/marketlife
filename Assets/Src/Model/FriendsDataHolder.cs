@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class FriendsDataHolder
 {
@@ -23,6 +24,11 @@ public class FriendsDataHolder
         FriendsDataIsSet();
     }
 
+    public FriendData GetFriendData(string uid)
+    {
+        return _friends.FirstOrDefault(d => d.Uid == uid);
+    }
+
 }
 
 public class FriendData
@@ -40,5 +46,13 @@ public class FriendData
         FirstName = firstName;
         LastName = lastName;
         Picture50Url = picture50Url;
+    }
+
+    public UserModel UserModel { get; private set; }
+    public bool IsUserModelLoaded => UserModel != null;
+
+    public void SetUserModel(UserModel userModel)
+    {
+        UserModel = userModel;
     }
 }

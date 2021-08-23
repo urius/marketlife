@@ -41,6 +41,7 @@ public class PrefabsHolder : ScriptableObject
     public GameObject UIRaycastsBlocker;
     public GameObject UIBottomPanelScrollItemPrefab;
     public GameObject UIBottomPanelFriendScrollItemPrefab;
+    public GameObject UIBottomPanelFriendTabPrefab;
     public GameObject UIHintPrefab;
     public GameObject UIShelfActionsPrefab;
     public GameObject UIFlyingTextImagePrefab;

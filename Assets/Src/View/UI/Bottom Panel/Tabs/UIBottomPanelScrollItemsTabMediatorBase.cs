@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public abstract class UIBottomPanelScrollItemsTabMediatorBase<TView, TViewModel> : UINotMonoMediatorBase
+public abstract class UIBottomPanelScrollItemsTabMediatorBase<TView, TViewModel> : UIBottomPanelTabMediatorBase
     where TView : UIBottomPanelScrollItemViewBase
 {
-    protected readonly BottomPanelView View;
-
     private const int MaxDisplayedAmount = 8;
 
     protected readonly LinkedList<(TView View, TViewModel ViewModel)> DisplayedItems;
@@ -23,12 +21,11 @@ public abstract class UIBottomPanelScrollItemsTabMediatorBase<TView, TViewModel>
     private readonly float _slotWidth;
 
     public UIBottomPanelScrollItemsTabMediatorBase(BottomPanelView view)
-        : base(view.transform as RectTransform)
+        : base(view)
     {
         _updatesProvider = UpdatesProvider.Instance;
         _audioManager = AudioManager.Instance;
 
-        View = view;
         _slotWidth = View.ScrollBoxView.SlotWidth;
         _scrollBoxView = view.ScrollBoxView;
 

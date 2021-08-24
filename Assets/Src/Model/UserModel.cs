@@ -12,13 +12,21 @@ public class UserModel
     public readonly UserStatsData StatsData;
     public readonly UserSessionDataModel SessionDataModel;
     public readonly List<int> TutorialSteps;
+    public readonly AvailableFriendShopActionsDataModel ActionsDataModel;
 
-    public UserModel(string uid, UserProgressModel progressModel, ShopModel shopModel, UserStatsData statsData, int[] tutorialSteps)
+    public UserModel(
+        string uid,
+        UserProgressModel progressModel,
+        ShopModel shopModel,
+        UserStatsData statsData,
+        int[] tutorialSteps,
+        AvailableFriendShopActionsDataModel actionsDataModel)
     {
         Uid = uid;
         ProgressModel = progressModel;
         ShopModel = shopModel;
         StatsData = statsData;
+        ActionsDataModel = actionsDataModel;
         SessionDataModel = new UserSessionDataModel();
         TutorialSteps = new List<int>(tutorialSteps ?? Enumerable.Empty<int>());
     }
@@ -321,4 +329,52 @@ public class OfflineCalculationResult
         UnwashesAddedAmount = unwashesAddedAmount;
         UnwashesCleanedAmount = unwashesCleanedAmount;
     }
+}
+
+public class AvailableFriendShopActionsDataModel
+{
+    public const int SupportedActionsCount = 2;
+
+    public event Action<FriendShopActionId> ActionDataUpdated = delegate { };
+
+    private readonly Dictionary<FriendShopActionId, AvailableFriendShopActionData> _actionsById = new Dictionary<FriendShopActionId, AvailableFriendShopActionData>();
+
+    public AvailableFriendShopActionsDataModel(AvailableFriendShopActionData[] actionsData)
+    {
+        foreach (var actionData in actionsData)
+        {
+            _actionsById[actionData.ActionId] = actionData;
+        }
+    }
+
+    public IEnumerable<AvailableFriendShopActionData> ActionsData => _actionsById.Values;
+
+    public void UpdateActionRestAmount(FriendShopActionId actionId, int amount)
+    {
+        var actionData = _actionsById[actionId];
+        actionData.RestAmount = amount;
+        UpdateActionData(actionId, actionData);
+    }
+
+    public void UpdateActionData(FriendShopActionId actionId, AvailableFriendShopActionData newActionData)
+    {
+        _actionsById[actionId] = newActionData;
+        ActionDataUpdated(actionId);
+    }
+}
+
+public struct AvailableFriendShopActionData
+{
+    public FriendShopActionId ActionId;
+    public int RestAmount;
+    public int EndCooldownTimestamp;
+
+    public int ActionIdInt => (int)ActionId;
+}
+
+public enum FriendShopActionId
+{
+    None = 0,
+    Take = 1,
+    AddUnwash = 2,
 }

@@ -778,7 +778,7 @@ GameObject:
   - component: {fileID: 7540148898969403972}
   - component: {fileID: 7540148898969403973}
   m_Layer: 5
-  m_Name: FriendTabView
+  m_Name: UIBottomPanelFriendTabView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1084,6 +1084,17 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6327093045799956284, guid: 2253864bd589140228fea07aa413ad2c,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: d8298ad48f87b48a8bcef3e0f002874c,
+        type: 3}
+    - target: {fileID: 6327093045799956284, guid: 2253864bd589140228fea07aa413ad2c,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.627451
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2253864bd589140228fea07aa413ad2c, type: 3}

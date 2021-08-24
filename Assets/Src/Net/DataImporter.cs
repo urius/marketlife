@@ -23,7 +23,7 @@ public class DataImporter
             new ShopPersonalModel(),
             warehouseModel);
 
-        return new UserModel(dto.data.uid, shopProgress, shopModel, new UserStatsData(), null);
+        return new UserModel(dto.data.uid, shopProgress, shopModel, new UserStatsData(), null, new AvailableFriendShopActionsDataModel(Array.Empty<AvailableFriendShopActionData>()));
     }
 
     public UserModel Import(GetDataResponseDto deserializedData)
@@ -32,7 +32,49 @@ public class DataImporter
         var shopModel = ToShopModel(dataDto);
         var shopProgress = ToProgressModel(dataDto.progress);
         var statsData = new UserStatsData(deserializedData.first_visit_time, deserializedData.last_visit_time, deserializedData.days_play);
-        return new UserModel(deserializedData.uid, shopProgress, shopModel, statsData, dataDto.tutorial_steps);
+        var actionsDataModel = ToAvailableActionsDataModel(dataDto.actions_data);
+        return new UserModel(deserializedData.uid, shopProgress, shopModel, statsData, dataDto.tutorial_steps, actionsDataModel);
+    }
+
+    private AvailableFriendShopActionsDataModel ToAvailableActionsDataModel(string[] actionsDataRaw)
+    {
+        var actionsDataConverted = new AvailableFriendShopActionData[actionsDataRaw != null ? actionsDataRaw.Length : 0];
+        if (actionsDataRaw != null)
+        {
+            for (var i = 0; i < actionsDataRaw.Length; i++)
+            {
+                var actionDataStr = actionsDataRaw[i];
+                var splitted = actionDataStr.Split('|');
+                var id = (FriendShopActionId)int.Parse(splitted[0]);
+                var amountRest = int.Parse(splitted[1]);
+                var endCooldownTimestamp = int.Parse(splitted[3]);
+
+                actionsDataConverted[i] = new AvailableFriendShopActionData
+                {
+                    ActionId = id,
+                    RestAmount = amountRest,
+                    EndCooldownTimestamp = endCooldownTimestamp,
+                };
+            }
+        }
+
+        var actionsDataResult = new AvailableFriendShopActionData[AvailableFriendShopActionsDataModel.SupportedActionsCount];
+        var mainConfig = GameConfigManager.Instance.MainConfig;
+        for (var i = 0; i < AvailableFriendShopActionsDataModel.SupportedActionsCount; i++)
+        {
+            var actionId = i + 1;
+            var haveAction = actionsDataConverted.Any(a => (int)a.ActionId == actionId);
+            var actionData = haveAction ?
+                actionsDataConverted.First(a => (int)a.ActionId == actionId) :
+                new AvailableFriendShopActionData
+                {
+                    ActionId = (FriendShopActionId)actionId,
+                    RestAmount = mainConfig.ActionDefaultAmount,
+                };
+            actionsDataResult[i] = actionData;
+        }
+
+        return new AvailableFriendShopActionsDataModel(actionsDataResult);
     }
 
     private ShopModel ToShopModel(UserDataDto dataDto)

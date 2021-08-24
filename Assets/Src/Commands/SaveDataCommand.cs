@@ -12,7 +12,6 @@ public struct SaveDataCommand
         Debug.Log("---SaveDataCommand: " + saveFields);
 
         var playerModel = PlayerModelHolder.Instance.UserModel;
-        var shopModel = playerModel.ShopModel;
         var url = string.Format(URLsHolder.Instance.SaveDataURL, playerModel.Uid);
 
         var dataToSave = GetExportData(saveFields, playerModel);
@@ -67,6 +66,11 @@ public struct SaveDataCommand
         if (CheckSaveField(saveFields, SaveField.TutorialSteps))
         {
             result[Constants.FieldTutorialSteps] = dataExporter.ExportTutorialSteps(userModel);
+        }
+
+        if (CheckSaveField(saveFields, SaveField.AvailableActionsData))
+        {
+            result[Constants.FieldAvailableActionsData] = dataExporter.ExportAvailableActionsData(userModel);
         }
 
         return result;

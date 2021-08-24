@@ -314,5 +314,6 @@ public enum SaveField
     ShopObjects = 1 << 4,
     Unwashes = 1 << 5,
     TutorialSteps = 1 << 6,
-    All = Progress | Personal | Warehouse | Design | ShopObjects | Unwashes | TutorialSteps,
+    AvailableActionsData = 1 << 7,
+    All = Progress | Personal | Warehouse | Design | ShopObjects | Unwashes | TutorialSteps | AvailableActionsData,
 }

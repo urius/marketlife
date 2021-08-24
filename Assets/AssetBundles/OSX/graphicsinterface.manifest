@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1914784941
+CRC: 3859407364
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 4156350abc9a2189fa97e182196b1557
+    Hash: e9453f064264c9ccfbfe3eb89f6566bf
   TypeTreeHash:
     serializedVersion: 2
     Hash: ba23c2e8f8b3f5319028008a25497317
@@ -80,6 +80,7 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Orange.png
 - Assets/External Resources/InterfaceGraphicsBundle/TopPanel/skin_top_stribe_red.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/button_3_long_crimson_1.png
+- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/bottom_panel_bg_friend_shop_mode.png
 - Assets/External Resources/InterfaceGraphicsBundle/TopPanel/skin_top_stribe_green.png
 - Assets/External Resources/InterfaceGraphicsBundle/Popups/content_item_skin_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/sign_rotate_left.png
@@ -116,14 +117,15 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Sugar_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/Icon_Dlassification.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/sign_windows.png
+- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/bottom_panel_bg_interior_mode_backup.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Cola.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Bread_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/bottom_panel_item_skin.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/sign_cube.png
 - Assets/External Resources/InterfaceGraphicsBundle/Popups/window_caption.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/LimeOn.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/ICON_Volume.png
+- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Bread_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_4.png
 - Assets/External Resources/Materials/ParticleStar.mat
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/TV.png
@@ -148,6 +150,7 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/Common/price_label.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/bottom_panel_bg_simulation_mode.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/ICON_Mute.png
+- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/icon_grab.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Eggs_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_3.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Sushi.png

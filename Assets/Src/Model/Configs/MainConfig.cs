@@ -19,6 +19,8 @@ public class MainConfig :
     public readonly int AutoPlacePriceGold;
     public readonly int RemoveUnwashesRewardExp;
     public readonly int QuickDeliverPriceGoldPerMinute;
+    public readonly int ActionDefaultAmount;
+    public readonly int ActionDefaultCooldownMinutes;    
 
     public readonly Dictionary<string, ProductConfig> ProductsConfig;
     public readonly Dictionary<string, ItemConfig<ShelfConfigDto>> ShelfsConfig;
@@ -42,6 +44,8 @@ public class MainConfig :
         int autoPlacePriceGold,
         int removeUnwashesRewardExp,
         int quickDeliverPriceGoldPerMinute,
+        int actionDefaultAmount,
+        int actionDefaultCooldownMinutes,
         Dictionary<string, ProductConfig> productsConfig,
         Dictionary<string, ItemConfig<ShelfConfigDto>> shelfsConfig,
         Dictionary<string, ItemConfig<ShopObjectConfigDto>> shopObjectsConfig,
@@ -62,6 +66,8 @@ public class MainConfig :
         AutoPlacePriceGold = autoPlacePriceGold;
         RemoveUnwashesRewardExp = removeUnwashesRewardExp;
         QuickDeliverPriceGoldPerMinute = quickDeliverPriceGoldPerMinute;
+        ActionDefaultAmount = actionDefaultAmount;
+        ActionDefaultCooldownMinutes = actionDefaultCooldownMinutes;
         ProductsConfig = productsConfig;
         ShelfsConfig = shelfsConfig;
         ShopObjectsConfig = shopObjectsConfig;

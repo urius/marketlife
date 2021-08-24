@@ -71,6 +71,17 @@ public class DataExporter
         return userModel.TutorialSteps.ToArray();
     }
 
+    public string[] ExportAvailableActionsData(UserModel userModel)
+    {
+        var result = new List<string>(AvailableFriendShopActionsDataModel.SupportedActionsCount);
+        foreach (var actionData in userModel.ActionsDataModel.ActionsData)
+        {
+            result.Add($"{actionData.ActionIdInt}|{actionData.RestAmount}|{actionData.EndCooldownTimestamp}");
+        }
+
+        return result.ToArray();
+    }
+
     private string ExportShopObject(ShopObjectModelBase shopObjectModel)
     {
         string objectIdStr = null;

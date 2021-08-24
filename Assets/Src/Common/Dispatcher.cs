@@ -58,7 +58,7 @@ public class Dispatcher
     public Action BottomPanelWarehouseClicked = delegate { };
     public Action BottomPanelInteriorClicked = delegate { };
     public Action BottomPanelManageButtonClicked = delegate { };
-    public Action BottomPanelInteriorCloseClicked = delegate { };
+    public Action BottomPanelBackClicked = delegate { };
     public Action BottomPanelInteriorShelfsClicked = delegate { };
     public Action BottomPanelInteriorFloorsClicked = delegate { };
     public Action BottomPanelInteriorWallsClicked = delegate { };

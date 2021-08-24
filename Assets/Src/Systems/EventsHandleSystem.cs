@@ -50,7 +50,7 @@ public class EventsHandleSystem
         _dispatcher.BottomPanelWarehouseClicked += OnBottomPanelWarehouseClicked;
         _dispatcher.BottomPanelInteriorClicked += BottomPanelInteriorClicked;
         _dispatcher.BottomPanelManageButtonClicked += BottomPanelManageClicked;
-        _dispatcher.BottomPanelInteriorCloseClicked += OnBottomPanelInteriorCloseClicked;
+        _dispatcher.BottomPanelBackClicked += OnBottomPanelBackClicked;
         _dispatcher.BottomPanelInteriorShelfsClicked += OnBottomPanelInteriorShelfsClicked;
         _dispatcher.BottomPanelInteriorFloorsClicked += OnBottomPanelInteriorFloorsClicked;
         _dispatcher.BottomPanelInteriorWallsClicked += OnBottomPanelInteriorWallsClicked;
@@ -223,9 +223,9 @@ public class EventsHandleSystem
         new UIShowManagePopupCommand().Execute();
     }
 
-    private void OnBottomPanelInteriorCloseClicked()
+    private void OnBottomPanelBackClicked()
     {
-        _gameStateModel.SetGameState(GameStateName.ShopSimulation);
+        new BottomPanelHandleBackClickCommand().Execute();
     }
 
     private void OnBottomPanelInteriorShelfsClicked()

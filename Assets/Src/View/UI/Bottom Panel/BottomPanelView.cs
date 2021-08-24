@@ -13,7 +13,7 @@ public class BottomPanelView : MonoBehaviour, IPointerEnterHandler, IPointerExit
     public event Action WarehouseButtonClicked = delegate { };
     public event Action InteriorButtonClicked = delegate { };
     public event Action ManageButtonClicked = delegate { };
-    public event Action InteriorCloseButtonClicked = delegate { };
+    public event Action BackButtonClicked = delegate { };
     public event Action InteriorObjectsButtonClicked = delegate { };
     public event Action InteriorFloorsButtonClicked = delegate { };
     public event Action InteriorWallsButtonClicked = delegate { };
@@ -35,14 +35,14 @@ public class BottomPanelView : MonoBehaviour, IPointerEnterHandler, IPointerExit
     [SerializeField] private Button _interiorButton;
     [SerializeField] private Button _manageButton;
     [Space(10)]
-    [SerializeField] private Button _interiorCloseButton;
+    [SerializeField] private Button _backButton;
     [SerializeField] private Button _interiorObjectsButton;
     [SerializeField] private Button _interiorFloorsButton;
     [SerializeField] private Button _interiorWallsButton;
     [SerializeField] private Button _interiorWindowsButton;
     [SerializeField] private Button _interiorDoorsButton;
     [Space(10)]
-    [SerializeField] private Button _buttonFinishPlacing;
+    [SerializeField] private Button _buttonFinishAction;
     [SerializeField] private Button _buttonRotateRight;
     [SerializeField] private Button _buttonRotateLeft;
     [SerializeField] private Button _buttonAutoPlace;
@@ -53,6 +53,7 @@ public class BottomPanelView : MonoBehaviour, IPointerEnterHandler, IPointerExit
     [SerializeField] private Image _bgImage;
     [SerializeField] private Sprite _bgSimulationModeSprite;
     [SerializeField] private Sprite _bgInteriorModeSprite;
+    [SerializeField] private Sprite _bgFriendShopModeSprite;
 
     private const float DeltaPositionForAnimation = 40;
 
@@ -60,11 +61,13 @@ public class BottomPanelView : MonoBehaviour, IPointerEnterHandler, IPointerExit
     private Dictionary<CanvasGroup[], float> _buttonYPositionsByCanvasGroup;
     private CanvasGroup[] _simulationModeButtons;
     private CanvasGroup[] _interiorModeButtons;
-    private CanvasGroup[] _allPlacingModeButtons;
+    private CanvasGroup[] _friendShopModeButtons;
+    private CanvasGroup[] _allActionModeButtons;
     private CanvasGroup[] _placingShopObjectModeButtons;
     private CanvasGroup[] _movingShopObjectModeButtons;
     private CanvasGroup[] _placingDecorationModeButtons;
     private CanvasGroup[] _placingProductModeButtons;
+    private CanvasGroup[] _performingFriendActionModeButtons;    
     private UIHintableView[] _allHintableViews;
 
     public Button FriendsButton => _friendsButton;
@@ -78,22 +81,26 @@ public class BottomPanelView : MonoBehaviour, IPointerEnterHandler, IPointerExit
     public void Awake()
     {
         _simulationModeButtons = new CanvasGroup[] { GetCanvasGroup(_friendsButton), GetCanvasGroup(_warehouseButton), GetCanvasGroup(_interiorButton), GetCanvasGroup(_manageButton) };
-        _interiorModeButtons = new CanvasGroup[] { GetCanvasGroup(_interiorCloseButton), GetCanvasGroup(_interiorObjectsButton), GetCanvasGroup(_interiorFloorsButton), GetCanvasGroup(_interiorWallsButton), GetCanvasGroup(_interiorWindowsButton), GetCanvasGroup(_interiorDoorsButton) };
-        _allPlacingModeButtons = new CanvasGroup[] { GetCanvasGroup(_buttonFinishPlacing), GetCanvasGroup(_buttonRotateRight), GetCanvasGroup(_buttonRotateLeft), GetCanvasGroup(_buttonAutoPlace) };
-        _placingShopObjectModeButtons = new CanvasGroup[] { GetCanvasGroup(_buttonFinishPlacing), GetCanvasGroup(_buttonRotateRight), GetCanvasGroup(_buttonRotateLeft) };
+        _interiorModeButtons = new CanvasGroup[] { GetCanvasGroup(_backButton), GetCanvasGroup(_interiorObjectsButton), GetCanvasGroup(_interiorFloorsButton), GetCanvasGroup(_interiorWallsButton), GetCanvasGroup(_interiorWindowsButton), GetCanvasGroup(_interiorDoorsButton) };
+        _friendShopModeButtons = new CanvasGroup[] { GetCanvasGroup(_backButton) };
+        _allActionModeButtons = new CanvasGroup[] { GetCanvasGroup(_buttonFinishAction), GetCanvasGroup(_buttonRotateRight), GetCanvasGroup(_buttonRotateLeft), GetCanvasGroup(_buttonAutoPlace) };
+        _placingShopObjectModeButtons = new CanvasGroup[] { GetCanvasGroup(_buttonFinishAction), GetCanvasGroup(_buttonRotateRight), GetCanvasGroup(_buttonRotateLeft) };
         _movingShopObjectModeButtons = new CanvasGroup[] { GetCanvasGroup(_buttonRotateRight), GetCanvasGroup(_buttonRotateLeft) };
-        _placingDecorationModeButtons = new CanvasGroup[] { GetCanvasGroup(_buttonFinishPlacing) };
-        _placingProductModeButtons = new CanvasGroup[] { GetCanvasGroup(_buttonFinishPlacing), GetCanvasGroup(_buttonAutoPlace) };
+        _placingDecorationModeButtons = new CanvasGroup[] { GetCanvasGroup(_buttonFinishAction) };
+        _placingProductModeButtons = new CanvasGroup[] { GetCanvasGroup(_buttonFinishAction), GetCanvasGroup(_buttonAutoPlace) };
+        _performingFriendActionModeButtons = new CanvasGroup[] { GetCanvasGroup(_buttonFinishAction) };
 
         _buttonYPositionsByCanvasGroup = new Dictionary<CanvasGroup[], float>
         {
             [_simulationModeButtons] = (_simulationModeButtons[0].transform as RectTransform).anchoredPosition.y,
             [_interiorModeButtons] = (_interiorModeButtons[0].transform as RectTransform).anchoredPosition.y,
-            [_allPlacingModeButtons] = (_allPlacingModeButtons[0].transform as RectTransform).anchoredPosition.y,
+            [_friendShopModeButtons] = (_friendShopModeButtons[0].transform as RectTransform).anchoredPosition.y,
+            [_allActionModeButtons] = (_allActionModeButtons[0].transform as RectTransform).anchoredPosition.y,
             [_placingShopObjectModeButtons] = (_placingShopObjectModeButtons[0].transform as RectTransform).anchoredPosition.y,
             [_movingShopObjectModeButtons] = (_movingShopObjectModeButtons[0].transform as RectTransform).anchoredPosition.y,
             [_placingDecorationModeButtons] = (_placingDecorationModeButtons[0].transform as RectTransform).anchoredPosition.y,
             [_placingProductModeButtons] = (_placingProductModeButtons[0].transform as RectTransform).anchoredPosition.y,
+            [_performingFriendActionModeButtons] = (_performingFriendActionModeButtons[0].transform as RectTransform).anchoredPosition.y,
         };
 
         _allHintableViews = GetComponentsInChildren<UIHintableView>(true);
@@ -130,6 +137,11 @@ public class BottomPanelView : MonoBehaviour, IPointerEnterHandler, IPointerExit
         _bgImage.sprite = _bgInteriorModeSprite;
     }
 
+    public void ShowFriendShopModeBG()
+    {
+        _bgImage.sprite = _bgFriendShopModeSprite;
+    }
+
     public UniTask ShowSimulationModeButtonsAsync()
     {
         return ShowButtonsInternalAsync(_simulationModeButtons, false);
@@ -138,6 +150,11 @@ public class BottomPanelView : MonoBehaviour, IPointerEnterHandler, IPointerExit
     public UniTask ShowInteriorModeButtonsAsync()
     {
         return ShowButtonsInternalAsync(_interiorModeButtons);
+    }
+
+    public UniTask ShowFriendShopModeButtonsAsync()
+    {
+        return ShowButtonsInternalAsync(_friendShopModeButtons);
     }
 
     public UniTask HideSimulationModeButtonsAsync()
@@ -150,14 +167,20 @@ public class BottomPanelView : MonoBehaviour, IPointerEnterHandler, IPointerExit
         return HideButtonsInternalAsync(_interiorModeButtons);
     }
 
-    public UniTask ShowPlacingButtonsAsync(PlacingModeType placingModeType)
+    public UniTask HideFriendShopModeButtonsAsync()
+    {
+        return HideButtonsInternalAsync(_friendShopModeButtons, withDelays: false);
+    }
+
+    public UniTask ShowActionButtonsAsync(ActionModeType placingModeType)
     {
         return placingModeType switch
         {
-            PlacingModeType.NewShopObject => ShowButtonsInternalAsync(_placingShopObjectModeButtons, withDelays: false),
-            PlacingModeType.MovingShopObject => ShowButtonsInternalAsync(_movingShopObjectModeButtons, withDelays: false),
-            PlacingModeType.ShopDecoration => ShowButtonsInternalAsync(_placingDecorationModeButtons, withDelays: false),
-            PlacingModeType.Product => ShowButtonsInternalAsync(_placingProductModeButtons, withDelays: false),
+            ActionModeType.PlacingNewShopObject => ShowButtonsInternalAsync(_placingShopObjectModeButtons, withDelays: false),
+            ActionModeType.MovingShopObject => ShowButtonsInternalAsync(_movingShopObjectModeButtons, withDelays: false),
+            ActionModeType.PlacingShopDecoration => ShowButtonsInternalAsync(_placingDecorationModeButtons, withDelays: false),
+            ActionModeType.PlacingProduct => ShowButtonsInternalAsync(_placingProductModeButtons, withDelays: false),
+            ActionModeType.FriendAction => ShowButtonsInternalAsync(_performingFriendActionModeButtons, withDelays: false),
             _ => UniTask.CompletedTask,
         };
     }
@@ -174,7 +197,7 @@ public class BottomPanelView : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     public UniTask HidePlacingButtonsAsync()
     {
-        return HideButtonsInternalAsync(_allPlacingModeButtons);
+        return HideButtonsInternalAsync(_allActionModeButtons);
     }
 
     public UniTask MinimizePanelAsync()
@@ -288,14 +311,14 @@ public class BottomPanelView : MonoBehaviour, IPointerEnterHandler, IPointerExit
         _interiorButton.AddOnClickListener(OnInteriorButtonClicked);
         _manageButton.AddOnClickListener(OnManageButtonClicked);
 
-        _interiorCloseButton.AddOnClickListener(OnInteriorCloseButtonClicked);
+        _backButton.AddOnClickListener(OnBackButtonClicked);
         _interiorObjectsButton.AddOnClickListener(OnInteriorObjectsButtonClicked);
         _interiorFloorsButton.AddOnClickListener(OnInteriorFloorsButtonClicked);
         _interiorWallsButton.AddOnClickListener(OnInteriorWallsButtonClicked);
         _interiorWindowsButton.AddOnClickListener(OnInteriorWindowsButtonClicked);
         _interiorDoorsButton.AddOnClickListener(OnInteriorDoorsButtonClicked);
 
-        _buttonFinishPlacing.AddOnClickListener(OnFinishPlacingButtonClicked);
+        _buttonFinishAction.AddOnClickListener(OnFinishPlacingButtonClicked);
         _buttonRotateRight.AddOnClickListener(OnRotateRightButtonClicked);
         _buttonRotateLeft.AddOnClickListener(OnRotateLeftButtonClicked);
         _buttonAutoPlace.AddOnClickListener(OnAutoPlaceClicked);
@@ -341,9 +364,9 @@ public class BottomPanelView : MonoBehaviour, IPointerEnterHandler, IPointerExit
         InvokeActionIfNotBlocked(ManageButtonClicked);
     }
 
-    private void OnInteriorCloseButtonClicked()
+    private void OnBackButtonClicked()
     {
-        InvokeActionIfNotBlocked(InteriorCloseButtonClicked);
+        InvokeActionIfNotBlocked(BackButtonClicked);
     }
 
     private void OnInteriorObjectsButtonClicked()
@@ -395,10 +418,11 @@ public class BottomPanelView : MonoBehaviour, IPointerEnterHandler, IPointerExit
     }
 }
 
-public enum PlacingModeType
+public enum ActionModeType
 {
-    NewShopObject,
+    PlacingNewShopObject,
     MovingShopObject,
-    ShopDecoration,
-    Product,
+    PlacingShopDecoration,
+    PlacingProduct,
+    FriendAction,
 }

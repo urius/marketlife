@@ -34,7 +34,7 @@ public class GameStateModel
     public bool IsGamePaused { get; private set; } = false;
     public GameStateName GameState { get; private set; } = GameStateName.Initializing;
     public bool IsSimulationState => GameState == GameStateName.ShopSimulation;
-    public bool IsPlayingState => GameState == GameStateName.ShopSimulation || GameState == GameStateName.ShopInterior;
+    public bool IsPlayingState => GameState == GameStateName.ShopSimulation || GameState == GameStateName.ShopInterior || GameState == GameStateName.ShopFriend;
     public PlacingStateName PlacingState { get; private set; } = PlacingStateName.None;
     public int PlacingDecorationNumericId => _placingIntParameter;
     public int PlacingProductWarehouseSlotIndex => _placingIntParameter;
@@ -264,6 +264,7 @@ public enum GameStateName
     ReadyForStart,
     ShopSimulation,
     ShopInterior,
+    ShopFriend,
 }
 
 public enum PlacingStateName

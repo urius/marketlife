@@ -52,6 +52,7 @@ public class BottomPanelMediator : UINotMonoMediatorBase
         {
             GameStateName.ShopSimulation => GetSimulationModeTabMediator(),
             GameStateName.ShopInterior => GetInteriorModeTabMediator(),
+            GameStateName.ShopFriend => new UIBottomPanelFriendShopTabMediator(_view),
             _ => null,
         };
     }
@@ -87,7 +88,7 @@ public class BottomPanelMediator : UINotMonoMediatorBase
         _view.WarehouseButtonClicked += OnWarehouseButtonClicked;
         _view.InteriorButtonClicked += OnInteriorButtonClicked;
         _view.ManageButtonClicked += OnManageButtonClicked;
-        _view.InteriorCloseButtonClicked += OnInteriorCloseButtonClicked;
+        _view.BackButtonClicked += OnBackButtonClicked;
         _view.InteriorObjectsButtonClicked += OnInteriorObjectsButtonClicked;
         _view.InteriorFloorsButtonClicked += OnInteriorFloorsButtonClicked;
         _view.InteriorWallsButtonClicked += OnInteriorWallsButtonClicked;
@@ -150,19 +151,19 @@ public class BottomPanelMediator : UINotMonoMediatorBase
                 switch (newState)
                 {
                     case PlacingStateName.PlacingNewShopObject:
-                        await _view.ShowPlacingButtonsAsync(PlacingModeType.NewShopObject);
+                        await _view.ShowActionButtonsAsync(ActionModeType.PlacingNewShopObject);
                         break;
                     case PlacingStateName.MovingShopObject:
-                        await _view.ShowPlacingButtonsAsync(PlacingModeType.MovingShopObject);
+                        await _view.ShowActionButtonsAsync(ActionModeType.MovingShopObject);
                         break;
                     case PlacingStateName.PlacingNewFloor:
                     case PlacingStateName.PlacingNewWall:
                     case PlacingStateName.PlacingNewWindow:
                     case PlacingStateName.PlacingNewDoor:
-                        await _view.ShowPlacingButtonsAsync(PlacingModeType.ShopDecoration);
+                        await _view.ShowActionButtonsAsync(ActionModeType.PlacingShopDecoration);
                         break;
                     case PlacingStateName.PlacingProduct:
-                        await _view.ShowPlacingButtonsAsync(PlacingModeType.Product);
+                        await _view.ShowActionButtonsAsync(ActionModeType.PlacingProduct);
                         break;
                 }
             }
@@ -182,10 +183,6 @@ public class BottomPanelMediator : UINotMonoMediatorBase
         if (_gameStateModel.IsPlayingState)
         {
             UpdateTabMediator();
-        }
-
-        if (newState == GameStateName.ShopSimulation || newState == GameStateName.ShopInterior)
-        {
             using (_view.SetBlockedDisposable())
             {
                 await HideTopButtonsForStateAsync(previousState);
@@ -211,6 +208,9 @@ public class BottomPanelMediator : UINotMonoMediatorBase
             case GameStateName.ShopSimulation:
                 _view.ShowSimulationModeBG();
                 return _view.ShowSimulationModeButtonsAsync();
+            case GameStateName.ShopFriend:
+                _view.ShowFriendShopModeBG();
+                return _view.ShowFriendShopModeButtonsAsync();
         }
 
         return UniTask.CompletedTask;
@@ -224,6 +224,8 @@ public class BottomPanelMediator : UINotMonoMediatorBase
                 return _view.HideSimulationModeButtonsAsync();
             case GameStateName.ShopInterior:
                 return _view.HideInteriorModeButtonsAsync();
+            case GameStateName.ShopFriend:
+                return _view.HideFriendShopModeButtonsAsync();
         }
 
         return UniTask.CompletedTask;
@@ -235,7 +237,7 @@ public class BottomPanelMediator : UINotMonoMediatorBase
         _currentTabMediator = tabMediator;
         _lastTabMediatorForState[_gameStateModel.GameState] = _currentTabMediator;
         _currentTabMediator.Mediate();
-    }    
+    }
 
     private void OnFriendsButtonClicked()
     {
@@ -283,9 +285,9 @@ public class BottomPanelMediator : UINotMonoMediatorBase
         PlayButtonSound();
     }
 
-    private void OnInteriorCloseButtonClicked()
+    private void OnBackButtonClicked()
     {
-        _dispatcher.BottomPanelInteriorCloseClicked();
+        _dispatcher.BottomPanelBackClicked();
         PlayButtonSound();
     }
 

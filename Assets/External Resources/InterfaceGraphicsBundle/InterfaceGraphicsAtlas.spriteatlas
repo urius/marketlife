@@ -32,7 +32,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 46b41057a82fe4010b5245cd9e8b4afa, type: 3}
-    totalSpriteSurfaceArea: 1256003
+    totalSpriteSurfaceArea: 1305007
     bindAsDefault: 0
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -58,6 +58,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: ed347672ec4ad41ffb84217e5144acdc, type: 3}
   - {fileID: 21300000, guid: 848e139269b1f491b86b90be3f143ea7, type: 3}
   - {fileID: 21300000, guid: adb788d29559f4c858092acd11f95c40, type: 3}
+  - {fileID: 21300000, guid: 6390a703204a84d8ea33f7c4d3b061db, type: 3}
   - {fileID: 21300000, guid: 9ad1d113978e94c4d9d9d9a20882466c, type: 3}
   - {fileID: 21300000, guid: 523c1d134aa9c453895d41a9ae7e8b80, type: 3}
   - {fileID: 21300000, guid: 1a8906235a76048078f220d0c8e9b813, type: 3}
@@ -72,6 +73,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 873fb87419f414aba878b2a83ca87eca, type: 3}
   - {fileID: 21300000, guid: 62dd0884dfc6a4b919b25990d561aa26, type: 3}
   - {fileID: 21300000, guid: 696f9aa4e2979411dba59e1a7edd4d42, type: 3}
+  - {fileID: 21300000, guid: d8298ad48f87b48a8bcef3e0f002874c, type: 3}
   - {fileID: 21300000, guid: ac386cd459ea94c5d9cea66a636e32dc, type: 3}
   - {fileID: 21300000, guid: 648591e4a592e4cbea1d4b8887ec39b4, type: 3}
   - {fileID: 21300000, guid: ad44c2e4a42ab4c95976a2c9ab81aaa3, type: 3}
@@ -128,6 +130,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 0137ae5b191d24f3195eeb886b45add7, type: 3}
   - {fileID: 21300000, guid: 1c6bd57b301c845a2bbd582c348e108a, type: 3}
   - {fileID: 21300000, guid: c9e6169b6e75f4fd0a08ef0dd096fdbb, type: 3}
+  - {fileID: 21300000, guid: 552e0b9b1699640e9a19fb147dae6d5a, type: 3}
   - {fileID: 21300000, guid: 666d2aab7cffd4f39a63eb1931b30396, type: 3}
   - {fileID: 21300000, guid: ded3aabb0d15747e9a39b26c7bc4d873, type: 3}
   - {fileID: 21300000, guid: c5af3edb4c9714d4fb439ce7536f0b38, type: 3}
@@ -186,6 +189,7 @@ SpriteAtlas:
   - Window1
   - button_1_small_red
   - Icon_Shelf_1
+  - bottom_panel_bg_interior_mode_backup
   - sign_rotate_left
   - Cola
   - window_caption
@@ -200,6 +204,7 @@ SpriteAtlas:
   - content_skin_2
   - sign_rotate_right
   - ToothPaste
+  - icon_grab
   - sign_cube
   - Wall7
   - skin_top_stribe_green
@@ -256,6 +261,7 @@ SpriteAtlas:
   - sign_4arrows
   - Cake
   - white_circle_200
+  - bottom_panel_bg_friend_shop_mode
   - TV
   - sign_expand_shop_y
   - Icon_Back1

@@ -52,6 +52,8 @@ public class GameConfigManager : ScriptableObject
             mainConfigDto.AutoPlacePriceGold,
             mainConfigDto.RemoveUnwashesRewardExp,
             mainConfigDto.QuickDeliverPriceGoldPerMinute,
+            mainConfigDto.ActionDefaultAmount,
+            mainConfigDto.ActionDefaultCooldownMinutes,
             productsConfig,
             shelfsConfig,
             shopObjectsConfig,

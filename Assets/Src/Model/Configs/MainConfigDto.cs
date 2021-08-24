@@ -8,6 +8,8 @@ public class MainConfigDto
     public int AutoPlacePriceGold;
     public int RemoveUnwashesRewardExp;    
     public int QuickDeliverPriceGoldPerMinute;
+    public int ActionDefaultAmount;
+    public int ActionDefaultCooldownMinutes;
     public Dictionary<string, ShelfConfigDto> ShelfsConfig;
     public Dictionary<string, ShopObjectConfigDto> ShopObjectsConfig;
     public Dictionary<string, ShopDecorationConfigDto> FloorsConfig;

@@ -18,6 +18,7 @@ public struct SwitchToFriendShopCommand
         if (friendData.IsUserModelLoaded)
         {
             gameStateModel.SetViewingUserModel(friendData.UserModel);
+            gameStateModel.SetGameState(GameStateName.ShopFriend);
         }
 
         dispatcher.UIRequestUnblockRaycasts();

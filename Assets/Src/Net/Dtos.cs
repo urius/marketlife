@@ -58,6 +58,7 @@ public class UserDataDto
     public string[] objects;
     public string[] unwashes;
     public int[] tutorial_steps;
+    public string[] actions_data;
 }
 
 public class ExternalDataDto

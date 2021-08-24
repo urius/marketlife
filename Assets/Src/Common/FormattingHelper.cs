@@ -16,13 +16,13 @@ public class FormattingHelper
         }
     }
 
+    public static string ToCommaSeparatedNumber(int amount)
+    {
+        return string.Format("{0:n0}", amount);
+    }
+
     private static string GetTwoDigitsString(int value)
     {
         return value < 10 ? $"0{value}" : value.ToString();
-    }
-
-    internal static string ToCommaSeparatedNumber(int amount)
-    {
-        return string.Format("{0:n0}", amount);
     }
 }

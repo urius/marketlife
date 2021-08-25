@@ -63,6 +63,7 @@ public class UserDataDto
 
 public class ExternalDataDto
 {
+    public string[] actions;
 }
 
 public class ShopProgressDto

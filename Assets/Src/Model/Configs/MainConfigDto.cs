@@ -10,6 +10,8 @@ public class MainConfigDto
     public int QuickDeliverPriceGoldPerMinute;
     public int ActionDefaultAmount;
     public int ActionDefaultCooldownMinutes;
+    public int ActionResetCooldownPrice;
+    
     public Dictionary<string, ShelfConfigDto> ShelfsConfig;
     public Dictionary<string, ShopObjectConfigDto> ShopObjectsConfig;
     public Dictionary<string, ShopDecorationConfigDto> FloorsConfig;

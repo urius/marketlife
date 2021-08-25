@@ -39,16 +39,16 @@ public class ShopObjectActionsPanelMediator : IMediator
     private void Activate()
     {
         _gameStateModel.HighlightStateChanged += OnHighlightStateChanged;
-        _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
+        _gameStateModel.ActionStateChanged += OnActionStateChanged;
     }
 
     private void Deactivate()
     {
         _gameStateModel.HighlightStateChanged -= OnHighlightStateChanged;
-        _gameStateModel.PlacingStateChanged -= OnPlacingStateChanged;
+        _gameStateModel.ActionStateChanged -= OnActionStateChanged;
     }
 
-    private void OnPlacingStateChanged(PlacingStateName prevState, PlacingStateName currentState)
+    private void OnActionStateChanged(ActionStateName prevState, ActionStateName currentState)
     {
         Update();
     }
@@ -60,7 +60,7 @@ public class ShopObjectActionsPanelMediator : IMediator
 
     private async void Update()
     {
-        if (_gameStateModel.GameState != GameStateName.ShopInterior || _gameStateModel.PlacingState != PlacingStateName.None)
+        if (_gameStateModel.GameState != GameStateName.ShopInterior || _gameStateModel.ActionState != ActionStateName.None)
         {
             HideActionsView();
             return;

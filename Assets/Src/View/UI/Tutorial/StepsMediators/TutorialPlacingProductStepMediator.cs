@@ -48,7 +48,7 @@ public class TutorialPlacingProductStepMediator : TutorialStepMediatorBase
         {
             shelfModel.ProductIsSetOnSlot += OnShelfProductIsSetOnSlot;
         }
-        _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
+        _gameStateModel.ActionStateChanged += OnActionStateChanged;
     }
 
     private void Deactivate()
@@ -57,7 +57,7 @@ public class TutorialPlacingProductStepMediator : TutorialStepMediatorBase
         {
             shelfModel.ProductIsSetOnSlot -= OnShelfProductIsSetOnSlot;
         }
-        _gameStateModel.PlacingStateChanged -= OnPlacingStateChanged;
+        _gameStateModel.ActionStateChanged -= OnActionStateChanged;
     }
 
     private void SetupHighlight()
@@ -95,9 +95,9 @@ public class TutorialPlacingProductStepMediator : TutorialStepMediatorBase
         }
     }
 
-    private void OnPlacingStateChanged(PlacingStateName prevState, PlacingStateName currentState)
+    private void OnActionStateChanged(ActionStateName prevState, ActionStateName currentState)
     {
-        if (currentState == PlacingStateName.None)
+        if (currentState == ActionStateName.None)
         {
             DispatchTutorialActionPerformed();
         }

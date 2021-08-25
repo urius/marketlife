@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using UnityEngine;
 
 public class DataExporter
@@ -11,6 +12,49 @@ public class DataExporter
     public ShopProgressDto ExportProgress(UserProgressModel progressModel)
     {
         return new ShopProgressDto(progressModel.Cash + progressModel.DelayedCash, progressModel.Gold, progressModel.ExpAmount, progressModel.Level);
+    }
+
+    public string[] ExportActionsModel(ExternalActionsModel externalActionsModel)
+    {
+        var resultDictionary = new Dictionary<string, Queue<ExternalActionModelBase>>();
+        foreach (var actionModel in externalActionsModel.Actions)
+        {
+            if (resultDictionary.ContainsKey(actionModel.PerformerId) == false)
+            {
+                resultDictionary[actionModel.PerformerId] = new Queue<ExternalActionModelBase>();
+            }
+
+            resultDictionary[actionModel.PerformerId].Enqueue(actionModel);
+        }
+
+        var result = new List<string>(resultDictionary.Count);
+        foreach (var kvp in resultDictionary)
+        {
+            var sb = new StringBuilder();
+            sb.Append($"{kvp.Key}:{ExportAction(kvp.Value.Dequeue())}");
+            while (kvp.Value.Count > 0)
+            {
+                sb.Append($";{ExportAction(kvp.Value.Dequeue())}");
+            }
+            result.Add(sb.ToString());
+        }
+
+        return result.ToArray();
+    }
+
+    private string ExportAction(ExternalActionModelBase action)
+    {
+        switch (action.ActionId)
+        {
+            case FriendShopActionId.Take:
+                var takeAction = action as ExternalActionTake;
+                return $"{(int)takeAction.ActionId}|{ExportCoords(takeAction.Coords)}|{ExportProduct(takeAction.ProductConfig, takeAction.Amount)}";
+            case FriendShopActionId.AddUnwash:
+                var addUnwashAction = action as ExternalActionAddUnwash;
+                return $"{(int)addUnwashAction.ActionId}|{ExportCoords(addUnwashAction.Coords)}";
+        }
+
+        return $"?{(int)action.ActionId}";
     }
 
     public string[] ExportPersonal(ShopModel shopModel)
@@ -137,11 +181,16 @@ public class DataExporter
         {
             if (!useStd || (useStd && !kvp.Value.Equals(stdItemId)))
             {
-                result.Add($"x{kvp.Key.x}y{kvp.Key.y}|{convertValuesFunc(kvp.Value)}");
+                result.Add($"{ExportCoords(kvp.Key)}|{convertValuesFunc(kvp.Value)}");
             }
         }
 
         return result.ToArray();
+    }
+
+    private string ExportCoords(Vector2Int coords)
+    {
+        return $"x{coords.x}y{coords.y}";
     }
 
     private TIn GetStandardItem<TIn>(Dictionary<Vector2Int, TIn> inputDictionary)
@@ -199,18 +248,21 @@ public class DataExporter
 
     private string ExportSlot(ProductSlotModel productSlotModel)
     {
-        var gameStateModel = GameStateModel.Instance;
-
         if (productSlotModel.HasProduct)
         {
             var productModel = productSlotModel.Product;
-            var productBaseString = $"p{productModel.Config.NumericId}x{productModel.Amount}";
-            return productModel.DeliverTime > gameStateModel.ServerTime ?
-                $"{productBaseString}d{productModel.DeliverTime}"
-                : productBaseString;
+            return ExportProduct(productModel.Config, productModel.Amount, productModel.DeliverTime);
         }
 
         return null;
     }
 
+    private string ExportProduct(ProductConfig productConfig, int amount, int deliverTime = 0)
+    {
+        var gameStateModel = GameStateModel.Instance;
+        var productBaseString = $"p{productConfig.NumericId}x{amount}";
+        return deliverTime > gameStateModel.ServerTime ?
+            $"{productBaseString}d{deliverTime}"
+            : productBaseString;
+    }
 }

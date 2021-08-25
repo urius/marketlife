@@ -4,7 +4,7 @@ public struct UIRequestPlacingDecorationCommand
     {
         var gameStateModel = GameStateModel.Instance;
         var audioManager = AudioManager.Instance;
-        if (gameStateModel.PlacingState != PlacingStateName.None) return;
+        if (gameStateModel.ActionState != ActionStateName.None) return;
 
         Dispatcher.Instance.RequestForceMouseCellPositionUpdate();
         switch (decorationType)

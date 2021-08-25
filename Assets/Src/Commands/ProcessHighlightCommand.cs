@@ -7,13 +7,16 @@ public struct ProcessHighlightCommand
         var gameStateModel = GameStateModel.Instance;
         var gameState = gameStateModel.GameState;
 
-        if (gameStateModel.PlacingState != PlacingStateName.None && gameStateModel.PlacingState != PlacingStateName.PlacingProduct)
+        if (gameStateModel.ActionState != ActionStateName.None
+            && gameStateModel.ActionState != ActionStateName.PlacingProduct
+            && gameStateModel.ActionState != ActionStateName.FriendShopTakeProduct
+            && gameStateModel.ActionState != ActionStateName.FriendShopAddUnwash)
         {
             return;
         }
 
         var shopModel = gameStateModel.ViewingShopModel;
-        if (gameStateModel.PlacingState == PlacingStateName.PlacingProduct)
+        if (gameStateModel.ActionState == ActionStateName.PlacingProduct)
         {
             if (shopModel.Grid.TryGetValue(coords, out var shopObjectData)
                              && shopObjectData.buildState > 0

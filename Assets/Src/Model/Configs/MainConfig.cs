@@ -20,7 +20,8 @@ public class MainConfig :
     public readonly int RemoveUnwashesRewardExp;
     public readonly int QuickDeliverPriceGoldPerMinute;
     public readonly int ActionDefaultAmount;
-    public readonly int ActionDefaultCooldownMinutes;    
+    public readonly int ActionDefaultCooldownMinutes;
+    public readonly int ActionResetCooldownPrice;
 
     public readonly Dictionary<string, ProductConfig> ProductsConfig;
     public readonly Dictionary<string, ItemConfig<ShelfConfigDto>> ShelfsConfig;
@@ -38,14 +39,7 @@ public class MainConfig :
     private readonly float[] _levelsConfig;
 
     public MainConfig(
-        int gameplayAtlasVersion,
-        int interfaceAtlasVersion,
-        int audioBundleVersion,
-        int autoPlacePriceGold,
-        int removeUnwashesRewardExp,
-        int quickDeliverPriceGoldPerMinute,
-        int actionDefaultAmount,
-        int actionDefaultCooldownMinutes,
+        MainConfigDto dto,
         Dictionary<string, ProductConfig> productsConfig,
         Dictionary<string, ItemConfig<ShelfConfigDto>> shelfsConfig,
         Dictionary<string, ItemConfig<ShopObjectConfigDto>> shopObjectsConfig,
@@ -60,14 +54,15 @@ public class MainConfig :
         UpgradeConfig[] extendShopYUpgradesConfig,
         float[] levelsConfig)
     {
-        GameplayAtlasVersion = gameplayAtlasVersion;
-        InterfaceAtlasVersion = interfaceAtlasVersion;
-        AudioBundleVersion = audioBundleVersion;
-        AutoPlacePriceGold = autoPlacePriceGold;
-        RemoveUnwashesRewardExp = removeUnwashesRewardExp;
-        QuickDeliverPriceGoldPerMinute = quickDeliverPriceGoldPerMinute;
-        ActionDefaultAmount = actionDefaultAmount;
-        ActionDefaultCooldownMinutes = actionDefaultCooldownMinutes;
+        GameplayAtlasVersion = dto.GameplayAtlasVersion;
+        InterfaceAtlasVersion = dto.InterfaceAtlasVersion;
+        AudioBundleVersion = dto.AudioBundleVersion;
+        AutoPlacePriceGold = dto.AutoPlacePriceGold;
+        RemoveUnwashesRewardExp = dto.RemoveUnwashesRewardExp;
+        QuickDeliverPriceGoldPerMinute = dto.QuickDeliverPriceGoldPerMinute;
+        ActionDefaultAmount = dto.ActionDefaultAmount;
+        ActionDefaultCooldownMinutes = dto.ActionDefaultCooldownMinutes;
+        ActionResetCooldownPrice = dto.ActionResetCooldownPrice;
         ProductsConfig = productsConfig;
         ShelfsConfig = shelfsConfig;
         ShopObjectsConfig = shopObjectsConfig;

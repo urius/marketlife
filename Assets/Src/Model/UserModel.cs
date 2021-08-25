@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public class UserModel
 {
@@ -13,6 +14,7 @@ public class UserModel
     public readonly UserSessionDataModel SessionDataModel;
     public readonly List<int> TutorialSteps;
     public readonly AvailableFriendShopActionsDataModel ActionsDataModel;
+    public readonly ExternalActionsModel ExternalActionsModel;
 
     public UserModel(
         string uid,
@@ -20,7 +22,8 @@ public class UserModel
         ShopModel shopModel,
         UserStatsData statsData,
         int[] tutorialSteps,
-        AvailableFriendShopActionsDataModel actionsDataModel)
+        AvailableFriendShopActionsDataModel actionsDataModel,
+        ExternalActionsModel externalActionsModel)
     {
         Uid = uid;
         ProgressModel = progressModel;
@@ -29,6 +32,7 @@ public class UserModel
         ActionsDataModel = actionsDataModel;
         SessionDataModel = new UserSessionDataModel();
         TutorialSteps = new List<int>(tutorialSteps ?? Enumerable.Empty<int>());
+        ExternalActionsModel = externalActionsModel;
     }
 
     public void AddPassedTutorialStep(int stepIndex)
@@ -91,7 +95,7 @@ public class UserModel
         var cleanedUnwashesAmount = 0;
         var soldFromWarehouseProducts = new Dictionary<ProductConfig, int>(uniqueProductsOnShelfsCount);
         var restWarehouseProductsForMerchandiser = new Dictionary<ProductConfig, int>(uniqueProductsOnShelfsCount);
-        var random = new Random(targetTime);
+        var random = new System.Random(targetTime);
         foreach (var productModel in restProductsOnShelfs)
         {
             soldFromShelfsProducts[productModel.Config] = 0;
@@ -348,6 +352,7 @@ public class AvailableFriendShopActionsDataModel
     }
 
     public IEnumerable<AvailableFriendShopActionData> ActionsData => _actionsById.Values;
+    public IReadOnlyDictionary<FriendShopActionId, AvailableFriendShopActionData> ActionsById => _actionsById;
 
     public void UpdateActionRestAmount(FriendShopActionId actionId, int amount)
     {
@@ -377,4 +382,112 @@ public enum FriendShopActionId
     None = 0,
     Take = 1,
     AddUnwash = 2,
+}
+
+public class ExternalActionsModel
+{
+    public event Action<ExternalActionModelBase> ActionAdded = delegate { };
+
+    private List<ExternalActionModelBase> _actions = new List<ExternalActionModelBase>();
+
+    public ExternalActionsModel()
+    {
+    }
+
+    public IReadOnlyList<ExternalActionModelBase> Actions => _actions;
+
+    public void AddAction(ExternalActionModelBase externalActionModel)
+    {
+        var isCombined = false;
+        foreach (var action in _actions)
+        {
+            if (action.CanCombine(externalActionModel))
+            {
+                action.Combine(externalActionModel);
+                isCombined = true;
+                break;
+            }
+        }
+
+        if (isCombined == false)
+        {
+            _actions.Add(externalActionModel);
+        }
+
+        ActionAdded(externalActionModel);
+    }
+
+    public void Clear()
+    {
+        _actions.Clear();
+    }
+}
+
+public abstract class ExternalActionModelBase
+{
+    public readonly string PerformerId;
+
+    public ExternalActionModelBase(string performerId)
+    {
+        PerformerId = performerId;
+    }
+
+    public abstract FriendShopActionId ActionId { get; }
+
+    public virtual bool CanCombine(ExternalActionModelBase another)
+    {
+        return another.PerformerId == PerformerId && another.ActionId == ActionId;
+    }
+
+    public abstract void Combine(ExternalActionModelBase another);
+}
+
+public class ExternalActionTake : ExternalActionModelBase
+{
+    public readonly Vector2Int Coords;
+    public readonly ProductConfig ProductConfig;
+    public int Amount;
+
+    public ExternalActionTake(string performerId, Vector2Int coords, ProductConfig productConfig, int amount)
+        : base(performerId)
+    {
+        Coords = coords;
+        ProductConfig = productConfig;
+        Amount = amount;
+    }
+
+    public override FriendShopActionId ActionId => FriendShopActionId.Take;
+
+    public override bool CanCombine(ExternalActionModelBase another)
+    {
+        return base.CanCombine(another) && (another as ExternalActionTake).ProductConfig.Key == ProductConfig.Key;
+    }
+
+    public override void Combine(ExternalActionModelBase another)
+    {
+        Amount += (another as ExternalActionTake).Amount;
+    }
+}
+
+public class ExternalActionAddUnwash : ExternalActionModelBase
+{
+    public readonly Vector2Int Coords;
+
+    public ExternalActionAddUnwash(string performerId, Vector2Int coords)
+        : base(performerId)
+    {
+        Coords = coords;
+    }
+
+    public override FriendShopActionId ActionId => FriendShopActionId.AddUnwash;
+
+    public override bool CanCombine(ExternalActionModelBase another)
+    {
+        return base.CanCombine(another) && (another as ExternalActionAddUnwash).Coords == Coords;
+    }
+
+    public override void Combine(ExternalActionModelBase another)
+    {
+        //combine = skip
+    }
 }

@@ -103,7 +103,7 @@ public class BottomPanelMediator : UINotMonoMediatorBase
         _viewModel.InteriorTabChanged += OnInteriorTabChanged;
 
         _gameStateModel.GameStateChanged += OnGameStateChanged;
-        _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
+        _gameStateModel.ActionStateChanged += OnActionStateChanged;
     }
 
     private void OnSimulationTabChanged()
@@ -138,37 +138,41 @@ public class BottomPanelMediator : UINotMonoMediatorBase
         _dispatcher.UIBottomPanelPointerExit();
     }
 
-    private async void OnPlacingStateChanged(PlacingStateName previousState, PlacingStateName newState)
+    private async void OnActionStateChanged(ActionStateName previousState, ActionStateName newState)
     {
         using (_view.SetBlockedDisposable())
         {
             //placing
-            if (newState != PlacingStateName.None && previousState == PlacingStateName.None)
+            if (newState != ActionStateName.None && previousState == ActionStateName.None)
             {
                 var minimizeTask = _view.MinimizePanelAsync();
                 await HideTopButtonsForStateAsync(_gameStateModel.GameState);
                 await minimizeTask;
                 switch (newState)
                 {
-                    case PlacingStateName.PlacingNewShopObject:
+                    case ActionStateName.PlacingNewShopObject:
                         await _view.ShowActionButtonsAsync(ActionModeType.PlacingNewShopObject);
                         break;
-                    case PlacingStateName.MovingShopObject:
+                    case ActionStateName.MovingShopObject:
                         await _view.ShowActionButtonsAsync(ActionModeType.MovingShopObject);
                         break;
-                    case PlacingStateName.PlacingNewFloor:
-                    case PlacingStateName.PlacingNewWall:
-                    case PlacingStateName.PlacingNewWindow:
-                    case PlacingStateName.PlacingNewDoor:
+                    case ActionStateName.PlacingNewFloor:
+                    case ActionStateName.PlacingNewWall:
+                    case ActionStateName.PlacingNewWindow:
+                    case ActionStateName.PlacingNewDoor:
                         await _view.ShowActionButtonsAsync(ActionModeType.PlacingShopDecoration);
                         break;
-                    case PlacingStateName.PlacingProduct:
+                    case ActionStateName.PlacingProduct:
                         await _view.ShowActionButtonsAsync(ActionModeType.PlacingProduct);
+                        break;
+                    case ActionStateName.FriendShopTakeProduct:
+                    case ActionStateName.FriendShopAddUnwash:
+                        await _view.ShowActionButtonsAsync(ActionModeType.FriendAction);
                         break;
                 }
             }
             //no placing
-            else if (newState == PlacingStateName.None && previousState != PlacingStateName.None)
+            else if (newState == ActionStateName.None && previousState != ActionStateName.None)
             {
                 var maximizeTask = _view.MaximizePanelAsync();
                 await _view.HidePlacingButtonsAsync();

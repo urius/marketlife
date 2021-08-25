@@ -71,7 +71,7 @@ MonoBehaviour:
     type: 3}
   UITextPopupPrefab: {fileID: 7037023643119392150, guid: 0a89ac3325c7b4f8893ec25a88c8c731,
     type: 3}
-  UIPlacingProductPrefab: {fileID: 3510333535774996464, guid: 4e7f8e23cc19c49b99ebcdd582113e07,
+  UIFlyingActionPrefab: {fileID: 3510333535774996464, guid: 4e7f8e23cc19c49b99ebcdd582113e07,
     type: 3}
   UIContentPopupPrefab: {fileID: 5173990274866861764, guid: cdcf6da1c70f14a30baf46a6758bea09,
     type: 3}

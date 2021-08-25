@@ -84,7 +84,7 @@ public class SaveDataSystem
         personalModel.PersonalWorkingTimeUpdated += OnPersonalWorkingTimeUpdated;
 
         _gameStateModel.GameStateChanged += OnGameStateChanged;
-        _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
+        _gameStateModel.ActionStateChanged += OnActionStateChanged;
         _gameStateModel.PopupRemoved += OnPopupRemoved;
 
         _updatesProvider.RealtimeSecondUpdate += OnRealtimeSecondUpdate;
@@ -136,7 +136,7 @@ public class SaveDataSystem
         }
     }
 
-    private void OnPlacingStateChanged(PlacingStateName previousState, PlacingStateName currentState)
+    private void OnActionStateChanged(ActionStateName previousState, ActionStateName currentState)
     {
         if (CheckSaveUserDataConditions())
         {
@@ -156,7 +156,7 @@ public class SaveDataSystem
     {
         return (_gameStateModel.GameState == GameStateName.ShopInterior || _gameStateModel.GameState == GameStateName.ShopSimulation)
              && _gameStateModel.ShowingPopupModel == null
-             && _gameStateModel.PlacingState == PlacingStateName.None;
+             && _gameStateModel.ActionState == ActionStateName.None;
     }
 
     private void UpdateSaveCooldownIfNeeded()

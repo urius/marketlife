@@ -20,7 +20,7 @@ public class UIRootCanvasMediator : MonoBehaviour
     private BottomPanelMediator _bottomPanelMediator;
     private ShopObjectActionsPanelMediator _shopObjectActionsPanelMediator;
     private UIFlyingTextsMediator _flyingTextsMediator;
-    private PlacingProductMediator _placingProductMediator;
+    private UIActionsCursorMediator _actionsCursorMediator;
     private PopupsMediator _popupsMediator;
     private TutorialMediator _tutorialMediator;
     private PrefabsHolder _prefabsHolder;
@@ -39,7 +39,7 @@ public class UIRootCanvasMediator : MonoBehaviour
         _shopObjectActionsPanelMediator = new ShopObjectActionsPanelMediator(_gameViewUiContainerRectTransform);
         _flyingTextsMediator = new UIFlyingTextsMediator(_gameViewUiContainerRectTransform);
         var popupCanvasRectTransform = _popupsCanvas.transform as RectTransform;
-        _placingProductMediator = new PlacingProductMediator(popupCanvasRectTransform);
+        _actionsCursorMediator = new UIActionsCursorMediator(popupCanvasRectTransform);
         _popupsMediator = new PopupsMediator(popupCanvasRectTransform);
         _tutorialMediator = new TutorialMediator(transform as RectTransform);
 
@@ -62,7 +62,7 @@ public class UIRootCanvasMediator : MonoBehaviour
         _bottomPanelMediator.Mediate();
         _shopObjectActionsPanelMediator.Mediate();
         _flyingTextsMediator.Mediate();
-        _placingProductMediator.Mediate();
+        _actionsCursorMediator.Mediate();
         _popupsMediator.Mediate();
         _tutorialMediator.Mediate();
     }

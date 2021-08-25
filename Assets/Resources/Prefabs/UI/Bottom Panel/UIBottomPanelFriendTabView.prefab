@@ -1085,6 +1085,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4843126415354831689, guid: 2253864bd589140228fea07aa413ad2c,
+        type: 3}
+      propertyPath: _localizationKey
+      value: hint_bottom_panel_action_take
+      objectReference: {fileID: 0}
     - target: {fileID: 6327093045799956284, guid: 2253864bd589140228fea07aa413ad2c,
         type: 3}
       propertyPath: m_Sprite
@@ -1123,6 +1128,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7540148898969403974}
     m_Modifications:
+    - target: {fileID: 1029715866, guid: 2253864bd589140228fea07aa413ad2c, type: 3}
+      propertyPath: _localizationKey
+      value: hint_bottom_panel_unblock_friend_action
+      objectReference: {fileID: 0}
     - target: {fileID: 3457565762836367083, guid: 2253864bd589140228fea07aa413ad2c,
         type: 3}
       propertyPath: m_Name
@@ -1232,6 +1241,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4843126415354831689, guid: 2253864bd589140228fea07aa413ad2c,
+        type: 3}
+      propertyPath: DisplayText
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4843126415354831689, guid: 2253864bd589140228fea07aa413ad2c,
+        type: 3}
+      propertyPath: _localizationKey
+      value: hint_bottom_panel_action_add_unwash
       objectReference: {fileID: 0}
     - target: {fileID: 6327093045799956284, guid: 2253864bd589140228fea07aa413ad2c,
         type: 3}

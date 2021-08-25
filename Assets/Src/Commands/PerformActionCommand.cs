@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public struct PlaceObjectCommand
+public struct PerformActionCommand
 {
     public void Execute()
     {
@@ -9,41 +9,44 @@ public struct PlaceObjectCommand
         var mouseCellCoords = MouseCellCoordsProvider.Instance.MouseCellCoords;
         var audioManager = AudioManager.Instance;
 
-        var placeResult = false;
-        switch (gameStateModel.PlacingState)
+        var actionResult = false;
+        switch (gameStateModel.ActionState)
         {
-            case PlacingStateName.PlacingNewShopObject:
-                placeResult = PlaceNewShopObject();
+            case ActionStateName.PlacingNewShopObject:
+                actionResult = PlaceNewShopObject();
                 break;
-            case PlacingStateName.MovingShopObject:
-                placeResult = PlaceMovingShopObject();
+            case ActionStateName.MovingShopObject:
+                actionResult = PlaceMovingShopObject();
                 break;
-            case PlacingStateName.PlacingNewFloor:
-                placeResult = PlaceNewDecoration(mouseCellCoords, ShopDecorationObjectType.Floor, gameStateModel.PlacingDecorationNumericId);
+            case ActionStateName.PlacingNewFloor:
+                actionResult = PlaceNewDecoration(mouseCellCoords, ShopDecorationObjectType.Floor, gameStateModel.PlacingDecorationNumericId);
                 break;
-            case PlacingStateName.PlacingNewWall:
-                placeResult = PlaceNewDecoration(mouseCellCoords, ShopDecorationObjectType.Wall, gameStateModel.PlacingDecorationNumericId);
+            case ActionStateName.PlacingNewWall:
+                actionResult = PlaceNewDecoration(mouseCellCoords, ShopDecorationObjectType.Wall, gameStateModel.PlacingDecorationNumericId);
                 break;
-            case PlacingStateName.PlacingNewWindow:
-                placeResult = PlaceNewDecoration(mouseCellCoords, ShopDecorationObjectType.Window, gameStateModel.PlacingDecorationNumericId);
+            case ActionStateName.PlacingNewWindow:
+                actionResult = PlaceNewDecoration(mouseCellCoords, ShopDecorationObjectType.Window, gameStateModel.PlacingDecorationNumericId);
                 break;
-            case PlacingStateName.MovingWindow:
-                placeResult = PlaceMovingDecoration(mouseCellCoords, ShopDecorationObjectType.Window, gameStateModel.PlacingDecorationNumericId);
+            case ActionStateName.MovingWindow:
+                actionResult = PlaceMovingDecoration(mouseCellCoords, ShopDecorationObjectType.Window, gameStateModel.PlacingDecorationNumericId);
                 break;
-            case PlacingStateName.PlacingNewDoor:
-                placeResult = PlaceNewDecoration(mouseCellCoords, ShopDecorationObjectType.Door, gameStateModel.PlacingDecorationNumericId);
+            case ActionStateName.PlacingNewDoor:
+                actionResult = PlaceNewDecoration(mouseCellCoords, ShopDecorationObjectType.Door, gameStateModel.PlacingDecorationNumericId);
                 break;
-            case PlacingStateName.MovingDoor:
-                placeResult = PlaceMovingDecoration(mouseCellCoords, ShopDecorationObjectType.Door, gameStateModel.PlacingDecorationNumericId);
+            case ActionStateName.MovingDoor:
+                actionResult = PlaceMovingDecoration(mouseCellCoords, ShopDecorationObjectType.Door, gameStateModel.PlacingDecorationNumericId);
                 break;
-            case PlacingStateName.PlacingProduct:
-                placeResult = PlaceProductOnHighlightedShelf();
+            case ActionStateName.PlacingProduct:
+                actionResult = PlaceProductOnHighlightedShelf();
+                break;
+            case ActionStateName.FriendShopTakeProduct:
+                actionResult = TakeProductOnFriendHighlightedShelf();
                 break;
         }
 
-        if (placeResult)
+        if (actionResult)
         {
-            if (gameStateModel.PlacingState == PlacingStateName.PlacingProduct)
+            if (gameStateModel.ActionState == ActionStateName.PlacingProduct)
             {
                 audioManager.PlaySound(SoundNames.ProductPut);
             }
@@ -52,6 +55,24 @@ public struct PlaceObjectCommand
                 audioManager.PlaySound(SoundNames.Place);
             }
         }
+    }
+
+    private bool TakeProductOnFriendHighlightedShelf()
+    {
+        var result = false;
+
+        var gameStateModel = GameStateModel.Instance;
+        var highlightState = gameStateModel.HighlightState;
+        var highlightedShopObject = highlightState.HighlightedShopObject;
+        var viewingUserModel = gameStateModel.ViewingUserModel;
+
+        if (highlightState.IsHighlighted
+            && highlightedShopObject != null
+            && highlightedShopObject.Type == ShopObjectType.Shelf)
+        {
+            var shelf = highlightedShopObject as ShelfModel;
+        }
+        return result;
     }
 
     private bool PlaceProductOnHighlightedShelf()

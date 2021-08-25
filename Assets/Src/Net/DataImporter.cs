@@ -23,7 +23,7 @@ public class DataImporter
             new ShopPersonalModel(),
             warehouseModel);
 
-        return new UserModel(dto.data.uid, shopProgress, shopModel, new UserStatsData(), null, new AvailableFriendShopActionsDataModel(Array.Empty<AvailableFriendShopActionData>()));
+        return new UserModel(dto.data.uid, shopProgress, shopModel, new UserStatsData(), null, new AvailableFriendShopActionsDataModel(Array.Empty<AvailableFriendShopActionData>()), new ExternalActionsModel());
     }
 
     public UserModel Import(GetDataResponseDto deserializedData)
@@ -33,7 +33,49 @@ public class DataImporter
         var shopProgress = ToProgressModel(dataDto.progress);
         var statsData = new UserStatsData(deserializedData.first_visit_time, deserializedData.last_visit_time, deserializedData.days_play);
         var actionsDataModel = ToAvailableActionsDataModel(dataDto.actions_data);
-        return new UserModel(deserializedData.uid, shopProgress, shopModel, statsData, dataDto.tutorial_steps, actionsDataModel);
+        var externalActionsModel = ToExternalActionsModel(deserializedData.external_data);
+        return new UserModel(deserializedData.uid, shopProgress, shopModel, statsData, dataDto.tutorial_steps, actionsDataModel, externalActionsModel);
+    }
+
+    private ExternalActionsModel ToExternalActionsModel(ExternalDataDto externalData)
+    {
+        var result = new ExternalActionsModel();
+        if (externalData.actions != null)
+        {
+            foreach (var externalActionDataStr in externalData.actions)
+            {
+                var splitted = externalActionDataStr.Split(':');
+                var performerId = splitted[0];
+                var actionsStr = splitted[1].Split(';');
+                var actions = actionsStr.Select(s => ToAction(performerId, s)).Where(a => a != null);
+                foreach (var action in actions)
+                {
+                    result.AddAction(action);
+                }
+            }
+        }
+
+        return result;
+    }
+
+    private ExternalActionModelBase ToAction(string performerId, string actionStr)
+    {
+        var splitted = actionStr.Split('|');
+        if (splitted.Length > 0)
+        {
+            var actionIdInt = int.Parse(splitted[0]);
+            var actionId = (FriendShopActionId)actionIdInt;
+            switch (actionId)
+            {
+                case FriendShopActionId.Take:
+                    var product = ToProductModel(splitted[2]);
+                    return new ExternalActionTake(performerId, ParseCoords(splitted[1]), product.Config, product.Amount);
+                case FriendShopActionId.AddUnwash:
+                    return new ExternalActionAddUnwash(performerId, ParseCoords(splitted[1]));
+            }
+        }
+
+        return null;
     }
 
     private AvailableFriendShopActionsDataModel ToAvailableActionsDataModel(string[] actionsDataRaw)

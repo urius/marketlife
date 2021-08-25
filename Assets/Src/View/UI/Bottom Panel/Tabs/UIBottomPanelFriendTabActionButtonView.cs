@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class UIBottomPanelFriendTabActionButtonView : MonoBehaviour
 {
-    public event Action MainButtonClicked = delegate { };
+    public event Action Clicked = delegate { };
     public event Action BuyButtonClicked = delegate { };
 
     [SerializeField] private TMP_Text _amountText;
@@ -50,6 +50,6 @@ public class UIBottomPanelFriendTabActionButtonView : MonoBehaviour
 
     private void OnMainButtonClicked()
     {
-        MainButtonClicked();
+        Clicked();
     }
 }

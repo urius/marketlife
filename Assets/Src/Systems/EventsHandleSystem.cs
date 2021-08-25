@@ -60,9 +60,15 @@ public class EventsHandleSystem
         _dispatcher.BottomPanelRotateRightClicked += BottomPanelRotateRightClicked;
         _dispatcher.BottomPanelRotateLeftClicked += BottomPanelRotateLeftClicked;
         _dispatcher.UIBottomPanelFriendClicked += OnUIBottomPanelFriendClicked;
+        _dispatcher.UIBottomPanelFriendShopActionClicked += OnUIBottomPanelFriendShopActionClicked;
 
-        _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
+        _gameStateModel.ActionStateChanged += OnActionStateChanged;
         _gameStateModel.GameStateChanged += OnGameStateChanged;
+    }
+
+    private void OnUIBottomPanelFriendShopActionClicked(FriendShopActionId actionId)
+    {
+        new HandleFriendShopActionClickCommand().Execute(actionId, isBuyClicked: false);
     }
 
     private void OnUIBottomPanelFriendClicked(FriendData friendData)
@@ -178,9 +184,9 @@ public class EventsHandleSystem
 
     private void OnUIGameViewMouseClicked()
     {
-        if (_gameStateModel.PlacingState != PlacingStateName.None)
+        if (_gameStateModel.ActionState != ActionStateName.None)
         {
-            new PlaceObjectCommand().Execute();
+            new PerformActionCommand().Execute();
         }
         else if (_gameStateModel.HighlightState.IsHighlighted == true)
         {
@@ -263,9 +269,9 @@ public class EventsHandleSystem
         }
     }
 
-    private void OnPlacingStateChanged(PlacingStateName previous, PlacingStateName currentState)
+    private void OnActionStateChanged(ActionStateName previous, ActionStateName currentState)
     {
-        if (currentState == PlacingStateName.None)
+        if (currentState == ActionStateName.None)
         {
             var mouseCoords = MouseCellCoordsProvider.Instance.MouseCellCoords;
             new ProcessHighlightCommand().Execute(mouseCoords);

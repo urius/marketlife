@@ -10,7 +10,7 @@ public class GameStateModel
 
     public event Action<GameStateName, GameStateName> GameStateChanged = delegate { };
     public event Action PausedStateChanged = delegate { };    
-    public event Action<PlacingStateName, PlacingStateName> PlacingStateChanged = delegate { };
+    public event Action<ActionStateName, ActionStateName> ActionStateChanged = delegate { };
     public event Action<UserModel> ViewingUserModelChanged = delegate { };
     public event Action HighlightStateChanged = delegate { };
     public event Action PopupShown = delegate { };
@@ -35,7 +35,7 @@ public class GameStateModel
     public GameStateName GameState { get; private set; } = GameStateName.Initializing;
     public bool IsSimulationState => GameState == GameStateName.ShopSimulation;
     public bool IsPlayingState => GameState == GameStateName.ShopSimulation || GameState == GameStateName.ShopInterior || GameState == GameStateName.ShopFriend;
-    public PlacingStateName PlacingState { get; private set; } = PlacingStateName.None;
+    public ActionStateName ActionState { get; private set; } = ActionStateName.None;
     public int PlacingDecorationNumericId => _placingIntParameter;
     public int PlacingProductWarehouseSlotIndex => _placingIntParameter;
     public ShopObjectModelBase PlacingShopObjectModel { get; private set; }
@@ -125,43 +125,53 @@ public class GameStateModel
     {
         PlacingShopObjectModel = null;
         _placingIntParameter = -1;
-        SetPlacingState(PlacingStateName.None);
+        SetActionState(ActionStateName.None);
     }
 
     public void SetPlacingObject(ShopObjectModelBase placingObjectModel, bool isNew = true)
     {
         PlacingShopObjectModel = placingObjectModel;
-        SetPlacingState(isNew ? PlacingStateName.PlacingNewShopObject : PlacingStateName.MovingShopObject);
+        SetActionState(isNew ? ActionStateName.PlacingNewShopObject : ActionStateName.MovingShopObject);
     }
 
     public void SetPlacingFloor(int numericId)
     {
         _placingIntParameter = numericId;
-        SetPlacingState(PlacingStateName.PlacingNewFloor);
+        SetActionState(ActionStateName.PlacingNewFloor);
     }
 
     public void SetPlacingWall(int numericId)
     {
         _placingIntParameter = numericId;
-        SetPlacingState(PlacingStateName.PlacingNewWall);
+        SetActionState(ActionStateName.PlacingNewWall);
     }
 
     public void SetPlacingWindow(int numericId, bool isNew = true)
     {
         _placingIntParameter = numericId;
-        SetPlacingState(isNew ? PlacingStateName.PlacingNewWindow : PlacingStateName.MovingWindow);
+        SetActionState(isNew ? ActionStateName.PlacingNewWindow : ActionStateName.MovingWindow);
     }
 
     public void SetPlacingDoor(int numericId, bool isNew = true)
     {
         _placingIntParameter = numericId;
-        SetPlacingState(isNew ? PlacingStateName.PlacingNewDoor : PlacingStateName.MovingDoor);
+        SetActionState(isNew ? ActionStateName.PlacingNewDoor : ActionStateName.MovingDoor);
     }
 
     public void SetPlacingProductSlotIndex(int slotIndex)
     {
         _placingIntParameter = slotIndex;
-        SetPlacingState(PlacingStateName.PlacingProduct);
+        SetActionState(ActionStateName.PlacingProduct);
+    }
+
+    public void SetTakeProductAction()
+    {
+        SetActionState(ActionStateName.FriendShopTakeProduct);
+    }
+
+    public void SetAddUnwashAction()
+    {
+        SetActionState(ActionStateName.FriendShopAddUnwash);
     }
 
     public void SetViewingUserModel(UserModel userModel)
@@ -230,11 +240,11 @@ public class GameStateModel
         HighlightStateChanged();
     }
 
-    private void SetPlacingState(PlacingStateName newState)
+    private void SetActionState(ActionStateName newState)
     {
-        var previousState = PlacingState;
-        PlacingState = newState;
-        PlacingStateChanged(previousState, newState);
+        var previousState = ActionState;
+        ActionState = newState;
+        ActionStateChanged(previousState, newState);
     }
 }
 
@@ -267,7 +277,7 @@ public enum GameStateName
     ShopFriend,
 }
 
-public enum PlacingStateName
+public enum ActionStateName
 {
     None,
     PlacingNewShopObject,
@@ -279,4 +289,6 @@ public enum PlacingStateName
     PlacingNewDoor,
     MovingDoor,
     PlacingProduct,
+    FriendShopTakeProduct,
+    FriendShopAddUnwash,
 }

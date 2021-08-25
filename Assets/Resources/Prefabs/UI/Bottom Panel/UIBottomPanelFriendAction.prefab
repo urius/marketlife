@@ -227,7 +227,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisplayText: 
   _hintPositionType: 0
-  _localizationKey: 
+  _localizationKey: unblock_friend_action
   _hintContainer: {fileID: 1029715865}
   _positionOffset: {x: 0, y: 25}
 --- !u!1 &1094675428
@@ -513,6 +513,7 @@ GameObject:
   - component: {fileID: 8614822875437156281}
   - component: {fileID: 1126778185118216591}
   - component: {fileID: 6847278559916841167}
+  - component: {fileID: 4843126415354831689}
   m_Layer: 5
   m_Name: UIBottomPanelFriendAction
   m_TagString: Untagged
@@ -642,6 +643,23 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4843126415354831689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3457565762836367083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7669359c8c3e47a08419f6517e7ef70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DisplayText: 
+  _hintPositionType: 0
+  _localizationKey: 
+  _hintContainer: {fileID: 3894379073459923914}
+  _positionOffset: {x: 0, y: 80}
 --- !u!1 &4229367284987768543
 GameObject:
   m_ObjectHideFlags: 0

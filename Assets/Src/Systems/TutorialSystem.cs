@@ -35,7 +35,7 @@ public class TutorialSystem
     private void Activate()
     {
         _gameStateModel.GameStateChanged += OnGameStateChanged;
-        _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
+        _gameStateModel.ActionStateChanged += OnActionStateChanged;
         _gameStateModel.PopupShown += OnPopupShown;
         _gameStateModel.PopupRemoved += OnPopupRemoved;
         _dispatcher.TutorialActionPerformed += OnUITutorialActionPerformed;
@@ -113,7 +113,7 @@ public class TutorialSystem
                 && CheckGameState(GameStateName.ShopSimulation)
                 && _playerModel.ShopModel.WarehouseModel.Slots.Any(s => s.HasProduct && s.Product.DeliverTime > _gameStateModel.ServerTime),
             TutorialStep.PlacingProduct => HasNoOpenedPopups()
-                && _gameStateModel.PlacingState == PlacingStateName.PlacingProduct,
+                && _gameStateModel.ActionState == ActionStateName.PlacingProduct,
             TutorialStep.ReadyToPlay => HasNoOpenedPopups()
                 && HasNoPlacingMode(),
             _ => false//throw new ArgumentException($"CheckTutorialConditions: {nameof(tutorialStepIndex)} {tutorialStepIndex} is not supported"),
@@ -127,7 +127,7 @@ public class TutorialSystem
 
     private bool HasNoPlacingMode()
     {
-        return _gameStateModel.PlacingState == PlacingStateName.None;
+        return _gameStateModel.ActionState == ActionStateName.None;
     }
 
     private bool CheckGameState(GameStateName stateName)
@@ -140,7 +140,7 @@ public class TutorialSystem
         ShowTutorialIfNeeded();
     }
 
-    private void OnPlacingStateChanged(PlacingStateName prevState, PlacingStateName currentState)
+    private void OnActionStateChanged(ActionStateName prevState, ActionStateName currentState)
     {
         ShowTutorialIfNeeded();
     }

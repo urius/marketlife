@@ -23,7 +23,7 @@ public class SpritesProvider
         return GetSprite(SpriteAtlasId.GameplayAtlas, $"Unwashes{numericId}");
     }
 
-    public Sprite GetUnwashIcone(int numericId)
+    public Sprite GetUnwashIcon(int numericId)
     {
         return GetSprite(SpriteAtlasId.InterfaceAtlas, $"unwash_icon_{numericId}");
     }
@@ -153,6 +153,16 @@ public class SpritesProvider
             UpgradeType.WarehouseVolume => GetSprite(SpriteAtlasId.InterfaceAtlas, "sign_upgrade_wh_volume"),
             _ => null,
         };
+    }
+
+    public Sprite GetTakeActionIcon()
+    {
+        return GetSprite(SpriteAtlasId.InterfaceAtlas, "icon_grab");
+    }
+
+    public Sprite GetAddUnwashActionIcon()
+    {
+        return GetSprite(SpriteAtlasId.InterfaceAtlas, "unwashes_icon_1");
     }
 
     private Sprite GetSprite(SpriteAtlasId gameplayAtlas, string name)

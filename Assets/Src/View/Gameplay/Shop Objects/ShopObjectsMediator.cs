@@ -64,22 +64,22 @@ public class ShopObjectsMediator : MonoBehaviour
     private void Activate()
     {
         _gameStateModel.ViewingUserModelChanged += OnViewingUserModelChanged;
-        _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
+        _gameStateModel.ActionStateChanged += OnActionStateChanged;
     }
 
-    private void OnPlacingStateChanged(PlacingStateName previousState, PlacingStateName newState)
+    private void OnActionStateChanged(ActionStateName previousState, ActionStateName newState)
     {
         switch (newState)
         {
-            case PlacingStateName.None:
+            case ActionStateName.None:
                 if (_currentPlacingShopObjectMediator != null)
                 {
                     _currentPlacingShopObjectMediator.Unmediate();
                     _currentPlacingShopObjectMediator = null;
                 }
                 break;
-            case PlacingStateName.PlacingNewShopObject:
-            case PlacingStateName.MovingShopObject:
+            case ActionStateName.PlacingNewShopObject:
+            case ActionStateName.MovingShopObject:
                 _currentPlacingShopObjectMediator = new PlacingShopObjectMediator(transform, _gameStateModel.PlacingShopObjectModel);
                 _currentPlacingShopObjectMediator.Mediate();
                 break;

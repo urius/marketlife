@@ -7,7 +7,7 @@ public struct StartMovingHighlightedObjectCommand
         var playerModelHolder = PlayerModelHolder.Instance;
         var shopModel = playerModelHolder.ShopModel;
 
-        if (gameStateModel.PlacingState != PlacingStateName.None) return;
+        if (gameStateModel.ActionState != ActionStateName.None) return;
 
         if (highlightState.HighlightedShopObject != null)
         {

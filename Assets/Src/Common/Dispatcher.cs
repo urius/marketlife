@@ -27,6 +27,8 @@ public class Dispatcher
     public Action<int> UIBottomPanelWarehouseRemoveProductClicked = delegate { };
     public Action<FriendData> UIBottomPanelFriendClicked = delegate { };
     public Action UIBottomPanelAutoPlaceClicked = delegate { };
+    public Action<FriendShopActionId> UIBottomPanelFriendShopActionClicked = delegate { };
+    public Action<FriendShopActionId> UIBottomPanelBuyFriendShopActionClicked = delegate { };    
 
     public Action UIActionsRotateRightClicked = delegate { };
     public Action UIActionsRotateLeftClicked = delegate { };

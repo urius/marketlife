@@ -46,14 +46,7 @@ public class GameConfigManager : ScriptableObject
         var levelsConfig = ToLevelsConfig(mainConfigDto.LevelsConfig);
 
         return new MainConfig(
-            mainConfigDto.GameplayAtlasVersion,
-            mainConfigDto.InterfaceAtlasVersion,
-            mainConfigDto.AudioBundleVersion,
-            mainConfigDto.AutoPlacePriceGold,
-            mainConfigDto.RemoveUnwashesRewardExp,
-            mainConfigDto.QuickDeliverPriceGoldPerMinute,
-            mainConfigDto.ActionDefaultAmount,
-            mainConfigDto.ActionDefaultCooldownMinutes,
+            mainConfigDto,
             productsConfig,
             shelfsConfig,
             shopObjectsConfig,

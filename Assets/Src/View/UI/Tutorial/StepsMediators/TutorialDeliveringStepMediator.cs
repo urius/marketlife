@@ -45,19 +45,19 @@ public class TutorialDeliveringStepMediator : TutorialStepMediatorBase
     {
         _updatesProvider.RealtimeUpdate += OnRealtimeUpdate;
         _updatesProvider.RealtimeSecondUpdate += OnRealtimeSecondUpdate;
-        _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
+        _gameStateModel.ActionStateChanged += OnActionStateChanged;
     }
 
     private void Deactivate()
     {
         _updatesProvider.RealtimeUpdate -= OnRealtimeUpdate;
         _updatesProvider.RealtimeSecondUpdate -= OnRealtimeSecondUpdate;
-        _gameStateModel.PlacingStateChanged -= OnPlacingStateChanged;
+        _gameStateModel.ActionStateChanged -= OnActionStateChanged;
     }
 
-    private void OnPlacingStateChanged(PlacingStateName prev, PlacingStateName current)
+    private void OnActionStateChanged(ActionStateName prev, ActionStateName current)
     {
-        if (current == PlacingStateName.PlacingProduct)
+        if (current == ActionStateName.PlacingProduct)
         {
             DispatchTutorialActionPerformed();
         }

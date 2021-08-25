@@ -35,7 +35,7 @@ public class PerimeterMediator : MonoBehaviour
     private void Activate()
     {
         _gameStateModel.ViewingUserModelChanged += OnViewingUserModelChanged;
-        _gameStateModel.PlacingStateChanged += OnPlacingStateChanged;
+        _gameStateModel.ActionStateChanged += OnActionStateChanged;
         _gameStateModel.HighlightStateChanged += OnHighlightStateChanged;
         _gameStateModel.GameStateChanged += OnGameStateChanged;
         _updatesProvider.GameplaySecondUpdate += OnGameplaySecondUpdate;
@@ -161,11 +161,11 @@ public class PerimeterMediator : MonoBehaviour
         }
     }
 
-    private void OnPlacingStateChanged(PlacingStateName previousState, PlacingStateName newState)
+    private void OnActionStateChanged(ActionStateName previousState, ActionStateName newState)
     {
         switch (newState)
         {
-            case PlacingStateName.None:
+            case ActionStateName.None:
                 if (_currentPlacingWallMediator != null)
                 {
                     _currentPlacingWallMediator.Unmediate();
@@ -173,17 +173,17 @@ public class PerimeterMediator : MonoBehaviour
                 }
                 UpdateHighlight();
                 break;
-            case PlacingStateName.PlacingNewWall:
+            case ActionStateName.PlacingNewWall:
                 _currentPlacingWallMediator = new PlacingWallMediator(transform);
                 _currentPlacingWallMediator.Mediate();
                 break;
-            case PlacingStateName.PlacingNewWindow:
-            case PlacingStateName.MovingWindow:
+            case ActionStateName.PlacingNewWindow:
+            case ActionStateName.MovingWindow:
                 _currentPlacingWallMediator = new PlacingWindowMediator(transform);
                 _currentPlacingWallMediator.Mediate();
                 break;
-            case PlacingStateName.PlacingNewDoor:
-            case PlacingStateName.MovingDoor:
+            case ActionStateName.PlacingNewDoor:
+            case ActionStateName.MovingDoor:
                 _currentPlacingWallMediator = new PlacingDoorMediator(transform);
                 _currentPlacingWallMediator.Mediate();
                 break;

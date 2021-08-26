@@ -86,6 +86,7 @@ public class LocalizationKeys
     public static string PopupWarehouseTitle = "popup_warehouse_title";
     public static string PopupWarehouseItemAmountFormat = "popup_warehouse_item_amount_format";
     public static string PopupWarehouseItemHintFormat = "popup_warehouse_item_hint_format";
+    public static string PopupUpgradesTitle = "popup_upgrades_title";
     public static string PopupUpgradesWarehouseTab = "popup_upgrades_warehouse_tab_name";
     public static string PopupUpgradesExpandTab = "popup_upgrades_expand_tab_name";
     public static string PopupUpgradesPersonalTab = "popup_upgrades_personal_tab_name";

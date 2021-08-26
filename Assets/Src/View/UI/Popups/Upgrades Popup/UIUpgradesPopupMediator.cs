@@ -45,7 +45,7 @@ public class UIUpgradesPopupMediator : IMediator
         var popupGo = GameObject.Instantiate(_prefabsHolder.UITabbedContentPopupPrefab, _parentTransform);
         _popupView = popupGo.GetComponent<UITabbedContentPopupView>();
         _popupView.SetSize(780, 737);
-
+        _popupView.SetTitleText(_loc.GetLocalization(LocalizationKeys.PopupUpgradesTitle));
         _popupView.SetupTabButtons(_model.TabKeys.Select(TabTypeToTabName).ToArray());
 
         ShowTab(Math.Max(0, _model.GetTabIndex(_model.ShowOnTab)));

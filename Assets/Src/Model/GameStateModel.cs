@@ -33,7 +33,7 @@ public class GameStateModel
     public Task GameDataLoadedTask => _dataLoadedTcs.Task;
     public bool IsGamePaused { get; private set; } = false;
     public GameStateName GameState { get; private set; } = GameStateName.Initializing;
-    public bool IsSimulationState => GameState == GameStateName.ShopSimulation;
+    public bool IsSimulationState => GameState == GameStateName.ShopSimulation || GameState == GameStateName.ShopFriend;
     public bool IsPlayingState => GameState == GameStateName.ShopSimulation || GameState == GameStateName.ShopInterior || GameState == GameStateName.ShopFriend;
     public ActionStateName ActionState { get; private set; } = ActionStateName.None;
     public int PlacingDecorationNumericId => _placingIntParameter;

@@ -11,6 +11,7 @@ public class SaveDataSystem
     private readonly UpdatesProvider _updatesProvider;
 
     private SaveField _saveFieldsData = SaveField.None;
+    private bool _isSaveRequestSending = false;
     private ShopModel _shopModel;
     private bool _saveInProgress = false;
     private UserModel _playerModel;
@@ -130,15 +131,22 @@ public class SaveDataSystem
                 _dispatcher.SaveStateChanged(_saveInProgress);
             }
 
-            if (_saveCooldownSeconds > 0)
+            if (_isSaveRequestSending == false)
             {
-                _saveCooldownSeconds--;
-            }
+                if (_saveCooldownSeconds > 0)
+                {
+                    _saveCooldownSeconds--;
+                }
 
-            if (_saveCooldownSeconds <= 0 && CheckSaveUserDataConditions())
-            {
-                _saveCooldownSeconds = 0;
-                await SaveAsync();
+                if (_saveCooldownSeconds <= 0 && CheckSaveUserDataConditions())
+                {
+                    _saveCooldownSeconds = 0;
+                    _isSaveRequestSending = true;
+                    await SaveAsync();
+                    _isSaveRequestSending = false;
+                    _saveInProgress = false;
+                    _dispatcher.SaveStateChanged(_saveInProgress);
+                }
             }
         }
     }
@@ -188,7 +196,7 @@ public class SaveDataSystem
     {
         return _gameStateModel.IsPlayingState
              && _gameStateModel.ActionState == ActionStateName.None;
-    }    
+    }
 
     private void UpdateSaveCooldownIfNeeded()
     {
@@ -203,9 +211,6 @@ public class SaveDataSystem
         var saveFieldsData = _saveFieldsData;
         _saveFieldsData = SaveField.None;
         await new SaveDataCommand().Execute(saveFieldsData);
-
-        _saveInProgress = false;
-        _dispatcher.SaveStateChanged(_saveInProgress);
     }
 
     private void OnSizeChanged(int previousValue, int currentValue)

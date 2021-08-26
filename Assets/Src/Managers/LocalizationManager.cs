@@ -61,7 +61,9 @@ public class LocalizationKeys
     public static string FlyingTextCantSellLastDoor = "flying_text_cant_sell_last_door";
     public static string FlyingTextShelfDoesntHaveFreeSpace = "flying_text_shelf_doesn_have_free_space";
     public static string FlyingTextWarehouseDoesntHaveFreeSpace = "flying_text_warehouse_doesn_have_free_space";
-    public static string FlyingTextNothingToTakeFromShelf = "flying_text_shelf_nothing_to_take";    
+    public static string FlyingTextNothingToTakeFromShelf = "flying_text_shelf_nothing_to_take";
+    public static string FlyingTextUnwashAlreadyAdded = "flying_text_unwash_already_added";
+    public static string FlyingTextUnwashCantBePlaced = "flying_text_unwash_cant_be_placed";
     public static string CommonYes = "common_yes";
     public static string CommonNo = "common_no";
     public static string CommonSaving = "common_saving";

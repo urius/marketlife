@@ -33,19 +33,24 @@ public class ProductSlotModel
         ProductIsSet(Index);
     }
 
-    public void ChangeProductAmount(int deltaAmount)
+    public int ChangeProductAmount(int deltaAmount)
     {
+        var result = 0;
         if (HasProduct && deltaAmount != 0)
         {
             if (Product.Amount + deltaAmount <= 0)
             {
+                result = -Product.Amount;
                 RemoveProduct();
             }
             else
             {
+                result = deltaAmount;
                 Product.Amount += deltaAmount;
             }
         }
+
+        return result;
     }
 
     public bool RemoveProduct()

@@ -13,6 +13,10 @@ public struct SwitchToFriendShopCommand
         if (friendData.IsUserModelLoaded == false)
         {
             await new LoadFriendShopCommand().ExecuteAsync(friendData);
+            if (friendData.IsUserModelLoaded)
+            {
+                friendData.UserModel.ApplyExternalActions();
+            }
         }
 
         if (friendData.IsUserModelLoaded)

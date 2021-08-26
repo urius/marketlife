@@ -35,6 +35,44 @@ public class UserModel
         ExternalActionsModel = externalActionsModel;
     }
 
+    public void ApplyExternalActions()
+    {
+        foreach (var action in ExternalActionsModel.Actions)
+        {
+            switch (action.ActionId)
+            {
+                case FriendShopActionId.Take:
+                    ApplyTakeAction(action as ExternalActionTake);
+                    break;
+                case FriendShopActionId.AddUnwash:
+                    ApplyAddUnwashAction(action as ExternalActionAddUnwash);
+                    break;
+            }
+        }
+    }
+
+    private void ApplyTakeAction(ExternalActionTake takeAction)
+    {
+        var takeAmountRest = takeAction.Amount;
+        if (ShopModel.ShopObjects.TryGetValue(takeAction.Coords, out var shopObjectModel) && shopObjectModel.Type == ShopObjectType.Shelf)
+        {
+            var shelfModel = shopObjectModel as ShelfModel;
+            foreach (var slot in shelfModel.Slots)
+            {
+                if (slot.HasProduct && slot.Product.Config.Key == takeAction.ProductConfig.Key)
+                {
+                    takeAmountRest += slot.ChangeProductAmount(-takeAmountRest);
+                }
+                if (takeAmountRest <= 0) break;
+            }
+        }
+    }
+
+    private void ApplyAddUnwashAction(ExternalActionAddUnwash addUnwashAction)
+    {
+        ShopModel.AddUnwash(addUnwashAction.Coords, 1);
+    }
+
     public void AddPassedTutorialStep(int stepIndex)
     {
         if (TutorialSteps.Contains(stepIndex) == false)

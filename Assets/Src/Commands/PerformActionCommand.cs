@@ -42,6 +42,9 @@ public struct PerformActionCommand
             case ActionStateName.FriendShopTakeProduct:
                 actionResult = TakeProductOnFriendHighlightedShelf();
                 break;
+            case ActionStateName.FriendShopAddUnwash:
+                actionResult = AddUnwashOnFriendsShop();
+                break;
         }
 
         if (actionResult)
@@ -57,12 +60,55 @@ public struct PerformActionCommand
         }
     }
 
+    private bool AddUnwashOnFriendsShop()
+    {
+        var result = false;
+
+        var playerModel = PlayerModelHolder.Instance.UserModel;
+        var playerActionsDataModel = playerModel.ActionsDataModel;
+        var gameStateModel = GameStateModel.Instance;
+        var viewingShopModel = GameStateModel.Instance.ViewingShopModel;
+        var mouseCellCoordsProvider = MouseCellCoordsProvider.Instance;
+        var actionId = FriendShopActionId.AddUnwash;
+        var actionData = playerActionsDataModel.ActionsById[actionId];
+        var screenCalculator = ScreenCalculator.Instance;
+        var dispatcher = Dispatcher.Instance;
+        var coords = mouseCellCoordsProvider.MouseCellCoords;
+        var loc = LocalizationManager.Instance;
+
+        if (viewingShopModel.Unwashes.ContainsKey(coords))
+        {
+            var screenCoords = screenCalculator.CellToScreenPoint(coords);
+            dispatcher.UIRequestFlyingText(screenCoords, loc.GetLocalization(LocalizationKeys.FlyingTextUnwashAlreadyAdded));
+        }
+        else if (viewingShopModel.Grid.TryGetValue(coords, out var gridItem)
+            && gridItem.buildState > 0)
+        {
+            var screenCoords = screenCalculator.CellToScreenPoint(coords);
+            dispatcher.UIRequestFlyingText(screenCoords, loc.GetLocalization(LocalizationKeys.FlyingTextUnwashCantBePlaced));
+        }
+        else if (viewingShopModel.AddUnwash(coords, 1))
+        {
+            actionData.SetAmount(actionData.RestAmount - 1);
+            result = true;
+        }
+
+        if (actionData.RestAmount <= 0)
+        {
+            ResetActionData(actionId);
+            gameStateModel.ResetActionState();
+        }
+
+        return result;
+    }
+
     private bool TakeProductOnFriendHighlightedShelf()
     {
         var result = false;
 
         var dispatcher = Dispatcher.Instance;
         var playerModel = PlayerModelHolder.Instance.UserModel;
+        var playerWarehouseModel = playerModel.ShopModel.WarehouseModel;
         var playerActionsDataModel = playerModel.ActionsDataModel;
         var gameStateModel = GameStateModel.Instance;
         var highlightState = gameStateModel.HighlightState;
@@ -87,7 +133,7 @@ public struct PerformActionCommand
                     hasProduct = true;
                     var productConfig = slot.Product.Config;
                     var amountToTake = 1;
-                    var takenAmount = playerModel.ShopModel.WarehouseModel.AddProduct(productConfig, amountToTake);
+                    var takenAmount = playerWarehouseModel.AddProduct(productConfig, amountToTake);
                     if (takenAmount > 0)
                     {
                         slot.ChangeProductAmount(-amountToTake);
@@ -114,7 +160,7 @@ public struct PerformActionCommand
 
         if (actionData.RestAmount <= 0)
         {
-            ResetActionData(FriendShopActionId.Take);
+            ResetActionData(actionId);
             gameStateModel.ResetActionState();
         }
 

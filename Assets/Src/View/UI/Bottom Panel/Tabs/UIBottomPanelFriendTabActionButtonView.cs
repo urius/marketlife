@@ -13,6 +13,7 @@ public class UIBottomPanelFriendTabActionButtonView : MonoBehaviour
     [SerializeField] private Button _mainButton;
     [SerializeField] private Button _buyButton;
     [SerializeField] private TMP_Text _buyPriceText;
+    [SerializeField] private UIHintableView _hintableView;
 
     public void Awake()
     {
@@ -37,6 +38,7 @@ public class UIBottomPanelFriendTabActionButtonView : MonoBehaviour
 
     public void SetChargingState(bool isChargingEnabled)
     {
+        _hintableView.SetEnabled(!isChargingEnabled);
         _amountText.gameObject.SetActive(!isChargingEnabled);
         _timeText.gameObject.SetActive(isChargingEnabled);
         _mainButton.interactable = !isChargingEnabled;

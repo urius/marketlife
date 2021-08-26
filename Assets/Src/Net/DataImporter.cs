@@ -89,14 +89,8 @@ public class DataImporter
                 var splitted = actionDataStr.Split('|');
                 var id = (FriendShopActionId)int.Parse(splitted[0]);
                 var amountRest = int.Parse(splitted[1]);
-                var endCooldownTimestamp = int.Parse(splitted[3]);
-
-                actionsDataConverted[i] = new AvailableFriendShopActionData
-                {
-                    ActionId = id,
-                    RestAmount = amountRest,
-                    EndCooldownTimestamp = endCooldownTimestamp,
-                };
+                var endCooldownTimestamp = int.Parse(splitted[2]);
+                actionsDataConverted[i] = new AvailableFriendShopActionData(id, amountRest, endCooldownTimestamp);
             }
         }
 
@@ -108,11 +102,7 @@ public class DataImporter
             var haveAction = actionsDataConverted.Any(a => (int)a.ActionId == actionId);
             var actionData = haveAction ?
                 actionsDataConverted.First(a => (int)a.ActionId == actionId) :
-                new AvailableFriendShopActionData
-                {
-                    ActionId = (FriendShopActionId)actionId,
-                    RestAmount = mainConfig.ActionDefaultAmount,
-                };
+                new AvailableFriendShopActionData((FriendShopActionId)actionId, mainConfig.ActionDefaultAmount);
             actionsDataResult[i] = actionData;
         }
 

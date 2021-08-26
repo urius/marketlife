@@ -121,7 +121,7 @@ public class GameStateModel
         }
     }
 
-    public void ResetPlacingState()
+    public void ResetActionState()
     {
         PlacingShopObjectModel = null;
         _placingIntParameter = -1;

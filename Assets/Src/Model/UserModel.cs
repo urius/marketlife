@@ -339,7 +339,8 @@ public class AvailableFriendShopActionsDataModel
 {
     public const int SupportedActionsCount = 2;
 
-    public event Action<FriendShopActionId> ActionDataUpdated = delegate { };
+    public event Action<AvailableFriendShopActionData> ActionDataAmountChanged = delegate { };
+    public event Action<AvailableFriendShopActionData> ActionDataCooldownTimestampChanged = delegate { };
 
     private readonly Dictionary<FriendShopActionId, AvailableFriendShopActionData> _actionsById = new Dictionary<FriendShopActionId, AvailableFriendShopActionData>();
 
@@ -348,33 +349,54 @@ public class AvailableFriendShopActionsDataModel
         foreach (var actionData in actionsData)
         {
             _actionsById[actionData.ActionId] = actionData;
+            actionData.AmountChanged += OnActionDataAmountChanged;
+            actionData.EndCooldownTimestampChanged += OnActionDataCooldownTimestampChanged;
         }
+    }
+
+    private void OnActionDataCooldownTimestampChanged(AvailableFriendShopActionData actionData)
+    {
+        ActionDataCooldownTimestampChanged(actionData);
+    }
+
+    private void OnActionDataAmountChanged(AvailableFriendShopActionData actionData)
+    {
+        ActionDataAmountChanged(actionData);
     }
 
     public IEnumerable<AvailableFriendShopActionData> ActionsData => _actionsById.Values;
     public IReadOnlyDictionary<FriendShopActionId, AvailableFriendShopActionData> ActionsById => _actionsById;
-
-    public void UpdateActionRestAmount(FriendShopActionId actionId, int amount)
-    {
-        var actionData = _actionsById[actionId];
-        actionData.RestAmount = amount;
-        UpdateActionData(actionId, actionData);
-    }
-
-    public void UpdateActionData(FriendShopActionId actionId, AvailableFriendShopActionData newActionData)
-    {
-        _actionsById[actionId] = newActionData;
-        ActionDataUpdated(actionId);
-    }
 }
 
-public struct AvailableFriendShopActionData
+public class AvailableFriendShopActionData
 {
-    public FriendShopActionId ActionId;
-    public int RestAmount;
-    public int EndCooldownTimestamp;
+    public event Action<AvailableFriendShopActionData> AmountChanged = delegate { };
+    public event Action<AvailableFriendShopActionData> EndCooldownTimestampChanged = delegate { };
 
+    public readonly FriendShopActionId ActionId;
+
+    public AvailableFriendShopActionData(FriendShopActionId actionId, int restAmount, int endCooldownTimestamp = 0)
+    {
+        ActionId = actionId;
+        RestAmount = restAmount;
+        EndCooldownTimestamp = endCooldownTimestamp;
+    }
+
+    public int RestAmount { get; private set; }
+    public int EndCooldownTimestamp { get; private set; }
     public int ActionIdInt => (int)ActionId;
+
+    public void SetAmount(int amount)
+    {
+        RestAmount = amount;
+        AmountChanged(this);
+    }
+
+    public void SetEndCooldownTime(int endCooldownTimestamp)
+    {
+        EndCooldownTimestamp = endCooldownTimestamp;
+        EndCooldownTimestampChanged(this);
+    }
 }
 
 public enum FriendShopActionId

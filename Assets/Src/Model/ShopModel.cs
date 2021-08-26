@@ -822,6 +822,46 @@ public class ShopWarehouseModel
         return result;
     }
 
+    public int AddProduct(ProductConfig productConfig, int amountToAdd)
+    {
+        var addedProductAmount = 0;
+        if (amountToAdd > 0)
+        {
+            foreach (var slot in Slots)
+            {
+                if (slot.HasProduct
+                    && slot.Product.NumericId == productConfig.NumericId)
+                {
+                    var restAmount = slot.GetRestAmount();
+                    if (restAmount > 0)
+                    {
+                        var addedAmountTemp = Math.Min(amountToAdd - addedProductAmount, restAmount);
+                        slot.ChangeProductAmount(addedAmountTemp);
+                        addedProductAmount += addedAmountTemp;
+                    }
+                }
+                if (addedProductAmount >= amountToAdd) break;
+            }
+
+            foreach (var slot in Slots)
+            {
+                if (!slot.HasProduct)
+                {
+                    var maxAmount = CalculationHelper.GetAmountForProductInVolume(productConfig, slot.Volume);
+                    if (maxAmount > 0)
+                    {
+                        var addedAmountTemp = Math.Min(amountToAdd - addedProductAmount, maxAmount);
+                        slot.SetProduct(new ProductModel(productConfig, addedAmountTemp));
+                        addedProductAmount += addedAmountTemp;
+                    }
+                }
+                if (addedProductAmount >= amountToAdd) break;
+            }
+        }
+
+        return addedProductAmount;
+    }
+
     private void SubscribeOnSlot(ProductSlotModel slot)
     {
         slot.ProductIsSet += OnSlotProductSet;

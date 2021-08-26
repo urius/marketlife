@@ -60,6 +60,8 @@ public class LocalizationKeys
     public static string FlyingTextWrongPlace = "flying_text_wrong_place";
     public static string FlyingTextCantSellLastDoor = "flying_text_cant_sell_last_door";
     public static string FlyingTextShelfDoesntHaveFreeSpace = "flying_text_shelf_doesn_have_free_space";
+    public static string FlyingTextWarehouseDoesntHaveFreeSpace = "flying_text_warehouse_doesn_have_free_space";
+    public static string FlyingTextNothingToTakeFromShelf = "flying_text_shelf_nothing_to_take";    
     public static string CommonYes = "common_yes";
     public static string CommonNo = "common_no";
     public static string CommonSaving = "common_saving";

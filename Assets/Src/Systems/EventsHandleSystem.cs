@@ -61,6 +61,7 @@ public class EventsHandleSystem
         _dispatcher.BottomPanelRotateLeftClicked += BottomPanelRotateLeftClicked;
         _dispatcher.UIBottomPanelFriendClicked += OnUIBottomPanelFriendClicked;
         _dispatcher.UIBottomPanelFriendShopActionClicked += OnUIBottomPanelFriendShopActionClicked;
+        _dispatcher.UIBottomPanelBuyFriendShopActionClicked += OnUIBottomPanelBuyFriendShopActionClicked;
 
         _gameStateModel.ActionStateChanged += OnActionStateChanged;
         _gameStateModel.GameStateChanged += OnGameStateChanged;
@@ -69,6 +70,11 @@ public class EventsHandleSystem
     private void OnUIBottomPanelFriendShopActionClicked(FriendShopActionId actionId)
     {
         new HandleFriendShopActionClickCommand().Execute(actionId, isBuyClicked: false);
+    }
+
+    private void OnUIBottomPanelBuyFriendShopActionClicked(FriendShopActionId actionId)
+    {
+        new HandleFriendShopActionClickCommand().Execute(actionId, isBuyClicked: true);
     }
 
     private void OnUIBottomPanelFriendClicked(FriendData friendData)
@@ -206,7 +212,7 @@ public class EventsHandleSystem
 
     private void BottomPanelFinishPlacingClicked()
     {
-        _gameStateModel.ResetPlacingState();
+        _gameStateModel.ResetActionState();
     }
 
     private void OnBottomPanelFriendsClicked()

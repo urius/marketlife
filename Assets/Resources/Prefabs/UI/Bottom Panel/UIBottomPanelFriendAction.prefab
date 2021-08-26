@@ -227,7 +227,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisplayText: 
   _hintPositionType: 0
-  _localizationKey: unblock_friend_action
+  _localizationKey: hint_bottom_panel_unblock_friend_action
   _hintContainer: {fileID: 1029715865}
   _positionOffset: {x: 0, y: 25}
 --- !u!1 &1094675428
@@ -569,6 +569,7 @@ MonoBehaviour:
   _mainButton: {fileID: 6847278559916841167}
   _buyButton: {fileID: 1029715868}
   _buyPriceText: {fileID: 1659698111}
+  _hintableView: {fileID: 4843126415354831689}
 --- !u!114 &1126778185118216591
 MonoBehaviour:
   m_ObjectHideFlags: 0

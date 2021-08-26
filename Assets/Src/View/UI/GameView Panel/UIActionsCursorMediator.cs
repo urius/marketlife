@@ -47,15 +47,15 @@ public class UIActionsCursorMediator : IMediator
                 case ActionStateName.PlacingProduct:
                     _placingProductModel = _playerModelHolder.ShopModel.WarehouseModel.Slots[_gameStateModel.PlacingProductWarehouseSlotIndex].Product;
                     CreateCursorWithIcon(_spritesProvider.GetProductIcon(_placingProductModel.Config.Key));
-                    SubscribeForPlacingProduct();
+                    SubscribeOnPlacingProduct();
                     break;
                 case ActionStateName.FriendShopTakeProduct:
-                    SubscribeForActionsUpdate();
                     CreateCursorWithIcon(_spritesProvider.GetTakeActionIcon());
+                    SubscribeOnActionAmountChanged();
                     break;
                 case ActionStateName.FriendShopAddUnwash:
-                    SubscribeForActionsUpdate();
                     CreateCursorWithIcon(_spritesProvider.GetAddUnwashActionIcon());
+                    SubscribeOnActionAmountChanged();
                     break;
             }
 
@@ -74,8 +74,10 @@ public class UIActionsCursorMediator : IMediator
                     _placingProductModel = null;
                     break;
                 case ActionStateName.FriendShopTakeProduct:
+                    UnsubscribeFromActionAmountChanged();
+                    break;
                 case ActionStateName.FriendShopAddUnwash:
-                    UnsubscribeFromActionsUpdate();
+                    UnsubscribeFromActionAmountChanged();
                     break;
             }
 
@@ -87,17 +89,17 @@ public class UIActionsCursorMediator : IMediator
         }
     }
 
-    private void SubscribeForActionsUpdate()
+    private void SubscribeOnActionAmountChanged()
     {
-        _playerActionsDataModel.ActionDataUpdated += OnActionDataUpdated;
+        _playerActionsDataModel.ActionDataAmountChanged += OnActionAmountChanged;
     }
 
-    private void UnsubscribeFromActionsUpdate()
+    private void UnsubscribeFromActionAmountChanged()
     {
-        _playerActionsDataModel.ActionDataUpdated -= OnActionDataUpdated;
+        _playerActionsDataModel.ActionDataAmountChanged -= OnActionAmountChanged;
     }
 
-    private void OnActionDataUpdated(FriendShopActionId actionId)
+    private void OnActionAmountChanged(AvailableFriendShopActionData friendShopActionData)
     {
         UpdateAmount();
     }
@@ -109,7 +111,7 @@ public class UIActionsCursorMediator : IMediator
         _actionCursorView.SetImageSprite(iconSprite);
     }
 
-    private void SubscribeForPlacingProduct()
+    private void SubscribeOnPlacingProduct()
     {
         _placingProductModel.AmountChanged += OnProductAmountChanged;
     }

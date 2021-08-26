@@ -61,18 +61,74 @@ public struct PerformActionCommand
     {
         var result = false;
 
+        var dispatcher = Dispatcher.Instance;
+        var playerModel = PlayerModelHolder.Instance.UserModel;
+        var playerActionsDataModel = playerModel.ActionsDataModel;
         var gameStateModel = GameStateModel.Instance;
         var highlightState = gameStateModel.HighlightState;
         var highlightedShopObject = highlightState.HighlightedShopObject;
         var viewingUserModel = gameStateModel.ViewingUserModel;
+        var actionId = FriendShopActionId.Take;
+        var actionData = playerActionsDataModel.ActionsById[actionId];
+        var screenCalculator = ScreenCalculator.Instance;
+        var loc = LocalizationManager.Instance;
 
         if (highlightState.IsHighlighted
             && highlightedShopObject != null
-            && highlightedShopObject.Type == ShopObjectType.Shelf)
+            && highlightedShopObject.Type == ShopObjectType.Shelf
+            && actionData.RestAmount > 0)
         {
             var shelf = highlightedShopObject as ShelfModel;
+            var hasProduct = false;
+            foreach (var slot in shelf.Slots)
+            {
+                if (slot.HasProduct)
+                {
+                    hasProduct = true;
+                    var productConfig = slot.Product.Config;
+                    var amountToTake = 1;
+                    var takenAmount = playerModel.ShopModel.WarehouseModel.AddProduct(productConfig, amountToTake);
+                    if (takenAmount > 0)
+                    {
+                        slot.ChangeProductAmount(-amountToTake);
+                        actionData.SetAmount(actionData.RestAmount - 1);
+                        viewingUserModel.ExternalActionsModel.AddAction(new ExternalActionTake(playerModel.Uid, shelf.Coords, productConfig, amountToTake));
+                        break;
+                    }
+                    else
+                    {
+                        gameStateModel.ResetActionState();
+                        var screenCoords = screenCalculator.CellToScreenPoint(shelf.Coords);
+                        dispatcher.UIRequestFlyingText(screenCoords, loc.GetLocalization(LocalizationKeys.FlyingTextWarehouseDoesntHaveFreeSpace));
+                        break;
+                    }
+                }
+            }
+
+            if (hasProduct == false)
+            {
+                var screenCoords = screenCalculator.CellToScreenPoint(shelf.Coords);
+                dispatcher.UIRequestFlyingText(screenCoords, loc.GetLocalization(LocalizationKeys.FlyingTextNothingToTakeFromShelf));
+            }
         }
+
+        if (actionData.RestAmount <= 0)
+        {
+            ResetActionData(FriendShopActionId.Take);
+            gameStateModel.ResetActionState();
+        }
+
         return result;
+    }
+
+    private void ResetActionData(FriendShopActionId actionId)
+    {
+        var gameStateModel = GameStateModel.Instance;
+        var actionsDataModel = PlayerModelHolder.Instance.UserModel.ActionsDataModel;
+        var mainConfig = GameConfigManager.Instance.MainConfig;
+
+        actionsDataModel.ActionsById[actionId].SetEndCooldownTime(mainConfig.ActionDefaultCooldownMinutes * 60 + gameStateModel.ServerTime);
+        actionsDataModel.ActionsById[actionId].SetAmount(mainConfig.ActionDefaultAmount);
     }
 
     private bool PlaceProductOnHighlightedShelf()
@@ -134,7 +190,7 @@ public struct PerformActionCommand
 
             if (placingProduct.Amount <= 0)
             {
-                gameStateModel.ResetPlacingState();
+                gameStateModel.ResetActionState();
             }
 
             if (flyingTextToShow != null)
@@ -171,7 +227,7 @@ public struct PerformActionCommand
             }
             else
             {
-                gameStateModel.ResetPlacingState();
+                gameStateModel.ResetActionState();
                 dispatcher.UIRequestFlyingText(screenCoords, localiationManager.GetLocalization(LocalizationKeys.FlyingTextInsufficientFunds));
             }
         }
@@ -197,7 +253,7 @@ public struct PerformActionCommand
         if (shopModel.CanPlaceShopObject(shopObject))
         {
             shopModel.PlaceShopObject(shopObject);
-            gameStateModel.ResetPlacingState();
+            gameStateModel.ResetActionState();
             return true;
         }
         else
@@ -230,7 +286,7 @@ public struct PerformActionCommand
             }
             else
             {
-                gameStateModel.ResetPlacingState();
+                gameStateModel.ResetActionState();
                 dispatcher.UIRequestFlyingText(screenCoords, localiationManager.GetLocalization(LocalizationKeys.FlyingTextInsufficientFunds));
             }
         }
@@ -256,7 +312,7 @@ public struct PerformActionCommand
 
         if (shopModel.TryPlaceDecoration(decorationType, coords, numericId))
         {
-            gameStateModel.ResetPlacingState();
+            gameStateModel.ResetActionState();
             return true;
         }
         else

@@ -21,7 +21,7 @@ public struct AutoPlaceCommand
                 playerModel.ProgressModel.TrySpendGold(mainConfig.AutoPlacePriceGold);
                 audioManager.PlaySound(SoundNames.ProductPut);
             }
-            gameStateModel.ResetPlacingState();
+            gameStateModel.ResetActionState();
         }
         else
         {

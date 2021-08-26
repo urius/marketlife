@@ -47,6 +47,7 @@ public class SaveDataSystem
     private void Activate()
     {
         var progressModel = _playerModel.ProgressModel;
+        var actionsDataModel = _playerModel.ActionsDataModel;
         var designModel = _shopModel.ShopDesign;
         var warehouseModel = _shopModel.WarehouseModel;
         var personalModel = _shopModel.PersonalModel;
@@ -70,6 +71,8 @@ public class SaveDataSystem
         progressModel.GoldChanged += OnGoldChanged;
         progressModel.ExpChanged += OnExpChanged;
         progressModel.LevelChanged += OnLevelChanged;
+        actionsDataModel.ActionDataAmountChanged += OnActionDataAmountChanged;
+        actionsDataModel.ActionDataCooldownTimestampChanged += OnActionDataCooldownTimestampChanged;
         designModel.FloorChanged += OnFloorChanged;
         designModel.WallChanged += OnWallChanged;
         designModel.WindowChanged += OnWindowChanged;
@@ -90,10 +93,28 @@ public class SaveDataSystem
         _updatesProvider.RealtimeSecondUpdate += OnRealtimeSecondUpdate;
     }
 
+    private void OnActionDataAmountChanged(AvailableFriendShopActionData actionData)
+    {
+        MarkToSaveField(SaveField.AvailableActionsData);
+        if (CheckStartSaveUserDataConditions())
+        {
+            UpdateSaveCooldownIfNeeded();
+        }
+    }
+
+    private void OnActionDataCooldownTimestampChanged(AvailableFriendShopActionData actionData)
+    {
+        MarkToSaveField(SaveField.AvailableActionsData);
+        if (CheckStartSaveUserDataConditions())
+        {
+            UpdateSaveCooldownIfNeeded();
+        }
+    }
+
     private void OnTutorialStepPassed(int stepIndex)
     {
         MarkToSaveField(SaveField.TutorialSteps);
-        if (CheckSaveUserDataConditions())
+        if (CheckStartSaveUserDataConditions())
         {
             UpdateSaveCooldownIfNeeded();
         }
@@ -109,8 +130,12 @@ public class SaveDataSystem
                 _dispatcher.SaveStateChanged(_saveInProgress);
             }
 
-            _saveCooldownSeconds--;
-            if (_saveCooldownSeconds <= 0)
+            if (_saveCooldownSeconds > 0)
+            {
+                _saveCooldownSeconds--;
+            }
+
+            if (_saveCooldownSeconds <= 0 && CheckSaveUserDataConditions())
             {
                 _saveCooldownSeconds = 0;
                 await SaveAsync();
@@ -130,7 +155,7 @@ public class SaveDataSystem
 
     private void OnPopupRemoved()
     {
-        if (CheckSaveUserDataConditions())
+        if (CheckStartSaveUserDataConditions())
         {
             UpdateSaveCooldownIfNeeded();
         }
@@ -138,7 +163,7 @@ public class SaveDataSystem
 
     private void OnActionStateChanged(ActionStateName previousState, ActionStateName currentState)
     {
-        if (CheckSaveUserDataConditions())
+        if (CheckStartSaveUserDataConditions())
         {
             UpdateSaveCooldownIfNeeded();
         }
@@ -146,18 +171,24 @@ public class SaveDataSystem
 
     private void OnGameStateChanged(GameStateName previousState, GameStateName currentState)
     {
-        if (CheckSaveUserDataConditions())
+        if (CheckStartSaveUserDataConditions())
         {
             UpdateSaveCooldownIfNeeded();
         }
     }
 
-    private bool CheckSaveUserDataConditions()
+    private bool CheckStartSaveUserDataConditions()
     {
-        return (_gameStateModel.GameState == GameStateName.ShopInterior || _gameStateModel.GameState == GameStateName.ShopSimulation)
+        return _gameStateModel.IsPlayingState
              && _gameStateModel.ShowingPopupModel == null
              && _gameStateModel.ActionState == ActionStateName.None;
     }
+
+    private bool CheckSaveUserDataConditions()
+    {
+        return _gameStateModel.IsPlayingState
+             && _gameStateModel.ActionState == ActionStateName.None;
+    }    
 
     private void UpdateSaveCooldownIfNeeded()
     {
@@ -290,6 +321,10 @@ public class SaveDataSystem
     private void OnGoldChanged(int previousValue, int currentValue)
     {
         MarkToSaveField(SaveField.Progress);
+        if (CheckStartSaveUserDataConditions())
+        {
+            UpdateSaveCooldownIfNeeded();
+        }
     }
 
     private void OnCashChanged(int previousValue, int currentValue)

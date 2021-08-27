@@ -13,6 +13,8 @@ public class URLsHolder : ScriptableObject
     public string GetDataURL => _getDataURL;
     [SerializeField] private string _saveDataURL = "https://devman.ru/marketVK/unity/DataProvider.php?command=save_data&id={0}";
     public string SaveDataURL => _saveDataURL;
+    [SerializeField] private string _saveExternalDataURL = "https://devman.ru/marketVK/unity/DataProvider.php?command=save_external_data&id={0}";
+    public string SaveExternalDataURL => _saveExternalDataURL;
 
     private void OnEnable()
     {

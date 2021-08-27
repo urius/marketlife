@@ -1,21 +1,27 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
 public class SaveDataSystem
 {
-    private const int DefaultSaveCooldownSeconds = 5;
+    private const int DefaultSavePrewarmSeconds = 2;
+    private const int DefaultSaveCooldownSeconds = 6;
 
     private readonly GameStateModel _gameStateModel;
     private readonly Dispatcher _dispatcher;
     private readonly UpdatesProvider _updatesProvider;
 
+    private bool _saveProcessIsTriggered = false;
     private SaveField _saveFieldsData = SaveField.None;
     private bool _isSaveRequestSending = false;
     private ShopModel _shopModel;
     private bool _saveInProgress = false;
     private UserModel _playerModel;
-    private int _saveCooldownSeconds = 0;
+    private int _savePlayerDataPrewarmSeconds = DefaultSavePrewarmSeconds;
+    private int _saveExternalDataCooldownSeconds = 0;
+    private Action _unsubscribeFromFriendActionsDelegate;
+    private Queue<UserModel> _saveExternalDataQueue = new Queue<UserModel>();
 
     public SaveDataSystem()
     {
@@ -24,7 +30,9 @@ public class SaveDataSystem
         _updatesProvider = UpdatesProvider.Instance;
     }
 
-    public bool NeedToSave => _saveFieldsData != SaveField.None;
+    public bool NeedToSavePlayerData => _saveFieldsData != SaveField.None;
+    public bool NeedToSaveExternalData => _saveExternalDataQueue.Count > 0;
+    public bool NeedToSave => NeedToSavePlayerData || NeedToSaveExternalData;
 
     public async void Start()
     {
@@ -39,7 +47,7 @@ public class SaveDataSystem
     public void MarkToSaveField(SaveField field)
     {
         _saveFieldsData |= field;
-        if (_saveCooldownSeconds > 0)
+        if (_savePlayerDataPrewarmSeconds > 0)
         {
             UpdateSaveCooldownIfNeeded();
         }
@@ -90,70 +98,107 @@ public class SaveDataSystem
         _gameStateModel.GameStateChanged += OnGameStateChanged;
         _gameStateModel.ActionStateChanged += OnActionStateChanged;
         _gameStateModel.PopupRemoved += OnPopupRemoved;
+        _gameStateModel.ViewingUserModelChanged += OnViewingUserModelChanged;
 
         _updatesProvider.RealtimeSecondUpdate += OnRealtimeSecondUpdate;
+    }
+
+    private void OnViewingUserModelChanged(UserModel userModel)
+    {
+        _unsubscribeFromFriendActionsDelegate?.Invoke();
+        _unsubscribeFromFriendActionsDelegate = null;
+
+        if (userModel.Uid != _playerModel.Uid)
+        {
+            userModel.ExternalActionsModel.ActionAdded += OnFriendExternalActionAdded;
+            _unsubscribeFromFriendActionsDelegate = () => userModel.ExternalActionsModel.ActionAdded -= OnFriendExternalActionAdded;
+        }
+    }
+
+    private void OnFriendExternalActionAdded(ExternalActionModelBase actionModel)
+    {
+        if (_saveExternalDataQueue.Count <= 0
+            || _saveExternalDataQueue.Peek().Uid != _gameStateModel.ViewingUserModel.Uid)
+        {
+            _saveExternalDataQueue.Enqueue(_gameStateModel.ViewingUserModel);
+        }
     }
 
     private void OnActionDataAmountChanged(AvailableFriendShopActionData actionData)
     {
         MarkToSaveField(SaveField.AvailableActionsData);
-        if (CheckStartSaveUserDataConditions())
-        {
-            UpdateSaveCooldownIfNeeded();
-        }
     }
 
     private void OnActionDataCooldownTimestampChanged(AvailableFriendShopActionData actionData)
     {
         MarkToSaveField(SaveField.AvailableActionsData);
-        if (CheckStartSaveUserDataConditions())
-        {
-            UpdateSaveCooldownIfNeeded();
-        }
+        TriggerSave();
     }
 
     private void OnTutorialStepPassed(int stepIndex)
     {
         MarkToSaveField(SaveField.TutorialSteps);
-        if (CheckStartSaveUserDataConditions())
-        {
-            UpdateSaveCooldownIfNeeded();
-        }
+        TriggerSave();
+    }
+
+    private void TriggerSave()
+    {
+        _saveProcessIsTriggered = NeedToSave;
+        _savePlayerDataPrewarmSeconds = DefaultSavePrewarmSeconds;
     }
 
     private async void OnRealtimeSecondUpdate()
     {
-        if (NeedToSave && _saveCooldownSeconds > 0)
+        SetSaveInProgress(_saveProcessIsTriggered);
+        if (_saveExternalDataCooldownSeconds > 0)
         {
-            if (_saveInProgress == false)
+            _saveExternalDataCooldownSeconds--;
+            return;
+        }
+
+        if (_isSaveRequestSending == false && _saveProcessIsTriggered == true)
+        {
+            if (_savePlayerDataPrewarmSeconds > 0)
             {
-                _saveInProgress = true;
-                _dispatcher.SaveStateChanged(_saveInProgress);
+                _savePlayerDataPrewarmSeconds--;
             }
 
-            if (_isSaveRequestSending == false)
+            if (_savePlayerDataPrewarmSeconds <= 0 && CheckSaveConditions())
             {
-                if (_saveCooldownSeconds > 0)
+                if (NeedToSavePlayerData)
                 {
-                    _saveCooldownSeconds--;
-                }
-
-                if (_saveCooldownSeconds <= 0 && CheckSaveUserDataConditions())
-                {
-                    _saveCooldownSeconds = 0;
+                    _saveExternalDataCooldownSeconds = DefaultSaveCooldownSeconds;
                     _isSaveRequestSending = true;
                     await SaveAsync();
                     _isSaveRequestSending = false;
-                    _saveInProgress = false;
-                    _dispatcher.SaveStateChanged(_saveInProgress);
                 }
+
+                if (NeedToSaveExternalData)
+                {
+                    _saveExternalDataCooldownSeconds = DefaultSaveCooldownSeconds;
+                    _isSaveRequestSending = true;
+                    await SaveExternalDataAsync();
+                    _isSaveRequestSending = false;
+                }
+
+                _saveProcessIsTriggered = false;
             }
+        }
+    }
+
+    private void SetSaveInProgress(bool isSaveInProgress)
+    {
+        if (_saveInProgress != isSaveInProgress)
+        {
+            _saveInProgress = isSaveInProgress;
+            _dispatcher.SaveStateChanged(_saveInProgress);
         }
     }
 
     private void OnUnwashRemoved(Vector2Int coords)
     {
         MarkToSaveField(SaveField.Unwashes);
+        TriggerSave();
     }
 
     private void OnUnwashAdded(Vector2Int coords)
@@ -163,36 +208,36 @@ public class SaveDataSystem
 
     private void OnPopupRemoved()
     {
-        if (CheckStartSaveUserDataConditions())
+        if (CheckStartSaveConditions())
         {
-            UpdateSaveCooldownIfNeeded();
+            TriggerSave();
         }
     }
 
     private void OnActionStateChanged(ActionStateName previousState, ActionStateName currentState)
     {
-        if (CheckStartSaveUserDataConditions())
+        if (CheckStartSaveConditions())
         {
-            UpdateSaveCooldownIfNeeded();
+            TriggerSave();
         }
     }
 
     private void OnGameStateChanged(GameStateName previousState, GameStateName currentState)
     {
-        if (CheckStartSaveUserDataConditions())
+        if (CheckStartSaveConditions())
         {
-            UpdateSaveCooldownIfNeeded();
+            TriggerSave();
         }
     }
 
-    private bool CheckStartSaveUserDataConditions()
+    private bool CheckStartSaveConditions()
     {
         return _gameStateModel.IsPlayingState
              && _gameStateModel.ShowingPopupModel == null
              && _gameStateModel.ActionState == ActionStateName.None;
     }
 
-    private bool CheckSaveUserDataConditions()
+    private bool CheckSaveConditions()
     {
         return _gameStateModel.IsPlayingState
              && _gameStateModel.ActionState == ActionStateName.None;
@@ -200,9 +245,9 @@ public class SaveDataSystem
 
     private void UpdateSaveCooldownIfNeeded()
     {
-        if (NeedToSave)
+        if (NeedToSavePlayerData)
         {
-            _saveCooldownSeconds = DefaultSaveCooldownSeconds;
+            _savePlayerDataPrewarmSeconds = DefaultSavePrewarmSeconds;
         }
     }
 
@@ -210,7 +255,13 @@ public class SaveDataSystem
     {
         var saveFieldsData = _saveFieldsData;
         _saveFieldsData = SaveField.None;
-        await new SaveDataCommand().Execute(saveFieldsData);
+        await new SaveDataCommand().ExecuteAsync(saveFieldsData);
+    }
+
+    private async Task SaveExternalDataAsync()
+    {
+        var saveUserModel = _saveExternalDataQueue.Dequeue();
+        await new SaveExternalDataCommand().ExecuteAsync(saveUserModel);
     }
 
     private void OnSizeChanged(int previousValue, int currentValue)
@@ -326,9 +377,9 @@ public class SaveDataSystem
     private void OnGoldChanged(int previousValue, int currentValue)
     {
         MarkToSaveField(SaveField.Progress);
-        if (CheckStartSaveUserDataConditions())
+        if (CheckStartSaveConditions())
         {
-            UpdateSaveCooldownIfNeeded();
+            TriggerSave();
         }
     }
 

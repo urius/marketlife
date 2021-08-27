@@ -14,7 +14,7 @@ public class DataExporter
         return new ShopProgressDto(progressModel.Cash + progressModel.DelayedCash, progressModel.Gold, progressModel.ExpAmount, progressModel.Level);
     }
 
-    public string[] ExportActionsModel(ExternalActionsModel externalActionsModel)
+    public string[] ExportExternalActions(ExternalActionsModel externalActionsModel)
     {
         var resultDictionary = new Dictionary<string, Queue<ExternalActionModelBase>>();
         foreach (var actionModel in externalActionsModel.Actions)
@@ -40,21 +40,6 @@ public class DataExporter
         }
 
         return result.ToArray();
-    }
-
-    private string ExportAction(ExternalActionModelBase action)
-    {
-        switch (action.ActionId)
-        {
-            case FriendShopActionId.Take:
-                var takeAction = action as ExternalActionTake;
-                return $"{(int)takeAction.ActionId}|{ExportCoords(takeAction.Coords)}|{ExportProduct(takeAction.ProductConfig, takeAction.Amount)}";
-            case FriendShopActionId.AddUnwash:
-                var addUnwashAction = action as ExternalActionAddUnwash;
-                return $"{(int)addUnwashAction.ActionId}|{ExportCoords(addUnwashAction.Coords)}";
-        }
-
-        return $"?{(int)action.ActionId}";
     }
 
     public string[] ExportPersonal(ShopModel shopModel)
@@ -124,6 +109,21 @@ public class DataExporter
         }
 
         return result.ToArray();
+    }
+
+    private string ExportAction(ExternalActionModelBase action)
+    {
+        switch (action.ActionId)
+        {
+            case FriendShopActionId.Take:
+                var takeAction = action as ExternalActionTake;
+                return $"{(int)takeAction.ActionId}|{ExportCoords(takeAction.Coords)}|{ExportProduct(takeAction.ProductConfig, takeAction.Amount)}";
+            case FriendShopActionId.AddUnwash:
+                var addUnwashAction = action as ExternalActionAddUnwash;
+                return $"{(int)addUnwashAction.ActionId}|{ExportCoords(addUnwashAction.Coords)}";
+        }
+
+        return $"?{(int)action.ActionId}";
     }
 
     private string ExportShopObject(ShopObjectModelBase shopObjectModel)

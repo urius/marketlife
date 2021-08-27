@@ -13,9 +13,12 @@ public struct SwitchToFriendShopCommand
         if (friendData.IsUserModelLoaded == false)
         {
             await new LoadFriendShopCommand().ExecuteAsync(friendData);
+
             if (friendData.IsUserModelLoaded)
             {
                 friendData.UserModel.ApplyExternalActions();
+                var calculationResult = friendData.UserModel.CalculateOfflineToTime(gameStateModel.ServerTime);
+                friendData.UserModel.ShopModel.RemoveProducts(calculationResult.SoldFromShelfs);
             }
         }
 

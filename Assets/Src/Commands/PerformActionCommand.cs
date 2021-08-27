@@ -67,7 +67,8 @@ public struct PerformActionCommand
         var playerModel = PlayerModelHolder.Instance.UserModel;
         var playerActionsDataModel = playerModel.ActionsDataModel;
         var gameStateModel = GameStateModel.Instance;
-        var viewingShopModel = GameStateModel.Instance.ViewingShopModel;
+        var viewingUserModel = GameStateModel.Instance.ViewingUserModel;
+        var viewingShopModel = viewingUserModel.ShopModel;
         var mouseCellCoordsProvider = MouseCellCoordsProvider.Instance;
         var actionId = FriendShopActionId.AddUnwash;
         var actionData = playerActionsDataModel.ActionsById[actionId];
@@ -89,6 +90,7 @@ public struct PerformActionCommand
         }
         else if (viewingShopModel.AddUnwash(coords, 1))
         {
+            viewingUserModel.ExternalActionsModel.AddAction(new ExternalActionAddUnwash(playerModel.Uid, coords));
             actionData.SetAmount(actionData.RestAmount - 1);
             result = true;
         }
@@ -137,8 +139,8 @@ public struct PerformActionCommand
                     if (takenAmount > 0)
                     {
                         slot.ChangeProductAmount(-amountToTake);
-                        actionData.SetAmount(actionData.RestAmount - 1);
                         viewingUserModel.ExternalActionsModel.AddAction(new ExternalActionTake(playerModel.Uid, shelf.Coords, productConfig, amountToTake));
+                        actionData.SetAmount(actionData.RestAmount - 1);
                         break;
                     }
                     else

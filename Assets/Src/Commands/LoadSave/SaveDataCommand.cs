@@ -5,7 +5,7 @@ using UnityEngine;
 
 public struct SaveDataCommand
 {
-    public async UniTask<bool> Execute(SaveField saveFields)
+    public async UniTask<bool> ExecuteAsync(SaveField saveFields)
     {
         if (saveFields == SaveField.None) return true;
 
@@ -13,7 +13,6 @@ public struct SaveDataCommand
 
         var playerModel = PlayerModelHolder.Instance.UserModel;
         var url = string.Format(URLsHolder.Instance.SaveDataURL, playerModel.Uid);
-
         var dataToSave = GetExportData(saveFields, playerModel);
         var dataToSaveStr = JsonConvert.SerializeObject(dataToSave);
 

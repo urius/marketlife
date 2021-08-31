@@ -2,7 +2,7 @@ using Cysharp.Threading.Tasks;
 
 public struct SwitchToFriendShopCommand
 {
-    public async UniTaskVoid Execute(FriendData friendData)
+    public async void Execute(FriendData friendData)
     {
         var gameStateModel = GameStateModel.Instance;
         var dispatcher = Dispatcher.Instance;

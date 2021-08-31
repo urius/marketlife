@@ -85,7 +85,7 @@ public class EventsHandleSystem
         }
         else
         {
-            //todo invite
+            _dispatcher.UIBottomPanelInviteFriendClicked(friendData);
         }
     }
 

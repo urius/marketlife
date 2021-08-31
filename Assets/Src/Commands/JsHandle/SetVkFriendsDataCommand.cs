@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 public struct SetVkFriendsDataCommand
@@ -8,18 +9,20 @@ public struct SetVkFriendsDataCommand
         var avatarsManager = AvatarsManager.Instance;
         var deserialisedData = JsonConvert.DeserializeObject<VkFriendsDataDto>(friendsDataStr);
 
-        var friendsData = ToFriendsData(deserialisedData.response.items);
-        friendsDataHolder.SetupFriendsData(friendsData);
+        var friendsData = ToFriendsData(deserialisedData.data);
         foreach (var friendData in friendsData)
         {
             avatarsManager.SetupAvatarSettings(friendData.Uid, friendData.Picture50Url);
         }
+
+        friendsDataHolder.SetupFriendsData(friendsData);
     }
 
-    private FriendData[] ToFriendsData(VkFriendDataDto[] items)
+    private FriendData[] ToFriendsData(IList<VkFriendDataDto> items)
     {
-        var result = new FriendData[items.Length];
-        for (var i = 0; i < items.Length; i++)
+        var count = items.Count;
+        var result = new FriendData[count];
+        for (var i = 0; i < count; i++)
         {
             var item = items[i];
             result[i] = new FriendData(item.id.ToString(), item.is_app, item.first_name, item.last_name, item.photo_50);
@@ -29,17 +32,12 @@ public struct SetVkFriendsDataCommand
     }
 }
 
-public class VkFriendsDataDto
+public struct VkFriendsDataDto
 {
-    public VkFriendsDataResponseDto response;
+    public List<VkFriendDataDto> data;
 }
 
-public class VkFriendsDataResponseDto
-{
-    public VkFriendDataDto[] items;
-}
-
-public class VkFriendDataDto
+public struct VkFriendDataDto
 {
     public int id;
     public bool is_app;

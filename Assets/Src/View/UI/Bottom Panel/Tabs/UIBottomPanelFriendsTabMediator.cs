@@ -150,7 +150,7 @@ public class UIBottomPanelFriendsTabMediator : UIBottomPanelScrollItemsTabMediat
         {
             if (displayedItem.View == view)
             {
-                HandleClick(displayedItem.ViewModel);
+                _dispatcher.UIBottomPanelInviteFriendClicked(displayedItem.ViewModel);
                 break;
             }
         }

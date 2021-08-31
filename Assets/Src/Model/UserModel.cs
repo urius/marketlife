@@ -134,6 +134,9 @@ public class UserModel
         var soldFromWarehouseProducts = new Dictionary<ProductConfig, int>(uniqueProductsOnShelfsCount);
         var restWarehouseProductsForMerchandiser = new Dictionary<ProductConfig, int>(uniqueProductsOnShelfsCount);
         var random = new System.Random(targetTime);
+        var grabbedProducts = GetGrabbedProductsForTime(restProductsOnShelfs, startCalculationTime, targetTime);
+        CorrectRestProductsAmountsByGrabbedProducts(restProductsOnShelfs, grabbedProducts);
+
         foreach (var productModel in restProductsOnShelfs)
         {
             soldFromShelfsProducts[productModel.Config] = 0;
@@ -199,7 +202,59 @@ public class UserModel
             }
         }
 
-        return new OfflineCalculationResult(soldFromShelfsProducts, soldFromWarehouseProducts, unwashesCountAdded, cleanedUnwashesAmount);
+        return new OfflineCalculationResult(soldFromShelfsProducts, soldFromWarehouseProducts, grabbedProducts, unwashesCountAdded, cleanedUnwashesAmount);
+    }
+
+    private void CorrectRestProductsAmountsByGrabbedProducts(ProductModel[] restProductsOnShelfs, Dictionary<ProductConfig, int> grabbedProductsAmounts)
+    {
+        foreach (var restProductItem in restProductsOnShelfs)
+        {
+            if (grabbedProductsAmounts.ContainsKey(restProductItem.Config))
+            {
+                restProductItem.Amount = Math.Max(0, restProductItem.Amount - grabbedProductsAmounts[restProductItem.Config]);
+            }
+        }
+    }
+
+    private Dictionary<ProductConfig, int> GetGrabbedProductsForTime(ProductModel[] restProducts, int startCalculationTime, int targetTime)
+    {
+        var grabbedProductsDict = new Dictionary<ProductConfig, int>();
+        foreach (var action in ExternalActionsModel.Actions)
+        {
+            if (action.ActionId == FriendShopActionId.Take)
+            {
+                var takeAction = action as ExternalActionTake;
+                if (grabbedProductsDict.ContainsKey(takeAction.ProductConfig) == false)
+                {
+                    grabbedProductsDict[takeAction.ProductConfig] = 0;
+                }
+
+                grabbedProductsDict[takeAction.ProductConfig] += takeAction.Amount;
+            }
+        }
+
+        var securityEndWorkTime = ShopModel.PersonalModel.GetMaxEndWorkTimeForPersonalType(PersonalType.Security);
+        var grabMultiplier = 1f;
+        if (securityEndWorkTime > startCalculationTime)
+        {
+            grabMultiplier = (targetTime - Math.Min(targetTime, securityEndWorkTime)) / (targetTime - startCalculationTime);
+        }
+
+        var restProductsDict = restProducts.ToDictionary(m => m.Config, m => m.Amount);
+        if (grabMultiplier < 1)
+        {
+            foreach (var kvp in grabbedProductsDict)
+            {
+                if (restProductsDict.ContainsKey(kvp.Key))
+                {
+                    var restAmount = restProductsDict[kvp.Key];
+                    var amountTaken = Math.Min(restAmount, (int)Math.Floor(kvp.Value * grabMultiplier));
+                    grabbedProductsDict[kvp.Key] = amountTaken;
+                }
+            }
+        }
+
+        return grabbedProductsDict;
     }
 }
 
@@ -357,17 +412,21 @@ public class OfflineCalculationResult
 {
     public readonly Dictionary<ProductConfig, int> SoldFromShelfs;
     public readonly Dictionary<ProductConfig, int> SoldFromWarehouse;
+    public readonly Dictionary<ProductConfig, int> grabbedProducts;
+
     public readonly int UnwashesAddedAmount;
     public readonly int UnwashesCleanedAmount;
 
     public OfflineCalculationResult(
         Dictionary<ProductConfig, int> soldFromShelfs,
         Dictionary<ProductConfig, int> soldFromWarehouse,
+        Dictionary<ProductConfig, int> grabbedProducts,
         int unwashesAddedAmount,
         int unwashesCleanedAmount)
     {
         SoldFromShelfs = soldFromShelfs;
         SoldFromWarehouse = soldFromWarehouse;
+        this.grabbedProducts = grabbedProducts;
         UnwashesAddedAmount = unwashesAddedAmount;
         UnwashesCleanedAmount = unwashesCleanedAmount;
     }

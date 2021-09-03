@@ -412,7 +412,7 @@ public class OfflineCalculationResult
 {
     public readonly Dictionary<ProductConfig, int> SoldFromShelfs;
     public readonly Dictionary<ProductConfig, int> SoldFromWarehouse;
-    public readonly Dictionary<ProductConfig, int> grabbedProducts;
+    public readonly Dictionary<ProductConfig, int> GrabbedProducts;
 
     public readonly int UnwashesAddedAmount;
     public readonly int UnwashesCleanedAmount;
@@ -426,7 +426,7 @@ public class OfflineCalculationResult
     {
         SoldFromShelfs = soldFromShelfs;
         SoldFromWarehouse = soldFromWarehouse;
-        this.grabbedProducts = grabbedProducts;
+        GrabbedProducts = grabbedProducts;
         UnwashesAddedAmount = unwashesAddedAmount;
         UnwashesCleanedAmount = unwashesCleanedAmount;
     }
@@ -506,6 +506,7 @@ public enum FriendShopActionId
 public class ExternalActionsModel
 {
     public event Action<ExternalActionModelBase> ActionAdded = delegate { };
+    public event Action ActionsCleared = delegate { };
 
     private List<ExternalActionModelBase> _actions = new List<ExternalActionModelBase>();
 
@@ -539,6 +540,7 @@ public class ExternalActionsModel
     public void Clear()
     {
         _actions.Clear();
+        ActionsCleared();
     }
 }
 

@@ -15,11 +15,14 @@ public class OfflineReportPopupViewModel : PopupViewModelBase
         var tabs = new List<OfflineReportTabType>(3);
         if (ReportModel.HasSellInfo) tabs.Add(OfflineReportTabType.SellProfit);
         if (ReportModel.HasPersonalInfo) tabs.Add(OfflineReportTabType.Personal);
+        if (ReportModel.HasActivityInfo) tabs.Add(OfflineReportTabType.Activity);
         Tabs = tabs.ToArray();
 
         (SoldProducts, TotalProfitFromSell) = GetDataForProfitTab(reportModel);
         MerchandiserResult = GetMerchandiserResult(reportModel);
     }
+
+    public Dictionary<ProductConfig, int> GrabbedProducts => ReportModel.GrabbedProducts;
 
     private ItemViewModel[] GetMerchandiserResult(UserOfflineReportModel reportModel)
     {

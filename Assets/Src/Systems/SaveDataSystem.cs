@@ -60,6 +60,7 @@ public class SaveDataSystem
         var designModel = _shopModel.ShopDesign;
         var warehouseModel = _shopModel.WarehouseModel;
         var personalModel = _shopModel.PersonalModel;
+        var playerExternalActionsModel = _playerModel.ExternalActionsModel;
 
         foreach (var kvp in _shopModel.ShopObjects)
         {
@@ -75,6 +76,7 @@ public class SaveDataSystem
         _shopModel.UnwashRemoved += OnUnwashRemoved;
 
         _playerModel.TutorialStepPassed += OnTutorialStepPassed;
+        playerExternalActionsModel.ActionsCleared += OnPlayerExternalActionsCleared;
 
         progressModel.CashChanged += OnCashChanged;
         progressModel.GoldChanged += OnGoldChanged;
@@ -101,6 +103,11 @@ public class SaveDataSystem
         _gameStateModel.ViewingUserModelChanged += OnViewingUserModelChanged;
 
         _updatesProvider.RealtimeSecondUpdate += OnRealtimeSecondUpdate;
+    }
+
+    private void OnPlayerExternalActionsCleared()
+    {
+        _saveExternalDataQueue.Enqueue(_playerModel);
     }
 
     private void OnViewingUserModelChanged(UserModel userModel)

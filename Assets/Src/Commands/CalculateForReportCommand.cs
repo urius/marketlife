@@ -17,7 +17,8 @@ public struct CalculateForReportCommand
             playerModel.StatsData.LastVisitTimestamp,
             gameStateModel.ServerTime,
             calculationResult.SoldFromShelfs,
-            calculationResult.SoldFromWarehouse);
+            calculationResult.SoldFromWarehouse,
+            calculationResult.GrabbedProducts);
         playerOfflineReportHolder.SetReport(report);
 
         if (report.IsEmpty == false)

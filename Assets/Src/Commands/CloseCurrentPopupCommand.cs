@@ -12,6 +12,8 @@ public struct CloseCurrentPopupCommand
             var warehouseModel = userShopModel.WarehouseModel;
             var offlineReport = PlayerOfflineReportHolder.Instance.PlayerOfflineReport;
 
+            playerModel.ExternalActionsModel.Clear();
+
             gameStateModel.RemoveCurrentPopupIfNeeded();
 
             warehouseModel.RemoveDeliveredProducts(offlineReport.SoldFromWarehouse, gameStateModel.ServerTime);

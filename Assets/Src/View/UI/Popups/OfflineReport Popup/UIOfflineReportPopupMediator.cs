@@ -60,11 +60,18 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
     private void Activate()
     {
         _popupView.ButtonCloseClicked += OnCloseClicked;
+        _popupView.TabButtonClicked += OnTabButtonClicked;
     }
 
     private void Deactivate()
     {
         _popupView.ButtonCloseClicked -= OnCloseClicked;
+        _popupView.TabButtonClicked -= OnTabButtonClicked;
+    }
+
+    private void OnTabButtonClicked(int tabIndex)
+    {
+        ShowTab(tabIndex);
     }
 
     private void OnCloseClicked()
@@ -82,6 +89,18 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
             case OfflineReportTabType.SellProfit:
                 ShowProfitTab();
                 break;
+            case OfflineReportTabType.Activity:
+                ShowActivityTab();
+                break;
+        }
+    }
+
+    private void ShowActivityTab()
+    {
+        foreach (var kvp in _viewModel.GrabbedProducts)
+        {
+            var productConfig = kvp.Key;
+            PutNextReportItem(_spritesProvider.GetProductIcon(productConfig.Key), $"x{FormattingHelper.ToCommaSeparatedNumber(kvp.Value)}");
         }
     }
 
@@ -104,7 +123,7 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
         itemView.SetRightText(rightText, rightTextAlignment);
     }
 
-    private void PutNextReportItem(Sprite iconSprite, string lextText, string rightText)
+    private void PutNextReportItem(Sprite iconSprite, string lextText, string rightText = "")
     {
         PutNextReportItem(iconSprite, lextText, TextAlignmentOptions.Left, rightText, TextAlignmentOptions.Right);
     }

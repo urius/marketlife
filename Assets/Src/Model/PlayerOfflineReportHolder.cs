@@ -22,21 +22,25 @@ public class UserOfflineReportModel
     public readonly int MinutesPassed;
     public readonly Dictionary<ProductConfig, int> SoldFromShelfs;
     public readonly Dictionary<ProductConfig, int> SoldFromWarehouse;
+    public readonly Dictionary<ProductConfig, int> GrabbedProducts;
     public readonly int SellProfit;
     public readonly int ExpToAdd;
     public readonly bool HasSellInfo;
     public readonly bool HasPersonalInfo;
+    public readonly bool HasActivityInfo;
 
     public UserOfflineReportModel(
         int timeFrom,
         int timeTo,
         Dictionary<ProductConfig, int> soldFromShelfs,
-        Dictionary<ProductConfig, int> soldFromWarehouse)
+        Dictionary<ProductConfig, int> soldFromWarehouse,
+        Dictionary<ProductConfig, int> grabbedProducts)
     {
         TimeFrom = timeFrom;
         TimeTo = timeTo;
         SoldFromShelfs = soldFromShelfs;
         SoldFromWarehouse = soldFromWarehouse;
+        GrabbedProducts = grabbedProducts;
         HoursPassed = (0.1f * (int)Math.Ceiling(10 * (TimeTo - TimeFrom) / 3600f));
         MinutesPassed = (int)Math.Ceiling((TimeTo - TimeFrom) / 60f);
         SellProfit = CalculateSellProfit(SoldFromWarehouse) + CalculateSellProfit(SoldFromShelfs);
@@ -45,9 +49,10 @@ public class UserOfflineReportModel
         var hasSoldFromWarehouse = SoldFromWarehouse.Any(kvp => kvp.Value > 0);
         HasSellInfo = SoldFromShelfs.Any(kvp => kvp.Value > 0) || hasSoldFromWarehouse;
         HasPersonalInfo = hasSoldFromWarehouse;
+        HasActivityInfo = GrabbedProducts.Any();
     }
 
-    public bool IsEmpty => !HasSellInfo && !HasPersonalInfo; //TODO add activity info
+    public bool IsEmpty => !HasSellInfo && !HasPersonalInfo && !HasActivityInfo; //TODO add activity info
 
 
     private int CalculateSellProfit(Dictionary<ProductConfig, int> soldProducts)

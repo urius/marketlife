@@ -49,4 +49,5 @@ public enum TutorialUIElement
     TopPanelMoodBar,
     BottomPanelInteriorButton,
     BottomPanelFriendsButton,
+    BottomPanelManageButton,
 }

@@ -39,6 +39,7 @@ public class BottomPanelMediator : UINotMonoMediatorBase
         _tutorialUIElementsProvider.SetElement(TutorialUIElement.BottomPanelWarehouseButton, _view.WarehouseButton.transform as RectTransform);
         _tutorialUIElementsProvider.SetElement(TutorialUIElement.BottomPanelInteriorButton, _view.InteriorButton.transform as RectTransform);
         _tutorialUIElementsProvider.SetElement(TutorialUIElement.BottomPanelFriendsButton, _view.FriendsButton.transform as RectTransform);
+        _tutorialUIElementsProvider.SetElement(TutorialUIElement.BottomPanelManageButton, _view.ManageButton.transform as RectTransform);
 
         await ShowBgAndTopButtonsForStateAsync(_gameStateModel.GameState);
     }

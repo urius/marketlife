@@ -73,6 +73,7 @@ public class BottomPanelView : MonoBehaviour, IPointerEnterHandler, IPointerExit
     public Button FriendsButton => _friendsButton;
     public Button WarehouseButton => _warehouseButton;
     public Button InteriorButton => _interiorButton;
+    public Button ManageButton => _manageButton;
     public Button InteriorObjectsButton => _interiorObjectsButton;
     public Button InteriorFloorsButton => _interiorFloorsButton;
     public Button InteriorWallsButton => _interiorWallsButton;

@@ -35,6 +35,9 @@ public class TutorialShowMoodInteriorFriendsMediator : TutorialStepMediatorBase
             case 2:
                 HandleFriendsPhase();
                 break;
+            case 3:
+                HandleManagePhase();
+                break;
             default:
                 base.OnViewButtonClicked();
                 break;
@@ -47,7 +50,7 @@ public class TutorialShowMoodInteriorFriendsMediator : TutorialStepMediatorBase
         View.SetMessageText(string.Format(message, _loc.GetLocalization(LocalizationKeys.BottomPanelInteriorButton)));
         View.SetButtonText(buttonText);
         View.ToRight();
-        HighlightInteriorButton();
+        HighlightUIElement(TutorialUIElement.BottomPanelInteriorButton);
     }
 
     private void HandleFriendsPhase()
@@ -56,7 +59,16 @@ public class TutorialShowMoodInteriorFriendsMediator : TutorialStepMediatorBase
         View.SetMessageText(string.Format(message, _loc.GetLocalization(LocalizationKeys.BottomPanelFriendsButton)));
         View.SetButtonText(buttonText);
         View.ToLeft();
-        HighlightFriendsButton();
+        HighlightUIElement(TutorialUIElement.BottomPanelFriendsButton);
+    }
+
+    private void HandleManagePhase()
+    {
+        var (message, buttonText) = GetTextsForCurrentPhase();
+        View.SetMessageText(string.Format(message, _loc.GetLocalization(LocalizationKeys.BottomPanelManageButton)));
+        View.SetButtonText(buttonText);
+        View.ToRight();
+        HighlightUIElement(TutorialUIElement.BottomPanelManageButton);
     }
 
     private (string message, string buttonText) GetTextsForCurrentPhase()
@@ -68,22 +80,13 @@ public class TutorialShowMoodInteriorFriendsMediator : TutorialStepMediatorBase
 
     private void HighlightMoodBar()
     {
-        var moodBarTransform = _tutorialUIElementsProvider.GetElementRectTransform(TutorialUIElement.TopPanelMoodBar);
-        var sizeSide = Math.Max(moodBarTransform.rect.size.x, moodBarTransform.rect.size.y);
-        View.HighlightScreenRoundArea(moodBarTransform.position, new Vector2(sizeSide * 2.5f, sizeSide), animated: true);
+        HighlightUIElement(TutorialUIElement.TopPanelMoodBar, 2.5f);
     }
 
-    private void HighlightInteriorButton()
+    private void HighlightUIElement(TutorialUIElement elementType, float sizeXMultiplier = 1)
     {
-        var rectTransform = _tutorialUIElementsProvider.GetElementRectTransform(TutorialUIElement.BottomPanelInteriorButton);
+        var rectTransform = _tutorialUIElementsProvider.GetElementRectTransform(elementType);
         var sideSize = Math.Max(rectTransform.rect.size.x, rectTransform.rect.size.y);
-        View.HighlightScreenRoundArea(rectTransform.position, new Vector2(sideSize, sideSize), animated: true);
-    }
-
-    private void HighlightFriendsButton()
-    {
-        var rectTransform = _tutorialUIElementsProvider.GetElementRectTransform(TutorialUIElement.BottomPanelFriendsButton);
-        var sideSize = Math.Max(rectTransform.rect.size.x, rectTransform.rect.size.y);
-        View.HighlightScreenRoundArea(rectTransform.position, new Vector2(sideSize, sideSize), animated: true);
+        View.HighlightScreenRoundArea(rectTransform.position, new Vector2(sideSize * sizeXMultiplier, sideSize), animated: true);
     }
 }

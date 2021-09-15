@@ -122,6 +122,9 @@ public class TutorialSystem
             TutorialStep.ReadyToPlay => HasNoOpenedPopups()
                 && HasNoPlacingMode()
                 && CheckGameState(GameStateName.ShopSimulation),
+            TutorialStep.FriendUI => HasNoOpenedPopups()
+                && HasNoPlacingMode()
+                && CheckGameState(GameStateName.ShopFriend),
             _ => false//throw new ArgumentException($"CheckTutorialConditions: {nameof(tutorialStepIndex)} {tutorialStepIndex} is not supported"),
         };
     }
@@ -173,5 +176,6 @@ public enum TutorialStep
     FinishPlacingProduct = 6,
     ShowMoodInteriorAndFriendsUI = 7,
     ReadyToPlay = 8,
+    FriendUI = 9,
 }
 

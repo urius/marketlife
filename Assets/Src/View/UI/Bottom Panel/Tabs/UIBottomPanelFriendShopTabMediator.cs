@@ -10,6 +10,7 @@ public class UIBottomPanelFriendShopTabMediator : UIBottomPanelTabMediatorBase
     private readonly MainConfig _mainConfig;
     private readonly Dispatcher _dispatcher;
     private readonly UpdatesProvider _updatesProvider;
+    private readonly TutorialUIElementsProvider _tutorialUIElementsProvider;
 
     //
     private UIBottomPanelFriendsTabView _tabView;
@@ -26,6 +27,7 @@ public class UIBottomPanelFriendShopTabMediator : UIBottomPanelTabMediatorBase
         _mainConfig = GameConfigManager.Instance.MainConfig;
         _dispatcher = Dispatcher.Instance;
         _updatesProvider = UpdatesProvider.Instance;
+        _tutorialUIElementsProvider = TutorialUIElementsProvider.Instance;
     }
 
     public override void Mediate()
@@ -38,11 +40,17 @@ public class UIBottomPanelFriendShopTabMediator : UIBottomPanelTabMediatorBase
         _tabView = tabViewGo.GetComponent<UIBottomPanelFriendsTabView>();
         SetupView();
 
+        _tutorialUIElementsProvider.SetElement(TutorialUIElement.BottomPanelFriendShopTakeButton, _tabView.TakeActionView.transform);
+        _tutorialUIElementsProvider.SetElement(TutorialUIElement.BottomPanelFriendShopAddUnwashButton, _tabView.UnwashActionView.transform);
+
         Activate();
     }
 
     public override void Unmediate()
     {
+        _tutorialUIElementsProvider.ClearElement(TutorialUIElement.BottomPanelFriendShopTakeButton);
+        _tutorialUIElementsProvider.ClearElement(TutorialUIElement.BottomPanelFriendShopAddUnwashButton);
+
         Deactivate();
 
         if (_tabView != null)

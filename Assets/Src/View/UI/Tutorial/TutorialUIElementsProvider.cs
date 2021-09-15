@@ -50,4 +50,6 @@ public enum TutorialUIElement
     BottomPanelInteriorButton,
     BottomPanelFriendsButton,
     BottomPanelManageButton,
+    BottomPanelFriendShopTakeButton,
+    BottomPanelFriendShopAddUnwashButton,
 }

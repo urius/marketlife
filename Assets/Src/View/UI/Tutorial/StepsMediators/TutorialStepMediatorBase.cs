@@ -6,12 +6,11 @@ public abstract class TutorialStepMediatorBase : IMediator
     private readonly PrefabsHolder _prefabsHodler;
     private readonly Dispatcher _dispatcher;
     private readonly LocalizationManager _loc;
-    private readonly ScreenCalculator _screenCalculator;
+    private readonly UpdatesProvider _updatesProvider;
 
     //
     private TutorialOverlayView _tutorialOverlayView;
     private TutorialStepViewModel _viewModel;
-    private UpdatesProvider _updatesProvider;
     private Camera _camera;
     private RectTransform _allowedClickOnRectTransform;
     private Rect _allowedClickOnRectArea;
@@ -23,7 +22,7 @@ public abstract class TutorialStepMediatorBase : IMediator
         _prefabsHodler = PrefabsHolder.Instance;
         _dispatcher = Dispatcher.Instance;
         _loc = LocalizationManager.Instance;
-        _screenCalculator = ScreenCalculator.Instance;
+        _updatesProvider = UpdatesProvider.Instance;
     }
 
     protected TutorialOverlayView View => _tutorialOverlayView;
@@ -33,7 +32,6 @@ public abstract class TutorialStepMediatorBase : IMediator
     public virtual void Mediate()
     {
         _viewModel = GameStateModel.Instance.ShowingTutorialModel;
-        _updatesProvider = UpdatesProvider.Instance;
         _camera = Camera.main;
 
         var tutorialOverlayGo = GameObject.Instantiate(_prefabsHodler.UITutorialOverlayPrefab, _parentTransform);

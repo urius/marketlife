@@ -116,7 +116,7 @@ public class TutorialOverlayView : MonoBehaviour
     public void SetQuadrant(int quadrant)
     {
         var manHeight = 100;
-        var offsetValues = new Vector2(_popupBodyRect.rect.width * 0.5f + 100, _popupBodyRect.rect.height * 0.5f);
+        var offsetValues = new Vector2((_rootRect.rect.width - _popupBodyRect.rect.width) * 0.25f, _popupBodyRect.rect.height * 0.5f);
         switch (quadrant)
         {
             case 0:
@@ -135,6 +135,16 @@ public class TutorialOverlayView : MonoBehaviour
         }
 
         _popupBodyRect.anchoredPosition = offsetValues;
+    }
+
+    public void ToRight()
+    {
+        _popupBodyRect.anchoredPosition = new Vector2((_rootRect.rect.width - _popupBodyRect.rect.width) * 0.25f, 0);
+    }
+
+    public void ToLeft()
+    {
+        _popupBodyRect.anchoredPosition = new Vector2(-(_rootRect.rect.width - _popupBodyRect.rect.width) * 0.25f, 0);
     }
 
     public void DisableHighlight()

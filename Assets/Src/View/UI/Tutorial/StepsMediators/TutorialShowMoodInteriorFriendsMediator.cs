@@ -1,0 +1,89 @@
+using System;
+using UnityEngine;
+
+public class TutorialShowMoodInteriorFriendsMediator : TutorialStepMediatorBase
+{
+    private readonly LocalizationManager _loc;
+    private readonly TutorialUIElementsProvider _tutorialUIElementsProvider;
+
+    private int _phaseIndex = 0;
+
+    public TutorialShowMoodInteriorFriendsMediator(RectTransform parentTransform)
+        : base(parentTransform)
+    {
+        _loc = LocalizationManager.Instance;
+        _tutorialUIElementsProvider = TutorialUIElementsProvider.Instance;
+    }
+
+    public override void Mediate()
+    {
+        base.Mediate();
+
+        View.SetButtonText(_loc.GetLocalization($"{LocalizationKeys.TutorialButtonPrefix}{ViewModel.StepIndex}"));
+        View.SetQuadrant(1);
+        HighlightMoodBar();
+    }
+
+    protected override void OnViewButtonClicked()
+    {
+        _phaseIndex++;
+        switch (_phaseIndex)
+        {
+            case 1:
+                HandleInteriorPhase();
+                break;
+            case 2:
+                HandleFriendsPhase();
+                break;
+            default:
+                base.OnViewButtonClicked();
+                break;
+        }
+    }
+
+    private void HandleInteriorPhase()
+    {
+        var (message, buttonText) = GetTextsForCurrentPhase();
+        View.SetMessageText(string.Format(message, _loc.GetLocalization(LocalizationKeys.BottomPanelInteriorButton)));
+        View.SetButtonText(buttonText);
+        View.ToRight();
+        HighlightInteriorButton();
+    }
+
+    private void HandleFriendsPhase()
+    {
+        var (message, buttonText) = GetTextsForCurrentPhase();
+        View.SetMessageText(string.Format(message, _loc.GetLocalization(LocalizationKeys.BottomPanelFriendsButton)));
+        View.SetButtonText(buttonText);
+        View.ToLeft();
+        HighlightFriendsButton();
+    }
+
+    private (string message, string buttonText) GetTextsForCurrentPhase()
+    {
+        var message = _loc.GetLocalization($"{LocalizationKeys.TutorialMessagePrefix}{ViewModel.StepIndex}_phase_{_phaseIndex}");
+        var buttonText = _loc.GetLocalization($"{LocalizationKeys.TutorialButtonPrefix}{ViewModel.StepIndex}_phase_{_phaseIndex}");
+        return (message, buttonText);
+    }
+
+    private void HighlightMoodBar()
+    {
+        var moodBarTransform = _tutorialUIElementsProvider.GetElementRectTransform(TutorialUIElement.TopPanelMoodBar);
+        var sizeSide = Math.Max(moodBarTransform.rect.size.x, moodBarTransform.rect.size.y);
+        View.HighlightScreenRoundArea(moodBarTransform.position, new Vector2(sizeSide * 2.5f, sizeSide), animated: true);
+    }
+
+    private void HighlightInteriorButton()
+    {
+        var rectTransform = _tutorialUIElementsProvider.GetElementRectTransform(TutorialUIElement.BottomPanelInteriorButton);
+        var sideSize = Math.Max(rectTransform.rect.size.x, rectTransform.rect.size.y);
+        View.HighlightScreenRoundArea(rectTransform.position, new Vector2(sideSize, sideSize), animated: true);
+    }
+
+    private void HighlightFriendsButton()
+    {
+        var rectTransform = _tutorialUIElementsProvider.GetElementRectTransform(TutorialUIElement.BottomPanelFriendsButton);
+        var sideSize = Math.Max(rectTransform.rect.size.x, rectTransform.rect.size.y);
+        View.HighlightScreenRoundArea(rectTransform.position, new Vector2(sideSize, sideSize), animated: true);
+    }
+}

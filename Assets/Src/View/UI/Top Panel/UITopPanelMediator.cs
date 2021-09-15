@@ -16,6 +16,7 @@ public class UITopPanelMediator : MonoBehaviour
     private LocalizationManager _loc;
     private SpritesProvider _spritesProvider;
     private AudioManager _audioManager;
+    private TutorialUIElementsProvider _tutorialUIElementsProvider;
     private UserProgressModel _playerProgressModel;
     private ShopModel _playerShopModel;
     private bool _isLevelUpInProgress;
@@ -28,6 +29,7 @@ public class UITopPanelMediator : MonoBehaviour
         _loc = LocalizationManager.Instance;
         _spritesProvider = SpritesProvider.Instance;
         _audioManager = AudioManager.Instance;
+        _tutorialUIElementsProvider = TutorialUIElementsProvider.Instance;
     }
 
     public async void Start()
@@ -36,6 +38,7 @@ public class UITopPanelMediator : MonoBehaviour
 
         _playerProgressModel = _playerModelHolder.UserModel.ProgressModel;
         _playerShopModel = _playerModelHolder.UserModel.ShopModel;
+        _tutorialUIElementsProvider.SetElement(TutorialUIElement.TopPanelMoodBar, _moodBarView.AmountText.transform);
 
         Initialize();
     }

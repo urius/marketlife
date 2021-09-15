@@ -31,7 +31,8 @@ public class UserModel
         StatsData = statsData;
         ActionsDataModel = actionsDataModel;
         SessionDataModel = new UserSessionDataModel();
-        TutorialSteps = new List<int>(tutorialSteps ?? Enumerable.Empty<int>());
+        //TutorialSteps = new List<int>(tutorialSteps ?? Enumerable.Empty<int>()); //TODO uncomment
+        TutorialSteps = new List<int>(Enumerable.Empty<int>());
         ExternalActionsModel = externalActionsModel;
     }
 

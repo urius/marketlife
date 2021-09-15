@@ -46,4 +46,7 @@ public enum TutorialUIElement
     BottomPanelWarehouseTabLastDeliveringSlot,
     BottomPanelWarehouseTabLastDeliveringSlotTime,
     ShopFloorTransform,
+    TopPanelMoodBar,
+    BottomPanelInteriorButton,
+    BottomPanelFriendsButton,
 }

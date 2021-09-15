@@ -31,6 +31,7 @@ public class UITopPanelBarView : MonoBehaviour
     private bool _isAnimationInProgress;
     private int _amount = -1;
 
+    public TMP_Text AmountText => _text;
     public int Amount
     {
         get => _amount;

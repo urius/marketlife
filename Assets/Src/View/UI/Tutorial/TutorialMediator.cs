@@ -56,14 +56,15 @@ public class TutorialMediator : IMediator
     {
         return (TutorialStep)stepIndex switch
         {
-            TutorialStep.Welcome => new TutorialWelcomeStepMediator(_parentTransform),
+            //TutorialStep.Welcome => new TutorialWelcomeStepMediator(_parentTransform),
             TutorialStep.OpenWarehouse => new TutorialOpenWarehouseStepMediator(_parentTransform),
             TutorialStep.OpenOrderPopup => new TutorialOpenOrderPopupStepMediator(_parentTransform),
             TutorialStep.OrderProduct => new TutorialOrderProductStepMediator(_parentTransform),
             TutorialStep.Delivering => new TutorialDeliveringStepMediator(_parentTransform),
             TutorialStep.PlacingProduct => new TutorialPlacingProductStepMediator(_parentTransform),
-            TutorialStep.ReadyToPlay => new TutorialReadyToPlayStepMediator(_parentTransform),
-            //TutorialStep.Welcome => new TutorialReadyToPlayStepMediator(_parentTransform),//temp
+            TutorialStep.FinishPlacingProduct => new TutorialFinishPlacingProductStepMediator(_parentTransform),
+            TutorialStep.ShowMoodInteriorAndFriendsUI => new TutorialShowMoodInteriorFriendsMediator(_parentTransform),
+            TutorialStep.Welcome => new TutorialShowMoodInteriorFriendsMediator(_parentTransform),
             _ => throw new ArgumentException($"No tutorial step with id {stepIndex}"),
         };
     }

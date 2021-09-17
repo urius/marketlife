@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class UITopPanelBarView : MonoBehaviour
 {
-    public event Action OnClick = delegate { };
+    public event Action ButtonClicked = delegate { };
 
     [SerializeField] private TMP_Text _text;
     [SerializeField] private Button _button;
@@ -207,6 +207,6 @@ public class UITopPanelBarView : MonoBehaviour
 
     private void OnButtonClick()
     {
-        OnClick();
+        ButtonClicked();
     }
 }

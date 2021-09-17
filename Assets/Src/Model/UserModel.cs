@@ -112,6 +112,11 @@ public class UserModel
         ProgressModel.AddCash(amount);
     }
 
+    public void AddGold(int amount)
+    {
+        ProgressModel.AddGold(amount);
+    }
+
     public void AddExp(int amount)
     {
         ProgressModel.AddExp(amount);

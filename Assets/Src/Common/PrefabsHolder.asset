@@ -97,3 +97,5 @@ MonoBehaviour:
     type: 3}
   UITutorialOverlayPrefab: {fileID: 8653518662204626099, guid: b00dc557eafba43a594a43eccee82883,
     type: 3}
+  UIBankPopupItemPrefab: {fileID: 1951502903678503767, guid: cc520a10880534eb6a9536a48564c690,
+    type: 3}

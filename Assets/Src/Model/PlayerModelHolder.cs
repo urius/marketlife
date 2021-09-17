@@ -8,8 +8,14 @@ public class PlayerModelHolder
     public event Action UidIsSet = delegate { };
 
     public string Uid { get; private set; }
+    public PlatformType PlatformType { get; private set; }
     public UserModel UserModel { get; private set; }
     public ShopModel ShopModel => UserModel.ShopModel;
+
+    public void SetPlatformType(PlatformType platformType)
+    {
+        PlatformType = platformType;
+    }
 
     public void SetUid(string uid)
     {
@@ -21,4 +27,10 @@ public class PlayerModelHolder
     {
         UserModel = userModel;
     }
+}
+
+public enum PlatformType
+{
+    Undefined,
+    VK,
 }

@@ -13,4 +13,5 @@ public enum PopupType
     Upgrades,
     OfflineReport,
     LevelUp,
+    Bank,
 }

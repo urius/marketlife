@@ -19,6 +19,8 @@ public class InitScript : MonoBehaviour
 
         _playerModelHolder = PlayerModelHolder.Instance;
         _playerModelHolder.UidIsSet += OnUidIsSet;
+
+        new InitializeSystemsCommand().Execute();
     }
 
 #if UNITY_EDITOR

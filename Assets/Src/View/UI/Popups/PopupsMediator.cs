@@ -53,6 +53,9 @@ public class PopupsMediator : IMediator
             case PopupType.LevelUp:
                 newMediator = new UILevelUpPopupMediator(_contentTransform);
                 break;
+            case PopupType.Bank:
+                newMediator = new UIBankPopupMediator(_contentTransform);
+                break;
         };
         newMediator.Mediate();
         _popupMediators.Push(newMediator);

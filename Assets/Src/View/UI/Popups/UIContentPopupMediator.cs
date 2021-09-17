@@ -3,10 +3,9 @@ using UnityEngine;
 
 public abstract class UIContentPopupMediator : IMediator
 {
-    private const int TopPadding = 20;
-
-    protected Queue<(RectTransform Transform, GameObject Prefab)> _displayedItems = new Queue<(RectTransform Transform, GameObject Prefab)>();
-    protected Dictionary<GameObject, Queue<RectTransform>> _cachedItemsByPrefab = new Dictionary<GameObject, Queue<RectTransform>>(2);
+    protected int TopPadding = 20;
+    protected Queue<(RectTransform Transform, GameObject Prefab)> DisplayedItems = new Queue<(RectTransform Transform, GameObject Prefab)>();
+    protected Dictionary<GameObject, Queue<RectTransform>> CachedItemsByPrefab = new Dictionary<GameObject, Queue<RectTransform>>(2);
 
     private PoolCanvasProvider _poolCanvasProvider;
     private int _putPointer;
@@ -19,7 +18,7 @@ public abstract class UIContentPopupMediator : IMediator
     public abstract void Mediate();
     public virtual void Unmediate()
     {
-        foreach (var kvp in _cachedItemsByPrefab)
+        foreach (var kvp in CachedItemsByPrefab)
         {
             var queue = kvp.Value;
             while (queue.Count > 0)
@@ -35,9 +34,9 @@ public abstract class UIContentPopupMediator : IMediator
     protected RectTransform GetOrCreateItemToDisplay(GameObject prefab)
     {
         RectTransform result = null;
-        if (_cachedItemsByPrefab.ContainsKey(prefab))
+        if (CachedItemsByPrefab.ContainsKey(prefab))
         {
-            var queue = _cachedItemsByPrefab[prefab];
+            var queue = CachedItemsByPrefab[prefab];
             if (queue.Count > 0)
             {
                 var item = queue.Dequeue();
@@ -47,7 +46,7 @@ public abstract class UIContentPopupMediator : IMediator
         }
         else
         {
-            _cachedItemsByPrefab[prefab] = new Queue<RectTransform>();
+            CachedItemsByPrefab[prefab] = new Queue<RectTransform>();
         }
 
         if (result == null)
@@ -55,24 +54,24 @@ public abstract class UIContentPopupMediator : IMediator
             var go = GameObject.Instantiate(prefab, PopupView.ContentRectTransform);
             result = go.GetComponent<RectTransform>();
         }
-        _displayedItems.Enqueue((result, prefab));
+        DisplayedItems.Enqueue((result, prefab));
         PutNext(result);
 
         return result;
     }
 
 
-    protected void ClearDisplayedItems()
+    protected virtual void ClearDisplayedItems()
     {
-        foreach (var displayedItem in _displayedItems)
+        foreach (var displayedItem in DisplayedItems)
         {
             displayedItem.Transform.SetParent(_poolCanvasProvider.PoolCanvasTransform);
-            _cachedItemsByPrefab[displayedItem.Prefab].Enqueue(displayedItem.Transform);
+            CachedItemsByPrefab[displayedItem.Prefab].Enqueue(displayedItem.Transform);
         }
 
         _putPointer = TopPadding;
         PopupView.SetContentHeight(0);
-        _displayedItems.Clear();
+        DisplayedItems.Clear();
     }
 
     private void PutNext(RectTransform itemTransform)

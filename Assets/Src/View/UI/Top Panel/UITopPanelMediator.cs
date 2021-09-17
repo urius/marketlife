@@ -21,7 +21,7 @@ public class UITopPanelMediator : MonoBehaviour
     private ShopModel _playerShopModel;
     private bool _isLevelUpInProgress;
 
-    private void Awake()
+    public void Awake()
     {
         _gameStateModel = GameStateModel.Instance;
         _dispatcher = Dispatcher.Instance;
@@ -133,6 +133,18 @@ public class UITopPanelMediator : MonoBehaviour
         _playerProgressModel.ExpChanged += OnExpChanged;
         _playerProgressModel.LevelChanged += OnLevelChanged;
         _playerShopModel.MoodChanged += OnMoodChanged;
+        _crystalsBarView.ButtonClicked += OnAddGoldClicked;
+        _cashBarView.ButtonClicked += OnAddCashClicked;
+    }
+
+    private void OnAddGoldClicked()
+    {
+        _dispatcher.UITopPanelAddMoneyClicked(true);
+    }
+
+    private void OnAddCashClicked()
+    {
+        _dispatcher.UITopPanelAddMoneyClicked(false);
     }
 
     private void OnGameStateChanged(GameStateName previousState, GameStateName currentState)

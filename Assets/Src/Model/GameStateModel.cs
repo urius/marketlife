@@ -20,6 +20,8 @@ public class GameStateModel
 
     public readonly BottomPanelViewModel BottomPanelViewModel;
 
+    public BankConfigItem ChargedBankItem;
+
     private TaskCompletionSource<bool> _dataLoadedTcs = new TaskCompletionSource<bool>();
     private int _placingIntParameter = -1;
     private readonly Stack<PopupViewModelBase> _showingPopupModelsStack;

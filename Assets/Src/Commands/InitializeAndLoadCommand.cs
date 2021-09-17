@@ -8,8 +8,6 @@ public struct InitializeAndLoadCommand
         var gameStateModel = GameStateModel.Instance;
         gameStateModel.SetGameState(GameStateName.Loading);
 
-        new InitializeSystemsCommand().Execute();
-
         await new LoadServerTimeCommand().ExecuteAsync();
         await new LoadLocalizationCommand().ExecuteAsync();
         await new LoadConfigsCommand().ExecuteAsync();

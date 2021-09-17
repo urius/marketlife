@@ -6,6 +6,7 @@ public struct SetVkPlatformDataCommand
     {
         var playerModelHolder = PlayerModelHolder.Instance;
 
+        playerModelHolder.SetPlatformType(PlatformType.VK);
         var dataDto = JsonConvert.DeserializeObject<JsVkPlatfomDataCommandDto>(dataStr);
         playerModelHolder.SetUid(dataDto.data.viewer_id);
     }

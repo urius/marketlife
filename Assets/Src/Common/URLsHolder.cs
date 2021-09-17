@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "URLsHolder", menuName = "Scriptable Objects/URLsHolder")]
@@ -15,6 +16,19 @@ public class URLsHolder : ScriptableObject
     public string SaveDataURL => _saveDataURL;
     [SerializeField] private string _saveExternalDataURL = "https://devman.ru/marketVK/unity/DataProvider.php?command=save_external_data&id={0}";
     public string SaveExternalDataURL => _saveExternalDataURL;
+    [SerializeField] private string _vkBankDataURL = "https://devman.ru/marketVK/unity/vk/VKBank.json";
+
+    public string GetBankDataURL(PlatformType platformType)
+    {
+        switch (platformType)
+        {
+            case PlatformType.Undefined:
+            case PlatformType.VK:
+                return _vkBankDataURL;
+            default:
+                throw new ArgumentException($"{nameof(URLsHolder)}::{nameof(GetBankDataURL)}: unsupported {nameof(platformType)} {platformType}");
+        }
+    }
 
     private void OnEnable()
     {

@@ -35,7 +35,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -20, y: 0}
-  m_SizeDelta: {x: 250, y: 0}
+  m_SizeDelta: {x: 220, y: 0}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &4138053382192272472
 CanvasRenderer:
@@ -93,14 +93,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 35.6
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 36
   m_fontStyle: 0
-  m_HorizontalAlignment: 4
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -380,7 +380,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 935, y: 100}
+  m_SizeDelta: {x: 935, y: 95}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &7698195318880114474
 MonoBehaviour:
@@ -394,6 +394,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26de61065b94b4611aa393c1f85469fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _iconImage: {fileID: 1951502903328230060}
+  _amountText: {fileID: 1951502903218795632}
+  _extraPercentText: {fileID: 1279591812172628053}
+  _buyButton: {fileID: 1951502904657238225}
+  _mainButton: {fileID: 1951502904711914465}
+  _priceText: {fileID: 6418623885875522639}
 --- !u!1 &1951502904624267035
 GameObject:
   m_ObjectHideFlags: 0
@@ -541,6 +547,7 @@ GameObject:
   - component: {fileID: 1951502904657238230}
   - component: {fileID: 1951502904657238231}
   - component: {fileID: 1951502904657238225}
+  - component: {fileID: 134023393}
   m_Layer: 5
   m_Name: BuyButton
   m_TagString: Untagged
@@ -650,6 +657,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &134023393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1951502904657238229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 521625b95147a425bb550d793d8da4d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _localizationKey: popup_bank_buy
+  _text: {fileID: 0}
+  _tmpText: {fileID: 1951502904624267013}
 --- !u!1 &1951502904711914471
 GameObject:
   m_ObjectHideFlags: 0
@@ -689,7 +711,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0.93}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 5, y: 0}
   m_SizeDelta: {x: -5, y: 0}
   m_Pivot: {x: 0, y: 1}
@@ -787,7 +809,7 @@ GameObject:
   - component: {fileID: 379811788978730525}
   - component: {fileID: 1279591812172628053}
   m_Layer: 5
-  m_Name: OldPriceText (TMP)
+  m_Name: ExtraPercentText (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

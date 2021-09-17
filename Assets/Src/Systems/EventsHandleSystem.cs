@@ -62,9 +62,33 @@ public class EventsHandleSystem
         _dispatcher.UIBottomPanelFriendClicked += OnUIBottomPanelFriendClicked;
         _dispatcher.UIBottomPanelFriendShopActionClicked += OnUIBottomPanelFriendShopActionClicked;
         _dispatcher.UIBottomPanelBuyFriendShopActionClicked += OnUIBottomPanelBuyFriendShopActionClicked;
+        _dispatcher.UITopPanelAddMoneyClicked += OnUITopPanelAddMoneyClicked;
+        _dispatcher.UIBottomPanelInviteFriendClicked += OnUIBottomPanelInviteFriendClicked;
+        _dispatcher.UIBankItemClicked += OnUIBankItemClicked;
+        _dispatcher.JsIncomingMessage += OnIncomingJsMessage;
 
         _gameStateModel.ActionStateChanged += OnActionStateChanged;
         _gameStateModel.GameStateChanged += OnGameStateChanged;
+    }
+
+    private void OnUIBottomPanelInviteFriendClicked(FriendData friendData)
+    {
+        new UIBottomPanelInviteFriendClickedCommand().Execute(friendData);
+    }
+
+    private void OnUIBankItemClicked(BankConfigItem itemConfig)
+    {
+        new UIBankItemClickedCommand().Execute(itemConfig);
+    }
+
+    private void OnIncomingJsMessage(string message)
+    {
+        new ProcessJsMessageCommand().Execute(message);
+    }
+
+    private void OnUITopPanelAddMoneyClicked(bool isGold)
+    {
+        new HandleAddMoneyClickCommand().Execute(isGold);
     }
 
     private void OnUIBottomPanelFriendShopActionClicked(FriendShopActionId actionId)

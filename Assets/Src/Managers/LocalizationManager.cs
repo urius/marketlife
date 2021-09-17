@@ -74,6 +74,7 @@ public class LocalizationKeys
     public static string CommonPersonalNamePrefix = "common_personal_name_";
     public static string CommonContinue = "common_continue";
     public static string CommonUpgradeNameFormat = "common_upgrade_name_format_";
+    public static string CommonPayCurrencyNamePlural = "common_pay_currency_plural_";    
     public static string HintTopPanelExpFomat = "hint_top_panel_exp_format";
     public static string HintTopPanelMoodFormat = "hint_top_panel_mood_format";    
     public static string PopupRemoveObjectTitle = "popup_remove_object_title";
@@ -115,7 +116,10 @@ public class LocalizationKeys
     public static string PopupLevelUpWindowFormat = "popup_levelup_window_format";
     public static string PopupLevelUpDoorFormat = "popup_levelup_door_format";
     //public static string PopupLevelUpNewPersonal = "popup_levelup_new_personal";
-    //public static string PopupLevelUpNewUpgrades = "popup_levelup_new_upgrades";
+    //public static string PopupLevelUpNewUpgrades = "popup_levelup_new_upgrades";    
+    public static string PopupBankGoldTab = "popup_bank_gold_tab";
+    public static string PopupBankCashTab = "popup_bank_cash_tab";
+    public static string PopupBankTitle = "popup_bank_title";    
     public static string TutorialTitleDefault = "tutorial_title_default";
     public static string TutorialMessagePrefix = "tutorial_message_";
     public static string TutorialButtonPrefix = "tutorial_button_";

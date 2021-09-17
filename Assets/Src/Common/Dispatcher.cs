@@ -16,6 +16,7 @@ public class Dispatcher
     public Action UIRequestBlockRaycasts = delegate { };
     public Action UIRequestUnblockRaycasts = delegate { };
     public Action UITopPanelLevelUpAnimationFinished = delegate { };
+    public Action<bool> UITopPanelAddMoneyClicked = delegate { };    
 
     public Action<int> UIBottomPanelPlaceShelfClicked = delegate { };
     public Action<int> UIBottomPanelPlaceFloorClicked = delegate { };
@@ -51,6 +52,7 @@ public class Dispatcher
     public Action<WarehousePopupViewModel, int> UIWarehousePopupSlotClicked = delegate { };
     public Action<UpgradesPopupItemViewModelBase> UIUpgradePopupBuyClicked = delegate { };
     public Action TutorialActionPerformed = delegate { };
+    public Action<BankConfigItem> UIBankItemClicked = delegate { };    
 
     public Action<CustomerModel> CustomerAnimationEnded = delegate { };
 
@@ -74,6 +76,8 @@ public class Dispatcher
     public Action NotifyNotEnoughtMoney = delegate { };
 
     public Action<bool> SaveStateChanged = delegate { };
+
+    public Action<string> JsIncomingMessage = delegate { };    
 
     private static Lazy<Dispatcher> _instance = new Lazy<Dispatcher>();
     public static Dispatcher Instance => _instance.Value;

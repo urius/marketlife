@@ -2,8 +2,11 @@ using Cysharp.Threading.Tasks;
 
 public struct LoadConfigsCommand
 {
-    public UniTask<bool> ExecuteAsync()
+    public async UniTask<bool> ExecuteAsync()
     {
-        return GameConfigManager.Instance.LoadConfigAsync();
+        var result = true;
+        result &= await GameConfigManager.Instance.LoadConfigAsync();
+        result &= await new LoadBankConfigCommand().ExecuteAsync();
+        return result;
     }
 }

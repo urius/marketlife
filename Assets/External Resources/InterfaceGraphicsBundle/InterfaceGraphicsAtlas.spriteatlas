@@ -32,7 +32,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 46b41057a82fe4010b5245cd9e8b4afa, type: 3}
-    totalSpriteSurfaceArea: 1305007
+    totalSpriteSurfaceArea: 1385389
     bindAsDefault: 0
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -55,6 +55,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: bf963e02a32544b8fa517606d749ca29, type: 3}
   - {fileID: 21300000, guid: 742722429a021491f9af9a98628524c5, type: 3}
   - {fileID: 21300000, guid: f6416052473584c90931f9eba17e0c97, type: 3}
+  - {fileID: 21300000, guid: 5f01d652534214c46ba1a2cfcf483537, type: 3}
   - {fileID: 21300000, guid: ed347672ec4ad41ffb84217e5144acdc, type: 3}
   - {fileID: 21300000, guid: 848e139269b1f491b86b90be3f143ea7, type: 3}
   - {fileID: 21300000, guid: adb788d29559f4c858092acd11f95c40, type: 3}
@@ -69,6 +70,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 99e4d3b3131284fb390e1730c8bb969e, type: 3}
   - {fileID: 21300000, guid: ed209af3c3a7c4df7a339501538238f7, type: 3}
   - {fileID: 21300000, guid: db0478048338c44d49168225e7e11016, type: 3}
+  - {fileID: 21300000, guid: f08fe8244d07d4639bbe4028759b945c, type: 3}
   - {fileID: 21300000, guid: 48dabf54da5ad464b81880ebbdafcc97, type: 3}
   - {fileID: 21300000, guid: 873fb87419f414aba878b2a83ca87eca, type: 3}
   - {fileID: 21300000, guid: 62dd0884dfc6a4b919b25990d561aa26, type: 3}
@@ -105,6 +107,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 66c809989c7fa410f9e4e42bc2899662, type: 3}
   - {fileID: 21300000, guid: 2ad2bea8001004cd39f7112e9d902375, type: 3}
   - {fileID: 21300000, guid: a3831db8968b14a7ca185a7e31bdc3db, type: 3}
+  - {fileID: 21300000, guid: 88e348c889a0c462b97247bf108749de, type: 3}
   - {fileID: 21300000, guid: 5773aac8d972141b58f0aaf17633be10, type: 3}
   - {fileID: 21300000, guid: 4a5c12e84a2f4422eb09ad59ebd67d70, type: 3}
   - {fileID: 21300000, guid: a97af409e267a413b8b556b04eec9a0b, type: 3}
@@ -118,7 +121,9 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 7aaef51a3d35f4bc68284b32f42f839b, type: 3}
   - {fileID: 21300000, guid: fc376e1ae26844693b4c5985f66410f0, type: 3}
   - {fileID: 21300000, guid: 0b104c3a210fa4e5a887802a73a203f9, type: 3}
+  - {fileID: 21300000, guid: d39e994abcfd44fafa806a1f25737d2a, type: 3}
   - {fileID: 21300000, guid: e1e1f17ab004e4ce3963afd10c495d59, type: 3}
+  - {fileID: 21300000, guid: e82606aa6b3d14e1db53508e8cc7747e, type: 3}
   - {fileID: 21300000, guid: 0376dcaa29ea041dca0831e29332670c, type: 3}
   - {fileID: 21300000, guid: e70d3faad65ce421db021f95d278cfee, type: 3}
   - {fileID: 21300000, guid: 5302aaba45dd54fbb99ff82b032d79c4, type: 3}
@@ -186,6 +191,7 @@ SpriteAtlas:
   - Icon_Role
   - Icon_Up3
   - LimeOn
+  - icon_giftbox_red
   - Window1
   - button_1_small_red
   - Icon_Shelf_1
@@ -200,6 +206,7 @@ SpriteAtlas:
   - hint_skin
   - sign_upgrade_wh_volume
   - sign_expand_shop_x
+  - item_skin_1
   - Door1
   - content_skin_2
   - sign_rotate_right
@@ -236,6 +243,7 @@ SpriteAtlas:
   - Icon_Crowd
   - icon_star_05
   - item_skin_orange
+  - icon_giftbox_blue
   - button_1_long_crimson
   - Icon_Shelf_3
   - icon_save
@@ -249,7 +257,9 @@ SpriteAtlas:
   - Hamburger
   - Floor2
   - skin_top_rating_button
+  - icon_giftbox_green
   - popup_content_inner
+  - icon_giftbox_yellow
   - button_1_long_orange
   - unwashes_icon_2
   - Lipsticks_1

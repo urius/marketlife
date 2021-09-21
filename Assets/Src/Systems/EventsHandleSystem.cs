@@ -65,10 +65,16 @@ public class EventsHandleSystem
         _dispatcher.UITopPanelAddMoneyClicked += OnUITopPanelAddMoneyClicked;
         _dispatcher.UIBottomPanelInviteFriendClicked += OnUIBottomPanelInviteFriendClicked;
         _dispatcher.UIBankItemClicked += OnUIBankItemClicked;
+        _dispatcher.UIGetBonusButtonClicked += OnUIGetBonusButtonClicked;
         _dispatcher.JsIncomingMessage += OnIncomingJsMessage;
 
         _gameStateModel.ActionStateChanged += OnActionStateChanged;
         _gameStateModel.GameStateChanged += OnGameStateChanged;
+    }
+
+    private void OnUIGetBonusButtonClicked()
+    {
+        new ProcessBonusClickCommand().Execute();
     }
 
     private void OnUIBottomPanelInviteFriendClicked(FriendData friendData)

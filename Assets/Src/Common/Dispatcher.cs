@@ -52,7 +52,9 @@ public class Dispatcher
     public Action<WarehousePopupViewModel, int> UIWarehousePopupSlotClicked = delegate { };
     public Action<UpgradesPopupItemViewModelBase> UIUpgradePopupBuyClicked = delegate { };
     public Action TutorialActionPerformed = delegate { };
-    public Action<BankConfigItem> UIBankItemClicked = delegate { };    
+    public Action<BankConfigItem> UIBankItemClicked = delegate { };
+    public Action UIGetBonusButtonClicked = delegate { };
+    public Action UICompensationPopupTakeClicked = delegate { };    
 
     public Action<CustomerModel> CustomerAnimationEnded = delegate { };
 

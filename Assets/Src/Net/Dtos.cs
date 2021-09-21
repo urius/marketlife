@@ -1,4 +1,9 @@
 //----- old format
+public struct GetDataOldCommonResponseDto
+{
+    public string response;
+}
+
 public struct GetDataOldResponseDto
 {
     public string response;
@@ -24,6 +29,8 @@ public struct GetDataOldResponseDataDto
     public string first_visit_time;
     public string last_bonus_time;
     public string new_day;
+    public int cash_b;
+    public int gold_b;
 }
 
 //----- new format
@@ -59,6 +66,7 @@ public class UserDataDto
     public string[] unwashes;
     public int[] tutorial_steps;
     public string[] actions_data;
+    public BonusStateDto bonus_state;
 }
 
 public class ExternalDataDto
@@ -120,4 +128,11 @@ public class ShopDesignDto
         this.windows = windows;
         this.walls = walls;
     }
+}
+
+public struct BonusStateDto
+{
+    public int timestamp;
+    public int rank;
+    public bool is_old_game_bonus_processed;
 }

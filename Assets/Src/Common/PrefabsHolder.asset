@@ -99,3 +99,7 @@ MonoBehaviour:
     type: 3}
   UIBankPopupItemPrefab: {fileID: 1951502903678503767, guid: cc520a10880534eb6a9536a48564c690,
     type: 3}
+  UIDailyBonusPopupPrefab: {fileID: 3571934120405609828, guid: 2b0f92a00611f45c6b47d185f0952d59,
+    type: 3}
+  UIOldGameCompensationPopupPrefab: {fileID: 1762940899024778501, guid: c3c2ff8ce59484ccf98b8bc2ac3efe0b,
+    type: 3}

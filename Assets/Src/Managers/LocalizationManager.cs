@@ -52,6 +52,8 @@ public class LocalizationKeys
 {    
     public static string HintBottomPanelVisitFriend = "hint_bottom_panel_visit_friend";
     public static string HintBottomPanelShelfDescription = "hint_bottom_panel_shelf_description";
+    public static string HintOldGameBonus = "hint_old_game_bonus";
+    public static string HintDailyBonus = "hint_daily_bonus";    
     public static string BottomPanelWarehouseEmptySlot = "bottom_panel_warehouse_empty_slot";
     public static string BottomPanelWarehouseEmptySlotHint = "bottom_panel_warehouse_empty_slot_hint";
     public static string BottomPanelWarehouseQuickDeliveryHint = "bottom_panel_warehouse_quick_delivery_hint";    
@@ -119,7 +121,13 @@ public class LocalizationKeys
     //public static string PopupLevelUpNewUpgrades = "popup_levelup_new_upgrades";    
     public static string PopupBankGoldTab = "popup_bank_gold_tab";
     public static string PopupBankCashTab = "popup_bank_cash_tab";
-    public static string PopupBankTitle = "popup_bank_title";    
+    public static string PopupBankTitle = "popup_bank_title";
+    public static string PopupErrorTitle = "popup_error_title";
+    public static string PopupErrorOk = "popup_error_ok";
+    public static string PopupErrorLoadDataCommon = "popup_error_load_data_common";
+    public static string PopupCompensationTitle = "popup_compensation_title";
+    public static string PopupCompensationMessage = "popup_compensation_message";    
+
     public static string TutorialTitleDefault = "tutorial_title_default";
     public static string TutorialMessagePrefix = "tutorial_message_";
     public static string TutorialButtonPrefix = "tutorial_button_";

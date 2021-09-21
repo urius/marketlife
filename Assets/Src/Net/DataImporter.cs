@@ -23,7 +23,7 @@ public class DataImporter
             new ShopPersonalModel(),
             warehouseModel);
 
-        return new UserModel(dto.data.uid, shopProgress, shopModel, new UserStatsData(), null, new AvailableFriendShopActionsDataModel(Array.Empty<AvailableFriendShopActionData>()), new ExternalActionsModel());
+        return new UserModel(dto.data.uid, shopProgress, shopModel, new UserStatsData(), new UserBonusState(), null, new AvailableFriendShopActionsDataModel(Array.Empty<AvailableFriendShopActionData>()), new ExternalActionsModel());
     }
 
     public UserModel Import(GetDataResponseDto deserializedData)
@@ -33,8 +33,19 @@ public class DataImporter
         var shopProgress = ToProgressModel(dataDto.progress);
         var statsData = new UserStatsData(deserializedData.first_visit_time, deserializedData.last_visit_time, deserializedData.days_play);
         var actionsDataModel = ToAvailableActionsDataModel(dataDto.actions_data);
+        var bonusState = ToBonusState(dataDto.bonus_state);
         var externalActionsModel = ToExternalActionsModel(deserializedData.external_data);
-        return new UserModel(deserializedData.uid, shopProgress, shopModel, statsData, dataDto.tutorial_steps, actionsDataModel, externalActionsModel);
+        return new UserModel(deserializedData.uid, shopProgress, shopModel, statsData, bonusState, dataDto.tutorial_steps, actionsDataModel, externalActionsModel);
+    }
+
+    private UserBonusState ToBonusState(BonusStateDto bonusStateDto)
+    {
+        return new UserBonusState
+        {
+            IsOldGameBonusProcessed = bonusStateDto.is_old_game_bonus_processed,
+            LastBonusTakeTimestamp = bonusStateDto.timestamp,
+            LastTakenBonusRank = bonusStateDto.rank,            
+        };
     }
 
     private ExternalActionsModel ToExternalActionsModel(ExternalDataDto externalData)

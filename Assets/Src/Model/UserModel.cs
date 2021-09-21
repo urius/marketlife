@@ -6,6 +6,7 @@ using UnityEngine;
 public class UserModel
 {
     public Action<int> TutorialStepPassed = delegate { };
+    public Action BonusStateUpdated = delegate { };
 
     public readonly string Uid;
     public readonly UserProgressModel ProgressModel;
@@ -21,6 +22,7 @@ public class UserModel
         UserProgressModel progressModel,
         ShopModel shopModel,
         UserStatsData statsData,
+        UserBonusState bonusState,
         int[] tutorialSteps,
         AvailableFriendShopActionsDataModel actionsDataModel,
         ExternalActionsModel externalActionsModel)
@@ -29,10 +31,34 @@ public class UserModel
         ProgressModel = progressModel;
         ShopModel = shopModel;
         StatsData = statsData;
+        BonusState = bonusState;
         ActionsDataModel = actionsDataModel;
         SessionDataModel = new UserSessionDataModel();
         TutorialSteps = new List<int>(tutorialSteps ?? Enumerable.Empty<int>());
         ExternalActionsModel = externalActionsModel;
+    }
+
+    public UserBonusState BonusState { get; private set; }
+
+    public void UpdateDailyBonus(int takeTimestamp, int takenBonusRank)
+    {
+        var bonusState = BonusState;
+        bonusState.LastBonusTakeTimestamp = takeTimestamp;
+        bonusState.LastTakenBonusRank = takenBonusRank;
+        UpdateBonusState(bonusState);
+    }
+
+    public void MarkOldGameBonusProcessed()
+    {
+        var bonusState = BonusState;
+        bonusState.IsOldGameBonusProcessed = true;
+        UpdateBonusState(bonusState);
+    }
+
+    public void UpdateBonusState(UserBonusState newBonusState)
+    {
+        BonusState = newBonusState;
+        BonusStateUpdated();
     }
 
     public void ApplyExternalActions()
@@ -278,6 +304,13 @@ public struct UserStatsData
         LastVisitTimestamp = lastVisitTimestamp;
         TotalDaysPlayCount = totalDaysPlayCount;
     }
+}
+
+public struct UserBonusState
+{
+    public int LastBonusTakeTimestamp;
+    public int LastTakenBonusRank;
+    public bool IsOldGameBonusProcessed;
 }
 
 public class UserProgressModel

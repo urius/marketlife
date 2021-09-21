@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 347341347
+CRC: 268022254
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 3ef2352ae3af2e18d7e792f229fe940c
+    Hash: 13efdf4db7fa3d79ed42a725db4157c2
   TypeTreeHash:
     serializedVersion: 2
     Hash: ba23c2e8f8b3f5319028008a25497317
@@ -35,10 +35,12 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_small_red.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_long_blue.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/unwashes_icon_2.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/icon_giftbox_red.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/Icon_next1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Water_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Cream_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Windows/Window1.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/icon_giftbox_blue.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Floors/Floor4.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall4.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Windows/Window2.png
@@ -48,8 +50,9 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/Icon_Role.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Floors/Floor2.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_2.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_long_orange.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/icon_giftbox_yellow.png
 - Assets/External Resources/InterfaceGraphicsBundle/Popups/popup_content_inner.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_long_orange.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/sign_cross.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/icon_star_05.png
 - Assets/External Resources/InterfaceGraphicsBundle/TopPanel/skin_add_money_button.png
@@ -72,6 +75,7 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/Popups/content_skin_2.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/icon_dollar.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/unwashes_icon_3.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/icon_giftbox_green.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Beer.png
 - Assets/External Resources/InterfaceGraphicsBundle/Popups/item_skin_orange.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/icon_save.png
@@ -96,6 +100,7 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/Common/square_88_white.png
 - Assets/External Resources/InterfaceGraphicsBundle/Popups/UpgradesPopup/icon_personal_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/Popups/UpgradesPopup/sign_expand_shop_x.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/item_skin_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/TopPanel/skin_top_stribe_yellow.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Floors/Floor1.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/hint_arrow_up.png

@@ -56,6 +56,12 @@ public class PopupsMediator : IMediator
             case PopupType.Bank:
                 newMediator = new UIBankPopupMediator(_contentTransform);
                 break;
+            case PopupType.Error:
+                newMediator = new UIErrorPopupMediator(_contentTransform);
+                break;
+            case PopupType.OldGameCompensation:
+                newMediator = new UIOldGameCompensationPopupMediator(_contentTransform);
+                break;
         };
         newMediator.Mediate();
         _popupMediators.Push(newMediator);

@@ -7,6 +7,7 @@ public class UIRootCanvasMediator : MonoBehaviour
     [SerializeField] private UISaveIconView _saveIconView;
     [SerializeField] private RectTransform _gameViewUiContainerRectTransform;
     [SerializeField] private BottomPanelView _bottomPanelView;
+    [SerializeField] private UIGetDailyBonusButtonView _dailyBonusButtonView;
     [SerializeField] private Canvas _rootCanvas;
     [SerializeField] private Canvas _popupsCanvas;
     [SerializeField] private Canvas _poolCanvas;
@@ -23,6 +24,7 @@ public class UIRootCanvasMediator : MonoBehaviour
     private UIActionsCursorMediator _actionsCursorMediator;
     private PopupsMediator _popupsMediator;
     private TutorialMediator _tutorialMediator;
+    private UIGetDailyBonusButtonMediator _dailyBonusButtonMediator;
     private PrefabsHolder _prefabsHolder;
     private Vector3 _mouseDownPosition;
     private int _mouseDownFramesCount;
@@ -42,6 +44,7 @@ public class UIRootCanvasMediator : MonoBehaviour
         _actionsCursorMediator = new UIActionsCursorMediator(popupCanvasRectTransform);
         _popupsMediator = new PopupsMediator(popupCanvasRectTransform);
         _tutorialMediator = new TutorialMediator(transform as RectTransform);
+        _dailyBonusButtonMediator = new UIGetDailyBonusButtonMediator(_dailyBonusButtonView);
 
         RootCanvasProvider.Instance.SetupRootCanvas(_rootCanvas);
         PoolCanvasProvider.Instance.SetupPoolCanvas(_poolCanvas);
@@ -65,6 +68,7 @@ public class UIRootCanvasMediator : MonoBehaviour
         _actionsCursorMediator.Mediate();
         _popupsMediator.Mediate();
         _tutorialMediator.Mediate();
+        _dailyBonusButtonMediator.Mediate();
     }
 
     private void OnUIRequestBlockRaycasts()

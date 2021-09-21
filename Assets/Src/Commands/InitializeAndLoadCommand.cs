@@ -13,6 +13,7 @@ public struct InitializeAndLoadCommand
         await new LoadConfigsCommand().ExecuteAsync();
         await new LoadAssetsCommand().ExecuteAsync();
         await new LoadPlayerShopCommand().ExecuteAsync();
+        await new LoadCompensationDataCommand().ExecuteAsync();
 
         gameStateModel.SetGameState(GameStateName.Loaded);
         gameStateModel.SetViewingUserModel(playerModelHolder.UserModel);

@@ -12,6 +12,8 @@ public class URLsHolder : ScriptableObject
     //https://devman.ru/marketVK/unity/DataProvider.php?command=get_data&id={0}
     [SerializeField] private string _getDataURL = "https://devman.ru/marketVK/unity/DataProvider.php?command=get_data&id={0}";
     public string GetDataURL => _getDataURL;
+    [SerializeField] private string _getFriendDataOldURL = "https://devman.ru/marketVK/dataProvider.php?command=get_friend_data&id={0}";
+    public string GetFriendDataOldURL => _getFriendDataOldURL;
     [SerializeField] private string _saveDataURL = "https://devman.ru/marketVK/unity/DataProvider.php?command=save_data&id={0}";
     public string SaveDataURL => _saveDataURL;
     [SerializeField] private string _saveExternalDataURL = "https://devman.ru/marketVK/unity/DataProvider.php?command=save_external_data&id={0}";

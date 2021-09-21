@@ -15,6 +15,7 @@ public class Constants
     public const string FieldUnwashes = "unwashes";
     public const string FieldTutorialSteps = "tutorial_steps";
     public const string FieldAvailableActionsData = "actions_data";    
+    public const string FieldBonus = "bonus";
     public const string FieldExternalActions = "actions";
 
     public const string LevelsMultiplier = "multiplier";    

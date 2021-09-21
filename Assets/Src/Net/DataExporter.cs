@@ -9,6 +9,16 @@ public class DataExporter
     public static DataExporter Instance => _instance.Value;
     private static Lazy<DataExporter> _instance = new Lazy<DataExporter>();
 
+    public BonusStateDto ExportBonus(UserBonusState bonusState)
+    {
+        return new BonusStateDto
+        {
+            is_old_game_bonus_processed = bonusState.IsOldGameBonusProcessed,
+            timestamp = bonusState.LastBonusTakeTimestamp,
+            rank = bonusState.LastTakenBonusRank,
+        };
+    }
+
     public ShopProgressDto ExportProgress(UserProgressModel progressModel)
     {
         return new ShopProgressDto(progressModel.Cash + progressModel.DelayedCash, progressModel.Gold, progressModel.ExpAmount, progressModel.Level);

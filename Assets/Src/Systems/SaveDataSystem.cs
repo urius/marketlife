@@ -76,6 +76,7 @@ public class SaveDataSystem
         _shopModel.UnwashRemoved += OnUnwashRemoved;
 
         _playerModel.TutorialStepPassed += OnTutorialStepPassed;
+        _playerModel.BonusStateUpdated += OnBonusStateUpdated;
         playerExternalActionsModel.ActionsCleared += OnPlayerExternalActionsCleared;
 
         progressModel.CashChanged += OnCashChanged;
@@ -103,6 +104,12 @@ public class SaveDataSystem
         _gameStateModel.ViewingUserModelChanged += OnViewingUserModelChanged;
 
         _updatesProvider.RealtimeSecondUpdate += OnRealtimeSecondUpdate;
+    }
+
+    private void OnBonusStateUpdated()
+    {
+        //todo uncomment
+        //MarkToSaveField(SaveField.Bonus);
     }
 
     private void OnPlayerExternalActionsCleared()
@@ -413,5 +420,6 @@ public enum SaveField
     Unwashes = 1 << 5,
     TutorialSteps = 1 << 6,
     AvailableActionsData = 1 << 7,
-    All = Progress | Personal | Warehouse | Design | ShopObjects | Unwashes | TutorialSteps | AvailableActionsData,
+    Bonus = 1 << 8,
+    All = Progress | Personal | Warehouse | Design | ShopObjects | Unwashes | TutorialSteps | AvailableActionsData | Bonus,
 }

@@ -14,4 +14,6 @@ public enum PopupType
     OfflineReport,
     LevelUp,
     Bank,
+    OldGameCompensation,
+    Error,
 }

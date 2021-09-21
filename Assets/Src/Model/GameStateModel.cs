@@ -32,6 +32,8 @@ public class GameStateModel
         _showingPopupModelsStack = new Stack<PopupViewModelBase>();
     }
 
+    public OldGameCompensationHolder test => OldGameCompensationHolder.Instance;
+
     public Task GameDataLoadedTask => _dataLoadedTcs.Task;
     public bool IsGamePaused { get; private set; } = false;
     public GameStateName GameState { get; private set; } = GameStateName.Initializing;

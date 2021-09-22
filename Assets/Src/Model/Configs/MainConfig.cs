@@ -11,7 +11,8 @@ public class MainConfig :
     IDoorsConfig,
     IPersonalConfig,
     IUpgradesConfig,
-    ILevelsConfig
+    ILevelsConfig,
+    IDailyBonusConfig
 {
     public readonly int GameplayAtlasVersion;
     public readonly int InterfaceAtlasVersion;
@@ -35,6 +36,7 @@ public class MainConfig :
     public readonly UpgradeConfig[] WarehouseSlotsUpgradesConfig;
     public readonly UpgradeConfig[] ExtendShopXUpgradesConfig;
     public readonly UpgradeConfig[] ExtendShopYUpgradesConfig;
+    public readonly DailyBonusConfig[] DailyBonusConfig;
 
     private readonly float[] _levelsConfig;
 
@@ -52,7 +54,8 @@ public class MainConfig :
         UpgradeConfig[] warehouseSlotsUpgradesConfig,
         UpgradeConfig[] extendShopXUpgradesConfig,
         UpgradeConfig[] extendShopYUpgradesConfig,
-        float[] levelsConfig)
+        float[] levelsConfig,
+        DailyBonusConfig[] dailyBonusConfig)
     {
         GameplayAtlasVersion = dto.GameplayAtlasVersion;
         InterfaceAtlasVersion = dto.InterfaceAtlasVersion;
@@ -76,7 +79,10 @@ public class MainConfig :
         ExtendShopXUpgradesConfig = extendShopXUpgradesConfig;
         ExtendShopYUpgradesConfig = extendShopYUpgradesConfig;
         _levelsConfig = levelsConfig;
+        DailyBonusConfig = dailyBonusConfig;
     }
+
+    DailyBonusConfig[] IDailyBonusConfig.DailyBonusConfig => DailyBonusConfig;
 
     public UpgradeConfig GetCurrentUpgradeForValue(UpgradeType upgradeType, int value)
     {
@@ -251,6 +257,27 @@ public class MainConfig :
             result++;
         }
         return result;
+    }
+
+    public (int CashAmount, int GoldAmount) GetDailyBonusRewardForDay(int dayNum)
+    {
+        var cashAmount = 0;
+        var goldAmount = 0;
+        foreach (var config in DailyBonusConfig)
+        {
+            if (dayNum >= config.DayNum)
+            {
+                if (config.Reward.IsGold)
+                {
+                    goldAmount += config.Reward.Value;
+                }
+                else
+                {
+                    cashAmount += config.Reward.Value;
+                }
+            }
+        }
+        return (cashAmount, goldAmount);
     }
 
     private IEnumerable<ItemConfig<T>> GetConfigsForLevel<T>(Dictionary<string, ItemConfig<T>> configsDictionary, int level)
@@ -493,6 +520,12 @@ public enum PersonalType
     Security,
 }
 
+public struct DailyBonusConfig
+{
+    public int DayNum;
+    public Price Reward;
+}
+
 public interface IProductsConfig
 {
     IEnumerable<ProductConfig> GetProductConfigsForLevel(int level);
@@ -542,6 +575,12 @@ public interface IUpgradesConfig
     UpgradeConfig GetCurrentUpgradeForValue(UpgradeType upgradeType, int value);
     UpgradeConfig GetNextUpgradeForValue(UpgradeType upgradeType, int value);
     IEnumerable<UpgradeConfig> GetAllUpgradesBytype(UpgradeType upgradeType);
+}
+
+public interface IDailyBonusConfig
+{
+    DailyBonusConfig[] DailyBonusConfig { get; }
+    (int CashAmount, int GoldAmount) GetDailyBonusRewardForDay(int dayNum);
 }
 
 public interface ILevelsConfig

@@ -67,10 +67,16 @@ public class EventsHandleSystem
         _dispatcher.UIBankItemClicked += OnUIBankItemClicked;
         _dispatcher.UIGetBonusButtonClicked += OnUIGetBonusButtonClicked;
         _dispatcher.UICompensationPopupTakeClicked += OnUICompensationPopupTakeClicked;
+        _dispatcher.UIDailyBonusTakeClicked += OnUIDailyBonusTakeClicked;
         _dispatcher.JsIncomingMessage += OnIncomingJsMessage;
 
         _gameStateModel.ActionStateChanged += OnActionStateChanged;
         _gameStateModel.GameStateChanged += OnGameStateChanged;
+    }
+
+    private void OnUIDailyBonusTakeClicked(Vector3[] itemsWorldPositions)
+    {
+        new HandleTakeDailyBonusCommand().Execute(itemsWorldPositions);
     }
 
     private void OnUICompensationPopupTakeClicked(Vector3 takeButtonWorldCoords)

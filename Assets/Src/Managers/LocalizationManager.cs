@@ -126,7 +126,9 @@ public class LocalizationKeys
     public static string PopupErrorOk = "popup_error_ok";
     public static string PopupErrorLoadDataCommon = "popup_error_load_data_common";
     public static string PopupCompensationTitle = "popup_compensation_title";
-    public static string PopupCompensationMessage = "popup_compensation_message";    
+    public static string PopupCompensationMessage = "popup_compensation_message";
+    public static string PopupDailyBonusTitle = "popup_daily_bonus_title"; 
+    public static string PopupDailyBonusDayFormat = "popup_daily_bonus_day_format";
 
     public static string TutorialTitleDefault = "tutorial_title_default";
     public static string TutorialMessagePrefix = "tutorial_message_";

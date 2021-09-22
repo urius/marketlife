@@ -88,6 +88,7 @@ GameObject:
   - component: {fileID: 3571934119724372833}
   - component: {fileID: 3571934119724372834}
   - component: {fileID: 3571934119724372835}
+  - component: {fileID: 2859542212589903454}
   m_Layer: 5
   m_Name: button_take
   m_TagString: Untagged
@@ -197,6 +198,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2859542212589903454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3571934119724372861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 521625b95147a425bb550d793d8da4d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _localizationKey: popup_daily_bonus_take
+  _text: {fileID: 3571934120091321881}
+  _tmpText: {fileID: 0}
 --- !u!1 &3571934119756072155
 GameObject:
   m_ObjectHideFlags: 0

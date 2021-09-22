@@ -18,6 +18,11 @@ public class UIDailyBonusPopupView : UIPopupBase
         _takeButton.AddOnClickListener(OnTakeClicked);
     }
 
+    public void SetTakeButtonInteractable(bool isInteractable)
+    {
+        _takeButton.interactable = isInteractable;
+    }
+
     private void OnTakeClicked()
     {
         TakeButtonClicked();

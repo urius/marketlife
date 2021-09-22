@@ -55,12 +55,6 @@ public class UserModel
         UpdateBonusState(bonusState);
     }
 
-    public void UpdateBonusState(UserBonusState newBonusState)
-    {
-        BonusState = newBonusState;
-        BonusStateUpdated();
-    }
-
     public void ApplyExternalActions()
     {
         foreach (var action in ExternalActionsModel.Actions)
@@ -75,6 +69,12 @@ public class UserModel
                     break;
             }
         }
+    }
+
+    private void UpdateBonusState(UserBonusState newBonusState)
+    {
+        BonusState = newBonusState;
+        BonusStateUpdated();
     }
 
     private void ApplyTakeAction(ExternalActionTake takeAction)

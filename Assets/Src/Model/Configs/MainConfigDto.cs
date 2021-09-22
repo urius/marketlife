@@ -25,6 +25,7 @@ public class MainConfigDto
     public UpgradeConfigDto[] WarehouseSlotsUpgradesConfig;
     public UpgradeConfigDto[] ExtendShopXUpgradesConfig;
     public UpgradeConfigDto[] ExtendShopYUpgradesConfig;
+    public List<string> DailyBonusConfig;
 }
 
 public class PlaceableItemConfigDto

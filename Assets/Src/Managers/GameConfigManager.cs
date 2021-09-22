@@ -20,6 +20,7 @@ public class GameConfigManager : ScriptableObject
     public IPersonalConfig PersonalConfig => MainConfig;
     public IUpgradesConfig UpgradesConfig => MainConfig;
     public ILevelsConfig LevelsConfig => MainConfig;
+    public IDailyBonusConfig DailyBonusConfig => MainConfig;
 
     public async UniTask<bool> LoadConfigAsync()
     {
@@ -44,6 +45,7 @@ public class GameConfigManager : ScriptableObject
         var productsConfig = ToProductsConfigs(mainConfigDto.ProductsConfig);
         var personalConfig = ToPersonalConfigs(mainConfigDto.PersonalConfig);
         var levelsConfig = ToLevelsConfig(mainConfigDto.LevelsConfig);
+        var dailyBonusConfig = ToDailyBonusConfig(mainConfigDto.DailyBonusConfig);
 
         return new MainConfig(
             mainConfigDto,
@@ -59,7 +61,26 @@ public class GameConfigManager : ScriptableObject
             ToUpgradeConfigs(UpgradeType.WarehouseSlots, mainConfigDto.WarehouseSlotsUpgradesConfig),
             ToUpgradeConfigs(UpgradeType.ExpandX, mainConfigDto.ExtendShopXUpgradesConfig),
             ToUpgradeConfigs(UpgradeType.ExpandY, mainConfigDto.ExtendShopYUpgradesConfig),
-            levelsConfig);
+            levelsConfig,
+            dailyBonusConfig);
+    }
+
+    private DailyBonusConfig[] ToDailyBonusConfig(List<string> dailyBonusConfigDto)
+    {
+        var result = new DailyBonusConfig[dailyBonusConfigDto.Count];
+        for (var i = 0; i < dailyBonusConfigDto.Count; i++)
+        {
+            var configStr = dailyBonusConfigDto[i];
+            var dayNum = i + 1;
+            var reward = Price.FromString(configStr);
+            result[i] = new DailyBonusConfig
+            {
+                DayNum = dayNum,
+                Reward = reward,
+            };
+        }
+
+        return result;
     }
 
     private float[] ToLevelsConfig(Dictionary<string, float> levelsConfig)

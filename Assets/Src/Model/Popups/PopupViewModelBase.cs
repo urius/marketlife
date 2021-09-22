@@ -16,4 +16,5 @@ public enum PopupType
     Bank,
     OldGameCompensation,
     Error,
+    DailyBonus,
 }

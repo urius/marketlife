@@ -56,7 +56,8 @@ public class Dispatcher
     public Action TutorialActionPerformed = delegate { };
     public Action<BankConfigItem> UIBankItemClicked = delegate { };
     public Action UIGetBonusButtonClicked = delegate { };
-    public Action<Vector3> UICompensationPopupTakeClicked = delegate { };    
+    public Action<Vector3> UICompensationPopupTakeClicked = delegate { };
+    public Action<Vector3[]> UIDailyBonusTakeClicked = delegate { };    
 
     public Action<CustomerModel> CustomerAnimationEnded = delegate { };
 

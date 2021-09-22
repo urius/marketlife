@@ -108,8 +108,8 @@ public class SaveDataSystem
 
     private void OnBonusStateUpdated()
     {
-        //todo uncomment
-        //MarkToSaveField(SaveField.Bonus);
+        MarkToSaveField(SaveField.Bonus);
+        TriggerSave();
     }
 
     private void OnPlayerExternalActionsCleared()

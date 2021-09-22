@@ -16,7 +16,9 @@ public class Dispatcher
     public Action UIRequestBlockRaycasts = delegate { };
     public Action UIRequestUnblockRaycasts = delegate { };
     public Action UITopPanelLevelUpAnimationFinished = delegate { };
-    public Action<bool> UITopPanelAddMoneyClicked = delegate { };    
+    public Action<bool> UITopPanelAddMoneyClicked = delegate { };
+    public Action<Vector2, int> UIRequestAddCashFlyAnimation = delegate { };
+    public Action<Vector2, int> UIRequestAddGoldFlyAnimation = delegate { };    
 
     public Action<int> UIBottomPanelPlaceShelfClicked = delegate { };
     public Action<int> UIBottomPanelPlaceFloorClicked = delegate { };
@@ -54,7 +56,7 @@ public class Dispatcher
     public Action TutorialActionPerformed = delegate { };
     public Action<BankConfigItem> UIBankItemClicked = delegate { };
     public Action UIGetBonusButtonClicked = delegate { };
-    public Action UICompensationPopupTakeClicked = delegate { };    
+    public Action<Vector3> UICompensationPopupTakeClicked = delegate { };    
 
     public Action<CustomerModel> CustomerAnimationEnded = delegate { };
 

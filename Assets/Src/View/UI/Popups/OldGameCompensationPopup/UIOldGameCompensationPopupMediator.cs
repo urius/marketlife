@@ -62,7 +62,7 @@ public class UIOldGameCompensationPopupMediator : IMediator
 
     private void OnTakeClicked()
     {
-        _dispatcher.UICompensationPopupTakeClicked();
+        _dispatcher.UICompensationPopupTakeClicked(_popupView.TakeButton.transform.position);
     }
 
     private void SetupPopup()

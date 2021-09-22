@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UITopPanelMediator : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class UITopPanelMediator : MonoBehaviour
     [SerializeField] private UITopPanelBarWithProgressView _expBarView;
     [SerializeField] private TMP_Text _levelText;
     [SerializeField] private UITopPanelBarWithProgressView _moodBarView;
+    [SerializeField] private RectTransform _animationsContainer;
 
     private GameStateModel _gameStateModel;
     private Dispatcher _dispatcher;
@@ -17,9 +19,12 @@ public class UITopPanelMediator : MonoBehaviour
     private SpritesProvider _spritesProvider;
     private AudioManager _audioManager;
     private TutorialUIElementsProvider _tutorialUIElementsProvider;
+    private Camera _camera;
     private UserProgressModel _playerProgressModel;
     private ShopModel _playerShopModel;
     private bool _isLevelUpInProgress;
+    private int _updateGoldAnimationDelayMs = 0;
+    private int _updateCashAnimationDelayMs = 0;
 
     public void Awake()
     {
@@ -30,6 +35,7 @@ public class UITopPanelMediator : MonoBehaviour
         _spritesProvider = SpritesProvider.Instance;
         _audioManager = AudioManager.Instance;
         _tutorialUIElementsProvider = TutorialUIElementsProvider.Instance;
+        _camera = Camera.main;
     }
 
     public async void Start()
@@ -135,6 +141,67 @@ public class UITopPanelMediator : MonoBehaviour
         _playerShopModel.MoodChanged += OnMoodChanged;
         _crystalsBarView.ButtonClicked += OnAddGoldClicked;
         _cashBarView.ButtonClicked += OnAddCashClicked;
+        _dispatcher.UIRequestAddGoldFlyAnimation += OnUIRequestAddGoldFlyAnimation;
+        _dispatcher.UIRequestAddCashFlyAnimation += OnUIRequestAddCashFlyAnimation;
+    }
+
+    private void OnUIRequestAddGoldFlyAnimation(Vector2 screenCoords, int amount)
+    {
+        _updateGoldAnimationDelayMs = 500;
+        for (var i = 0; i < amount; i++)
+        {
+            AnimateFlyingGold(Random.insideUnitCircle * 100 + screenCoords);
+        }
+    }
+
+    private void OnUIRequestAddCashFlyAnimation(Vector2 screenCoords, int amount)
+    {
+        _updateCashAnimationDelayMs = 500;
+        for (var i = 0; i < amount; i++)
+        {
+            AnimateFlyingCash(Random.insideUnitCircle * 100 + screenCoords);
+        }
+    }
+
+    private void AnimateFlyingGold(Vector2 screenPos)
+    {
+        var image = CreateSpriteImage(_spritesProvider.GetGoldIcon(), screenPos);
+        var targetLocalPos = _animationsContainer.InverseTransformPoint(_crystalsBarView.transform.position);//.parent.TransformPoint(_crystalsBarView.transform.localPosition));
+        AnimateFlying(image, targetLocalPos);
+    }
+
+    private void AnimateFlyingCash(Vector2 screenPos)
+    {
+        var image = CreateSpriteImage(_spritesProvider.GetCashIcon(), screenPos);
+        var targetLocalPos = _animationsContainer.InverseTransformPoint(_cashBarView.transform.position);
+        AnimateFlying(image, targetLocalPos);
+    }
+
+    private void AnimateFlying(Image image, Vector3 targetLocalPos)
+    {
+        image.color = Color.white.SetAlpha(0);
+        var itemRect = image.rectTransform;
+        var delay = Random.Range(0f, 0.2f);
+        LeanTween.alpha(itemRect, 1, Random.Range(0.2f, 0.5f)).setDelay(delay);
+        var descr = LeanTween.move(itemRect, targetLocalPos, Random.Range(0.6f, 0.9f)).setEaseInBack().setDelay(delay);
+        descr.destroyOnComplete = true;
+    }
+
+    private Image CreateSpriteImage(Sprite sprite, Vector2 screenPos)
+    {
+        var go = new GameObject("FlyingGold");
+        go.transform.SetParent(_animationsContainer);
+        go.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);// Vector3.one;
+        go.transform.localEulerAngles = Vector3.zero;
+        var image = go.AddComponent<Image>();
+        image.preserveAspect = true;
+        image.sprite = sprite;
+        if (RectTransformUtility.ScreenPointToWorldPointInRectangle(_animationsContainer, screenPos, _camera, out var worldCoords))
+        {
+            image.transform.position = worldCoords;
+        }
+
+        return image;
     }
 
     private void OnAddGoldClicked()
@@ -188,10 +255,14 @@ public class UITopPanelMediator : MonoBehaviour
         return UniTask.WhenAll(setAmountTask, setProgressTask);
     }
 
-    private void OnGoldChanged(int previousValue, int currentValue)
+    private async void OnGoldChanged(int previousValue, int currentValue)
     {
         if (_gameStateModel.IsPlayingState)
         {
+            if (_updateGoldAnimationDelayMs > 0)
+            {
+                await UniTask.Delay(_updateGoldAnimationDelayMs);
+            }
             _crystalsBarView.SetAmountAnimatedAsync(currentValue);
             if (previousValue > currentValue)
             {
@@ -202,12 +273,17 @@ public class UITopPanelMediator : MonoBehaviour
                 _audioManager.PlaySound(SoundNames.Cash2);
             }
         }
+        _updateGoldAnimationDelayMs = 0;
     }
 
-    private void OnCashChanged(int previousValue, int currentValue)
+    private async void OnCashChanged(int previousValue, int currentValue)
     {
         if (_gameStateModel.IsPlayingState)
         {
+            if (_updateCashAnimationDelayMs > 0)
+            {
+                await UniTask.Delay(_updateCashAnimationDelayMs);
+            }
             _cashBarView.SetAmountAnimatedAsync(currentValue);
             if (previousValue > currentValue)
             {
@@ -218,6 +294,7 @@ public class UITopPanelMediator : MonoBehaviour
                 _audioManager.PlaySound(SoundNames.Cash2);
             }
         }
+        _updateCashAnimationDelayMs = 0;
     }
 
     private void OnExpChanged(int delta)

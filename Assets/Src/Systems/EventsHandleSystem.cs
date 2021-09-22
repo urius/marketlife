@@ -66,10 +66,16 @@ public class EventsHandleSystem
         _dispatcher.UIBottomPanelInviteFriendClicked += OnUIBottomPanelInviteFriendClicked;
         _dispatcher.UIBankItemClicked += OnUIBankItemClicked;
         _dispatcher.UIGetBonusButtonClicked += OnUIGetBonusButtonClicked;
+        _dispatcher.UICompensationPopupTakeClicked += OnUICompensationPopupTakeClicked;
         _dispatcher.JsIncomingMessage += OnIncomingJsMessage;
 
         _gameStateModel.ActionStateChanged += OnActionStateChanged;
         _gameStateModel.GameStateChanged += OnGameStateChanged;
+    }
+
+    private void OnUICompensationPopupTakeClicked(Vector3 takeButtonWorldCoords)
+    {
+        new HandleTakeOldGameCompensationCommand().Execute(takeButtonWorldCoords);
     }
 
     private void OnUIGetBonusButtonClicked()

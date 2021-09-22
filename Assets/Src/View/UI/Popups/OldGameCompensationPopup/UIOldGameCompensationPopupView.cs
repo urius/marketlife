@@ -11,6 +11,7 @@ public class UIOldGameCompensationPopupView : UIPopupBase
     [SerializeField] private TMP_Text _goldText;
     [SerializeField] private TMP_Text _cashText;
     [SerializeField] private Button _takeButton;
+    public Button TakeButton => _takeButton;
 
     public override void Awake()
     {

@@ -66,7 +66,7 @@ public class UserDataDto
     public string[] unwashes;
     public int[] tutorial_steps;
     public string[] actions_data;
-    public BonusStateDto bonus_state;
+    public BonusStateDto bonus;
 }
 
 public class ExternalDataDto

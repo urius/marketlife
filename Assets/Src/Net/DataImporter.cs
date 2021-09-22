@@ -33,7 +33,7 @@ public class DataImporter
         var shopProgress = ToProgressModel(dataDto.progress);
         var statsData = new UserStatsData(deserializedData.first_visit_time, deserializedData.last_visit_time, deserializedData.days_play);
         var actionsDataModel = ToAvailableActionsDataModel(dataDto.actions_data);
-        var bonusState = ToBonusState(dataDto.bonus_state);
+        var bonusState = ToBonusState(dataDto.bonus);
         var externalActionsModel = ToExternalActionsModel(deserializedData.external_data);
         return new UserModel(deserializedData.uid, shopProgress, shopModel, statsData, bonusState, dataDto.tutorial_steps, actionsDataModel, externalActionsModel);
     }

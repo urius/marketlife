@@ -196,6 +196,7 @@ public class UITopPanelMediator : MonoBehaviour
         var image = go.AddComponent<Image>();
         image.preserveAspect = true;
         image.sprite = sprite;
+        image.raycastTarget = false;
         if (RectTransformUtility.ScreenPointToWorldPointInRectangle(_animationsContainer, screenPos, _camera, out var worldCoords))
         {
             image.transform.position = worldCoords;

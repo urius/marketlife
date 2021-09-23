@@ -42,7 +42,7 @@ public struct HandleTakeDailyBonusCommand
 
         playerModel.UpdateDailyBonus(dailyBonusPopupViewModel.OpenTimestamp, dailyBonusPopupViewModel.CurrentBonusDay);
 
-        await UniTask.Delay(3000);
+        await UniTask.Delay(2000);
 
         if (gameStateModel.ShowingPopupModel != null && gameStateModel.ShowingPopupModel.PopupType == PopupType.DailyBonus)
         {

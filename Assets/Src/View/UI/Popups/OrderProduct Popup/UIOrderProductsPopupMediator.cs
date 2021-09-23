@@ -13,7 +13,6 @@ public class UIOrderProductsPopupMediator : IMediator
     private readonly ScreenCalculator _screenCalculator;
     private readonly UpdatesProvider _updatesProvider;
     private readonly SpritesProvider _spritesProvider;
-    private readonly IProductsConfig _productsConfig;
     private readonly ShopModel _shopModel;
     private readonly UserModel _playerModel;
     private readonly PrefabsHolder _prefabsHolder;
@@ -23,8 +22,8 @@ public class UIOrderProductsPopupMediator : IMediator
     private readonly Queue<UIOrderProductItemView> _cachedItems = new Queue<UIOrderProductItemView>();
 
     private UITabbedContentPopupView _popupView;
+    private OrderProductPopupViewModel _viewModel;
     private Rect _itemRect;
-    private IGrouping<int, ProductConfig>[] _availableProductConfigsByGroupId;
     private ProductConfig[] _currentTabProductConfigs;
     private int _currentShowFromIndex;
     private int _currentShowToIndex;
@@ -39,7 +38,6 @@ public class UIOrderProductsPopupMediator : IMediator
         _screenCalculator = ScreenCalculator.Instance;
         _updatesProvider = UpdatesProvider.Instance;
         _spritesProvider = SpritesProvider.Instance;
-        _productsConfig = GameConfigManager.Instance.ProductsConfig;
         _playerModel = PlayerModelHolder.Instance.UserModel;
         _shopModel = _playerModel.ShopModel;
         _prefabsHolder = PrefabsHolder.Instance;
@@ -49,20 +47,17 @@ public class UIOrderProductsPopupMediator : IMediator
 
     public async void Mediate()
     {
-        _itemRect = (_prefabsHolder.UIOrderProductPopupItemPrefab.transform as RectTransform).rect;
-        _availableProductConfigsByGroupId = _productsConfig.GetProductConfigsForLevel(_playerModel.ProgressModel.Level)
-            .GroupBy(p => p.GroupId)
-            .OrderBy(g => g.Key)
-            .ToArray();
+        _viewModel = GameStateModel.Instance.ShowingPopupModel as OrderProductPopupViewModel;
 
+        _itemRect = (_prefabsHolder.UIOrderProductPopupItemPrefab.transform as RectTransform).rect;
         var popupGo = GameObject.Instantiate(_prefabsHolder.UITabbedContentPopupPrefab, _parentTransform);
         _popupView = popupGo.GetComponent<UITabbedContentPopupView>();
-        _popupView.SetupTabButtons(_availableProductConfigsByGroupId
-            .Select(k => _loc.GetLocalization($"{LocalizationKeys.NameProductGroupIdPrefix}{k.Key}"))
+        _popupView.SetupTabButtons(_viewModel.TabIds
+            .Select(id => _loc.GetLocalization($"{LocalizationKeys.NameProductGroupIdPrefix}{id}"))
             .ToArray());
         _popupView.SetSize(1048, 868);
 
-        ShowTab(0);
+        ShowTab(_viewModel.SelectedTabIndex);
 
         await _popupView.Appear2Async();
 
@@ -91,6 +86,7 @@ public class UIOrderProductsPopupMediator : IMediator
     {
         _popupView.TabButtonClicked += OnTabButtonClicked;
         _popupView.ButtonCloseClicked += OnCloseClicked;
+        _viewModel.TabSelected += OnTabSelected;
         _updatesProvider.RealtimeUpdate += OnRealtimeUpdate;
     }
 
@@ -98,11 +94,17 @@ public class UIOrderProductsPopupMediator : IMediator
     {
         _popupView.TabButtonClicked -= OnTabButtonClicked;
         _popupView.ButtonCloseClicked -= OnCloseClicked;
+        _viewModel.TabSelected -= OnTabSelected;
         _updatesProvider.RealtimeUpdate -= OnRealtimeUpdate;
         foreach (var displayedItem in _displayedItems)
         {
             DeactivateItem(displayedItem.View);
         }
+    }
+
+    private void OnTabSelected(int tabIndex)
+    {
+        ShowTab(tabIndex);
     }
 
     private void OnCloseClicked()
@@ -123,7 +125,7 @@ public class UIOrderProductsPopupMediator : IMediator
 
     private void OnTabButtonClicked(int buttonIndex)
     {
-        ShowTab(buttonIndex);
+        _viewModel.OnViewTabClicked(buttonIndex);
     }
 
     private void ShowTab(int buttonIndex)
@@ -134,7 +136,7 @@ public class UIOrderProductsPopupMediator : IMediator
         }
         _displayedItems.Clear();
 
-        _currentTabProductConfigs = _availableProductConfigsByGroupId[buttonIndex].ToArray();
+        _currentTabProductConfigs = _viewModel.GetProductsByTabIndex(buttonIndex);
         _currentShowFromIndex = 0;
         _currentShowToIndex = -1;
 

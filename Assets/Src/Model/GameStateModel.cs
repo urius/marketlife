@@ -9,7 +9,7 @@ public class GameStateModel
     public static GameStateModel Instance => _instance.Value;
 
     public event Action<GameStateName, GameStateName> GameStateChanged = delegate { };
-    public event Action PausedStateChanged = delegate { };    
+    public event Action PausedStateChanged = delegate { };
     public event Action<ActionStateName, ActionStateName> ActionStateChanged = delegate { };
     public event Action<UserModel> ViewingUserModelChanged = delegate { };
     public event Action HighlightStateChanged = delegate { };
@@ -22,9 +22,13 @@ public class GameStateModel
 
     public BankConfigItem ChargedBankItem;
 
+    private readonly Stack<PopupViewModelBase> _showingPopupModelsStack;
+    private readonly Dictionary<PopupType, PopupViewModelBase> _popupViewModelsCache = new Dictionary<PopupType, PopupViewModelBase>();
+
     private TaskCompletionSource<bool> _dataLoadedTcs = new TaskCompletionSource<bool>();
     private int _placingIntParameter = -1;
-    private readonly Stack<PopupViewModelBase> _showingPopupModelsStack;
+    private int _lastCheckedServerTime;
+    private float _realtimeSinceStartupCheckpoint;
 
     public GameStateModel()
     {
@@ -57,8 +61,6 @@ public class GameStateModel
             return result;
         }
     }
-    private int _lastCheckedServerTime;
-    private float _realtimeSinceStartupCheckpoint;
 
     public void SetServerTime(int serverTime)
     {
@@ -85,6 +87,20 @@ public class GameStateModel
         _showingPopupModelsStack.Push(popupModel);
         UpdatePausedState();
         PopupShown();
+    }
+
+    public void CachePopup(PopupViewModelBase popupModel)
+    {
+        _popupViewModelsCache[popupModel.PopupType] = popupModel;
+    }
+
+    public PopupViewModelBase GetPopupFromCache(PopupType popupType)
+    {
+        if (_popupViewModelsCache.ContainsKey(popupType))
+        {
+            return _popupViewModelsCache[popupType];
+        }
+        return null;
     }
 
     public void RemoveCurrentPopupIfNeeded()

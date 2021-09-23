@@ -54,9 +54,13 @@ Bank window
 Completions marked (29.08.2021)
 ________
 Rest:
-Daily bonus window + logic
+✔ Daily bonus window + logic
+✔ Old game compensation logic
 Bank window
 Personal logic - partially
 VK integration - partially
 + balance check
 + add grass
+
+Became Beta (22.09.2021)
+________

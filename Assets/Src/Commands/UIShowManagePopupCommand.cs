@@ -7,6 +7,9 @@ public struct UIShowManagePopupCommand
         var personalConfig = GameConfigManager.Instance.PersonalConfig;
         var upgradesConfig = GameConfigManager.Instance.UpgradesConfig;
 
-        gameStateModel.ShowPopup(new UpgradesPopupViewModel(playerModel, personalConfig, upgradesConfig, TabType.ManagePersonal));
+        var popupModel = (gameStateModel.GetPopupFromCache(PopupType.Upgrades) ?? new UpgradesPopupViewModel(playerModel, personalConfig, upgradesConfig)) as UpgradesPopupViewModel;
+        popupModel.UpdateItems();
+        gameStateModel.CachePopup(popupModel);
+        gameStateModel.ShowPopup(popupModel);
     }
 }

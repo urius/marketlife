@@ -18,7 +18,7 @@ public class UIUpgradesPopupMediator : IMediator
     private readonly FriendsDataHolder _friendsDataHolder;
     private readonly List<(UIUpgradesPopupItemView View, UpgradesPopupItemViewModelBase Model)> _displayedItems = new List<(UIUpgradesPopupItemView View, UpgradesPopupItemViewModelBase Model)>(3);
 
-    private UpgradesPopupViewModel _model;
+    private UpgradesPopupViewModel _viewModel;
     private UITabbedContentPopupView _popupView;
     private Queue<UIUpgradesPopupItemView> _cachedViews = new Queue<UIUpgradesPopupItemView>();
     private int _currentShowingTabIndex = -1;
@@ -40,15 +40,15 @@ public class UIUpgradesPopupMediator : IMediator
 
     public async void Mediate()
     {
-        _model = _gameStateModel.ShowingPopupModel as UpgradesPopupViewModel;
+        _viewModel = _gameStateModel.ShowingPopupModel as UpgradesPopupViewModel;
 
         var popupGo = GameObject.Instantiate(_prefabsHolder.UITabbedContentPopupPrefab, _parentTransform);
         _popupView = popupGo.GetComponent<UITabbedContentPopupView>();
         _popupView.SetSize(780, 737);
         _popupView.SetTitleText(_loc.GetLocalization(LocalizationKeys.PopupUpgradesTitle));
-        _popupView.SetupTabButtons(_model.TabKeys.Select(TabTypeToTabName).ToArray());
+        _popupView.SetupTabButtons(_viewModel.TabKeys.Select(TabTypeToTabName).ToArray());
 
-        ShowTab(Math.Max(0, _model.GetTabIndex(_model.ShowOnTab)));
+        ShowTab(Math.Max(0, _viewModel.GetTabIndex(_viewModel.ShowOnTab)));
 
         await _popupView.Appear2Async();
 
@@ -74,7 +74,8 @@ public class UIUpgradesPopupMediator : IMediator
         _popupView.TabButtonClicked += OnTabButtonClicked;
         _updatesProvider.RealtimeSecondUpdate += OnRealtimeSecondPassed;
         _popupView.ButtonCloseClicked += OnButtonCloseClicked;
-        _model.ItemsUpdated += OnItemsUpdated;
+        _viewModel.ItemsUpdated += OnItemsUpdated;
+        _viewModel.TabSelected += OnTabSelected;
         _personalModel.PersonalWorkingTimeUpdated += OnPersonalWorkingTimeUpdated;
     }
 
@@ -87,13 +88,19 @@ public class UIUpgradesPopupMediator : IMediator
         _popupView.TabButtonClicked -= OnTabButtonClicked;
         _updatesProvider.RealtimeSecondUpdate -= OnRealtimeSecondPassed;
         _popupView.ButtonCloseClicked -= OnButtonCloseClicked;
-        _model.ItemsUpdated -= OnItemsUpdated;
+        _viewModel.ItemsUpdated -= OnItemsUpdated;
+        _viewModel.TabSelected -= OnTabSelected;
         _personalModel.PersonalWorkingTimeUpdated -= OnPersonalWorkingTimeUpdated;
+    }
+
+    private void OnTabSelected(TabType tabType)
+    {
+        ShowTab(_viewModel.GetTabIndex(tabType));
     }
 
     private void OnPersonalWorkingTimeUpdated(PersonalConfig personalConfig)
     {
-        if (_model.GetTabIndex(TabType.ManagePersonal) == _currentShowingTabIndex)
+        if (_viewModel.GetTabIndex(TabType.ManagePersonal) == _currentShowingTabIndex)
         {
             RefreshShowingTabView();
         }
@@ -131,7 +138,7 @@ public class UIUpgradesPopupMediator : IMediator
 
     private void OnTabButtonClicked(int tabIndex)
     {
-        ShowTab(tabIndex);
+        _viewModel.OnTabClicked(tabIndex);
     }
 
     private void ShowTab(int tabIndex)
@@ -145,7 +152,7 @@ public class UIUpgradesPopupMediator : IMediator
     {
         ClearShownItems();
 
-        var itemModels = _model.ItemViewModelsByTabKey[_model.TabKeys[_currentShowingTabIndex]];
+        var itemModels = _viewModel.ItemViewModelsByTabKey[_viewModel.TabKeys[_currentShowingTabIndex]];
         var itemSize = (_prefabsHolder.UIUpgradePopupItemPrefab.transform as RectTransform).sizeDelta;
 
         for (var i = 0; i < itemModels.Length; i++)

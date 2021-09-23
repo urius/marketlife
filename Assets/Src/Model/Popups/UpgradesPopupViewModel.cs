@@ -5,10 +5,10 @@ using System.Linq;
 public class UpgradesPopupViewModel : PopupViewModelBase
 {
     public event Action ItemsUpdated = delegate { };
+    public event Action<TabType> TabSelected = delegate { };
 
     private const int MaxTabsCount = 3;
 
-    public readonly TabType ShowOnTab;
     public readonly IDictionary<TabType, UpgradesPopupItemViewModelBase[]> ItemViewModelsByTabKey = new Dictionary<TabType, UpgradesPopupItemViewModelBase[]>(MaxTabsCount);
 
     private readonly UserModel _playerModel;
@@ -20,18 +20,19 @@ public class UpgradesPopupViewModel : PopupViewModelBase
     public UpgradesPopupViewModel(
         UserModel playerModel,
         IPersonalConfig personalConfig,
-        IUpgradesConfig upgradesConfig,
-        TabType showOnTab = TabType.Undefined)
+        IUpgradesConfig upgradesConfig)
     {
         _playerModel = playerModel;
         _shopModel = playerModel.ShopModel;
         _personalConfig = personalConfig;
         _upgradesConfig = upgradesConfig;
-        ShowOnTab = showOnTab;
 
         UpdateItems();
+
+        ShowOnTab = _tabs[0];
     }
 
+    public TabType ShowOnTab { get; private set; }
     public IReadOnlyList<TabType> TabKeys => _tabs;
     public override PopupType PopupType => PopupType.Upgrades;
 
@@ -72,6 +73,17 @@ public class UpgradesPopupViewModel : PopupViewModelBase
         }
 
         ItemsUpdated();
+    }
+
+    public void OnTabClicked(int tabIndex)
+    {
+        SelectTabIndex(tabIndex);
+    }
+
+    private void SelectTabIndex(int tabIndex)
+    {
+        ShowOnTab = _tabs[tabIndex];
+        TabSelected(ShowOnTab);
     }
 
     private UpgradesPopupUpgradeItemViewModel GetUpgradeViewModel(UpgradeType upgradeType, int value)

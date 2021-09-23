@@ -157,8 +157,11 @@ public class SaveDataSystem
 
     private void TriggerSave()
     {
-        _saveProcessIsTriggered = NeedToSave;
-        _savePlayerDataPrewarmSeconds = DefaultSavePrewarmSeconds;
+        if (CheckStartSaveConditions())
+        {
+            _saveProcessIsTriggered = NeedToSave;
+            _savePlayerDataPrewarmSeconds = DefaultSavePrewarmSeconds;
+        }
     }
 
     private async void OnRealtimeSecondUpdate()
@@ -222,26 +225,17 @@ public class SaveDataSystem
 
     private void OnPopupRemoved()
     {
-        if (CheckStartSaveConditions())
-        {
-            TriggerSave();
-        }
+        TriggerSave();
     }
 
     private void OnActionStateChanged(ActionStateName previousState, ActionStateName currentState)
     {
-        if (CheckStartSaveConditions())
-        {
-            TriggerSave();
-        }
+        TriggerSave();
     }
 
     private void OnGameStateChanged(GameStateName previousState, GameStateName currentState)
     {
-        if (CheckStartSaveConditions())
-        {
-            TriggerSave();
-        }
+        TriggerSave();
     }
 
     private bool CheckStartSaveConditions()
@@ -391,10 +385,7 @@ public class SaveDataSystem
     private void OnGoldChanged(int previousValue, int currentValue)
     {
         MarkToSaveField(SaveField.Progress);
-        if (CheckStartSaveConditions())
-        {
-            TriggerSave();
-        }
+        TriggerSave();
     }
 
     private void OnCashChanged(int previousValue, int currentValue)

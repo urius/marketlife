@@ -6,5 +6,6 @@ public struct InitializeSystemsCommand
         new SaveDataSystem().Start();
         new HumansControlSystem().Start();
         new TutorialSystem().Start();
+        new MusicControlSystem().Start();
     }
 }

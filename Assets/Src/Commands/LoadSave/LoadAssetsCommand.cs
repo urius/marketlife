@@ -26,6 +26,8 @@ public struct LoadAssetsCommand
         PrefabsHolder.Instance.SetupRemotePrefab(PrefabsHolder.PSStarsName, starsPSPrefab);
 
         bundle = await loadAudioBundleTask;
+        await AudioManager.InitTask;
+
         var sounds = bundle.LoadAllAssets<AudioClip>();
         AudioManager.Instance.SetSounds(sounds);
     }

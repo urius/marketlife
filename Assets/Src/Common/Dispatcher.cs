@@ -81,6 +81,7 @@ public class Dispatcher
     public Action NotifyNotEnoughtMoney = delegate { };
 
     public Action<bool> SaveStateChanged = delegate { };
+    public Action<bool> TutorialSaveStateChanged = delegate { };
 
     public Action<string> JsIncomingMessage = delegate { };    
 

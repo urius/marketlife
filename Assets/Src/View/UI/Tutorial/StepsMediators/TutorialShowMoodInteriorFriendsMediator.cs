@@ -1,10 +1,8 @@
-using System;
 using UnityEngine;
 
 public class TutorialShowMoodInteriorFriendsMediator : TutorialStepMediatorBase
 {
     private readonly LocalizationManager _loc;
-    private readonly TutorialUIElementsProvider _tutorialUIElementsProvider;
 
     private int _phaseIndex = 0;
 
@@ -12,7 +10,6 @@ public class TutorialShowMoodInteriorFriendsMediator : TutorialStepMediatorBase
         : base(parentTransform)
     {
         _loc = LocalizationManager.Instance;
-        _tutorialUIElementsProvider = TutorialUIElementsProvider.Instance;
     }
 
     public override void Mediate()
@@ -81,12 +78,5 @@ public class TutorialShowMoodInteriorFriendsMediator : TutorialStepMediatorBase
     private void HighlightMoodBar()
     {
         HighlightUIElement(TutorialUIElement.TopPanelMoodBar, 2.5f);
-    }
-
-    private void HighlightUIElement(TutorialUIElement elementType, float sizeXMultiplier = 1)
-    {
-        var rectTransform = _tutorialUIElementsProvider.GetElementRectTransform(elementType);
-        var sideSize = Math.Max(rectTransform.rect.size.x, rectTransform.rect.size.y);
-        View.HighlightScreenRoundArea(rectTransform.position, new Vector2(sideSize * sizeXMultiplier, sideSize), animated: true);
     }
 }

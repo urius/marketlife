@@ -52,4 +52,5 @@ public enum TutorialUIElement
     BottomPanelManageButton,
     BottomPanelFriendShopTakeButton,
     BottomPanelFriendShopAddUnwashButton,
+    TopSaveIcon,
 }

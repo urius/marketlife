@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public abstract class TutorialStepMediatorBase : IMediator
@@ -7,6 +8,7 @@ public abstract class TutorialStepMediatorBase : IMediator
     private readonly Dispatcher _dispatcher;
     private readonly LocalizationManager _loc;
     private readonly UpdatesProvider _updatesProvider;
+    private readonly TutorialUIElementsProvider _tutorialUIElementsProvider;
 
     //
     private TutorialOverlayView _tutorialOverlayView;
@@ -23,6 +25,7 @@ public abstract class TutorialStepMediatorBase : IMediator
         _dispatcher = Dispatcher.Instance;
         _loc = LocalizationManager.Instance;
         _updatesProvider = UpdatesProvider.Instance;
+        _tutorialUIElementsProvider = TutorialUIElementsProvider.Instance;
     }
 
     protected TutorialOverlayView View => _tutorialOverlayView;
@@ -80,6 +83,13 @@ public abstract class TutorialStepMediatorBase : IMediator
     protected virtual void SetupMessage()
     {
         _tutorialOverlayView.SetMessageText(_loc.GetLocalization($"{LocalizationKeys.TutorialMessagePrefix}{_viewModel.StepIndex}"));
+    }
+
+    protected void HighlightUIElement(TutorialUIElement elementType, float sizeXMultiplier = 1)
+    {
+        var rectTransform = _tutorialUIElementsProvider.GetElementRectTransform(elementType);
+        var sideSize = Math.Max(rectTransform.rect.size.x, rectTransform.rect.size.y);
+        View.HighlightScreenRoundArea(rectTransform.position, new Vector2(sideSize * sizeXMultiplier, sideSize), animated: true);
     }
 
     private void Activate()

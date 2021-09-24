@@ -4,7 +4,7 @@ using System.Linq;
 
 public class TutorialSystem
 {
-    private const int LastTutorialStepIndex = 10;
+    private const int LastTutorialStepIndex = 15;
 
     private readonly GameStateModel _gameStateModel;
     private readonly Dispatcher _dispatcher;
@@ -119,6 +119,9 @@ public class TutorialSystem
             TutorialStep.ShowMoodInteriorAndFriendsUI => HasNoOpenedPopups()
                 && HasNoPlacingMode()
                 && CheckGameState(GameStateName.ShopSimulation),
+            TutorialStep.ShowSaveIcon => HasNoOpenedPopups()
+                && HasNoPlacingMode()
+                && CheckGameState(GameStateName.ShopSimulation),
             TutorialStep.ReadyToPlay => HasNoOpenedPopups()
                 && HasNoPlacingMode()
                 && CheckGameState(GameStateName.ShopSimulation),
@@ -175,7 +178,8 @@ public enum TutorialStep
     PlacingProduct = 5,
     FinishPlacingProduct = 6,
     ShowMoodInteriorAndFriendsUI = 7,
-    ReadyToPlay = 8,
-    FriendUI = 9,
+    ShowSaveIcon = 8,
+    ReadyToPlay = 9,
+    FriendUI = 10,
 }
 

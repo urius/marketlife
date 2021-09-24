@@ -6,6 +6,12 @@ public class UILevelUpPopupItemView : MonoBehaviour
 {
     [SerializeField] private Image _image;
     [SerializeField] private TMP_Text _leftText;
+    [SerializeField] private Color _greenColor;
+    public Color GreenColor => _greenColor;
+    [SerializeField] private Color _blueColor;
+    public Color BlueColor => _blueColor;
+    [SerializeField] private Color _orangeColor;
+    public Color OrangeColor => _orangeColor;
 
     public void SetImageSprite(Sprite sprite)
     {
@@ -17,5 +23,10 @@ public class UILevelUpPopupItemView : MonoBehaviour
     {
         _leftText.alignment = alignmentOptions;
         _leftText.text = text;
+    }
+
+    public void SetTextColor(Color color)
+    {
+        _leftText.color = color;
     }
 }

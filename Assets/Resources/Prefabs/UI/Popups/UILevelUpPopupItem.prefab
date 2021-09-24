@@ -127,6 +127,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _image: {fileID: 8962895989218531069}
   _leftText: {fileID: 8962895990477640994}
+  _greenColor: {r: 0.58431375, g: 0.972549, b: 0.6, a: 1}
+  _blueColor: {r: 0.49411765, g: 0.8980392, b: 1, a: 1}
+  _orangeColor: {r: 1, g: 0.90588236, b: 0, a: 1}
 --- !u!1 &8962895990477640992
 GameObject:
   m_ObjectHideFlags: 0
@@ -162,7 +165,7 @@ RectTransform:
   m_AnchorMin: {x: 0.15, y: 0.5}
   m_AnchorMax: {x: 0.95, y: 0.5}
   m_AnchoredPosition: {x: 40, y: 0}
-  m_SizeDelta: {x: -40, y: 50}
+  m_SizeDelta: {x: -40, y: 70}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &8962895990477640995
 CanvasRenderer:
@@ -220,12 +223,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 22
+  m_fontSize: 30
   m_fontSizeBase: 22
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 32
+  m_fontSizeMax: 30
   m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512

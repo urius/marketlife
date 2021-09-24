@@ -75,7 +75,7 @@ public class UILevelUpPopupMediator : UIContentPopupMediator
         _popupView.SetCaptionText(string.Format(_loc.GetLocalization(LocalizationKeys.PopupLevelUpMessage), _playerProgressModel.Level));
         _popupView.SetupButtonsAmount(haveCloseButton: false, 1);
         _popupView.SetupButton(0, _spritesProvider.GetGreenButtonSprite(), _loc.GetLocalization(LocalizationKeys.CommonContinue));
-        _popupView.SetSize(680, 740);
+        _popupView.SetSize(750, 800);
 
         SetupContent();
     }
@@ -106,7 +106,8 @@ public class UILevelUpPopupMediator : UIContentPopupMediator
             {
                 var productName = _loc.GetLocalization($"{LocalizationKeys.NameProductIdPrefix}{product.NumericId}");
                 var groupName = _loc.GetLocalization($"{LocalizationKeys.NameProductGroupIdPrefix}{product.GroupId}");
-                PutItem(_spritesProvider.GetProductIcon(product.Key), $"{productName} ({groupName})");
+                var item = PutItem(_spritesProvider.GetProductIcon(product.Key), $"{productName} ({groupName})");
+                item.SetTextColor(item.GreenColor);
             }
         }
 
@@ -115,7 +116,8 @@ public class UILevelUpPopupMediator : UIContentPopupMediator
             //PutCaption(_loc.GetLocalization(LocalizationKeys.PopupLevelUpNewShelfs));
             foreach (var shelf in _viewModel.NewShelfs)
             {
-                PutItem(_spritesProvider.GetShelfIcon(shelf.NumericId), _loc.GetLocalization($"{LocalizationKeys.NameShopObjectPrefix}s_{shelf.NumericId}"));
+                var item = PutItem(_spritesProvider.GetShelfIcon(shelf.NumericId), _loc.GetLocalization($"{LocalizationKeys.NameShopObjectPrefix}s_{shelf.NumericId}"));
+                item.SetTextColor(item.BlueColor);
             }
         }
 
@@ -124,22 +126,26 @@ public class UILevelUpPopupMediator : UIContentPopupMediator
             //PutCaption(_loc.GetLocalization(LocalizationKeys.PopupLevelUpNewDecor));
             foreach (var floor in _viewModel.NewFloors)
             {
-                PutItem(_spritesProvider.GetFloorIcon(floor.NumericId), string.Format(_loc.GetLocalization(LocalizationKeys.PopupLevelUpFloorFormat), floor.NumericId));
+                var item = PutItem(_spritesProvider.GetFloorIcon(floor.NumericId), string.Format(_loc.GetLocalization(LocalizationKeys.PopupLevelUpFloorFormat), floor.NumericId));
+                item.SetTextColor(item.BlueColor);
             }
 
             foreach (var wall in _viewModel.NewWalls)
             {
-                PutItem(_spritesProvider.GetWallIcon(wall.NumericId), string.Format(_loc.GetLocalization(LocalizationKeys.PopupLevelUpWallFormat), wall.NumericId));
+                var item = PutItem(_spritesProvider.GetWallIcon(wall.NumericId), string.Format(_loc.GetLocalization(LocalizationKeys.PopupLevelUpWallFormat), wall.NumericId));
+                item.SetTextColor(item.BlueColor);
             }
 
             foreach (var window in _viewModel.NewWindows)
             {
-                PutItem(_spritesProvider.GetWindowIcon(window.NumericId), string.Format(_loc.GetLocalization(LocalizationKeys.PopupLevelUpWindowFormat), window.NumericId));
+                var item = PutItem(_spritesProvider.GetWindowIcon(window.NumericId), string.Format(_loc.GetLocalization(LocalizationKeys.PopupLevelUpWindowFormat), window.NumericId));
+                item.SetTextColor(item.BlueColor);
             }
 
             foreach (var door in _viewModel.NewDoors)
             {
-                PutItem(_spritesProvider.GetWindowIcon(door.NumericId), string.Format(_loc.GetLocalization(LocalizationKeys.PopupLevelUpWindowFormat), door.NumericId));
+                var item = PutItem(_spritesProvider.GetWindowIcon(door.NumericId), string.Format(_loc.GetLocalization(LocalizationKeys.PopupLevelUpWindowFormat), door.NumericId));
+                item.SetTextColor(item.BlueColor);
             }
         }
 
@@ -148,7 +154,8 @@ public class UILevelUpPopupMediator : UIContentPopupMediator
             //PutCaption(_loc.GetLocalization(LocalizationKeys.PopupLevelUpNewPersonal));
             foreach (var personal in _viewModel.NewPersonal)
             {
-                PutItem(_spritesProvider.GetPersonalIcon(personal.Key), _loc.GetLocalization($"{LocalizationKeys.CommonPersonalNamePrefix}{personal.TypeIdStr}"));
+                var item = PutItem(_spritesProvider.GetPersonalIcon(personal.Key), _loc.GetLocalization($"{LocalizationKeys.CommonPersonalNamePrefix}{personal.TypeIdStr}"));
+                item.SetTextColor(item.OrangeColor);
             }
         }
 
@@ -160,17 +167,19 @@ public class UILevelUpPopupMediator : UIContentPopupMediator
                 var upgradeName = string.Format(
                     _loc.GetLocalization($"{LocalizationKeys.CommonUpgradeNameFormat}{upgrade.UpgradeTypeStr}"),
                     upgrade.Value);
-                PutItem(_spritesProvider.GetUpgradeIcon(upgrade.UpgradeType), upgradeName);
+                var item = PutItem(_spritesProvider.GetUpgradeIcon(upgrade.UpgradeType), upgradeName);
+                item.SetTextColor(item.OrangeColor);
             }
         }
     }
 
-    private void PutItem(Sprite sprite, string text)
+    private UILevelUpPopupItemView PutItem(Sprite sprite, string text)
     {
         var itemRect = GetOrCreateItemToDisplay(_prefabsHolder.UILevelUpPopupItemPrefab);
         var itemView = itemRect.GetComponent<UILevelUpPopupItemView>();
         itemView.SetImageSprite(sprite);
         itemView.SetText(text);
+        return itemView;
     }
 
     private void PutCaption(string text)

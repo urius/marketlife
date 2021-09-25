@@ -54,6 +54,7 @@ public class TutorialOrderProductStepMediator : TutorialStepMediatorBase
     private void OnUIOrderPopupAppeared()
     {
         _itemSlotRect = _tutorialUIElementsProvider.GetElementRectTransform(TutorialUIElement.OrderProductsPopupFirstItem);
+        //Highlight element not on the pivot point
         var itemBoundsRect = _itemSlotRect.rect;
         var size = new Vector2(itemBoundsRect.size.x, itemBoundsRect.size.y * 1.5f);
         var corners = new Vector3[4];

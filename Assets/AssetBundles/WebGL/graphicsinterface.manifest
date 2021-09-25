@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 268022254
+CRC: 2583564818
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 13efdf4db7fa3d79ed42a725db4157c2
+    Hash: 62e08baf101816c4bb8d6977c178409f
   TypeTreeHash:
     serializedVersion: 2
     Hash: ba23c2e8f8b3f5319028008a25497317
@@ -44,6 +44,7 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Floors/Floor4.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall4.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Windows/Window2.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/icon_music_off.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/sign_paint_wall.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Juice_2.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/sign_rotate_right.png
@@ -104,6 +105,7 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/TopPanel/skin_top_stribe_yellow.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Floors/Floor1.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/hint_arrow_up.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/ICON_Music2.png
 - Assets/External Resources/InterfaceGraphicsBundle/InterfaceGraphicsAtlas.spriteatlas
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/Icon_Play1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Cake.png

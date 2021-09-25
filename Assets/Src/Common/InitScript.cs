@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class InitScript : MonoBehaviour
@@ -18,22 +19,21 @@ public class InitScript : MonoBehaviour
         //Application.targetFrameRate = 50;
 
         _playerModelHolder = PlayerModelHolder.Instance;
-        _playerModelHolder.UidIsSet += OnUidIsSet;
-
         new InitializeSystemsCommand().Execute();
     }
 
-#if UNITY_EDITOR
-    private void Start()
+    private async void Start()
     {
-        new SetupExternalDebugDataCommand().Execute(_debugUid);
-    }
-#endif
+        ExecuteAdditionalStartupEditorLogic();
 
-    private async void OnUidIsSet()
-    {
-        _playerModelHolder.UidIsSet -= OnUidIsSet;
-
+        await _playerModelHolder.SetUidTask;
         await new InitializeAndLoadCommand().ExecuteAsync();
+    }
+
+    private void ExecuteAdditionalStartupEditorLogic()
+    {
+#if UNITY_EDITOR
+        new SetupExternalDebugDataCommand().Execute(_debugUid);
+#endif
     }
 }

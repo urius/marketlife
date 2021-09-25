@@ -77,6 +77,7 @@ public class SaveDataSystem
 
         _playerModel.TutorialStepPassed += OnTutorialStepPassed;
         _playerModel.BonusStateUpdated += OnBonusStateUpdated;
+        _playerModel.SettingsUpdated += OnPlayerSettingsUpdated;
         playerExternalActionsModel.ActionsCleared += OnPlayerExternalActionsCleared;
 
         progressModel.CashChanged += OnCashChanged;
@@ -104,6 +105,12 @@ public class SaveDataSystem
         _gameStateModel.ViewingUserModelChanged += OnViewingUserModelChanged;
 
         _updatesProvider.RealtimeSecondUpdate += OnRealtimeSecondUpdate;
+    }
+
+    private void OnPlayerSettingsUpdated()
+    {
+        MarkToSaveField(SaveField.Settings);
+        TriggerSave();
     }
 
     private void OnBonusStateUpdated()
@@ -412,5 +419,6 @@ public enum SaveField
     TutorialSteps = 1 << 6,
     AvailableActionsData = 1 << 7,
     Bonus = 1 << 8,
-    All = Progress | Personal | Warehouse | Design | ShopObjects | Unwashes | TutorialSteps | AvailableActionsData | Bonus,
+    Settings = 1 << 9,
+    All = Progress | Personal | Warehouse | Design | ShopObjects | Unwashes | TutorialSteps | AvailableActionsData | Bonus | Settings,
 }

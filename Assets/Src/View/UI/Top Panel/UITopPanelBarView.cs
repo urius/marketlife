@@ -41,7 +41,7 @@ public class UITopPanelBarView : MonoBehaviour
             {
                 if (value > 0)
                 {
-                    _audioManager.PlaySound(SoundNames.ScoreTick);
+                    _audioManager?.PlaySound(SoundNames.ScoreTick);
                 }
                 _amount = value;
                 _text.text = string.Format(_format, value);

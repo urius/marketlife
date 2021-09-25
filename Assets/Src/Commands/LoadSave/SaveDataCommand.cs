@@ -77,6 +77,11 @@ public struct SaveDataCommand
             result[Constants.FieldBonus] = dataExporter.ExportBonus(userModel.BonusState);
         }
 
+        if (CheckSaveField(saveFields, SaveField.Settings))
+        {
+            result[Constants.FieldSettings] = dataExporter.ExportSettings(userModel.UserSettingsModel);
+        }
+
         return result;
     }
 

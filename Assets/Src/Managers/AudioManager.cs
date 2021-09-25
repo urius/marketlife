@@ -1,55 +1,62 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance { get; private set; }
-    public static UniTask InitTask => InitTsc.Task;
-    private static UniTaskCompletionSource InitTsc = new UniTaskCompletionSource();
 
     public Dictionary<string, AudioClip> Sounds { get; private set; }
 
+    private GameStateModel _gameStateModel;
+    private PlayerModelHolder _playerModelHolder;
     private AudioSource _musicSource;
-    private float _musicVolume = 1;
     private AudioSource _soundsSource;
-    private float _soundsVolume = 1;
+    private UserSettingsModel _settingsModel;
 
-    private void Awake()
+    public AudioManager()
     {
         Instance = this;
-        InitTsc.TrySetResult();
     }
 
-    public void Start()
+    public void Awake()
     {
+        _gameStateModel = GameStateModel.Instance;
+        _playerModelHolder = PlayerModelHolder.Instance;
+
         _musicSource = gameObject.AddComponent<AudioSource>();
         _musicSource.loop = true;
-        SetMusicVolume(_musicVolume);
+        SetMusicVolume(0);
         _soundsSource = gameObject.AddComponent<AudioSource>();
         _soundsSource.loop = false;
-        SetSoundsVolume(_soundsVolume);
+        SetSoundsVolume(0);
+    }
+
+    public async void Start()
+    {
+        await _gameStateModel.GameDataLoadedTask;
+
+        _settingsModel = _playerModelHolder.UserModel.UserSettingsModel;
+        UpdateVolumes();
+
+        Activate();
     }
 
     public void SetMusicVolume(float volume)
     {
-        _musicVolume = volume;
         if (_musicSource != null)
         {
-            _musicSource.volume = _musicVolume;
+            _musicSource.volume = volume;
         }
     }
 
     public void SetSoundsVolume(float volume)
     {
-        _soundsVolume = volume;
         if (_soundsSource != null)
         {
-            _soundsSource.volume = _soundsVolume;
+            _soundsSource.volume = volume;
         }
     }
 
@@ -93,7 +100,7 @@ public class AudioManager : MonoBehaviour
         _musicSource.Stop();
         _musicSource.clip = clip;
         var musicFadeTsc = new UniTaskCompletionSource();
-        LeanTween.value(gameObject, f => _musicSource.volume = f, _musicSource.volume, _musicVolume, fadeInDuration)
+        LeanTween.value(gameObject, f => _musicSource.volume = f, _musicSource.volume, GetMusicVolume(), fadeInDuration)
             .setOnComplete(() => musicFadeTsc.TrySetResult());
         _musicSource.Play();
 
@@ -125,6 +132,33 @@ public class AudioManager : MonoBehaviour
         await FadeOutAndStopMusicAsync(stopToken, fadeOutDuration);
         if (stopToken.IsCancellationRequested) return;
         await FadeInAndPlayMusicAsync(stopToken, clip, fadeInDuration);
+    }
+
+    private void Activate()
+    {
+        _settingsModel.AudioMutedStateChanged += OnAudioMutedStateChanged;
+        _settingsModel.MusicMutedStateChanged += OnMusicMutedStateChanged;
+    }
+
+    private float GetMusicVolume()
+    {
+        return _settingsModel.IsAudioMuted || _settingsModel.IsMusicMuted ? 0 : 1;
+    }
+
+    private void OnAudioMutedStateChanged()
+    {
+        UpdateVolumes();
+    }
+
+    private void OnMusicMutedStateChanged()
+    {
+        UpdateVolumes();
+    }
+
+    private void UpdateVolumes()
+    {
+        SetMusicVolume(GetMusicVolume());
+        SetSoundsVolume(_settingsModel.IsAudioMuted ? 0 : 1);
     }
 }
 

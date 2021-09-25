@@ -23,7 +23,8 @@ public class DataImporter
             new ShopPersonalModel(),
             warehouseModel);
 
-        return new UserModel(dto.data.uid, shopProgress, shopModel, new UserStatsData(), new UserBonusState(), null, new AvailableFriendShopActionsDataModel(Array.Empty<AvailableFriendShopActionData>()), new ExternalActionsModel());
+        return new UserModel(dto.data.uid, shopProgress, shopModel, new UserStatsData(), new UserBonusState(), null,
+            new AvailableFriendShopActionsDataModel(Array.Empty<AvailableFriendShopActionData>()), new UserSettingsModel(false, false), new ExternalActionsModel());
     }
 
     public UserModel Import(GetDataResponseDto deserializedData)
@@ -34,8 +35,14 @@ public class DataImporter
         var statsData = new UserStatsData(deserializedData.first_visit_time, deserializedData.last_visit_time, deserializedData.days_play);
         var actionsDataModel = ToAvailableActionsDataModel(dataDto.actions_data);
         var bonusState = ToBonusState(dataDto.bonus);
+        var settingsModel = ToSettingsModel(dataDto.settings);
         var externalActionsModel = ToExternalActionsModel(deserializedData.external_data);
-        return new UserModel(deserializedData.uid, shopProgress, shopModel, statsData, bonusState, dataDto.tutorial_steps, actionsDataModel, externalActionsModel);
+        return new UserModel(deserializedData.uid, shopProgress, shopModel, statsData, bonusState, dataDto.tutorial_steps, actionsDataModel, settingsModel, externalActionsModel);
+    }
+
+    private UserSettingsModel ToSettingsModel(UserGameSettingsDto settings)
+    {
+        return new UserSettingsModel(settings.mute_music, settings.mute_audio);
     }
 
     private UserBonusState ToBonusState(BonusStateDto bonusStateDto)
@@ -44,7 +51,7 @@ public class DataImporter
         {
             IsOldGameBonusProcessed = bonusStateDto.is_old_game_bonus_processed,
             LastBonusTakeTimestamp = bonusStateDto.timestamp,
-            LastTakenBonusRank = bonusStateDto.rank,            
+            LastTakenBonusRank = bonusStateDto.rank,
         };
     }
 

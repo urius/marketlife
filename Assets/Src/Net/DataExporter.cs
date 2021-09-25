@@ -19,6 +19,15 @@ public class DataExporter
         };
     }
 
+    public UserGameSettingsDto ExportSettings(UserSettingsModel settingsModel)
+    {
+        return new UserGameSettingsDto()
+        {
+            mute_audio = settingsModel.IsAudioMuted,
+            mute_music = settingsModel.IsMusicMuted,
+        };
+    }
+
     public ShopProgressDto ExportProgress(UserProgressModel progressModel)
     {
         return new ShopProgressDto(progressModel.Cash + progressModel.DelayedCash, progressModel.Gold, progressModel.ExpAmount, progressModel.Level);

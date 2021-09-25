@@ -7,6 +7,7 @@ public class UserModel
 {
     public Action<int> TutorialStepPassed = delegate { };
     public Action BonusStateUpdated = delegate { };
+    public Action SettingsUpdated = delegate { };
 
     public readonly string Uid;
     public readonly UserProgressModel ProgressModel;
@@ -15,6 +16,7 @@ public class UserModel
     public readonly UserSessionDataModel SessionDataModel;
     public readonly List<int> TutorialSteps;
     public readonly AvailableFriendShopActionsDataModel ActionsDataModel;
+    public readonly UserSettingsModel UserSettingsModel;
     public readonly ExternalActionsModel ExternalActionsModel;
 
     public UserModel(
@@ -25,6 +27,7 @@ public class UserModel
         UserBonusState bonusState,
         int[] tutorialSteps,
         AvailableFriendShopActionsDataModel actionsDataModel,
+        UserSettingsModel userSettingsModel,
         ExternalActionsModel externalActionsModel)
     {
         Uid = uid;
@@ -35,7 +38,10 @@ public class UserModel
         ActionsDataModel = actionsDataModel;
         SessionDataModel = new UserSessionDataModel();
         TutorialSteps = new List<int>(tutorialSteps ?? Enumerable.Empty<int>());
+        UserSettingsModel = userSettingsModel;
         ExternalActionsModel = externalActionsModel;
+
+        SubscribeForSettingsModel();
     }
 
     public UserBonusState BonusState { get; private set; }
@@ -69,6 +75,22 @@ public class UserModel
                     break;
             }
         }
+    }
+
+    private void SubscribeForSettingsModel()
+    {
+        UserSettingsModel.AudioMutedStateChanged += OnAudioMutedStateChanged;
+        UserSettingsModel.MusicMutedStateChanged += OnMusicMutedStateChanged;
+    }
+
+    private void OnAudioMutedStateChanged()
+    {
+        SettingsUpdated();
+    }
+
+    private void OnMusicMutedStateChanged()
+    {
+        SettingsUpdated();
     }
 
     private void UpdateBonusState(UserBonusState newBonusState)
@@ -648,5 +670,32 @@ public class ExternalActionAddUnwash : ExternalActionModelBase
     public override void Combine(ExternalActionModelBase another)
     {
         //combine = skip
+    }
+}
+
+public class UserSettingsModel
+{
+    public event Action MusicMutedStateChanged = delegate { };
+    public event Action AudioMutedStateChanged = delegate { };
+
+    public UserSettingsModel(bool isMusicMusted, bool isAudioMuted)
+    {
+        IsMusicMuted = isMusicMusted;
+        IsAudioMuted = isAudioMuted;
+    }
+
+    public bool IsMusicMuted { get; private set; }
+    public bool IsAudioMuted { get; private set; }
+
+    public void SetMusicMutedState(bool isMuted)
+    {
+        IsMusicMuted = isMuted;
+        MusicMutedStateChanged();
+    }
+
+    public void SetAudioMutedState(bool isMuted)
+    {
+        IsAudioMuted = isMuted;
+        AudioMutedStateChanged();
     }
 }

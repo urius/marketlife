@@ -67,6 +67,7 @@ public class UserDataDto
     public int[] tutorial_steps;
     public string[] actions_data;
     public BonusStateDto bonus;
+    public UserGameSettingsDto settings;
 }
 
 public class ExternalDataDto
@@ -135,4 +136,10 @@ public struct BonusStateDto
     public int timestamp;
     public int rank;
     public bool is_old_game_bonus_processed;
+}
+
+public struct UserGameSettingsDto
+{
+    public bool mute_music;
+    public bool mute_audio;
 }

@@ -6,6 +6,7 @@ public struct InitializeAndLoadCommand
     {
         var playerModelHolder = PlayerModelHolder.Instance;
         var gameStateModel = GameStateModel.Instance;
+
         gameStateModel.SetGameState(GameStateName.Loading);
 
         await new LoadServerTimeCommand().ExecuteAsync();

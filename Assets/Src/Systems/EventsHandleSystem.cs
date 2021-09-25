@@ -22,6 +22,7 @@ public class EventsHandleSystem
 
     private void Activate()
     {
+        _dispatcher.JsIncomingMessage += OnIncomingJsMessage;
         _dispatcher.UIGameViewMouseClick += OnUIGameViewMouseClicked;
         _dispatcher.UIBottomPanelPointerEnter += OnUIBottomPanelPointerEnter;
         _dispatcher.UIBottomPanelPointerExit += OnUIBottomPanelPointerExit;
@@ -68,10 +69,21 @@ public class EventsHandleSystem
         _dispatcher.UIGetBonusButtonClicked += OnUIGetBonusButtonClicked;
         _dispatcher.UICompensationPopupTakeClicked += OnUICompensationPopupTakeClicked;
         _dispatcher.UIDailyBonusTakeClicked += OnUIDailyBonusTakeClicked;
-        _dispatcher.JsIncomingMessage += OnIncomingJsMessage;
+        _dispatcher.UIMuteAudioClicked += OnUIMuteAudioClicked;
+        _dispatcher.UIMuteMusicClicked += OnUIMuteMusicClicked;
 
         _gameStateModel.ActionStateChanged += OnActionStateChanged;
         _gameStateModel.GameStateChanged += OnGameStateChanged;
+    }
+
+    private void OnUIMuteAudioClicked()
+    {
+        new ToggleMuteAudioCommand().Execute();
+    }
+
+    private void OnUIMuteMusicClicked()
+    {
+        new ToggleMuteMusicCommand().Execute();
     }
 
     private void OnUIDailyBonusTakeClicked(Vector3[] itemsWorldPositions)

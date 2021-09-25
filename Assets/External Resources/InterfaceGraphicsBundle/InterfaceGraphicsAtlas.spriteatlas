@@ -32,7 +32,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 46b41057a82fe4010b5245cd9e8b4afa, type: 3}
-    totalSpriteSurfaceArea: 1385389
+    totalSpriteSurfaceArea: 1400127
     bindAsDefault: 0
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -104,6 +104,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 0b06a12892a0040edad5797c9934b0b6, type: 3}
   - {fileID: 21300000, guid: 1c51f668a9c914425bd79fa7221b5fd4, type: 3}
   - {fileID: 21300000, guid: e0d6196829f8644fab46052bd8744e57, type: 3}
+  - {fileID: 21300000, guid: d926a478a083a7d48b22f6f407a8c9e7, type: 3}
   - {fileID: 21300000, guid: 66c809989c7fa410f9e4e42bc2899662, type: 3}
   - {fileID: 21300000, guid: 2ad2bea8001004cd39f7112e9d902375, type: 3}
   - {fileID: 21300000, guid: a3831db8968b14a7ca185a7e31bdc3db, type: 3}
@@ -142,6 +143,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: b087660cc59194beba42e338ec00c968, type: 3}
   - {fileID: 21300000, guid: 120b541c7df1b48b5b1f5aa0d324dd1e, type: 3}
   - {fileID: 21300000, guid: 2087812cb030247e58680328d1ea48de, type: 3}
+  - {fileID: 21300000, guid: 3469972c102b71e4eb097466bed36b25, type: 3}
   - {fileID: 21300000, guid: 72e31e2c7e7db4811a106376bfa9efcd, type: 3}
   - {fileID: 21300000, guid: d8ea1e4c4a8534c7b968552db0043c4c, type: 3}
   - {fileID: 21300000, guid: 0093377c0d3a44038bee601d8be7ba2c, type: 3}
@@ -162,6 +164,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 91c56d4e8df2f45eea493e57150277a0, type: 3}
   - {fileID: 21300000, guid: 068c775eade72471c9b2535333653af2, type: 3}
   - {fileID: 21300000, guid: 08851b6e2083d4cc186b2c19fd6b28b4, type: 3}
+  - {fileID: 21300000, guid: 7b479e7ec9a4b455aa1fa8e2bc747fd4, type: 3}
   - {fileID: 21300000, guid: 11530f8ebeb1b4981ba44f19f406046d, type: 3}
   - {fileID: 21300000, guid: 2597101f35bed451798e2fb32a60a716, type: 3}
   - {fileID: 21300000, guid: c055a11f5f50847d88482fc7ae2bed36, type: 3}
@@ -240,6 +243,7 @@ SpriteAtlas:
   - Carrots_1
   - Candy_1
   - button_1_small_green
+  - Icon_Wrong
   - Icon_Crowd
   - icon_star_05
   - item_skin_orange
@@ -278,6 +282,7 @@ SpriteAtlas:
   - Pizza_1
   - Perfumes_1
   - Floor3
+  - ICON_Music2
   - Icon_Add
   - sign_build
   - content_item_skin_1
@@ -298,6 +303,7 @@ SpriteAtlas:
   - Floor4
   - Icon_Dlassification
   - square_88_white
+  - icon_music_off
   - ToothBrushes_1
   - icon_personal_3
   - Floor1

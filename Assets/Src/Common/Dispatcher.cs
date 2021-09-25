@@ -32,7 +32,9 @@ public class Dispatcher
     public Action<FriendData> UIBottomPanelInviteFriendClicked = delegate { };    
     public Action UIBottomPanelAutoPlaceClicked = delegate { };
     public Action<FriendShopActionId> UIBottomPanelFriendShopActionClicked = delegate { };
-    public Action<FriendShopActionId> UIBottomPanelBuyFriendShopActionClicked = delegate { };    
+    public Action<FriendShopActionId> UIBottomPanelBuyFriendShopActionClicked = delegate { };
+    public Action UIMuteAudioClicked = delegate { };
+    public Action UIMuteMusicClicked = delegate { };    
 
     public Action UIActionsRotateRightClicked = delegate { };
     public Action UIActionsRotateLeftClicked = delegate { };

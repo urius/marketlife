@@ -243,6 +243,7 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelCommonScrollItemsT
                 var config = slotModel.Product.Config;
                 var icon = _spritesProvider.GetProductIcon(config.Key);
 
+                itemView.Reset();
                 itemView.SetupIconSize(110);
                 itemView.SetImage(icon);
                 itemView.DisableHint();

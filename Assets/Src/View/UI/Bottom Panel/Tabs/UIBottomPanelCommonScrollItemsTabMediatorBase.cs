@@ -11,6 +11,7 @@ public abstract class UIBottomPanelCommonScrollItemsTabMediatorBase<TViewModel> 
     {
         var result = _viewsCache.GetOrCreateDefaultScrollBoxItem();
         result.Reset();
+        result.SetSkinBlue();
         return result;
     }
 

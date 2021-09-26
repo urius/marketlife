@@ -9,8 +9,9 @@ public class UIBottomPanelScrollItemView : UIBottomPanelScrollItemViewBase
 {
     public event Action<UIBottomPanelScrollItemView> BottomButtonClicked = delegate { };
     public event Action<UIBottomPanelScrollItemView> RemoveButtonClicked = delegate { };
-
+    //C5FFF6
     [SerializeField] private UIPriceLabelView _priceLabel;
+    [SerializeField] private Image _mainButtonImage;
     [SerializeField] private Image _imageSprite;
     [SerializeField] private RectTransform _imageRectTransform;
     [SerializeField] private TMP_Text _topText;
@@ -21,6 +22,7 @@ public class UIBottomPanelScrollItemView : UIBottomPanelScrollItemViewBase
     [SerializeField] private UIPriceLabelView _bottomButtonPriceLabel;
     [SerializeField] private UIHintableView _bottomButtonHintableView;
     [SerializeField] private Button _removeButton;
+    [SerializeField] private Color _liteGreenColor;
 
     private CancellationTokenSource _animationsCts;
 
@@ -130,11 +132,17 @@ public class UIBottomPanelScrollItemView : UIBottomPanelScrollItemViewBase
         _animationsCts = null;
     }
 
+    public void SetSkinGreen()
+    {
+        _mainButtonImage.color = _liteGreenColor;
+    }
+
     public void Reset()
     {
         CancelAllAnimations();
 
         _percentLineContainerTransform.gameObject.SetActive(false);
+        _mainButtonImage.color = Color.white;
         _topText.gameObject.SetActive(false);
         _priceLabel.gameObject.SetActive(false);
         _imageSprite.color = _imageSprite.color.SetAlpha(1);

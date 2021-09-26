@@ -57,6 +57,7 @@ public class LocalizationKeys
     public static string BottomPanelWarehouseEmptySlot = "bottom_panel_warehouse_empty_slot";
     public static string BottomPanelWarehouseEmptySlotHint = "bottom_panel_warehouse_empty_slot_hint";
     public static string BottomPanelWarehouseQuickDeliveryHint = "bottom_panel_warehouse_quick_delivery_hint";    
+    public static string BottomPanelWarehouseExpandHint = "bottom_panel_warehouse_expand_hint";
     public static string BottomPanelFriendsButton = "bottom_panel_friends_button";    
     public static string BottomPanelInteriorButton = "bottom_panel_interior_button";
     public static string BottomPanelManageButton = "bottom_panel_manage_button";    

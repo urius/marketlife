@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class UIBottomPanelWarehouseTabMediator : UIBottomPanelCommonScrollItemsTabMediatorBase<ProductSlotModel>
+public class UIBottomPanelWarehouseTabMediator : UIBottomPanelCommonScrollItemsTabMediatorBase<BottomPanelWarehouseItemViewModel>
 {
     private readonly ShopWarehouseModel _warehouseModel;
     private readonly GameConfigManager _configManager;
@@ -38,6 +38,10 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelCommonScrollItemsT
 
     public override void Unmediate()
     {
+        _tutorialUIElementsProvider.ClearElement(TutorialUIElement.BottomPanelWarehouseTabLastDeliveringSlot);
+        _tutorialUIElementsProvider.ClearElement(TutorialUIElement.BottomPanelWarehouseTabLastDeliveringSlotTime);
+        _tutorialUIElementsProvider.ClearElement(TutorialUIElement.BottomPanelWarehouseTabFirstFreeSlot);
+
         View.SetButtonUnselected(View.WarehouseButton);
         Deactivate();
         base.Unmediate();
@@ -63,7 +67,7 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelCommonScrollItemsT
     {
         foreach (var displayedItem in DisplayedItems)
         {
-            UpdateSlotView(displayedItem.View, displayedItem.ViewModel);
+            UpdateItemView(displayedItem.View, displayedItem.ViewModel);
         }
     }
 
@@ -74,72 +78,97 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelCommonScrollItemsT
 
     private async void OnUIRequestOrderProductAnimation(RectTransform rectTransform, Vector2 screenPosition, int slotIndex, ProductModel productModel)
     {
-        var slotModel = _warehouseModel.Slots[slotIndex];
-        var animator = new UIOrderProductFromPopupAnimator(rectTransform, screenPosition, GetViewByViewModel(slotModel), productModel);
+        var (view, _) = GetDisplayedItemBySlotIndex(slotIndex);
+        var animator = new UIOrderProductFromPopupAnimator(rectTransform, screenPosition, view, productModel);
         _orderProductAnimatorsBySlotIndex[slotIndex] = animator;
         await animator.AnimateAsync();
         _orderProductAnimatorsBySlotIndex.Remove(slotIndex);
     }
 
-    protected override IEnumerable<ProductSlotModel> GetViewModelsToShow()
+    protected override IEnumerable<BottomPanelWarehouseItemViewModel> GetViewModelsToShow()
     {
-        return _warehouseModel.Slots;
+        return _warehouseModel.Slots.Select(s => new BottomPanelWarehouseItemViewModel(s))
+            .Concat(new BottomPanelWarehouseItemViewModel[] { new BottomPanelWarehouseItemViewModel() });
     }
 
-    protected override void HandleClick(ProductSlotModel slotModel)
+    protected override void HandleClick(BottomPanelWarehouseItemViewModel viewModel)
     {
-        _dispatcher.UIBottomPanelWarehouseSlotClicked(slotModel.Index);
-    }
-
-    protected override void SetupItem(UIBottomPanelScrollItemView itemView, ProductSlotModel slotModel)
-    {
-        UpdateSlotView(itemView, slotModel);
-    }
-
-    protected override void BeforeHideItem(UIBottomPanelScrollItemView itemView, ProductSlotModel viewModel)
-    {
-        if (_orderProductAnimatorsBySlotIndex.ContainsKey(viewModel.Index))
+        if (viewModel.HasSlot)
         {
-            _orderProductAnimatorsBySlotIndex[viewModel.Index].CancelAnimation();
+            _dispatcher.UIBottomPanelWarehouseSlotClicked(viewModel.SlotModel.Index);
+        }
+        else
+        {
+            _dispatcher.UIBottomPanelExpandShopClicked();
+        }
+    }
+
+    protected override void SetupItem(UIBottomPanelScrollItemView itemView, BottomPanelWarehouseItemViewModel viewModel)
+    {
+        UpdateItemView(itemView, viewModel);
+    }
+
+    protected override void BeforeHideItem(UIBottomPanelScrollItemView itemView, BottomPanelWarehouseItemViewModel viewModel)
+    {
+        if (viewModel.HasSlot)
+        {
+            if (_orderProductAnimatorsBySlotIndex.ContainsKey(viewModel.SlotModel.Index))
+            {
+                _orderProductAnimatorsBySlotIndex[viewModel.SlotModel.Index].CancelAnimation();
+            }
         }
 
         base.BeforeHideItem(itemView, viewModel);
     }
 
-    protected override void ActivateItem(UIBottomPanelScrollItemView itemView, ProductSlotModel slotModel)
+    protected override void ActivateItem(UIBottomPanelScrollItemView itemView, BottomPanelWarehouseItemViewModel viewModel)
     {
-        base.ActivateItem(itemView, slotModel);
+        base.ActivateItem(itemView, viewModel);
 
         itemView.BottomButtonClicked += OnBottomButtonClicked;
         itemView.RemoveButtonClicked += OnRemoveButtonClicked;
-        slotModel.ProductIsSet += OnProductSet;
-        slotModel.ProductAmountChanged += OnProductAmountChanged;
-        slotModel.ProductRemoved += OnProductRemoved;
-        slotModel.ProductDeliveryTimeChanged += OnDeliveryTimeChanged;
+        if (viewModel.HasSlot)
+        {
+            var slotModel = viewModel.SlotModel;
+            slotModel.ProductIsSet += OnProductSet;
+            slotModel.ProductAmountChanged += OnProductAmountChanged;
+            slotModel.ProductRemoved += OnProductRemoved;
+            slotModel.ProductDeliveryTimeChanged += OnDeliveryTimeChanged;
+        }
     }
 
-    protected override void DeactivateItem(UIBottomPanelScrollItemView itemView, ProductSlotModel slotModel)
+    protected override void DeactivateItem(UIBottomPanelScrollItemView itemView, BottomPanelWarehouseItemViewModel viewModel)
     {
         itemView.BottomButtonClicked -= OnBottomButtonClicked;
         itemView.RemoveButtonClicked -= OnRemoveButtonClicked;
-        slotModel.ProductIsSet -= OnProductSet;
-        slotModel.ProductAmountChanged -= OnProductAmountChanged;
-        slotModel.ProductRemoved -= OnProductRemoved;
-        slotModel.ProductDeliveryTimeChanged -= OnDeliveryTimeChanged;
+        if (viewModel.HasSlot)
+        {
+            var slotModel = viewModel.SlotModel;
+            slotModel.ProductIsSet -= OnProductSet;
+            slotModel.ProductAmountChanged -= OnProductAmountChanged;
+            slotModel.ProductRemoved -= OnProductRemoved;
+            slotModel.ProductDeliveryTimeChanged -= OnDeliveryTimeChanged;
+        }
 
-        base.DeactivateItem(itemView, slotModel);
+        base.DeactivateItem(itemView, viewModel);
     }
 
     private void OnRemoveButtonClicked(UIBottomPanelScrollItemView itemView)
     {
         var viewModel = DisplayedItems.First(t => t.View == itemView).ViewModel;
-        _dispatcher.UIBottomPanelWarehouseRemoveProductClicked(viewModel.Index);
+        if (viewModel.HasSlot)
+        {
+            _dispatcher.UIBottomPanelWarehouseRemoveProductClicked(viewModel.SlotModel.Index);
+        }
     }
 
     private void OnBottomButtonClicked(UIBottomPanelScrollItemView itemView)
     {
         var viewModel = DisplayedItems.First(t => t.View == itemView).ViewModel;
-        _dispatcher.UIBottomPanelWarehouseQuickDeliverClicked(viewModel.Index);
+        if (viewModel.HasSlot)
+        {
+            _dispatcher.UIBottomPanelWarehouseQuickDeliverClicked(viewModel.SlotModel.Index);
+        }
     }
 
     private async void OnProductSet(int slotIndex)
@@ -149,11 +178,10 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelCommonScrollItemsT
             await animator.AnimationTask;
         }
 
-        var slotmodel = _warehouseModel.Slots[slotIndex];
-        var view = GetViewByViewModel(slotmodel);
+        var (view, viewModel) = GetDisplayedItemBySlotIndex(slotIndex);
         if (view != null)
         {
-            UpdateSlotView(view, slotmodel);
+            UpdateItemView(view, viewModel);
             _audioManager.PlaySound(SoundNames.ProductDrop1);
             LeanTween.delayedCall(0.5f, PlayProductDropSound);
             //LeanTween.delayedCall(0.7f, PlayProductDropSound);
@@ -192,59 +220,76 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelCommonScrollItemsT
 
     private void UpdateSlotViewByIndex(int slotIndex)
     {
-        var slotmodel = _warehouseModel.Slots[slotIndex];
-        var view = GetViewByViewModel(slotmodel);
+        var (view, viewModel) = GetDisplayedItemBySlotIndex(slotIndex);
         if (view != null)
         {
-            UpdateSlotView(view, slotmodel);
+            UpdateItemView(view, viewModel);
         }
     }
 
-    private void UpdateSlotView(UIBottomPanelScrollItemView itemView, ProductSlotModel slotModel)
+    private (UIBottomPanelScrollItemView View, BottomPanelWarehouseItemViewModel ViewModel) GetDisplayedItemBySlotIndex(int slotIndex)
     {
-        if (slotModel.HasProduct)
+        return DisplayedItems.FirstOrDefault(i => i.ViewModel.HasSlot && i.ViewModel.SlotModel.Index == slotIndex);
+    }
+
+    private void UpdateItemView(UIBottomPanelScrollItemView itemView, BottomPanelWarehouseItemViewModel itemViewModel)
+    {
+        if (itemViewModel.HasSlot)
         {
-            var product = slotModel.Product;
-            var config = slotModel.Product.Config;
-            var icon = _spritesProvider.GetProductIcon(config.Key);
-
-            itemView.SetupIconSize(110);
-            itemView.SetImage(icon);
-            itemView.DisableHint();
-
-            var deltaDeliver = product.DeliverTime - _gameStateModel.ServerTime;
-            if (deltaDeliver > 0)
+            var slotModel = itemViewModel.SlotModel;
+            if (slotModel.HasProduct)
             {
-                itemView.SetImageAlpha(0.3f);
-                itemView.SetTopText(FormattingHelper.ToSeparatedTimeFormat(deltaDeliver));
-                var quickDeliverPrice = CalculationHelper.GetPriceForDeliver(_configManager.MainConfig.QuickDeliverPriceGoldPerMinute, deltaDeliver);
-                itemView.SetBottomButtonPrice(quickDeliverPrice);
-                itemView.SetupBottomButtonHint(_loc.GetLocalization(LocalizationKeys.BottomPanelWarehouseQuickDeliveryHint));
+                var product = slotModel.Product;
+                var config = slotModel.Product.Config;
+                var icon = _spritesProvider.GetProductIcon(config.Key);
 
-                _tutorialUIElementsProvider.SetElement(TutorialUIElement.BottomPanelWarehouseTabLastDeliveringSlot, itemView.transform as RectTransform);
-                _tutorialUIElementsProvider.SetElement(TutorialUIElement.BottomPanelWarehouseTabLastDeliveringSlotTime, itemView.TopTextRectTransform);
+                itemView.SetupIconSize(110);
+                itemView.SetImage(icon);
+                itemView.DisableHint();
+
+                var deltaDeliver = product.DeliverTime - _gameStateModel.ServerTime;
+                if (deltaDeliver > 0)
+                {
+                    itemView.SetImageAlpha(0.3f);
+                    itemView.SetTopText(FormattingHelper.ToSeparatedTimeFormat(deltaDeliver));
+                    var quickDeliverPrice = CalculationHelper.GetPriceForDeliver(_configManager.MainConfig.QuickDeliverPriceGoldPerMinute, deltaDeliver);
+                    itemView.SetBottomButtonPrice(quickDeliverPrice);
+                    itemView.SetupBottomButtonHint(_loc.GetLocalization(LocalizationKeys.BottomPanelWarehouseQuickDeliveryHint));
+
+                    _tutorialUIElementsProvider.SetElement(TutorialUIElement.BottomPanelWarehouseTabLastDeliveringSlot, itemView.transform as RectTransform);
+                    _tutorialUIElementsProvider.SetElement(TutorialUIElement.BottomPanelWarehouseTabLastDeliveringSlotTime, itemView.TopTextRectTransform);
+                }
+                else
+                {
+                    itemView.DisableBottomButton();
+                    itemView.SetImageAlpha(1);
+                    itemView.ShowRemoveButton();
+                    UpdateProductAmount(itemView, product);
+                }
             }
             else
             {
-                itemView.DisableBottomButton();
-                itemView.SetImageAlpha(1);
-                itemView.ShowRemoveButton();
-                UpdateProductAmount(itemView, product);
+                itemView.Reset();
+                itemView.SetupIconSize(110);
+                itemView.SetImage(_spritesProvider.GetOrderIcon());
+                itemView.SetTopText(_loc.GetLocalization(LocalizationKeys.BottomPanelWarehouseEmptySlot));
+                itemView.SetupMainHint(_loc.GetLocalization(LocalizationKeys.BottomPanelWarehouseEmptySlotHint));
+
+                if (_tutorialUIElementsProvider.HasElement(TutorialUIElement.BottomPanelWarehouseTabFirstFreeSlot) == false
+                    && slotModel.HasProduct == false)
+                {
+                    _tutorialUIElementsProvider.SetElement(TutorialUIElement.BottomPanelWarehouseTabFirstFreeSlot, itemView.transform as RectTransform);
+                }
             }
         }
         else
         {
             itemView.Reset();
             itemView.SetupIconSize(110);
-            itemView.SetImage(_spritesProvider.GetOrderIcon());
-            itemView.SetTopText(_loc.GetLocalization(LocalizationKeys.BottomPanelWarehouseEmptySlot));
-            itemView.SetupMainHint(_loc.GetLocalization(LocalizationKeys.BottomPanelWarehouseEmptySlotHint));
-
-            if (_tutorialUIElementsProvider.HasElement(TutorialUIElement.BottomPanelWarehouseTabFirstFreeSlot) == false
-                && slotModel.HasProduct == false)
-            {
-                _tutorialUIElementsProvider.SetElement(TutorialUIElement.BottomPanelWarehouseTabFirstFreeSlot, itemView.transform as RectTransform);
-            }
+            itemView.SetImage(_spritesProvider.GetBigPlusSignIcon());
+            itemView.SetSkinGreen();
+            //itemView.SetTopText(_loc.GetLocalization(LocalizationKeys.BottomPanelWarehouseEmptySlot));
+            itemView.SetupMainHint(_loc.GetLocalization(LocalizationKeys.BottomPanelWarehouseExpandHint));
         }
     }
 
@@ -252,13 +297,14 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelCommonScrollItemsT
     {
         foreach (var displayedItem in DisplayedItems)
         {
-            if (_orderProductAnimatorsBySlotIndex.ContainsKey(displayedItem.ViewModel.Index)) continue;
-            if (displayedItem.ViewModel.HasProduct)
+            var slotModel = displayedItem.ViewModel.SlotModel;
+            if (slotModel == null || _orderProductAnimatorsBySlotIndex.ContainsKey(slotModel.Index)) continue;
+            if (slotModel.HasProduct)
             {
-                var restDeliverTime = displayedItem.ViewModel.Product.DeliverTime - _gameStateModel.ServerTime;
+                var restDeliverTime = slotModel.Product.DeliverTime - _gameStateModel.ServerTime;
                 if (restDeliverTime >= -1)
                 {
-                    UpdateSlotView(displayedItem.View, displayedItem.ViewModel);
+                    UpdateItemView(displayedItem.View, displayedItem.ViewModel);
                     if (restDeliverTime == 0)
                     {
                         _audioManager.PlaySound(SoundNames.Delivered);
@@ -267,4 +313,16 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelCommonScrollItemsT
             }
         }
     }
+}
+
+public class BottomPanelWarehouseItemViewModel
+{
+    public readonly ProductSlotModel SlotModel;
+
+    public BottomPanelWarehouseItemViewModel(ProductSlotModel slotModel = null)
+    {
+        SlotModel = slotModel;
+    }
+
+    public bool HasSlot => SlotModel != null;
 }

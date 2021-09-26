@@ -45,15 +45,7 @@ public abstract class UIBottomPanelScrollItemsTabMediatorBase<TView, TViewModel>
     public override void Unmediate()
     {
         Deactivate();
-
-        foreach (var item in DisplayedItems)
-        {
-            HideItem(item);
-        }
-        DisplayedItems.Clear();
-        _shownIndexFrom = 0;
-        _shownIndexTo = -1;
-
+        ClearDisplayedItems();
         HideScrollBox();
 
         base.Unmediate();
@@ -73,6 +65,7 @@ public abstract class UIBottomPanelScrollItemsTabMediatorBase<TView, TViewModel>
 
         _scrollBoxView.SetContentWidth(_viewModels.Length * _scrollBoxView.SlotWidth);
         _scrollBoxView.SetContentPosition(_lastContentPosition);
+        ClearDisplayedItems();
         UpdateDisplayItems();
     }
 
@@ -126,6 +119,17 @@ public abstract class UIBottomPanelScrollItemsTabMediatorBase<TView, TViewModel>
     private void Deactivate()
     {
         _updatesProvider.RealtimeUpdate -= OnRealtimeUpdate;
+    }
+
+    private void ClearDisplayedItems()
+    {
+        foreach (var item in DisplayedItems)
+        {
+            HideItem(item);
+        }
+        DisplayedItems.Clear();
+        _shownIndexFrom = 0;
+        _shownIndexTo = -1;
     }
 
     private void OnRealtimeUpdate()

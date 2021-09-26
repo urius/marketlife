@@ -165,6 +165,11 @@ public class SpritesProvider
         return GetSprite(SpriteAtlasId.InterfaceAtlas, "unwashes_icon_1");
     }
 
+    public Sprite GetBigPlusSignIcon()
+    {
+        return GetSprite(SpriteAtlasId.InterfaceAtlas, "sign_plus_big");
+    }
+
     private Sprite GetSprite(SpriteAtlasId gameplayAtlas, string name)
     {
         if (_graphicsManager == null)

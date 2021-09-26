@@ -20,7 +20,8 @@ public class UpgradesPopupViewModel : PopupViewModelBase
     public UpgradesPopupViewModel(
         UserModel playerModel,
         IPersonalConfig personalConfig,
-        IUpgradesConfig upgradesConfig)
+        IUpgradesConfig upgradesConfig,
+        TabType showOnTab = TabType.Undefined)
     {
         _playerModel = playerModel;
         _shopModel = playerModel.ShopModel;
@@ -29,7 +30,7 @@ public class UpgradesPopupViewModel : PopupViewModelBase
 
         UpdateItems();
 
-        ShowOnTab = _tabs[0];
+        ShowOnTab = showOnTab == TabType.Undefined ? _tabs[0] : showOnTab;
     }
 
     public TabType ShowOnTab { get; private set; }

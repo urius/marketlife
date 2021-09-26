@@ -32,7 +32,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 46b41057a82fe4010b5245cd9e8b4afa, type: 3}
-    totalSpriteSurfaceArea: 1400127
+    totalSpriteSurfaceArea: 1404352
     bindAsDefault: 0
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -135,6 +135,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: e1df045b6dee045ef9befbcf22f212b5, type: 3}
   - {fileID: 21300000, guid: 0137ae5b191d24f3195eeb886b45add7, type: 3}
   - {fileID: 21300000, guid: 1c6bd57b301c845a2bbd582c348e108a, type: 3}
+  - {fileID: 21300000, guid: 2584fc8b4e4624579b880979882e8a4e, type: 3}
   - {fileID: 21300000, guid: c9e6169b6e75f4fd0a08ef0dd096fdbb, type: 3}
   - {fileID: 21300000, guid: 552e0b9b1699640e9a19fb147dae6d5a, type: 3}
   - {fileID: 21300000, guid: 666d2aab7cffd4f39a63eb1931b30396, type: 3}
@@ -274,6 +275,7 @@ SpriteAtlas:
   - Beer
   - sign_4arrows
   - Cake
+  - sign_plus_big
   - white_circle_200
   - bottom_panel_bg_friend_shop_mode
   - TV

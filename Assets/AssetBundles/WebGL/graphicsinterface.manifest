@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2583564818
+CRC: 517498078
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 62e08baf101816c4bb8d6977c178409f
+    Hash: 9260208d1ab15652b6461a932e4f27b1
   TypeTreeHash:
     serializedVersion: 2
     Hash: ba23c2e8f8b3f5319028008a25497317
@@ -167,5 +167,6 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Doors/Door1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall8.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Perfumes_1.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/sign_plus_big.png
 - Assets/External Resources/InterfaceGraphicsBundle/TopPanel/skin_top_rating_button.png
 Dependencies: []

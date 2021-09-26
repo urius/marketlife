@@ -659,10 +659,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adbc3e423670a4ee09a6ba7714704a45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _button: {fileID: 875298349472462323}
   _priceLabel: {fileID: 2709383430078441133}
+  _mainButtonImage: {fileID: 875298349472462324}
   _imageSprite: {fileID: 1640520106508245027}
   _imageRectTransform: {fileID: 5985492634508149724}
-  _button: {fileID: 875298349472462323}
   _topText: {fileID: 1813021114}
   _percentLineContainerTransform: {fileID: 791955980}
   _percentLineImage: {fileID: 1302841020}
@@ -671,6 +672,7 @@ MonoBehaviour:
   _bottomButtonPriceLabel: {fileID: 6612115600509861452}
   _bottomButtonHintableView: {fileID: 3362111628892494975}
   _removeButton: {fileID: 8107594928914308127}
+  _liteGreenColor: {r: 0.77254903, g: 1, b: 0.9647059, a: 1}
 --- !u!114 &8014121438027112666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -722,7 +724,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -10}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 130, y: 130}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2756104789697214189
@@ -753,7 +755,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 288ad3fad7fda4d19b158dab317a88f0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2584fc8b4e4624579b880979882e8a4e, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -858,7 +860,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3186568409943426603
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1214,6 +1216,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Price_Label
+      objectReference: {fileID: 0}
+    - target: {fileID: 1637180602300612166, guid: fefefb54247534cc2ade15eed1264f2e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5406661475668838216, guid: fefefb54247534cc2ade15eed1264f2e,
         type: 3}

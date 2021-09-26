@@ -32,6 +32,7 @@ public class EventsHandleSystem
         _dispatcher.UIBottomPanelPlaceWindowClicked += OnUIBottomPanelPlaceWindowClicked;
         _dispatcher.UIBottomPanelPlaceDoorClicked += OnUIBottomPanelPlaceDoorClicked;
         _dispatcher.UIBottomPanelWarehouseSlotClicked += OnUIBottomPanelWarehouseSlotClicked;
+        _dispatcher.UIBottomPanelExpandShopClicked += OnUIBottomPanelExpandShopClicked;        
         _dispatcher.UIBottomPanelWarehouseQuickDeliverClicked += OnUIBottomPanelWarehouseQuickDeliverClicked;
         _dispatcher.UIBottomPanelWarehouseRemoveProductClicked += OnUIBottomPanelWarehouseRemoveProductClicked;
         _dispatcher.UIBottomPanelAutoPlaceClicked += OnUIBottomPanelAutoPlaceClicked;
@@ -371,4 +372,9 @@ public class EventsHandleSystem
     {
         new UIProcessWarehouseSlotClickCommand().Execute(slotIndex);
     }
+
+    private void OnUIBottomPanelExpandShopClicked()
+    {
+        new HandleExpandShopClickCommand().Execute();
+    }    
 }

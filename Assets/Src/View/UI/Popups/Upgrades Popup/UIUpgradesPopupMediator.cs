@@ -242,9 +242,11 @@ public class UIUpgradesPopupMediator : IMediator
             itemView.SetTitleText(
                 string.Format(
                     _loc.GetLocalization($"{LocalizationKeys.CommonUpgradeNameFormat}{upgradeConfig.UpgradeTypeStr}"),
-                    upgradeConfig.Value
-                    ));
-            itemView.SetDescriptionText(_loc.GetLocalization($"{LocalizationKeys.PopupUpgradesUpgradeDescriptionPrefix}{upgradeConfig.UpgradeTypeStr}"));
+                    upgradeConfig.Value));
+            itemView.SetDescriptionText(
+                string.Format(
+                    _loc.GetLocalization($"{LocalizationKeys.PopupUpgradesUpgradeDescriptionPrefix}{upgradeConfig.UpgradeTypeStr}"),
+                    upgradeConfig.Value));
             if (isMaxReached)
             {
                 itemView.SetStatusText(_loc.GetLocalization(LocalizationKeys.PopupUpgradesMaxLevel));

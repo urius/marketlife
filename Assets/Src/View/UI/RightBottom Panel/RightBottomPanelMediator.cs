@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class RightBottomPanelMediator : MonoBehaviour
@@ -15,8 +16,15 @@ public class RightBottomPanelMediator : MonoBehaviour
     {
         _gameStateModel = GameStateModel.Instance;
         _playerModelHolder = PlayerModelHolder.Instance;
-
         _dispatcher = Dispatcher.Instance;
+
+        SetButtonsVisibility(false);
+    }
+
+    private void SetButtonsVisibility(bool isVisible)
+    {
+        _muteMusicButton.gameObject.SetActive(isVisible);
+        _muteAudioButton.gameObject.SetActive(isVisible);
     }
 
     private async void Start()
@@ -24,6 +32,7 @@ public class RightBottomPanelMediator : MonoBehaviour
         await _gameStateModel.GameDataLoadedTask;
 
         _playerModel = _playerModelHolder.UserModel;
+        SetButtonsVisibility(true);
         UpdateButtonsView();
 
         Activate();

@@ -128,10 +128,13 @@ public class UIBottomPanelScrollItemView : UIBottomPanelScrollItemViewBase
 
     public void CancelAllAnimations()
     {
-        if (_animationsCts == null) return;
-        _animationsCts.Cancel();
-        _animationsCts.Dispose();
-        _animationsCts = null;
+        if (_animationsCts != null)
+        {
+            var cts = _animationsCts;
+            _animationsCts = null; //strange issue (parallel-like, but in same thread) if call CancelAllAnimations On Every second in parallel with animation
+            cts.Cancel();
+            cts.Dispose();
+        }
     }
 
     public void SetSkinGreen()

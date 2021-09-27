@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-public class UIBottomPanelWindowsTabMediator : UIBottomPanelCommonScrollItemsTabMediatorBase<ItemConfig<ShopDecorationConfigDto>>
+public class UIBottomPanelWindowsTabMediator : UIBottomPanelInteriorModeScrollItemsTabMediatorBase<ItemConfig<ShopDecorationConfigDto>>
 {
     private readonly IWindowsConfig _windowsConfig;
     private readonly SpritesProvider _spritesProvider;

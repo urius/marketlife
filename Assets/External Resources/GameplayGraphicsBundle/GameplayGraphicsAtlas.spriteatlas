@@ -44,13 +44,15 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 5804ef6ef86794aa6ac1d44028fafb7e, type: 3}
-    totalSpriteSurfaceArea: 853060
+    totalSpriteSurfaceArea: 872873
     bindAsDefault: 0
     isAtlasV2: 0
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: bbe445b0e86714b1cbd6f4c1ab95b232, type: 3}
+  - {fileID: 21300000, guid: 104936d0e189c4efd8e323bec4b568ca, type: 3}
+  - {fileID: 21300000, guid: abf5d7d0a8c894e71b64fb7a54bf715d, type: 3}
   - {fileID: 21300000, guid: bdc9ede03a860411589a7f194b22c8ec, type: 3}
   - {fileID: 21300000, guid: b4768321d7a634af9b3e41bd092bc23d, type: 3}
   - {fileID: 21300000, guid: a83cf2810cb2549f59fe518d64108df3, type: 3}
@@ -82,6 +84,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 8c8800e3c31c64723a56c9059f6b1bab, type: 3}
   - {fileID: 21300000, guid: a9557cf3be29d4b89aa26d0c7f99825b, type: 3}
   - {fileID: 21300000, guid: 05041204e8b604f3ea400e41a49986b4, type: 3}
+  - {fileID: 21300000, guid: 78202c24a447448ec9386f9d20ca43d8, type: 3}
   - {fileID: 21300000, guid: fbd4bc44d205a4421850224e591d5d4f, type: 3}
   - {fileID: 21300000, guid: e0192194ae3e54bf99a3f1a518ee8c58, type: 3}
   - {fileID: 21300000, guid: d6252794bceaa4278a48037498bca820, type: 3}
@@ -202,6 +205,8 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 3c3b0eefd62ae4444ae69311becda695, type: 3}
   m_PackedSpriteNamesToIndex:
   - Mouth10
+  - Tree
+  - FloorGrass2
   - FootClothes2
   - Mouth6
   - Hair5
@@ -233,6 +238,7 @@ SpriteAtlas:
   - FootClothes3
   - Clothes4_Profile
   - FootClothes6_Profile
+  - FloorGrass1
   - HandClothes2
   - Perfume_2
   - Shelf_2_back

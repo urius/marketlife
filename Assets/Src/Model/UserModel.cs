@@ -18,6 +18,7 @@ public class UserModel
     public readonly AvailableFriendShopActionsDataModel ActionsDataModel;
     public readonly UserSettingsModel UserSettingsModel;
     public readonly ExternalActionsModel ExternalActionsModel;
+    public readonly int RandomSeed;
 
     public UserModel(
         string uid,
@@ -40,6 +41,15 @@ public class UserModel
         TutorialSteps = new List<int>(tutorialSteps ?? Enumerable.Empty<int>());
         UserSettingsModel = userSettingsModel;
         ExternalActionsModel = externalActionsModel;
+
+        if (int.TryParse(uid, out var uidInt))
+        {
+            RandomSeed = uidInt;
+        }
+        else
+        {
+            RandomSeed = UnityEngine.Random.Range(0, int.MaxValue);
+        }
 
         SubscribeForSettingsModel();
     }

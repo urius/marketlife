@@ -21,6 +21,8 @@ public class PrefabsHolder : ScriptableObject
     public GameObject WindowPrefab;
     public GameObject DoorPrefab;
 
+    public GameObject SimpleObjectPrefab;
+
     public GameObject CashDesk1Prefab;
 
     public GameObject Shelf1Prefab;

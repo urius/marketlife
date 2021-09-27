@@ -4,7 +4,7 @@ using UnityEngine;
 public class FloorMediator : MonoBehaviour
 {
     private readonly Dictionary<Vector2Int, SpriteRenderer> _floorSprites = new Dictionary<Vector2Int, SpriteRenderer>();
-    private readonly Dictionary<Vector2Int, SpriteRenderer> _floorGrassSprites = new Dictionary<Vector2Int, SpriteRenderer>();
+    private readonly Dictionary<Vector2Int, SpriteRenderer> _grassSprites = new Dictionary<Vector2Int, SpriteRenderer>();
     private readonly Dictionary<Vector2Int, SpriteRenderer> _unwashesSprites = new Dictionary<Vector2Int, SpriteRenderer>();
 
     private GameStateModel _gameStateModel;
@@ -157,7 +157,6 @@ public class FloorMediator : MonoBehaviour
                 _floorSprites[kvp.Key].sprite = _spritesProvider.GetFloorSprite(kvp.Value);
             }
         }
-
         var keysToRemove = new List<Vector2Int>();
         foreach (var kvp in _floorSprites)
         {
@@ -171,6 +170,7 @@ public class FloorMediator : MonoBehaviour
         keysToRemove.ForEach(k => _floorSprites.Remove(k));
         keysToRemove.Clear();
 
+        //grass
         var designModel = _activeShopModel.ShopDesign;
         var grassPadding = 10;
         for (var x = -grassPadding; x < designModel.SizeX + grassPadding; x++)
@@ -181,33 +181,31 @@ public class FloorMediator : MonoBehaviour
                 if (!_floorSprites.ContainsKey(coords))
                 {
                     var grassId = _random.Next(1, 3);
-                    if (!_floorGrassSprites.ContainsKey(coords))
+                    if (!_grassSprites.ContainsKey(coords))
                     {
                         var floorGrassSprite = viewsFactory.CreateGrassFloor(transform, grassId);
                         floorGrassSprite.transform.position = _gridCalculator.CellToWorld(coords);
-                        _floorGrassSprites[coords] = floorGrassSprite;
+                        _grassSprites[coords] = floorGrassSprite;
                     }
                     else
                     {
-                        _floorGrassSprites[coords].sprite = _spritesProvider.GetGrassSprite(grassId);
+                        _grassSprites[coords].sprite = _spritesProvider.GetGrassSprite(grassId);
                     }
                 }
             }
         }
-
-        foreach (var kvp in _floorGrassSprites)
+        foreach (var kvp in _grassSprites)
         {
             var coords = kvp.Key;
             if (_floorSprites.ContainsKey(coords)
                 || coords.x >= designModel.SizeX + grassPadding
                 || coords.y >= designModel.SizeY + grassPadding)
             {
-                Destroy(_floorGrassSprites[coords].gameObject);
+                Destroy(_grassSprites[coords].gameObject);
                 keysToRemove.Add(coords);
             }
         }
-
-        keysToRemove.ForEach(k => _floorSprites.Remove(k));
+        keysToRemove.ForEach(k => _grassSprites.Remove(k));
         keysToRemove.Clear();
     }
 

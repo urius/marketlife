@@ -4,18 +4,29 @@ using UnityEngine;
 
 public class ShopObjectsMediator : MonoBehaviour
 {
-    private GameStateModel _gameStateModel;
+    private const int MaxTreesAmount = 25;
 
+    private GameStateModel _gameStateModel;
+    private PrefabsHolder _prefabsHolder;
+    private GridCalculator _gridCalculator;
+    private SpritesProvider _spritesProvider;
+
+    //
     private readonly Dictionary<Vector2Int, ShopObjectMediatorBase> _shopObjectMediators = new Dictionary<Vector2Int, ShopObjectMediatorBase>();
+    private readonly List<SpriteRenderer> _treesList = new List<SpriteRenderer>(MaxTreesAmount);
 
     private PlacingShopObjectMediator _currentPlacingShopObjectMediator;
     private ShopModel _currentShopModel;
+    private System.Random _random;
 
     private readonly List<GameObject> _debugSquaresList = new List<GameObject>();
 
     private void Awake()
     {
         _gameStateModel = GameStateModel.Instance;
+        _prefabsHolder = PrefabsHolder.Instance;
+        _gridCalculator = GridCalculator.Instance;
+        _spritesProvider = SpritesProvider.Instance;
     }
 
     private void Start()
@@ -36,8 +47,69 @@ public class ShopObjectsMediator : MonoBehaviour
         _currentShopModel.ShopObjectPlaced += OnShopObjectPlaced;
         _currentShopModel.ShopObjectRemoved += OnShopObjectRemoved;
         _currentShopModel.ShopObjectsChanged += OnShopObjectsChanged;
+        _currentShopModel.ShopDesign.SizeXChanged += OnSizeXChanged;
+        _currentShopModel.ShopDesign.SizeYChanged += OnSizeYChanged;
+
+        _random = new System.Random(_gameStateModel.ViewingUserModel.RandomSeed);
 
         DisplayShopObjects(viewingShopModel.ShopObjects);
+        DisplayTrees();
+    }
+
+    private void OnSizeXChanged(int prevValue, int currentValue)
+    {
+        DisplayTrees();
+    }
+
+    private void OnSizeYChanged(int prevValue, int currentValu)
+    {
+        DisplayTrees();
+    }
+
+    private void DisplayTrees()
+    {
+        const int treesPadding = 10;
+        const int treesGap = 2;
+
+        var amount = _random.Next(0, MaxTreesAmount);
+        var shopDesignModel = _currentShopModel.ShopDesign;
+        var createdAmount = 0;
+        for (var i = 0; i < amount; i++)
+        {
+            var coords = new Vector2Int(
+                _random.Next(-treesPadding, shopDesignModel.SizeX + treesPadding),
+                _random.Next(-treesPadding, shopDesignModel.SizeY + treesPadding));
+            if (coords.x < -treesGap
+                || coords.y < -treesGap
+                || coords.x > shopDesignModel.SizeX + treesGap
+                || coords.y > shopDesignModel.SizeY + treesGap)
+            {
+                SpriteRenderer treeRenderer;
+                if (_treesList.Count <= createdAmount)
+                {
+                    var go = GameObject.Instantiate(_prefabsHolder.SimpleObjectPrefab, transform);
+                    treeRenderer = go.GetComponent<SpriteRenderer>();
+                    _treesList.Add(treeRenderer);
+                }
+                else
+                {
+                    treeRenderer = _treesList[createdAmount];
+                }
+
+                treeRenderer.sortingLayerName = SortingLayers.OrderableOutside;
+                treeRenderer.sprite = _spritesProvider.GetTreeSprite();
+                treeRenderer.transform.position = _gridCalculator.CellToWorld(coords);
+                createdAmount++;
+            }
+        }
+
+        while (_treesList.Count > createdAmount)
+        {
+            var lastIndex = _treesList.Count - 1;
+            var item = _treesList[lastIndex];
+            GameObject.Destroy(item.gameObject);
+            _treesList.RemoveAt(lastIndex);
+        }
     }
 
     private void ForgetCurrentShopModel()
@@ -47,6 +119,8 @@ public class ShopObjectsMediator : MonoBehaviour
             _currentShopModel.ShopObjectPlaced -= OnShopObjectPlaced;
             _currentShopModel.ShopObjectRemoved -= OnShopObjectRemoved;
             _currentShopModel.ShopObjectsChanged -= OnShopObjectsChanged;
+            _currentShopModel.ShopDesign.SizeXChanged -= OnSizeXChanged;
+            _currentShopModel.ShopDesign.SizeYChanged -= OnSizeYChanged;
         }
     }
 

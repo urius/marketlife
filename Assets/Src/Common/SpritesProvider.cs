@@ -23,6 +23,11 @@ public class SpritesProvider
         return GetSprite(SpriteAtlasId.GameplayAtlas, $"FloorGrass{grassId}");
     }
 
+    public Sprite GetTreeSprite()
+    {
+        return GetSprite(SpriteAtlasId.GameplayAtlas, $"Tree");
+    }
+
     public Sprite GetUnwashSprite(int numericId)
     {
         return GetSprite(SpriteAtlasId.GameplayAtlas, $"Unwashes{numericId}");

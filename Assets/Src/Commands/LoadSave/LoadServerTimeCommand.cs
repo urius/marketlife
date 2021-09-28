@@ -1,7 +1,7 @@
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 
-public struct LoadServerTimeCommand
+public struct LoadServerTimeCommand : IAsyncGameLoadCommand
 {
     public async UniTask<bool> ExecuteAsync()
     {

@@ -3,7 +3,7 @@ using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
 
-public struct LoadCompensationDataCommand
+public struct LoadCompensationDataCommand : IAsyncGameLoadCommand
 {
     public async UniTask<bool> ExecuteAsync()
     {

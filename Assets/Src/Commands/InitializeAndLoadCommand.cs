@@ -6,18 +6,39 @@ public struct InitializeAndLoadCommand
     {
         var playerModelHolder = PlayerModelHolder.Instance;
         var gameStateModel = GameStateModel.Instance;
+        var loadGameProgressModel = LoadGameProgressModel.Instance;
 
         gameStateModel.SetGameState(GameStateName.Loading);
+        var phasesData = new (LoadGamePhase Phase, IAsyncGameLoadCommand Command)[]
+        {
+            (LoadGamePhase.LoadTime, new LoadServerTimeCommand()),
+            (LoadGamePhase.LoadLocalization, new LoadLocalizationCommand()),
+            (LoadGamePhase.LoadConfigs, new LoadConfigsCommand()),
+            (LoadGamePhase.LoadAssets, new LoadAssetsCommand()),
+            (LoadGamePhase.LoadShopData, new LoadPlayerShopCommand()),
+            (LoadGamePhase.LoadCompensationData, new LoadCompensationDataCommand()),
+        };
+        loadGameProgressModel.SetupPartsCount(phasesData.Length);
+        for (var i = 0; i < phasesData.Length; i++)
+        {
+            loadGameProgressModel.SetCurrentPhaseName(phasesData[i].Phase);
+            var result = await phasesData[i].Command.ExecuteAsync();
+            if (result == true)
+            {
+                loadGameProgressModel.SetCurrentPartLoaded();
+            }
+            else
+            {
+                loadGameProgressModel.SetErrorState();
+                return;
+            }
+        }
 
-        await new LoadServerTimeCommand().ExecuteAsync();
-        await new LoadLocalizationCommand().ExecuteAsync();
-        await new LoadConfigsCommand().ExecuteAsync();
-        await new LoadAssetsCommand().ExecuteAsync();
-        await new LoadPlayerShopCommand().ExecuteAsync();
-        await new LoadCompensationDataCommand().ExecuteAsync();
-
+        await UniTask.Delay(500);
         gameStateModel.SetGameState(GameStateName.Loaded);
         gameStateModel.SetViewingUserModel(playerModelHolder.UserModel);
+
+        await UniTask.Delay(500);
         gameStateModel.SetGameState(GameStateName.ReadyForStart);
     }
 }

@@ -1,6 +1,6 @@
 using Cysharp.Threading.Tasks;
 
-public struct LoadLocalizationCommand
+public struct LoadLocalizationCommand : IAsyncGameLoadCommand
 {
     public UniTask<bool> ExecuteAsync()
     {

@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -9,16 +11,16 @@ public class LocalizationManager : ScriptableObject
     public static LocalizationManager Instance { get; private set; }
 
     [SerializeField] private string _localizationUrlRu;
+    [SerializeField] private BuiltinLocalization[] _builtinLocalization;
 
     public Dictionary<string, string> CurrentLocalization { get; private set; }
 
     public async UniTask<bool> LoadLocalizationAsync()
     {
         var localizationUrl = _localizationUrlRu;
-        switch (Application.systemLanguage)
+        switch (GetLocale())
         {
-            case SystemLanguage.Russian:
-            case SystemLanguage.Belarusian:
+            case LocaleType.Ru:
                 localizationUrl = _localizationUrlRu;
                 break;
         }
@@ -42,25 +44,74 @@ public class LocalizationManager : ScriptableObject
         return key;
     }
 
+    public string GetBuiltinLocalization(string key)
+    {
+        var result = $"_builtin_{key}";
+        var locale = GetLocale();
+        var localization = _builtinLocalization.Where(l => l.LocaleType == locale).FirstOrDefault();
+        if (localization != null && localization.Items != null)
+        {
+            var item = localization.Items.Where(i => i.Key == key).FirstOrDefault();
+            if (item.Value != null)
+            {
+                result = item.Value;
+            }
+        }
+
+        return result;
+    }
+
+    private LocaleType GetLocale()
+    {
+        LocaleType result = default;
+        switch (Application.systemLanguage)
+        {
+            case SystemLanguage.Russian:
+            case SystemLanguage.Belarusian:
+                result = LocaleType.Ru;
+                break;
+        }
+        return result;
+    }
+
     private void OnEnable()
     {
         Instance = this;
     }
 }
 
+public enum LocaleType
+{
+    Ru,
+}
+
+[Serializable]
+public class BuiltinLocalization
+{
+    public LocaleType LocaleType;
+    public BuiltinLocalizationItem[] Items;
+}
+
+[Serializable]
+public struct BuiltinLocalizationItem
+{
+    public string Key;
+    public string Value;
+}
+
 public class LocalizationKeys
-{    
+{
     public static string HintBottomPanelVisitFriend = "hint_bottom_panel_visit_friend";
     public static string HintBottomPanelShelfDescription = "hint_bottom_panel_shelf_description";
     public static string HintOldGameBonus = "hint_old_game_bonus";
-    public static string HintDailyBonus = "hint_daily_bonus";    
+    public static string HintDailyBonus = "hint_daily_bonus";
     public static string BottomPanelWarehouseEmptySlot = "bottom_panel_warehouse_empty_slot";
     public static string BottomPanelWarehouseEmptySlotHint = "bottom_panel_warehouse_empty_slot_hint";
-    public static string BottomPanelWarehouseQuickDeliveryHint = "bottom_panel_warehouse_quick_delivery_hint";    
+    public static string BottomPanelWarehouseQuickDeliveryHint = "bottom_panel_warehouse_quick_delivery_hint";
     public static string BottomPanelWarehouseExpandHint = "bottom_panel_warehouse_expand_hint";
-    public static string BottomPanelFriendsButton = "bottom_panel_friends_button";    
+    public static string BottomPanelFriendsButton = "bottom_panel_friends_button";
     public static string BottomPanelInteriorButton = "bottom_panel_interior_button";
-    public static string BottomPanelManageButton = "bottom_panel_manage_button";    
+    public static string BottomPanelManageButton = "bottom_panel_manage_button";
     public static string FlyingTextInsufficientFunds = "flying_text_insufficient_funds";
     public static string FlyingTextWrongPlace = "flying_text_wrong_place";
     public static string FlyingTextCantSellLastDoor = "flying_text_cant_sell_last_door";
@@ -77,9 +128,9 @@ public class LocalizationKeys
     public static string CommonPersonalNamePrefix = "common_personal_name_";
     public static string CommonContinue = "common_continue";
     public static string CommonUpgradeNameFormat = "common_upgrade_name_format_";
-    public static string CommonPayCurrencyNamePlural = "common_pay_currency_plural_";    
+    public static string CommonPayCurrencyNamePlural = "common_pay_currency_plural_";
     public static string HintTopPanelExpFomat = "hint_top_panel_exp_format";
-    public static string HintTopPanelMoodFormat = "hint_top_panel_mood_format";    
+    public static string HintTopPanelMoodFormat = "hint_top_panel_mood_format";
     public static string PopupRemoveObjectTitle = "popup_remove_object_title";
     public static string PopupRemoveObjectText = "popup_remove_object_text";
     public static string PopupRemoveProductTitle = "popup_remove_product_title";
@@ -128,7 +179,7 @@ public class LocalizationKeys
     public static string PopupErrorLoadDataCommon = "popup_error_load_data_common";
     public static string PopupCompensationTitle = "popup_compensation_title";
     public static string PopupCompensationMessage = "popup_compensation_message";
-    public static string PopupDailyBonusTitle = "popup_daily_bonus_title"; 
+    public static string PopupDailyBonusTitle = "popup_daily_bonus_title";
     public static string PopupDailyBonusDayFormat = "popup_daily_bonus_day_format";
 
     public static string TutorialTitleDefault = "tutorial_title_default";

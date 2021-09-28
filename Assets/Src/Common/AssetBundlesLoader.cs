@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -23,7 +24,7 @@ public class AssetBundlesLoader : ScriptableObject
         return null;
     }
 
-    public async UniTask<AssetBundle> LoadOrGetBundle(string name, int version = -1)
+    public async UniTask<AssetBundle> LoadOrGetBundle(string name, int version = -1, Action<float> progressCallback = null)
     {
         if (_bundlesByName == null)
         {
@@ -50,7 +51,16 @@ public class AssetBundlesLoader : ScriptableObject
         var isFromCache = Caching.IsVersionCached(fullUrl, version);
         using (UnityWebRequest webRequest = UnityWebRequestAssetBundle.GetAssetBundle(fullUrl, (uint)version, 0))
         {
-            var webRequestResult = await webRequest.SendWebRequest();
+            var sendRequestOperation = webRequest.SendWebRequest();
+            if (progressCallback != null)
+            {
+                while (!sendRequestOperation.isDone)
+                {
+                    await UniTask.Delay(100);
+                    progressCallback(sendRequestOperation.progress);
+                }
+            }
+            var webRequestResult = await sendRequestOperation;
             var assetBundle = DownloadHandlerAssetBundle.GetContent(webRequestResult);
 
             _bundlesByName[name] = assetBundle;

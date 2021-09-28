@@ -32,7 +32,6 @@ public class UILoadScreenCanvasMediator : MonoBehaviour
     {
         if (_currentBarScale < _targetBarScale && _loadProgressModel.IsError == false)
         {
-            //SetBarScale(_targetBarScale);
             SetBarScale(_currentBarScale + (_targetBarScale - _currentBarScale) * 0.2f);
         }
     }

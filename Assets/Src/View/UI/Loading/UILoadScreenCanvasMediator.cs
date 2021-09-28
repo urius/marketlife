@@ -12,6 +12,7 @@ public class UILoadScreenCanvasMediator : MonoBehaviour
     private GameStateModel _gameStateModel;
     private float _targetBarScale;
     private float _currentBarScale;
+    private bool _isScreenRemoved;
 
     private void Awake()
     {
@@ -59,15 +60,22 @@ public class UILoadScreenCanvasMediator : MonoBehaviour
 
     private async void OnGameStateChanged(GameStateName prevState, GameStateName currentState)
     {
-        switch (currentState)
+        if (currentState == GameStateName.Loaded)
         {
-            case GameStateName.Loaded:
-                AnimateRemoveLoadingPanel();
-                break;
-            case GameStateName.ReadyForStart:
-                await AnimateRemoveBgAsync();
-                Destroy(gameObject);
-                break;
+            await AnimateRemoveLoadingPanelAsync();
+            await AnimateRemoveBgAsync();
+            _isScreenRemoved = true;
+        }
+
+        DestroyIfNeeded();
+    }
+
+    private void DestroyIfNeeded()
+    {
+        if (_isScreenRemoved &&
+            (_gameStateModel.GameState == GameStateName.ReadyForStart || _gameStateModel.IsPlayingState))
+        {
+            Destroy(gameObject);
         }
     }
 
@@ -78,11 +86,11 @@ public class UILoadScreenCanvasMediator : MonoBehaviour
         return moveData.task;
     }
 
-    private async void AnimateRemoveLoadingPanel()
+    private UniTask AnimateRemoveLoadingPanelAsync()
     {
         var moveData = LeanTweenHelper.MoveXAsync(_loadPanelView.transform as RectTransform, -Screen.width, 0.5f);
         moveData.tweenDescription.setEaseInBack();
-        await moveData.task;
+        return moveData.task;
     }
 
     private void OnLoadPhaseChanged(LoadGamePhase phase)

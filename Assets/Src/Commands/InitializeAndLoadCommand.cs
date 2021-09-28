@@ -38,7 +38,7 @@ public struct InitializeAndLoadCommand
         gameStateModel.SetGameState(GameStateName.Loaded);
         gameStateModel.SetViewingUserModel(playerModelHolder.UserModel);
 
-        await UniTask.Delay(500);
+        await UniTask.Delay(1500);
         gameStateModel.SetGameState(GameStateName.ReadyForStart);
     }
 }

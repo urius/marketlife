@@ -39,7 +39,7 @@ public class UITopPanelBarView : MonoBehaviour
         {
             if (_amount != value)
             {
-                if (value > 0)
+                if (_amount > -1 && value > 0)
                 {
                     _audioManager?.PlaySound(SoundNames.ScoreTick);
                 }

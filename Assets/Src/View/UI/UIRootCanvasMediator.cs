@@ -10,6 +10,7 @@ public class UIRootCanvasMediator : MonoBehaviour
     [SerializeField] private UIGetDailyBonusButtonView _dailyBonusButtonView;
     [SerializeField] private Canvas _rootCanvas;
     [SerializeField] private Canvas _popupsCanvas;
+    [SerializeField] private Canvas _tutorialCanvas;
     [SerializeField] private Canvas _poolCanvas;
 
     private const int ClickPositionSensitivity = 30;
@@ -43,7 +44,7 @@ public class UIRootCanvasMediator : MonoBehaviour
         var popupCanvasRectTransform = _popupsCanvas.transform as RectTransform;
         _actionsCursorMediator = new UIActionsCursorMediator(popupCanvasRectTransform);
         _popupsMediator = new PopupsMediator(popupCanvasRectTransform);
-        _tutorialMediator = new TutorialMediator(transform as RectTransform);
+        _tutorialMediator = new TutorialMediator(_tutorialCanvas.transform as RectTransform);
         _dailyBonusButtonMediator = new UIGetDailyBonusButtonMediator(_dailyBonusButtonView);
 
         RootCanvasProvider.Instance.SetupRootCanvas(_rootCanvas);

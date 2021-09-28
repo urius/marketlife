@@ -20,6 +20,8 @@ public class UILoadScreenCanvasMediator : MonoBehaviour
         _loc = LocalizationManager.Instance;
         _gameStateModel = GameStateModel.Instance;
 
+        _bgRectTransform.gameObject.SetActive(true);
+
         SetBarScale(0f);
     }
 

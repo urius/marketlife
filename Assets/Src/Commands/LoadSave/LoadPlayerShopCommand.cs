@@ -10,6 +10,7 @@ public struct LoadPlayerShopCommand : IAsyncGameLoadCommand
         if (loadedUserModel != null)
         {
             playerModelHolder.SetUserModel(loadedUserModel);
+            AnalyticsManager.Instance.SetupMetaParameter(AnalyticsManager.LevelParamName, loadedUserModel.ProgressModel.Level);
         }
 
         return loadedUserModel != null;

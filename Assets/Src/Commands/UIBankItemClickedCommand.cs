@@ -6,6 +6,8 @@ public struct UIBankItemClickedCommand
 
         gameStateModel.ChargedBankItem = itemConfig;
         JsBridge.Instance.SendCommandToJs("BuyMoney", new BuyVkMoneyPayload(itemConfig.IsGold, itemConfig.Value));
+
+        AnalyticsManager.Instance.SendStoreItemClick(itemConfig.IsGold, itemConfig.Id);
     }
 }
 

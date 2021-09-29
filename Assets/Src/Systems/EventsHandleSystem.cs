@@ -152,7 +152,7 @@ public class EventsHandleSystem
 
     private void OnLevelChanged(int delta)
     {
-        new ShowLevelUpPopupCommand().Execute();
+        new ProcessLevelUpCommand().Execute();
     }
 
     private void OnUIBottomPanelAutoPlaceClicked()

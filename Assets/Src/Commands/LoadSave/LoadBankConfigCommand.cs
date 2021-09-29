@@ -75,7 +75,7 @@ public struct LoadBankConfigCommand
         var amount = int.Parse(splitted[1]);
         var price = value.price;
 
-        return new BankConfigItem { IsGold = isGold, Value = amount, Price = price };
+        return new BankConfigItem { Id = key, IsGold = isGold, Value = amount, Price = price };
     }
 }
 

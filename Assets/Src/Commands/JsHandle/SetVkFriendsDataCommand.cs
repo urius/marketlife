@@ -16,6 +16,8 @@ public struct SetVkFriendsDataCommand
         }
 
         friendsDataHolder.SetupFriendsData(friendsData);
+
+        AnalyticsManager.Instance.SetupMetaParameter(AnalyticsManager.NumFriendsParamName, friendsData.Length);
     }
 
     private FriendData[] ToFriendsData(IList<VkFriendDataDto> items)

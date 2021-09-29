@@ -22,6 +22,9 @@ public struct CloseCurrentPopupCommand
             playerModel.AddExp(offlineReport.ExpToAdd); //TODO Animate exp adding ?
 
             gameStateModel.SetGameState(GameStateName.ShopSimulation);
+
+            AnalyticsManager.Instance.SendCustom(AnalyticsManager.EventNameOfflineProfit,
+                ("cash", offlineReport.SellProfit), ("exp", offlineReport.ExpToAdd));
         }
         else
         {

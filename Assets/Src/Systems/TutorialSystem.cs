@@ -9,6 +9,7 @@ public class TutorialSystem
     private readonly GameStateModel _gameStateModel;
     private readonly Dispatcher _dispatcher;
     private readonly PlayerModelHolder _playerModelHolder;
+    private readonly AnalyticsManager _analyticsManager;
     private readonly List<int> _openTutorialSteps;
     private readonly Dictionary<int, int[]> _tutorialSpecialOpenStepsLogic = new Dictionary<int, int[]>();
 
@@ -19,6 +20,7 @@ public class TutorialSystem
         _gameStateModel = GameStateModel.Instance;
         _dispatcher = Dispatcher.Instance;
         _playerModelHolder = PlayerModelHolder.Instance;
+        _analyticsManager = AnalyticsManager.Instance;
 
         _openTutorialSteps = new List<int>(5) { 0 };
     }
@@ -43,9 +45,10 @@ public class TutorialSystem
 
     private void OnUITutorialActionPerformed()
     {
-        _playerModel.AddPassedTutorialStep(_gameStateModel.ShowingTutorialModel.StepIndex);
+        var stepIndex = _gameStateModel.ShowingTutorialModel.StepIndex;
+        _analyticsManager.SendTutorialStep(stepIndex, GetTutorialIdByStepIndex(stepIndex));
+        _playerModel.AddPassedTutorialStep(stepIndex);
         UpdateOpenedSteps();
-
         _gameStateModel.RemoveCurrentTutorialStepIfNeeded();
         ShowTutorialIfNeeded(immediateMode: true);
     }
@@ -82,6 +85,10 @@ public class TutorialSystem
             if (CheckTutorialConditions(tutorialStepIndex))
             {
                 _gameStateModel.ShowTutorialStep(new TutorialStepViewModel(tutorialStepIndex, immediateMode));
+                if (tutorialStepIndex == 0)
+                {
+                    _analyticsManager.SendTutorialStart(GetTutorialIdByStepIndex(tutorialStepIndex));
+                }
                 return true;
             }
         }
@@ -165,6 +172,17 @@ public class TutorialSystem
     private void OnPopupRemoved()
     {
         ShowTutorialIfNeeded();
+    }
+
+    private string GetTutorialIdByStepIndex(int stepIndex)
+    {
+        switch ((TutorialStep)stepIndex)
+        {
+            case TutorialStep.FriendUI:
+                return "TutorialFriend";
+            default:
+                return "TutorialMain";
+        }
     }
 }
 

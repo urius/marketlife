@@ -8,6 +8,8 @@ public struct HandleAddMoneyClickCommand
         var viewModel = new BankPopupViewModel(isGold ? 0 : 1);
         gameStateModel.ShowPopup(viewModel);
 
+        AnalyticsManager.Instance.SendStoreOpened(isGold);
+
         await new LoadBankConfigCommand().ExecuteAsync();
     }
 }

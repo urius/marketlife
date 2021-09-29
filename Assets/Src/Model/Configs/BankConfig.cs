@@ -24,6 +24,7 @@ public class BankConfig
 
 public class BankConfigItem
 {
+    public string Id;
     public bool IsGold;
     public int Value;
     public int Price;

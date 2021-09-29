@@ -24,6 +24,8 @@ public struct OrderProductCommand
                 shopModel.WarehouseModel.Slots[warehouseSlotIndex].SetProduct(productModel);
                 gameStateModel.RemoveCurrentPopupIfNeeded();
             }
+
+            AnalyticsManager.Instance.SendCustom(AnalyticsManager.EventNameOrderProduct, ("product", productConfig.NumericId));
         }
         else
         {

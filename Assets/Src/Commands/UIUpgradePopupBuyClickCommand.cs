@@ -6,35 +6,46 @@ public struct UIUpgradePopupBuyClickCommand
         var shopModel = playerModel.ShopModel;
         var dispatcher = Dispatcher.Instance;
         var gameStateModel = GameStateModel.Instance;
+        var analyticsManager = AnalyticsManager.Instance;
 
         if (viewModel.ItemType == UpgradesPopupItemType.Upgrade)
         {
             var upgradeConfigToBuy = (viewModel as UpgradesPopupUpgradeItemViewModel).UpgradeConfig;
+            var isSuccess = false;
             if (playerModel.CanSpendMoney(upgradeConfigToBuy.Price))
             {
                 if (ApplyUpgarde(upgradeConfigToBuy))
                 {
                     (gameStateModel.ShowingPopupModel as UpgradesPopupViewModel).UpdateItems();
                     playerModel.TrySpendMoney(upgradeConfigToBuy.Price);
+                    isSuccess = true;
                 }
             }
             else
             {
                 dispatcher.UIRequestBlinkMoney(upgradeConfigToBuy.Price.IsGold);
             }
+
+            analyticsManager.SendCustom(AnalyticsManager.EventNameApplyUpgrade,
+                ("type", upgradeConfigToBuy.UpgradeTypeStr), ("value", upgradeConfigToBuy.Value), ("success", isSuccess));
         }
         else if (viewModel.ItemType == UpgradesPopupItemType.Personal)
         {
             var personalConfigToBuy = (viewModel as UpgradesPopupPersonalItemViewModel).PersonalConfig;
+            var isSuccess = false;
             if (playerModel.CanSpendMoney(personalConfigToBuy.Price))
             {
                 playerModel.TrySpendMoney(personalConfigToBuy.Price);
                 shopModel.PersonalModel.SetPersonalWorkingTime(personalConfigToBuy, gameStateModel.ServerTime + personalConfigToBuy.WorkHours * 3600);
+                isSuccess = true;
             }
             else
             {
                 dispatcher.UIRequestBlinkMoney(personalConfigToBuy.Price.IsGold);
             }
+
+            analyticsManager.SendCustom(AnalyticsManager.EventNameHirePersonalUpgrade,
+                ("type", personalConfigToBuy.RawIdStr), ("success", isSuccess));
         }
     }
 

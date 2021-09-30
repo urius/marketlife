@@ -6,15 +6,22 @@ public struct ProcessBonusClickCommand
         var gameStateModel = GameStateModel.Instance;
         var serverTime = gameStateModel.ServerTime;
         var lastBonusTakeTime = playerModel.BonusState.LastBonusTakeTimestamp;
+        var analyticsManager = AnalyticsManager.Instance;
 
-        if (playerModel.BonusState.IsOldGameBonusProcessed == false)
+        var isCompensation = playerModel.BonusState.IsOldGameBonusProcessed == false;
+        if (isCompensation)
         {
             gameStateModel.ShowPopup(new OldGameCompensationPopupViewModel());
+
+            analyticsManager.SendCustom(AnalyticsManager.EventNameOldGameCompensationClick);
         }
         else if (DateTimeHelper.IsSameDays(serverTime, lastBonusTakeTime) == false)
         {
             var bonusConfig = GameConfigManager.Instance.DailyBonusConfig;
-            gameStateModel.ShowPopup(new DailyBonusPopupViewModel(playerModel.BonusState, bonusConfig, serverTime));
+            var viewModel = new DailyBonusPopupViewModel(playerModel.BonusState, bonusConfig, serverTime);
+            gameStateModel.ShowPopup(viewModel);
+
+            analyticsManager.SendCustom(AnalyticsManager.EventNameDailyBonusClick, ("day_num", viewModel.CurrentBonusDay));
         }
     }
 }

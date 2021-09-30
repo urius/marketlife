@@ -7,6 +7,7 @@ public struct HandleFriendShopActionClickCommand
         var playerActionsDataModel = playerModel.ActionsDataModel;
         var mainConfig = GameConfigManager.Instance.MainConfig;
         var dispatcher = Dispatcher.Instance;
+        var analyticsManager = AnalyticsManager.Instance;
 
         if (isBuyClicked == false)
         {
@@ -19,11 +20,14 @@ public struct HandleFriendShopActionClickCommand
                     gameStateModel.SetAddUnwashAction();
                     break;
             }
+
+            analyticsManager.SendCustom(AnalyticsManager.EventNameFriendActionClick, ("action", actionId.ToString()));
         }
         else
         {
             var price = new Price(mainConfig.ActionResetCooldownPrice, isGold: true);
-            if (playerModel.TrySpendMoney(price))
+            var success = playerModel.TrySpendMoney(price);
+            if (success)
             {
                 playerActionsDataModel.ActionsById[actionId].SetEndCooldownTime(gameStateModel.ServerTime - 1);
             }
@@ -31,6 +35,8 @@ public struct HandleFriendShopActionClickCommand
             {
                 dispatcher.UIRequestBlinkMoney(price.IsGold);
             }
+
+            analyticsManager.SendCustom(AnalyticsManager.EventNameFriendActionBuyRecharge, ("action", actionId.ToString()), ("success", success));
         }
     }
 }

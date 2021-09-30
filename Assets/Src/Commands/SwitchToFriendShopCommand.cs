@@ -6,10 +6,13 @@ public struct SwitchToFriendShopCommand
     {
         var gameStateModel = GameStateModel.Instance;
         var dispatcher = Dispatcher.Instance;
+        var analyticsManager = AnalyticsManager.Instance;
+
         if (gameStateModel.ViewingUserModel.Uid == friendData.Uid) return;
 
-        dispatcher.UIRequestBlockRaycasts();
+        analyticsManager.SendCustom(AnalyticsManager.EventNameVisitFriendClicked);
 
+        dispatcher.UIRequestBlockRaycasts();
         if (friendData.IsUserModelLoaded == false)
         {
             await new LoadFriendShopCommand().ExecuteAsync(friendData);
@@ -21,13 +24,15 @@ public struct SwitchToFriendShopCommand
                 friendData.UserModel.ShopModel.RemoveProducts(calculationResult.SoldFromShelfs);
             }
         }
-
         if (friendData.IsUserModelLoaded)
         {
             gameStateModel.SetViewingUserModel(friendData.UserModel);
             gameStateModel.SetGameState(GameStateName.ShopFriend);
         }
-
+        else
+        {
+            analyticsManager.SendCustom(AnalyticsManager.EventNameVisitFriendFailed);
+        }
         dispatcher.UIRequestUnblockRaycasts();
     }
 }

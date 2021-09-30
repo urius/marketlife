@@ -99,7 +99,7 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelCommonScrollItemsT
         }
         else
         {
-            _dispatcher.UIBottomPanelExpandShopClicked();
+            _dispatcher.UIBottomPanelExpandWarehouseClicked();
         }
     }
 

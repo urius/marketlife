@@ -7,9 +7,21 @@ public class AnalyticsManager
 
     public static string LevelParamName = "level";
     public static string NumFriendsParamName = "friends_count";
+    public static string NumAppFriendsParamName = "app_friends_count";
 
     public static string EventNameOrderProduct = "order_product";
     public static string EventNameOfflineProfit = "offline_profit";
+    public static string EventNameVisitFriendClicked = "friend_visit_click";
+    public static string EventNameVisitFriendFailed = "friend_visit_failed";
+    public static string EventNameInviteFriendClicked = "friend_invite_click";
+    public static string EventNameFriendActionClick = "friend_action_click";    
+    public static string EventNameFriendActionBuyRecharge = "friend_action_buy_recharge";    
+    public static string EventNameOldGameCompensationClick = "old_game_compensation_click";
+    public static string EventNameDailyBonusClick = "daily_bonus_click";
+    public static string EventNameApplyUpgrade = "apply_upgrade";
+    public static string EventNameHirePersonalUpgrade = "hire_personal";
+    public static string EventNameExpandWarehouseClick = "expand_warehouse_click";
+    public static string EventNameManageClick = "expand_manage_click";
 
     private Dictionary<string, object> _metaParams = new Dictionary<string, object>();
 

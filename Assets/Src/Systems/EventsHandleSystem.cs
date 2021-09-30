@@ -32,7 +32,7 @@ public class EventsHandleSystem
         _dispatcher.UIBottomPanelPlaceWindowClicked += OnUIBottomPanelPlaceWindowClicked;
         _dispatcher.UIBottomPanelPlaceDoorClicked += OnUIBottomPanelPlaceDoorClicked;
         _dispatcher.UIBottomPanelWarehouseSlotClicked += OnUIBottomPanelWarehouseSlotClicked;
-        _dispatcher.UIBottomPanelExpandShopClicked += OnUIBottomPanelExpandShopClicked;        
+        _dispatcher.UIBottomPanelExpandWarehouseClicked += OnUIBottomPanelExpandWarehouseClicked;        
         _dispatcher.UIBottomPanelWarehouseQuickDeliverClicked += OnUIBottomPanelWarehouseQuickDeliverClicked;
         _dispatcher.UIBottomPanelWarehouseRemoveProductClicked += OnUIBottomPanelWarehouseRemoveProductClicked;
         _dispatcher.UIBottomPanelAutoPlaceClicked += OnUIBottomPanelAutoPlaceClicked;
@@ -62,10 +62,10 @@ public class EventsHandleSystem
         _dispatcher.BottomPanelRotateRightClicked += BottomPanelRotateRightClicked;
         _dispatcher.BottomPanelRotateLeftClicked += BottomPanelRotateLeftClicked;
         _dispatcher.UIBottomPanelFriendClicked += OnUIBottomPanelFriendClicked;
+        _dispatcher.UIBottomPanelInviteFriendClicked += OnUIBottomPanelFriendClicked;
         _dispatcher.UIBottomPanelFriendShopActionClicked += OnUIBottomPanelFriendShopActionClicked;
         _dispatcher.UIBottomPanelBuyFriendShopActionClicked += OnUIBottomPanelBuyFriendShopActionClicked;
         _dispatcher.UITopPanelAddMoneyClicked += OnUITopPanelAddMoneyClicked;
-        _dispatcher.UIBottomPanelInviteFriendClicked += OnUIBottomPanelInviteFriendClicked;
         _dispatcher.UIBankItemClicked += OnUIBankItemClicked;
         _dispatcher.UIGetBonusButtonClicked += OnUIGetBonusButtonClicked;
         _dispatcher.UICompensationPopupTakeClicked += OnUICompensationPopupTakeClicked;
@@ -102,9 +102,9 @@ public class EventsHandleSystem
         new ProcessBonusClickCommand().Execute();
     }
 
-    private void OnUIBottomPanelInviteFriendClicked(FriendData friendData)
+    private void OnUIBottomPanelFriendClicked(FriendData friendData)        
     {
-        new UIBottomPanelInviteFriendClickedCommand().Execute(friendData);
+        new ProcessBottomPanelFriendClickCommand().Execute(friendData);
     }
 
     private void OnUIBankItemClicked(BankConfigItem itemConfig)
@@ -130,18 +130,6 @@ public class EventsHandleSystem
     private void OnUIBottomPanelBuyFriendShopActionClicked(FriendShopActionId actionId)
     {
         new HandleFriendShopActionClickCommand().Execute(actionId, isBuyClicked: true);
-    }
-
-    private void OnUIBottomPanelFriendClicked(FriendData friendData)
-    {
-        if (friendData.IsApp)
-        {
-            new SwitchToFriendShopCommand().Execute(friendData);
-        }
-        else
-        {
-            _dispatcher.UIBottomPanelInviteFriendClicked(friendData);
-        }
     }
 
     private void ActivateAfterLoad()
@@ -373,8 +361,8 @@ public class EventsHandleSystem
         new UIProcessWarehouseSlotClickCommand().Execute(slotIndex);
     }
 
-    private void OnUIBottomPanelExpandShopClicked()
+    private void OnUIBottomPanelExpandWarehouseClicked()
     {
-        new HandleExpandShopClickCommand().Execute();
+        new HandleExpandWarehouseClickCommand().Execute();
     }    
 }

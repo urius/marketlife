@@ -8,7 +8,7 @@ public struct LoadBankConfigCommand
     public async UniTask<bool> ExecuteAsync()
     {
         var playerModelHolder = PlayerModelHolder.Instance;
-        var getBankURL = URLsHolder.Instance.GetBankDataURL(playerModelHolder.PlatformType);
+        var getBankURL = URLsHolder.Instance.GetBankDataURL(playerModelHolder.SocialType);
         var bankConfig = BankConfig.Instance;
 
         var getConfigOperation = await new WebRequestsSender().GetAsync(getBankURL);

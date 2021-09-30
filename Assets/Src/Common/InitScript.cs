@@ -20,6 +20,8 @@ public class InitScript : MonoBehaviour
 
         _playerModelHolder = PlayerModelHolder.Instance;
         new InitializeSystemsCommand().Execute();
+
+        Debug.Log($"Application.absoluteURL: {Application.absoluteURL}");
     }
 
     private async void Start()

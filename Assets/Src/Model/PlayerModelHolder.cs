@@ -9,14 +9,14 @@ public class PlayerModelHolder
     private UniTaskCompletionSource _setUidTcs = new UniTaskCompletionSource();
 
     public string Uid { get; private set; }
-    public PlatformType PlatformType { get; private set; }
+    public SocialType SocialType { get; private set; }
     public UserModel UserModel { get; private set; }
     public ShopModel ShopModel => UserModel.ShopModel;
     public UniTask SetUidTask => _setUidTcs.Task;
 
-    public void SetPlatformType(PlatformType platformType)
+    public void SetPlatformType(SocialType socialType)
     {
-        PlatformType = platformType;
+        SocialType = socialType;
     }
 
     public void SetUid(string uid)
@@ -31,7 +31,7 @@ public class PlayerModelHolder
     }
 }
 
-public enum PlatformType
+public enum SocialType
 {
     Undefined,
     VK,

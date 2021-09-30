@@ -20,12 +20,12 @@ public class URLsHolder : ScriptableObject
     public string SaveExternalDataURL => _saveExternalDataURL;
     [SerializeField] private string _vkBankDataURL = "https://devman.ru/marketVK/unity/vk/VKBank.json";
 
-    public string GetBankDataURL(PlatformType platformType)
+    public string GetBankDataURL(SocialType platformType)
     {
         switch (platformType)
         {
-            case PlatformType.Undefined:
-            case PlatformType.VK:
+            case SocialType.Undefined:
+            case SocialType.VK:
                 return _vkBankDataURL;
             default:
                 throw new ArgumentException($"{nameof(URLsHolder)}::{nameof(GetBankDataURL)}: unsupported {nameof(platformType)} {platformType}");

@@ -22,7 +22,6 @@ public class EventsHandleSystem
 
     private void Activate()
     {
-        _dispatcher.JsIncomingMessage += OnIncomingJsMessage;
         _dispatcher.UIGameViewMouseClick += OnUIGameViewMouseClicked;
         _dispatcher.UIBottomPanelPointerEnter += OnUIBottomPanelPointerEnter;
         _dispatcher.UIBottomPanelPointerExit += OnUIBottomPanelPointerExit;
@@ -32,7 +31,7 @@ public class EventsHandleSystem
         _dispatcher.UIBottomPanelPlaceWindowClicked += OnUIBottomPanelPlaceWindowClicked;
         _dispatcher.UIBottomPanelPlaceDoorClicked += OnUIBottomPanelPlaceDoorClicked;
         _dispatcher.UIBottomPanelWarehouseSlotClicked += OnUIBottomPanelWarehouseSlotClicked;
-        _dispatcher.UIBottomPanelExpandWarehouseClicked += OnUIBottomPanelExpandWarehouseClicked;        
+        _dispatcher.UIBottomPanelExpandWarehouseClicked += OnUIBottomPanelExpandWarehouseClicked;
         _dispatcher.UIBottomPanelWarehouseQuickDeliverClicked += OnUIBottomPanelWarehouseQuickDeliverClicked;
         _dispatcher.UIBottomPanelWarehouseRemoveProductClicked += OnUIBottomPanelWarehouseRemoveProductClicked;
         _dispatcher.UIBottomPanelAutoPlaceClicked += OnUIBottomPanelAutoPlaceClicked;
@@ -62,19 +61,23 @@ public class EventsHandleSystem
         _dispatcher.BottomPanelRotateRightClicked += BottomPanelRotateRightClicked;
         _dispatcher.BottomPanelRotateLeftClicked += BottomPanelRotateLeftClicked;
         _dispatcher.UIBottomPanelFriendClicked += OnUIBottomPanelFriendClicked;
-        _dispatcher.UIBottomPanelInviteFriendClicked += OnUIBottomPanelFriendClicked;
         _dispatcher.UIBottomPanelFriendShopActionClicked += OnUIBottomPanelFriendShopActionClicked;
         _dispatcher.UIBottomPanelBuyFriendShopActionClicked += OnUIBottomPanelBuyFriendShopActionClicked;
         _dispatcher.UITopPanelAddMoneyClicked += OnUITopPanelAddMoneyClicked;
-        _dispatcher.UIBankItemClicked += OnUIBankItemClicked;
         _dispatcher.UIGetBonusButtonClicked += OnUIGetBonusButtonClicked;
         _dispatcher.UICompensationPopupTakeClicked += OnUICompensationPopupTakeClicked;
         _dispatcher.UIDailyBonusTakeClicked += OnUIDailyBonusTakeClicked;
         _dispatcher.UIMuteAudioClicked += OnUIMuteAudioClicked;
         _dispatcher.UIMuteMusicClicked += OnUIMuteMusicClicked;
+        _dispatcher.UIBankItemClicked += OnUIBankItemClicked;
 
         _gameStateModel.ActionStateChanged += OnActionStateChanged;
         _gameStateModel.GameStateChanged += OnGameStateChanged;
+    }
+
+    private void OnUIBankItemClicked(BankConfigItem itemConfig)
+    {
+        AnalyticsManager.Instance.SendStoreItemClick(itemConfig.IsGold, itemConfig.Id);
     }
 
     private void OnUIMuteAudioClicked()
@@ -102,19 +105,9 @@ public class EventsHandleSystem
         new ProcessBonusClickCommand().Execute();
     }
 
-    private void OnUIBottomPanelFriendClicked(FriendData friendData)        
+    private void OnUIBottomPanelFriendClicked(FriendData friendData)
     {
-        new ProcessBottomPanelFriendClickCommand().Execute(friendData);
-    }
-
-    private void OnUIBankItemClicked(BankConfigItem itemConfig)
-    {
-        new UIBankItemClickedCommand().Execute(itemConfig);
-    }
-
-    private void OnIncomingJsMessage(string message)
-    {
-        new ProcessJsMessageCommand().Execute(message);
+        new SwitchToFriendShopCommand().Execute(friendData);
     }
 
     private void OnUITopPanelAddMoneyClicked(bool isGold)
@@ -364,5 +357,5 @@ public class EventsHandleSystem
     private void OnUIBottomPanelExpandWarehouseClicked()
     {
         new HandleExpandWarehouseClickCommand().Execute();
-    }    
+    }
 }

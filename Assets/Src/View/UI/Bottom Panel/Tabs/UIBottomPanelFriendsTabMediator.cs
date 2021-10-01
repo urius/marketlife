@@ -141,7 +141,14 @@ public class UIBottomPanelFriendsTabMediator : UIBottomPanelScrollItemsTabMediat
 
     protected override void HandleClick(FriendData viewModel)
     {
-        _dispatcher.UIBottomPanelFriendClicked(viewModel);
+        if (viewModel.IsApp)
+        {
+            _dispatcher.UIBottomPanelFriendClicked(viewModel);
+        }
+        else
+        {
+            _dispatcher.UIBottomPanelInviteFriendClicked(viewModel);
+        }
     }
 
     private void OnBottomButtonClicked(UIBottomPanelFriendItemView view)

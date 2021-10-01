@@ -14,7 +14,7 @@ public class PlayerModelHolder
     public ShopModel ShopModel => UserModel.ShopModel;
     public UniTask SetUidTask => _setUidTcs.Task;
 
-    public void SetPlatformType(SocialType socialType)
+    public void SetSocialType(SocialType socialType)
     {
         SocialType = socialType;
     }

@@ -11,6 +11,7 @@ public class AssetBundlesLoader : ScriptableObject
 
     [SerializeField] private string _assetBundlesWebGLURL;
     [SerializeField] private string _assetBundlesOSXURL;
+    [SerializeField] private string _assetBundlesAndroidURL;
 
     private Dictionary<string, AssetBundle> _bundlesByName = new Dictionary<string, AssetBundle>();
 
@@ -77,6 +78,7 @@ public class AssetBundlesLoader : ScriptableObject
         {
             RuntimePlatform.OSXEditor => _assetBundlesOSXURL,
             RuntimePlatform.WebGLPlayer => _assetBundlesWebGLURL,
+            RuntimePlatform.Android => _assetBundlesAndroidURL,
             _ => throw new System.Exception($"AssetBundlesLoader {nameof(GetUrl)}: Unsupported platform type: {Application.platform}"),
         };
     }

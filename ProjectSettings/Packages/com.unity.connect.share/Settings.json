@@ -16,7 +16,7 @@
             {
                 "type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
                 "key": "buildOutputDirList",
-                "value": "{\"m_Value\":\"/Users/yuris/Unity/market life/builds/beta_3;/Users/yuris/Unity/market life/builds/beta_1/beta_2;/Users/yuris/Unity/market life/builds/test_beta_analytics;/Users/yuris/Unity/market life/builds/beta_1;/Users/yuris/Unity/market life/builds/test_12_buy_money;/Users/yuris/Unity/market life/builds/test_11_friends_logic;/Users/yuris/Unity/market life/builds/test_10_js;/Users/yuris/Unity/market life/builds/test_09_masks;/Users/yuris/Unity/market life/builds/test_08_sounds_bundle;/Users/yuris/Unity/market life/builds/test_07_checkpoint\"}"
+                "value": "{\"m_Value\":\"/Users/yuris/Unity/market life/builds/beta_4;/Users/yuris/Unity/market life/builds/beta_3;/Users/yuris/Unity/market life/builds/beta_1/beta_2;/Users/yuris/Unity/market life/builds/test_beta_analytics;/Users/yuris/Unity/market life/builds/beta_1;/Users/yuris/Unity/market life/builds/test_12_buy_money;/Users/yuris/Unity/market life/builds/test_11_friends_logic;/Users/yuris/Unity/market life/builds/test_10_js;/Users/yuris/Unity/market life/builds/test_09_masks;/Users/yuris/Unity/market life/builds/test_08_sounds_bundle\"}"
             }
         ]
     }

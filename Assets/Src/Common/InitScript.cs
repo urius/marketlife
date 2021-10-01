@@ -34,7 +34,7 @@ public class InitScript : MonoBehaviour
 
     private void ExecuteAdditionalStartupEditorLogic()
     {
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_ANDROID
         new SetupExternalDebugDataCommand().Execute(_debugUid);
 #endif
     }

@@ -60,7 +60,10 @@ public class Dispatcher
     public Action<BankConfigItem> UIBankItemClicked = delegate { };
     public Action UIGetBonusButtonClicked = delegate { };
     public Action<Vector3> UICompensationPopupTakeClicked = delegate { };
-    public Action<Vector3[]> UIDailyBonusTakeClicked = delegate { };    
+    public Action<Vector3[]> UIDailyBonusTakeClicked = delegate { };
+    public Action<Vector3> UILevelUpShareClicked = delegate { };
+    public Action<Vector3> UIOfflineReportShareClicked = delegate { };
+    public Action UIShareSuccessCallback = delegate { };
 
     public Action<CustomerModel> CustomerAnimationEnded = delegate { };
 

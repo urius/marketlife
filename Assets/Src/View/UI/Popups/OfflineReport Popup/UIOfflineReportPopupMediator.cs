@@ -10,8 +10,9 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
     private readonly LocalizationManager _loc;
     private readonly SpritesProvider _spritesProvider;
     private readonly Dispatcher _dispatcher;
-
-    private UITabbedContentPopupView _popupView;
+    private readonly MainConfig _config;
+    //
+    private UIOfflineReportPopupView _popupView;
     private OfflineReportPopupViewModel _viewModel;
 
     protected override UIContentPopupView PopupView => _popupView;
@@ -25,13 +26,14 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
         _loc = LocalizationManager.Instance;
         _spritesProvider = SpritesProvider.Instance;
         _dispatcher = Dispatcher.Instance;
+        _config = GameConfigManager.Instance.MainConfig;
     }
 
     public override async void Mediate()
     {
         _viewModel = _gameStateModel.ShowingPopupModel as OfflineReportPopupViewModel;
-        var popupGo = GameObject.Instantiate(_prefabsHolder.UITabbedContentPopupPrefab, _parentTransform);
-        _popupView = popupGo.GetComponent<UITabbedContentPopupView>();
+        var popupGo = GameObject.Instantiate(_prefabsHolder.UIOfflineReportPopupPrefab, _parentTransform);
+        _popupView = popupGo.GetComponent<UIOfflineReportPopupView>();
         _popupView.SetSize(670, 730);
 
         var titleTimePassedStr = _viewModel.ReportModel.HoursPassed >= 1
@@ -39,6 +41,8 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
             : string.Format(_loc.GetLocalization(LocalizationKeys.CommonMinutesShortFormat), _viewModel.ReportModel.MinutesPassed);
         _popupView.SetTitleText(string.Format(_loc.GetLocalization(LocalizationKeys.PopupOfflineReportTitleFormat), titleTimePassedStr));
         _popupView.SetupTabButtons(_viewModel.Tabs.Select(ToTabName).ToArray());
+        _popupView.SetShareButtonText(_loc.GetLocalization(LocalizationKeys.CommonShare));
+        _popupView.SetShareRevenueButtonText($"+{_config.ShreOfflineReportRewardGold}");
         ShowTab(0);
 
         await _popupView.Appear2Async();
@@ -59,14 +63,28 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
 
     private void Activate()
     {
+        _dispatcher.UIShareSuccessCallback += OnUIShareSuccessCallback;
         _popupView.ButtonCloseClicked += OnCloseClicked;
         _popupView.TabButtonClicked += OnTabButtonClicked;
+        _popupView.ShareClicked += OnShareClicked;
     }
 
     private void Deactivate()
     {
+        _dispatcher.UIShareSuccessCallback -= OnUIShareSuccessCallback;
         _popupView.ButtonCloseClicked -= OnCloseClicked;
         _popupView.TabButtonClicked -= OnTabButtonClicked;
+        _popupView.ShareClicked -= OnShareClicked;
+    }
+
+    private void OnUIShareSuccessCallback()
+    {
+        _popupView.SetShareButtonInteractable(false);
+    }
+
+    private void OnShareClicked()
+    {
+        _dispatcher.UIOfflineReportShareClicked(_popupView.ShareButtonTransform.position);
     }
 
     private void OnTabButtonClicked(int tabIndex)

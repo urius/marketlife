@@ -21,6 +21,7 @@ public class UILoadScreenCanvasMediator : MonoBehaviour
         _gameStateModel = GameStateModel.Instance;
 
         _bgRectTransform.gameObject.SetActive(true);
+        _loadPanelView.gameObject.SetActive(true);
 
         SetBarScale(0f);
     }

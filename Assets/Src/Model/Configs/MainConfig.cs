@@ -23,6 +23,7 @@ public class MainConfig :
     public readonly int ActionDefaultAmount;
     public readonly int ActionDefaultCooldownMinutes;
     public readonly int ActionResetCooldownPrice;
+    public readonly int ShreOfflineReportRewardGold = 1;
 
     public readonly Dictionary<string, ProductConfig> ProductsConfig;
     public readonly Dictionary<string, ItemConfig<ShelfConfigDto>> ShelfsConfig;

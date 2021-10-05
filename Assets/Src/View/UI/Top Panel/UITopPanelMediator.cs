@@ -258,7 +258,7 @@ public class UITopPanelMediator : MonoBehaviour
 
     private async void OnGoldChanged(int previousValue, int currentValue)
     {
-        if (_gameStateModel.IsPlayingState)
+        if (_gameStateModel.IsPlayingState || _gameStateModel.GameState == GameStateName.ReadyForStart)
         {
             if (_updateGoldAnimationDelayMs > 0)
             {

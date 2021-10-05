@@ -68,4 +68,9 @@ public class CalculationHelper
         }
         return result;
     }
+
+    public static int GetLevelUpShareReward(int level)
+    {
+        return level;
+    }
 }

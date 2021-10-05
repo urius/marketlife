@@ -11,7 +11,7 @@ public class UILevelUpPopupMediator : UIContentPopupMediator
     private readonly Dispatcher _dispatcher;
     private readonly UserProgressModel _playerProgressModel;
 
-    private UIContentPopupPlusView _popupView;
+    private UILevelUpPopupView _popupView;
     private LevelUpPopupViewModel _viewModel;
 
     public UILevelUpPopupMediator(RectTransform parentTransform)
@@ -48,19 +48,14 @@ public class UILevelUpPopupMediator : UIContentPopupMediator
         GameObject.Destroy(_popupView.gameObject);
     }
 
-    private void Activate()
-    {
-        _dispatcher.UITopPanelLevelUpAnimationFinished += OnUITopPanelLevelUpAnimationFinished;
-    }
-
     private async void OnUITopPanelLevelUpAnimationFinished()
     {
         _dispatcher.UIRequestUnblockRaycasts();
 
         _dispatcher.UITopPanelLevelUpAnimationFinished -= OnUITopPanelLevelUpAnimationFinished;
 
-        var popupGo = GameObject.Instantiate(_prefabsHolder.UIContentPopupPlusPrefab, _parentTransform);
-        _popupView = popupGo.GetComponent<UIContentPopupPlusView>();
+        var popupGo = GameObject.Instantiate(_prefabsHolder.UILevelUpPopupPrefab, _parentTransform);
+        _popupView = popupGo.GetComponent<UILevelUpPopupView>();
 
         Setup();
 
@@ -72,28 +67,56 @@ public class UILevelUpPopupMediator : UIContentPopupMediator
     private void Setup()
     {
         _popupView.SetTitleText(_loc.GetLocalization(LocalizationKeys.PopupLevelUpTitle));
-        _popupView.SetCaptionText(string.Format(_loc.GetLocalization(LocalizationKeys.PopupLevelUpMessage), _playerProgressModel.Level));
-        _popupView.SetupButtonsAmount(haveCloseButton: false, 1);
+        _popupView.SetDescriptionText(string.Format(_loc.GetLocalization(LocalizationKeys.PopupLevelUpMessage), _playerProgressModel.Level));
         _popupView.SetupButton(0, _spritesProvider.GetGreenButtonSprite(), _loc.GetLocalization(LocalizationKeys.CommonContinue));
+        _popupView.SetupButton(1, _spritesProvider.GetBlueButtonSprite(), _loc.GetLocalization(LocalizationKeys.CommonShare));
+        _popupView.SetShareRevenueButtonText($"+{CalculationHelper.GetLevelUpShareReward(_playerProgressModel.Level)}");
         _popupView.SetSize(750, 800);
 
         SetupContent();
     }
 
+    private void Activate()
+    {
+        _dispatcher.UIShareSuccessCallback += OnUIShareSuccessCallback;
+        _dispatcher.UITopPanelLevelUpAnimationFinished += OnUITopPanelLevelUpAnimationFinished;
+    }
+
     private void ActivatePopup()
     {
-        _popupView.Button1Clicked += OnContinueButtonCLicked;
+        _popupView.ButtonClicked += OnButtonCLicked;
+        _popupView.ButtonCloseClicked += OnButtonCloseClicked;
     }
 
     private void Deactivate()
     {
-        _popupView.Button1Clicked -= OnContinueButtonCLicked;
+        _dispatcher.UIShareSuccessCallback -= OnUIShareSuccessCallback;
         _dispatcher.UITopPanelLevelUpAnimationFinished -= OnUITopPanelLevelUpAnimationFinished;
+        _popupView.ButtonClicked -= OnButtonCLicked;
+        _popupView.ButtonCloseClicked -= OnButtonCloseClicked;
     }
 
-    private void OnContinueButtonCLicked()
+    private void OnButtonCloseClicked()
     {
         _dispatcher.UIRequestRemoveCurrentPopup();
+    }
+
+    private void OnUIShareSuccessCallback()
+    {
+        _popupView.SetShareButtonInteractable(false);
+    }
+
+    private void OnButtonCLicked(int buttonIndex)
+    {
+        switch (buttonIndex)
+        {
+            case 0:
+                _dispatcher.UIRequestRemoveCurrentPopup();
+                break;
+            case 1:
+                _dispatcher.UILevelUpShareClicked(_popupView.ShareButtonTransform.position);
+                break;
+        }
     }
 
     private void SetupContent()

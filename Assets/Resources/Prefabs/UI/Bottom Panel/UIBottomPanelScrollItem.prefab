@@ -227,8 +227,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294177779
-  m_fontColor: {r: 0.9529412, g: 0.9529412, b: 0.9529412, a: 1}
+    rgba: 4286874756
+  m_fontColor: {r: 0.5188679, g: 0.5188679, b: 0.5188679, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -251,7 +251,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -674,6 +674,7 @@ MonoBehaviour:
   _removeButton: {fileID: 8107594928914308127}
   _liteGreenColor: {r: 0.77254903, g: 1, b: 0.9647059, a: 1}
   _deepBlueColor: {r: 0.5921569, g: 0.7137255, b: 0.9882353, a: 1}
+  _textGrayColor: {r: 0.5176471, g: 0.5176471, b: 0.5176471, a: 1}
 --- !u!114 &8014121438027112666
 MonoBehaviour:
   m_ObjectHideFlags: 0

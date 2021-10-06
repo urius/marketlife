@@ -246,6 +246,7 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelCommonScrollItemsT
                 itemView.SetupIconSize(110);
                 itemView.SetImage(icon);
                 itemView.DisableHint();
+                itemView.SetTextGray();
 
                 var deltaDeliver = product.DeliverTime - _gameStateModel.ServerTime;
                 if (deltaDeliver > 0)

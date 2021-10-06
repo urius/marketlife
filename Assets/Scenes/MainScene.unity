@@ -6288,7 +6288,7 @@ MonoBehaviour:
   _hintPositionType: 1
   _localizationKey: 
   _hintContainer: {fileID: 0}
-  _positionOffset: {x: 0, y: -18}
+  _positionOffset: {x: -20, y: -24}
 --- !u!1 &1380182914
 GameObject:
   m_ObjectHideFlags: 0
@@ -7629,7 +7629,7 @@ MonoBehaviour:
   _hintPositionType: 1
   _localizationKey: 
   _hintContainer: {fileID: 0}
-  _positionOffset: {x: 0, y: -18}
+  _positionOffset: {x: -40, y: -24}
 --- !u!1 &1603520587
 GameObject:
   m_ObjectHideFlags: 0

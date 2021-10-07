@@ -14,6 +14,7 @@ public class AnalyticsManager
     public static string EventNameVisitFriendClicked = "friend_visit_click";
     public static string EventNameVisitFriendFailed = "friend_visit_failed";
     public static string EventNameInviteFriendClicked = "friend_invite_click";
+    public static string EventNameInviteFriendsClicked = "friends_invite_click";
     public static string EventNameFriendActionClick = "friend_action_click";    
     public static string EventNameFriendActionBuyRecharge = "friend_action_buy_recharge";    
     public static string EventNameOldGameCompensationClick = "old_game_compensation_click";

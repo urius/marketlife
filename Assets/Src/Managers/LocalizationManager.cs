@@ -102,6 +102,7 @@ public struct BuiltinLocalizationItem
 public class LocalizationKeys
 {
     public static string HintBottomPanelVisitFriend = "hint_bottom_panel_visit_friend";
+    public static string HintBottomPanelInviteFriends = "hint_bottom_panel_invite_friends";
     public static string HintBottomPanelShelfDescription = "hint_bottom_panel_shelf_description";
     public static string HintOldGameBonus = "hint_old_game_bonus";
     public static string HintDailyBonus = "hint_daily_bonus";
@@ -127,7 +128,8 @@ public class LocalizationKeys
     public static string CommonHoursShortFormat = "common_hours_short_format";
     public static string CommonPersonalNamePrefix = "common_personal_name_";
     public static string CommonContinue = "common_continue";
-    public static string CommonShare = "common_share";    
+    public static string CommonShare = "common_share";
+    public static string CommonInvite = "common_invite";    
     public static string CommonUpgradeNameFormat = "common_upgrade_name_format_";
     public static string CommonPayCurrencyNamePlural = "common_pay_currency_plural_";
     public static string HintTopPanelExpFomat = "hint_top_panel_exp_format";

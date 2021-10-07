@@ -81,7 +81,7 @@ public class VKLogicModule : PlatformSpecificLogicModuleBase
     {
         _dispatcher.JsIncomingMessage += OnJsIncomingMessage;
         _dispatcher.UIBankItemClicked += OnUIBankItemClicked;
-        _dispatcher.UIBottomPanelInviteFriendClicked += OnUIBottomPanelInviteFriendClicked;
+        _dispatcher.UIBottomPanelInviteFriendsClicked += OnUIBottomPanelInviteFriendsClicked;
         _dispatcher.UILevelUpShareClicked += OnUILevelUpShareClicked;
         _dispatcher.UIOfflineReportShareClicked += OnUIOfflineReportShareClicked;
     }
@@ -121,10 +121,10 @@ public class VKLogicModule : PlatformSpecificLogicModuleBase
         }
     }
 
-    private void OnUIBottomPanelInviteFriendClicked(FriendData friendData)
+    private void OnUIBottomPanelInviteFriendsClicked()
     {
-        AnalyticsManager.Instance.SendCustom(AnalyticsManager.EventNameInviteFriendClicked);
-        _jsBridge.SendCommandToJs("InviteFriend", new InviteVkFriendPayload() { uid = friendData.Uid });
+        AnalyticsManager.Instance.SendCustom(AnalyticsManager.EventNameInviteFriendsClicked);
+        _jsBridge.SendCommandToJs("InviteFriends", null);
     }
 
     private void OnLevelChanged(int delta)

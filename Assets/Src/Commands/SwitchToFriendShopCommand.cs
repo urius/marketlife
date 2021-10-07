@@ -8,7 +8,8 @@ public struct SwitchToFriendShopCommand
         var dispatcher = Dispatcher.Instance;
         var analyticsManager = AnalyticsManager.Instance;
 
-        if (gameStateModel.ViewingUserModel.Uid == friendData.Uid) return;
+        if (gameStateModel.ViewingUserModel.Uid == friendData.Uid
+            || friendData.IsApp == false) return;
 
         analyticsManager.SendCustom(AnalyticsManager.EventNameVisitFriendClicked);
 

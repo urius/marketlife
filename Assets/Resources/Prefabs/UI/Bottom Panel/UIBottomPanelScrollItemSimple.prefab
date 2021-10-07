@@ -208,7 +208,7 @@ GameObject:
   - component: {fileID: 4831957965773846322}
   - component: {fileID: 2313970469135378430}
   m_Layer: 5
-  m_Name: UIBottomPanelFriendScrollItem
+  m_Name: UIBottomPanelScrollItemSimple
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -251,8 +251,11 @@ MonoBehaviour:
   _button: {fileID: 4831957965063238359}
   _topText: {fileID: 5704722748558575262}
   _mainIconImage: {fileID: 6480525130453966599}
+  _bgImage: {fileID: 4831957965063238352}
   _mainHintableView: {fileID: 2313970469135378430}
   _bottomButton: {fileID: 6994024553890051948}
+  _colorTextDefault: {r: 1, g: 0.5764706, b: 0, a: 1}
+  _colorBgAlt: {r: 1, g: 1, b: 0.6, a: 1}
 --- !u!114 &2313970469135378430
 MonoBehaviour:
   m_ObjectHideFlags: 0

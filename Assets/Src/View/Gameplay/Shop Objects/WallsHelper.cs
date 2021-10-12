@@ -34,4 +34,13 @@ public class WallsHelper
         euler.z = 90;
         transform.eulerAngles = euler;
     }
+
+    public static void PlaceVertical(Transform transform)
+    {
+        var euler = transform.eulerAngles;
+        euler.x = -70;
+        euler.y = 0;
+        euler.z = 0;
+        transform.eulerAngles = euler;
+    }
 }

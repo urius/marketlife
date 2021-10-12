@@ -44,7 +44,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 5804ef6ef86794aa6ac1d44028fafb7e, type: 3}
-    totalSpriteSurfaceArea: 854026
+    totalSpriteSurfaceArea: 859652
     bindAsDefault: 0
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -152,10 +152,12 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 22fcb16bb7b9044ce9280b9c66f9bb46, type: 3}
   - {fileID: 21300000, guid: d326d68b062474f3fab3e2ba500f707d, type: 3}
   - {fileID: 21300000, guid: 56babc8b2deb8474bb87dfa706bbce84, type: 3}
+  - {fileID: 21300000, guid: ff925fab8ab7e4ec694e86b597e01706, type: 3}
   - {fileID: 21300000, guid: 33e80edbe7dcd48d4a7d5ff29005dd69, type: 3}
   - {fileID: 21300000, guid: 9a7d02ebeb31f4905a0c37147babd74e, type: 3}
   - {fileID: 21300000, guid: 77c30e0c7f23b4b83860415758d69982, type: 3}
   - {fileID: 21300000, guid: aa0ec12c0222c44619290cda6019e983, type: 3}
+  - {fileID: 21300000, guid: 872eeb2c20a3b4ec082703e2ce7322a1, type: 3}
   - {fileID: 21300000, guid: 8fe0473c016ad46e3844d6f2e619d0af, type: 3}
   - {fileID: 21300000, guid: 3cefd14ce6d814039840e299dc06b367, type: 3}
   - {fileID: 21300000, guid: c8ac936c5a03f4c9ebf0e82e12ea766d, type: 3}
@@ -306,10 +308,12 @@ SpriteAtlas:
   - FootClothes5
   - Hair6_Profile
   - Shelf_5_front
+  - WhiteCircle
   - Clothes6_Profile
   - Floor1
   - Glasses3
   - Juice_1
+  - ExclamationMark
   - FootSkinWhite
   - Wall1
   - Clothes2_Profile

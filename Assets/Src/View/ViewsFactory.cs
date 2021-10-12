@@ -32,6 +32,15 @@ public struct ViewsFactory
         return (windowGo.transform, spriteRenderer);
     }
 
+    public SpriteRenderer CreateSpriteRenderer(Transform parentTransform, Sprite sprite, string name = null)
+    {
+        var go = name != null ? new GameObject(name) : new GameObject();
+        go.transform.SetParent(parentTransform);
+        var spriteRenderer = go.AddComponent<SpriteRenderer>();
+        spriteRenderer.sprite = sprite;
+        return spriteRenderer;
+    }
+
     public DoorView CreateDoor(Transform parentTransform, int numericId)
     {
         var doorGo = GameObject.Instantiate(PrefabsHolder.Instance.DoorPrefab, parentTransform);

@@ -16,6 +16,13 @@ public static class ColorExtensions
         return color;
     }
 
+    public static Color SetRGBFromColor(this Color color, Color from)
+    {
+        color.r = from.r;
+        color.g = from.g;
+        color.b = from.b;
+        return color;
+    }
 
     public static Color SetRGBA(this Color color, float r, float g, float b, float alpha)
     {

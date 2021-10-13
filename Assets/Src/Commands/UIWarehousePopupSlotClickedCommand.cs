@@ -10,7 +10,7 @@ public struct UIWarehousePopupSlotClickedCommand
 
         var playerModelHolder = PlayerModelHolder.Instance;
         var warehouseTargetSlot = playerModelHolder.ShopModel.WarehouseModel.Slots[warehouseSlotIndex];
-        if (warehouseTargetSlot.HasProduct)
+        if (warehouseTargetSlot.HasProduct && warehouseTargetSlot.Product.DeliverTime <= gameStateModel.ServerTime)
         {
             var targetProduct = warehouseTargetSlot.Product;
             var amountMax = CalculationHelper.GetAmountForProductInVolume(targetProduct.Config, targetShelfSlot.Volume);

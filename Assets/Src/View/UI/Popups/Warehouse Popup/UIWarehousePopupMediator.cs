@@ -101,9 +101,10 @@ public class UIWarehousePopupMediator : IMediator
         var playerModelHolder = PlayerModelHolder.Instance;
         var warehouseSlots = playerModelHolder.ShopModel.WarehouseModel.Slots;
         var i = 0;
+        var serverTime = _gameStateModel.ServerTime;
         foreach (var slot in warehouseSlots)
         {
-            if (slot.HasProduct)
+            if (slot.HasProduct && slot.Product.DeliverTime <= serverTime)
             {
                 var slotGo = GameObject.Instantiate(_prefabsHolder.UIWarehousePopupItemPrefab, _popupView.ContentRectTransform);
                 var itemView = slotGo.GetComponent<UIWarehousePopupItemView>();

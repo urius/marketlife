@@ -6,6 +6,18 @@ public class ShelfView : ShopObjectViewBase
     [SerializeField] private ProductFloor[] _productFloors;
     public int FloorsCount => _productFloors.Length;
 
+    public void Awake()
+    {
+        for (var floorIndex = 0; floorIndex < FloorsCount; floorIndex++)
+        {
+            var spriteRenderers = _productFloors[floorIndex].ProductSprites;
+            for (var i = 0; i < spriteRenderers.Length; i++)
+            {
+                spriteRenderers[i].sprite = null;
+            }
+        }
+    }
+
     public void SetProductSpriteOnFloor(int floorIndex, Sprite sprite, float fullness)
     {
         var spriteRenderers = _productFloors[floorIndex].ProductSprites;

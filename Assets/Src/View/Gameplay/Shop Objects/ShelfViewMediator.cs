@@ -5,7 +5,8 @@ public class ShelfViewMediator : ShopObjectMediatorBase
     private readonly Dispatcher _dispatcher;
     private readonly SpritesProvider _spritesProvider;
     private readonly ScreenCalculator _screenCalculator;
-
+    private readonly GameStateModel _gameStateModel;
+    //
     private SpriteRenderer _fullnessIndicatorView;
     private ShelfModel _shelfModel;
 
@@ -15,11 +16,32 @@ public class ShelfViewMediator : ShopObjectMediatorBase
         _dispatcher = Dispatcher.Instance;
         _spritesProvider = SpritesProvider.Instance;
         _screenCalculator = ScreenCalculator.Instance;
+        _gameStateModel = GameStateModel.Instance;
 
         _shelfModel = shelfModel;
     }
 
     private ShelfView CurrentShelfView => CurrentView as ShelfView;
+
+    public override void Mediate()
+    {
+        base.Mediate();
+
+        Activate();
+    }
+
+    public override void Unmediate()
+    {
+        if (_fullnessIndicatorView != null)
+        {
+            GameObject.Destroy(_fullnessIndicatorView.gameObject);
+            _fullnessIndicatorView = null;
+        }
+
+        Deactivate();
+
+        base.Unmediate();
+    }
 
     protected override void UpdateView()
     {
@@ -45,28 +67,9 @@ public class ShelfViewMediator : ShopObjectMediatorBase
         }
     }
 
-    public override void Mediate()
-    {
-        base.Mediate();
-
-        Activate();
-    }
-
-    public override void Unmediate()
-    {
-        if (_fullnessIndicatorView != null)
-        {
-            GameObject.Destroy(_fullnessIndicatorView.gameObject);
-            _fullnessIndicatorView = null;
-        }
-
-        Deactivate();
-
-        base.Unmediate();
-    }
-
     private void Activate()
     {
+        _gameStateModel.GameStateChanged += OnGameStateChanged;
         _shelfModel.ProductIsSetOnSlot += OnProductIsSetOnSlot;
         _shelfModel.ProductRemovedFromSlot += OnProductRemovedFromSlot;
         _shelfModel.ProductAmountChangedOnSlot += OnProductAmountChangedOnSlot;
@@ -74,9 +77,15 @@ public class ShelfViewMediator : ShopObjectMediatorBase
 
     private void Deactivate()
     {
+        _gameStateModel.GameStateChanged -= OnGameStateChanged;
         _shelfModel.ProductIsSetOnSlot -= OnProductIsSetOnSlot;
         _shelfModel.ProductRemovedFromSlot -= OnProductRemovedFromSlot;
         _shelfModel.ProductAmountChangedOnSlot -= OnProductAmountChangedOnSlot;
+    }
+
+    private void OnGameStateChanged(GameStateName prev, GameStateName current)
+    {
+        UpdateFullnessIndicator();
     }
 
     private void OnProductIsSetOnSlot(ShelfModel shelfModel, int slotIndex)
@@ -133,25 +142,32 @@ public class ShelfViewMediator : ShopObjectMediatorBase
 
     private void UpdateFullnessIndicator()
     {
-        var totalFullness = 0f;
-        for (var i = 0; i < _shelfModel.Slots.Length; i++)
+        if (_gameStateModel.GameState == GameStateName.ShopSimulation)
         {
-            totalFullness += _shelfModel.GetFullnessOnFloor(i);
-        }
-        var totalFullnessFactor = totalFullness / _shelfModel.Slots.Length;
+            var totalFullness = 0f;
+            for (var i = 0; i < _shelfModel.Slots.Length; i++)
+            {
+                totalFullness += _shelfModel.GetFullnessOnFloor(i);
+            }
+            var totalFullnessFactor = totalFullness / _shelfModel.Slots.Length;
 
-        _fullnessIndicatorView.gameObject.SetActive(totalFullnessFactor <= 0.8f);
-        if (totalFullnessFactor > 0.4f)
-        {
-            _fullnessIndicatorView.color = _fullnessIndicatorView.color.SetRGBFromColor(Color.yellow);
-        }
-        else if (totalFullnessFactor > 0)
-        {
-            _fullnessIndicatorView.color = _fullnessIndicatorView.color.SetRGBFromColor(Color.magenta);
+            _fullnessIndicatorView.gameObject.SetActive(totalFullnessFactor <= 0.8f);
+            if (totalFullnessFactor > 0.4f)
+            {
+                _fullnessIndicatorView.color = _fullnessIndicatorView.color.SetRGBFromColor(Color.yellow);
+            }
+            else if (totalFullnessFactor > 0)
+            {
+                _fullnessIndicatorView.color = _fullnessIndicatorView.color.SetRGBFromColor(Color.magenta);
+            }
+            else
+            {
+                _fullnessIndicatorView.color = _fullnessIndicatorView.color.SetRGBFromColor(Color.red);
+            }
         }
         else
         {
-            _fullnessIndicatorView.color = _fullnessIndicatorView.color.SetRGBFromColor(Color.red);
+            _fullnessIndicatorView.gameObject.SetActive(false);
         }
     }
 }

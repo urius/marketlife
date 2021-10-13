@@ -7,7 +7,7 @@ public class MainConfigDto
     public int AudioBundleVersion;    
     public int AutoPlacePriceGold;
     public int RemoveUnwashesRewardExp;    
-    public int QuickDeliverPriceGoldPerMinute;
+    public int QuickDeliverPriceGoldPerHour;
     public int ActionDefaultAmount;
     public int ActionDefaultCooldownMinutes;
     public int ActionResetCooldownPrice;

@@ -253,7 +253,7 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelCommonScrollItemsT
                 {
                     itemView.SetImageAlpha(0.3f);
                     itemView.SetTopText(FormattingHelper.ToSeparatedTimeFormat(deltaDeliver));
-                    var quickDeliverPrice = CalculationHelper.GetPriceForDeliver(_configManager.MainConfig.QuickDeliverPriceGoldPerMinute, deltaDeliver);
+                    var quickDeliverPrice = CalculationHelper.GetPriceForDeliver(_configManager.MainConfig.QuickDeliverPriceGoldPerHour, deltaDeliver);
                     itemView.SetBottomButtonPrice(quickDeliverPrice);
                     itemView.SetupBottomButtonHint(_loc.GetLocalization(LocalizationKeys.BottomPanelWarehouseQuickDeliveryHint));
 

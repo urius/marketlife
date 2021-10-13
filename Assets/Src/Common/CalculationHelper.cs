@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class CalculationHelper
 {
-    public static Price GetPriceForDeliver(int quickDeliverPriceGoldPerMinute, int restDeliverTimeSecnds)
+    public static Price GetPriceForDeliver(int quickDeliverPriceGoldPerHour, int restDeliverTimeSecnds)
     {
-        return new Price(Mathf.Max(1, quickDeliverPriceGoldPerMinute * restDeliverTimeSecnds / 60), true);
+        return new Price(Mathf.Max(1, Mathf.CeilToInt(quickDeliverPriceGoldPerHour * restDeliverTimeSecnds / 3600f)), true);
     }
 
     public static int GetAmountForProductInVolume(ProductConfig productConfig, int targetVolume)

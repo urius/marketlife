@@ -19,11 +19,11 @@ public class MainConfig :
     public readonly int AudioBundleVersion;
     public readonly int AutoPlacePriceGold;
     public readonly int RemoveUnwashesRewardExp;
-    public readonly int QuickDeliverPriceGoldPerMinute;
+    public readonly int QuickDeliverPriceGoldPerHour;
     public readonly int ActionDefaultAmount;
     public readonly int ActionDefaultCooldownMinutes;
     public readonly int ActionResetCooldownPrice;
-    public readonly int ShreOfflineReportRewardGold = 1;
+    public readonly int ShareOfflineReportRewardGold = 1;
 
     public readonly Dictionary<string, ProductConfig> ProductsConfig;
     public readonly Dictionary<string, ItemConfig<ShelfConfigDto>> ShelfsConfig;
@@ -63,7 +63,7 @@ public class MainConfig :
         AudioBundleVersion = dto.AudioBundleVersion;
         AutoPlacePriceGold = dto.AutoPlacePriceGold;
         RemoveUnwashesRewardExp = dto.RemoveUnwashesRewardExp;
-        QuickDeliverPriceGoldPerMinute = dto.QuickDeliverPriceGoldPerMinute;
+        QuickDeliverPriceGoldPerHour = dto.QuickDeliverPriceGoldPerHour;
         ActionDefaultAmount = dto.ActionDefaultAmount;
         ActionDefaultCooldownMinutes = dto.ActionDefaultCooldownMinutes;
         ActionResetCooldownPrice = dto.ActionResetCooldownPrice;

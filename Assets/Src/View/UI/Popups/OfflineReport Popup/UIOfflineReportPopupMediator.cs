@@ -42,7 +42,7 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
         _popupView.SetTitleText(string.Format(_loc.GetLocalization(LocalizationKeys.PopupOfflineReportTitleFormat), titleTimePassedStr));
         _popupView.SetupTabButtons(_viewModel.Tabs.Select(ToTabName).ToArray());
         _popupView.SetShareButtonText(_loc.GetLocalization(LocalizationKeys.CommonShare));
-        _popupView.SetShareRevenueButtonText($"+{_config.ShreOfflineReportRewardGold}");
+        _popupView.SetShareRevenueButtonText($"+{_config.ShareOfflineReportRewardGold}");
         ShowTab(0);
 
         await _popupView.Appear2Async();

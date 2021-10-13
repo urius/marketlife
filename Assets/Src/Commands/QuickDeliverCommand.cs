@@ -12,7 +12,7 @@ public struct QuickDeliverCommand
         var deltaTimeSec = slotModel.Product.DeliverTime - gameStateModel.ServerTime;
         if (deltaTimeSec > 0)
         {
-            var price = CalculationHelper.GetPriceForDeliver(mainConfig.QuickDeliverPriceGoldPerMinute, deltaTimeSec);
+            var price = CalculationHelper.GetPriceForDeliver(mainConfig.QuickDeliverPriceGoldPerHour, deltaTimeSec);
             if (playerModel.TrySpendMoney(price))
             {
                 slotModel.Product.DeliverTime = 0;

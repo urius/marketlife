@@ -150,7 +150,7 @@ public class VKLogicModule : PlatformSpecificLogicModuleBase
     {
         var offlineReportPopupModel = _gameStateModel.ShowingPopupModel as OfflineReportPopupViewModel;
         var config = GameConfigManager.Instance.MainConfig;
-        _wallPostContext = new WallPostContext(config.ShreOfflineReportRewardGold, buttonWorldPosition);
+        _wallPostContext = new WallPostContext(config.ShareOfflineReportRewardGold, buttonWorldPosition);
         var payload = new PostOfflineRevenueJsPayload(
             offlineReportPopupModel.ReportModel.HoursPassed,
             offlineReportPopupModel.ReportModel.MinutesPassed,

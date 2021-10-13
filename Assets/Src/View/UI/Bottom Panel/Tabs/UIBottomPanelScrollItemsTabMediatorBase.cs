@@ -6,7 +6,7 @@ using UnityEngine;
 public abstract class UIBottomPanelScrollItemsTabMediatorBase<TView, TViewModel> : UIBottomPanelTabMediatorBase
     where TView : UIBottomPanelScrollItemViewBase
 {
-    private const int MaxDisplayedAmount = 8;
+    private const int MaxDisplayedAmount = 9;
 
     protected readonly LinkedList<(TView View, TViewModel ViewModel)> DisplayedItems;
 

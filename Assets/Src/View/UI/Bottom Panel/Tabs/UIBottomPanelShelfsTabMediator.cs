@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class UIBottomPanelShelfsTabMediator : UIBottomPanelInteriorModeScrollItemsTabMediatorBase<ItemConfig<ShelfConfigDto>>
 {
@@ -32,7 +34,10 @@ public class UIBottomPanelShelfsTabMediator : UIBottomPanelInteriorModeScrollIte
 
     protected override IEnumerable<ItemConfig<ShelfConfigDto>> GetViewModelsToShow()
     {
-        return _shelfsConfig.GetShelfConfigsForLevel(_playerModel.ProgressModel.Level);
+        var result = _shelfsConfig.GetShelfConfigsForLevel(_playerModel.ProgressModel.Level)
+            .ToArray()
+            .OrderBy(c => c.ConfigDto.part_volume * c.ConfigDto.parts_num);
+        return result;
     }
 
     protected override void SetupItem(UIBottomPanelScrollItemView itemView, ItemConfig<ShelfConfigDto> viewModel)

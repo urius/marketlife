@@ -10,6 +10,8 @@ public struct AutoPlaceCommand
         var dispatcher = Dispatcher.Instance;
         var gameStateModel = GameStateModel.Instance;
         var audioManager = AudioManager.Instance;
+        var analyticsManager = AnalyticsManager.Instance;
+        var isSuccess = false;
 
         if (playerModel.ProgressModel.CanSpendGold(mainConfig.AutoPlacePriceGold))
         {
@@ -20,13 +22,18 @@ public struct AutoPlaceCommand
             {
                 playerModel.ProgressModel.TrySpendGold(mainConfig.AutoPlacePriceGold);
                 audioManager.PlaySound(SoundNames.ProductPut);
+                isSuccess = true;
             }
+
             gameStateModel.ResetActionState();
         }
         else
         {
             dispatcher.UIRequestBlinkMoney(true);
+            isSuccess = false;
         }
+
+        analyticsManager.SendCustom(AnalyticsManager.EventAutoPlaceClick, ("is_success", isSuccess));
     }
 
     private int ForEveryShelfSlot(Func<ProductSlotModel, ProductSlotModel, int> action)

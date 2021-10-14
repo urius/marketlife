@@ -23,6 +23,7 @@ public class AnalyticsManager
     public static string EventNameHirePersonalUpgrade = "hire_personal";
     public static string EventNameExpandWarehouseClick = "expand_warehouse_click";
     public static string EventNameManageClick = "expand_manage_click";
+    public static string EventAutoPlaceClick = "auto_place_click";
 
     private Dictionary<string, object> _metaParams = new Dictionary<string, object>();
 

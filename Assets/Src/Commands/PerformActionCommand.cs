@@ -196,47 +196,25 @@ public struct PerformActionCommand
             && highlightedShopObject.Type == ShopObjectType.Shelf)
         {
             var shelf = highlightedShopObject as ShelfModel;
-            var placingProduct = shopModel.WarehouseModel.Slots[gameStateModel.PlacingProductWarehouseSlotIndex].Product;
             string flyingTextToShow = null;
             for (var i = 0; i < shelf.PartsCount; i++)
             {
                 flyingTextToShow = null;
-                if (shelf.TryGetProductAt(i, out var productOnShelf))
+
+                var placedAmount = new PutWarehouseProductOnShelfCommand().Execute(gameStateModel.PlacingProductWarehouseSlotIndex, shelf.Slots[i]);
+                result = placedAmount > 0;
+                if (placedAmount > 0)
                 {
-                    if (productOnShelf.NumericId == placingProduct.NumericId)
-                    {
-                        var neededAmount = Math.Min(shelf.GetRestAmountOn(i), placingProduct.Amount);
-                        if (neededAmount > 0)
-                        {
-                            productOnShelf.Amount += neededAmount;
-                            placingProduct.Amount -= neededAmount;
-                            result = true;
-                            break;
-                        }
-                        else
-                        {
-                            flyingTextToShow = loc.GetLocalization(LocalizationKeys.FlyingTextShelfDoesntHaveFreeSpace);
-                        }
-                    }
-                    else
-                    {
-                        flyingTextToShow = loc.GetLocalization(LocalizationKeys.FlyingTextShelfDoesntHaveFreeSpace);
-                    }
+                    break;
                 }
                 else
                 {
-                    var neededAmount = Math.Min(shelf.PartVolume / placingProduct.Config.Volume, placingProduct.Amount);
-                    var productToPlace = new ProductModel(placingProduct.Config, neededAmount);
-                    if (shelf.TrySetProductOn(i, productToPlace))
-                    {
-                        placingProduct.Amount -= neededAmount;
-                        result = true;
-                        break;
-                    }
+                    flyingTextToShow = loc.GetLocalization(LocalizationKeys.FlyingTextShelfDoesntHaveFreeSpace);
                 }
             }
 
-            if (placingProduct.Amount <= 0)
+            var placingProductSlot = shopModel.WarehouseModel.Slots[gameStateModel.PlacingProductWarehouseSlotIndex];
+            if (placingProductSlot.HasProduct == false)
             {
                 gameStateModel.ResetActionState();
             }

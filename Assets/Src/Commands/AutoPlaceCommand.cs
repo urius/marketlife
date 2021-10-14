@@ -13,10 +13,10 @@ public struct AutoPlaceCommand
 
         if (playerModel.ProgressModel.CanSpendGold(mainConfig.AutoPlacePriceGold))
         {
-            var productsAdded = ForEveryShelfSlot(AddOnExisting);
-            productsAdded |= ForEveryShelfSlot(AddOnNew);
+            var productsAddedCount = ForEveryShelfSlot(AddOnExisting);
+            productsAddedCount += ForEveryShelfSlot(AddOnNew);
 
-            if (productsAdded)
+            if (productsAddedCount > 0)
             {
                 playerModel.ProgressModel.TrySpendGold(mainConfig.AutoPlacePriceGold);
                 audioManager.PlaySound(SoundNames.ProductPut);
@@ -29,9 +29,9 @@ public struct AutoPlaceCommand
         }
     }
 
-    private bool ForEveryShelfSlot(Func<ProductSlotModel, ProductSlotModel, bool> action)
+    private int ForEveryShelfSlot(Func<ProductSlotModel, ProductSlotModel, int> action)
     {
-        var isSuccess = false;
+        var addedProductsCount = 0;
         var playerModel = PlayerModelHolder.Instance.UserModel;
         var gameStateModel = GameStateModel.Instance;
         var shopModel = playerModel.ShopModel;
@@ -45,48 +45,33 @@ public struct AutoPlaceCommand
                     var shelfModel = kvp.Value as ShelfModel;
                     foreach (var shelfSlot in shelfModel.Slots)
                     {
-                        isSuccess |= action(placingProductSlot, shelfSlot);
-                        if (placingProductSlot.HasProduct == false) return true;
+                        addedProductsCount += action(placingProductSlot, shelfSlot);
+                        if (placingProductSlot.HasProduct == false) break;
                     }
                 }
             }
         }
-        return isSuccess;
+
+        return addedProductsCount;
     }
 
-
-    private bool AddOnExisting(ProductSlotModel slotFrom, ProductSlotModel slotTo)
+    private int AddOnExisting(ProductSlotModel slotFrom, ProductSlotModel slotTo)
     {
-        var placingProduct = slotFrom.Product;
-        if (slotTo.HasProduct && slotTo.Product.Config.NumericId == placingProduct.Config.NumericId)
+        if (slotTo.HasProduct && slotTo.Product.NumericId == slotFrom.Product.NumericId)
         {
-            var maxSlotAmount = CalculationHelper.GetAmountForProductInVolume(placingProduct.Config, slotTo.Volume);
-            var amountToAdd = Math.Min(maxSlotAmount - slotTo.Product.Amount, placingProduct.Amount);
-            if (amountToAdd > 0)
-            {
-                slotTo.ChangeProductAmount(amountToAdd);
-                slotFrom.ChangeProductAmount(-amountToAdd);
-                return true;
-            }
+            return new PutWarehouseProductOnShelfCommand().Execute(slotFrom.Index, slotTo);
         }
 
-        return false;
+        return 0;
     }
 
-    private bool AddOnNew(ProductSlotModel slotFrom, ProductSlotModel slotTo)
+    private int AddOnNew(ProductSlotModel slotFrom, ProductSlotModel slotTo)
     {
-        var placingProduct = slotFrom.Product;
         if (slotTo.HasProduct == false)
         {
-            var maxSlotAmount = CalculationHelper.GetAmountForProductInVolume(placingProduct.Config, slotTo.Volume);
-            var amountToAdd = Math.Min(maxSlotAmount, placingProduct.Amount);
-            if (amountToAdd > 0)
-            {
-                slotTo.SetProduct(new ProductModel(placingProduct.Config, amountToAdd));
-                slotFrom.ChangeProductAmount(-amountToAdd);
-                return true;
-            }
+            return new PutWarehouseProductOnShelfCommand().Execute(slotFrom.Index, slotTo);
         }
-        return false;
+
+        return 0;
     }
 }

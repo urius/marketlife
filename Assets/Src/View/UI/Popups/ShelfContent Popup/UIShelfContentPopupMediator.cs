@@ -91,7 +91,7 @@ public class UIShelfContentPopupMediator : IMediator
             var go = GameObject.Instantiate(_prefabsHolder.UIShelfContentPopupItemPrefab, _popupView.ContentRectTransform);
             var view = go.GetComponent<UIShelfContentPopupItemView>();
             var rectTransform = view.transform as RectTransform;
-            rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, -i * rectTransform.rect.height);
+            rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, -(slotModels.Length - i - 1) * rectTransform.rect.height);
             _itemsViews[i] = view;
             ActivateView(view);
             UpdateItemView(view, slotModels[i]);

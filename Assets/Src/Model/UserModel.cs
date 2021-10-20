@@ -304,15 +304,16 @@ public class UserModel
         }
 
         var restProductsDict = restProducts.ToDictionary(m => m.Config, m => m.Amount);
-        if (grabMultiplier < 1)
+        if (grabMultiplier > 0)
         {
-            foreach (var kvp in grabbedProductsDict)
+            var grabbedProductConfigs = grabbedProductsDict.Keys.ToArray();
+            foreach (var productConfig in grabbedProductConfigs)
             {
-                if (restProductsDict.ContainsKey(kvp.Key))
+                if (restProductsDict.ContainsKey(productConfig))
                 {
-                    var restAmount = restProductsDict[kvp.Key];
-                    var amountTaken = Math.Min(restAmount, (int)Math.Floor(kvp.Value * grabMultiplier));
-                    grabbedProductsDict[kvp.Key] = amountTaken;
+                    var restAmount = restProductsDict[productConfig];
+                    var amountTaken = Math.Min(restAmount, (int)Math.Floor(grabbedProductsDict[productConfig] * grabMultiplier));
+                    grabbedProductsDict[productConfig] = amountTaken;
                 }
             }
         }

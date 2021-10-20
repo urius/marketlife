@@ -121,6 +121,7 @@ public class LocalizationKeys
     public static string FlyingTextNothingToTakeFromShelf = "flying_text_shelf_nothing_to_take";
     public static string FlyingTextUnwashAlreadyAdded = "flying_text_unwash_already_added";
     public static string FlyingTextUnwashCantBePlaced = "flying_text_unwash_cant_be_placed";
+    public static string FlyingTextUnwashCantBePlacedOutside = "flying_text_unwash_cant_be_placed_outside";
     public static string CommonYes = "common_yes";
     public static string CommonNo = "common_no";
     public static string CommonSaving = "common_saving";

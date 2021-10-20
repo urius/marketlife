@@ -77,28 +77,35 @@ public struct PerformActionCommand
         var coords = mouseCellCoordsProvider.MouseCellCoords;
         var loc = LocalizationManager.Instance;
 
-        if (viewingShopModel.Unwashes.ContainsKey(coords))
+        if (viewingShopModel.ShopDesign.IsCellInside(coords))
         {
-            var screenCoords = screenCalculator.CellToScreenPoint(coords);
-            dispatcher.UIRequestFlyingText(screenCoords, loc.GetLocalization(LocalizationKeys.FlyingTextUnwashAlreadyAdded));
-        }
-        else if (viewingShopModel.Grid.TryGetValue(coords, out var gridItem)
-            && gridItem.buildState > 0)
-        {
-            var screenCoords = screenCalculator.CellToScreenPoint(coords);
-            dispatcher.UIRequestFlyingText(screenCoords, loc.GetLocalization(LocalizationKeys.FlyingTextUnwashCantBePlaced));
-        }
-        else if (viewingShopModel.AddUnwash(coords, 1))
-        {
-            viewingUserModel.ExternalActionsModel.AddAction(new ExternalActionAddUnwash(playerModel.Uid, coords));
-            actionData.SetAmount(actionData.RestAmount - 1);
-            result = true;
-        }
+            if (viewingShopModel.Unwashes.ContainsKey(coords))
+            {
+                var screenCoords = screenCalculator.CellToScreenPoint(coords);
+                dispatcher.UIRequestFlyingText(screenCoords, loc.GetLocalization(LocalizationKeys.FlyingTextUnwashAlreadyAdded));
+            }
+            else if (viewingShopModel.Grid.TryGetValue(coords, out var gridItem)
+                && gridItem.buildState > 0)
+            {
+                var screenCoords = screenCalculator.CellToScreenPoint(coords);
+                dispatcher.UIRequestFlyingText(screenCoords, loc.GetLocalization(LocalizationKeys.FlyingTextUnwashCantBePlaced));
+            }
+            else if (viewingShopModel.AddUnwash(coords, 1))
+            {
+                viewingUserModel.ExternalActionsModel.AddAction(new ExternalActionAddUnwash(playerModel.Uid, coords));
+                actionData.SetAmount(actionData.RestAmount - 1);
+                result = true;
+            }
 
-        if (actionData.RestAmount <= 0)
+            if (actionData.RestAmount <= 0)
+            {
+                ResetActionData(actionId);
+                gameStateModel.ResetActionState();
+            }
+        } else
         {
-            ResetActionData(actionId);
-            gameStateModel.ResetActionState();
+            var screenCoords = screenCalculator.CellToScreenPoint(coords);
+            dispatcher.UIRequestFlyingText(screenCoords, loc.GetLocalization(LocalizationKeys.FlyingTextUnwashCantBePlacedOutside));
         }
 
         return result;

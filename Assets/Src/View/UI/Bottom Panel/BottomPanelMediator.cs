@@ -34,7 +34,6 @@ public class BottomPanelMediator : UINotMonoMediatorBase
 
         Activate();
         UpdateTabMediator();
-        _view.SetAutoPlacePriceGold(_configManager.MainConfig.AutoPlacePriceGold);
 
         _tutorialUIElementsProvider.SetElement(TutorialUIElement.BottomPanelWarehouseButton, _view.WarehouseButton.transform as RectTransform);
         _tutorialUIElementsProvider.SetElement(TutorialUIElement.BottomPanelInteriorButton, _view.InteriorButton.transform as RectTransform);

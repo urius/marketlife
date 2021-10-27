@@ -46,7 +46,6 @@ public class BottomPanelView : MonoBehaviour, IPointerEnterHandler, IPointerExit
     [SerializeField] private Button _buttonRotateRight;
     [SerializeField] private Button _buttonRotateLeft;
     [SerializeField] private Button _buttonAutoPlace;
-    [SerializeField] private Text _buttonAutoPlacePriceText;
     [Space(10)]
     [SerializeField] private GameObject _blockPanel;
     [Space(10)]
@@ -108,11 +107,6 @@ public class BottomPanelView : MonoBehaviour, IPointerEnterHandler, IPointerExit
         _allHintableViews = GetComponentsInChildren<UIHintableView>(true);
 
         Activate();
-    }
-
-    public void SetAutoPlacePriceGold(int goldAmount)
-    {
-        _buttonAutoPlacePriceText.text = goldAmount.ToString();
     }
 
     public void SetIsBlocked(bool isBlocked)

@@ -17,7 +17,6 @@ public class MainConfig :
     public readonly int GameplayAtlasVersion;
     public readonly int InterfaceAtlasVersion;
     public readonly int AudioBundleVersion;
-    public readonly int AutoPlacePriceGold;
     public readonly int RemoveUnwashesRewardExp;
     public readonly int QuickDeliverPriceGoldPerHour;
     public readonly int ActionDefaultAmount;
@@ -61,7 +60,6 @@ public class MainConfig :
         GameplayAtlasVersion = dto.GameplayAtlasVersion;
         InterfaceAtlasVersion = dto.InterfaceAtlasVersion;
         AudioBundleVersion = dto.AudioBundleVersion;
-        AutoPlacePriceGold = dto.AutoPlacePriceGold;
         RemoveUnwashesRewardExp = dto.RemoveUnwashesRewardExp;
         QuickDeliverPriceGoldPerHour = dto.QuickDeliverPriceGoldPerHour;
         ActionDefaultAmount = dto.ActionDefaultAmount;

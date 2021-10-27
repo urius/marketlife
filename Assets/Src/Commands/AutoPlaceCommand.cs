@@ -13,25 +13,16 @@ public struct AutoPlaceCommand
         var analyticsManager = AnalyticsManager.Instance;
         var isSuccess = false;
 
-        if (playerModel.ProgressModel.CanSpendGold(mainConfig.AutoPlacePriceGold))
-        {
-            var productsAddedCount = ForEveryShelfSlot(AddOnExisting);
-            productsAddedCount += ForEveryShelfSlot(AddOnNew);
+        var productsAddedCount = ForEveryShelfSlot(AddOnExisting);
+        productsAddedCount += ForEveryShelfSlot(AddOnNew);
 
-            if (productsAddedCount > 0)
-            {
-                playerModel.ProgressModel.TrySpendGold(mainConfig.AutoPlacePriceGold);
-                audioManager.PlaySound(SoundNames.ProductPut);
-                isSuccess = true;
-            }
-
-            gameStateModel.ResetActionState();
-        }
-        else
+        if (productsAddedCount > 0)
         {
-            dispatcher.UIRequestBlinkMoney(true);
-            isSuccess = false;
+            audioManager.PlaySound(SoundNames.ProductPut);
+            isSuccess = true;
         }
+
+        gameStateModel.ResetActionState();
 
         analyticsManager.SendCustom(AnalyticsManager.EventAutoPlaceClick, ("is_success", isSuccess));
     }

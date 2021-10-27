@@ -5,7 +5,6 @@ public class MainConfigDto
     public int GameplayAtlasVersion;
     public int InterfaceAtlasVersion;
     public int AudioBundleVersion;    
-    public int AutoPlacePriceGold;
     public int RemoveUnwashesRewardExp;    
     public int QuickDeliverPriceGoldPerHour;
     public int ActionDefaultAmount;

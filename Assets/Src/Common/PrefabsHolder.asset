@@ -93,6 +93,8 @@ MonoBehaviour:
     type: 3}
   UIOfflineReportPopupItemPrefab: {fileID: 2115822142520817706, guid: 3e71c03c80fce465f85ff1b365052c7d,
     type: 3}
+  UIOfflineReportPopupOverallItemPrefab: {fileID: 2115822142520817706, guid: dd1f02389064e4018ae3d7f4675b8af5,
+    type: 3}
   UILevelUpPopupPrefab: {fileID: 7937386955436489448, guid: 9f958f40f17ab482d8b6972b5d9d5982,
     type: 3}
   UILevelUpPopupCaptionItemPrefab: {fileID: 4175141950551408558, guid: 3277be06040b14015bd49ab3fb65cf1f,

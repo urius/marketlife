@@ -18,7 +18,8 @@ public struct CalculateForReportCommand
             gameStateModel.ServerTime,
             calculationResult.SoldFromShelfs,
             calculationResult.SoldFromWarehouse,
-            calculationResult.GrabbedProducts);
+            calculationResult.GrabbedProducts,
+            calculationResult.UnwashesCleanedAmount);
         playerOfflineReportHolder.SetReport(report);
 
         if (report.IsEmpty == false)

@@ -107,9 +107,40 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
             case OfflineReportTabType.SellProfit:
                 ShowProfitTab();
                 break;
+            case OfflineReportTabType.Personal:
+                ShowPersonalTab();
+                break;
             case OfflineReportTabType.Activity:
                 ShowActivityTab();
                 break;
+        }
+    }
+
+    private void ShowProfitTab()
+    {
+        foreach (var itemViewMdoel in _viewModel.SoldProducts)
+        {
+            PutNextReportItem(_spritesProvider.GetProductIcon(itemViewMdoel.ProductKey), $"x{FormattingHelper.ToCommaSeparatedNumber(itemViewMdoel.Amount)}", $"+{FormattingHelper.ToCommaSeparatedNumber(itemViewMdoel.Profit)}$");
+        }
+
+        PutNextOverallItem(_loc.GetLocalization(LocalizationKeys.PopupOfflineReportProfitTabOverallProfit), $"{FormattingHelper.ToCommaSeparatedNumber(_viewModel.TotalProfitFromSell)}$");
+    }
+
+    private void ShowPersonalTab()
+    {
+        if (_viewModel.MerchandiserResult.Length > 0)
+        {
+            PutNextCaption(_loc.GetLocalization($"{LocalizationKeys.CommonPersonalNamePrefix}{Constants.PersonalMerchandiserStr}"));
+            foreach (var item in _viewModel.MerchandiserResult)
+            {
+                PutNextReportItem(_spritesProvider.GetProductIcon(item.ProductKey), $"x{FormattingHelper.ToCommaSeparatedNumber(item.Amount)}");
+            }
+        }
+
+        if (_viewModel.UnwashesCleanedAmount > 0)
+        {
+            PutNextCaption(_loc.GetLocalization($"{LocalizationKeys.CommonPersonalNamePrefix}{Constants.PersonalCleanerStr}"));
+            PutNextReportItem(_spritesProvider.GetRandomUnwashIcon(), $"x{FormattingHelper.ToCommaSeparatedNumber(_viewModel.UnwashesCleanedAmount)}");
         }
     }
 
@@ -122,14 +153,12 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
         }
     }
 
-    private void ShowProfitTab()
+    private void PutNextOverallItem(string lextText, string rightText)
     {
-        foreach (var itemViewMdoel in _viewModel.SoldProducts)
-        {
-            PutNextReportItem(_spritesProvider.GetProductIcon(itemViewMdoel.ProductKey), $"x{FormattingHelper.ToCommaSeparatedNumber(itemViewMdoel.Amount)}", $"+{FormattingHelper.ToCommaSeparatedNumber(itemViewMdoel.Profit)}$");
-        }
-
-        PutNextReportItem(null, _loc.GetLocalization(LocalizationKeys.PopupOfflineReportProfitTabOverallProfit), TextAlignmentOptions.Right, $"{FormattingHelper.ToCommaSeparatedNumber(_viewModel.TotalProfitFromSell)}$", TextAlignmentOptions.Right);
+        var itemTransform = GetOrCreateItemToDisplay(_prefabsHolder.UIOfflineReportPopupOverallItemPrefab);
+        var itemView = itemTransform.GetComponent<UIOfflineReportPopupOverallItemView>();
+        itemView.SetLeftText(lextText);
+        itemView.SetRightText(rightText);
     }
 
     private void PutNextReportItem(Sprite iconSprite, string lextText, TextAlignmentOptions leftTextAlignment, string rightText, TextAlignmentOptions rightTextAlignment)

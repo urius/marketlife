@@ -38,9 +38,14 @@ public class SpritesProvider
         return GetSprite(SpriteAtlasId.GameplayAtlas, $"Unwashes{numericId}");
     }
 
+    public Sprite GetRandomUnwashIcon()
+    {
+        return GetUnwashIcon(UnityEngine.Random.Range(1, 4));
+    }
+
     public Sprite GetUnwashIcon(int numericId)
     {
-        return GetSprite(SpriteAtlasId.InterfaceAtlas, $"unwash_icon_{numericId}");
+        return GetSprite(SpriteAtlasId.InterfaceAtlas, $"unwashes_icon_{numericId}");
     }
 
     public Sprite GetWallSprite(int wallId)

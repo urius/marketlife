@@ -23,13 +23,17 @@ public class OfflineReportPopupViewModel : PopupViewModelBase
     }
 
     public Dictionary<ProductConfig, int> GrabbedProducts => ReportModel.GrabbedProducts;
+    public int UnwashesCleanedAmount => ReportModel.UnwashesCleanedAmount;
 
     private ItemViewModel[] GetMerchandiserResult(UserOfflineReportModel reportModel)
     {
         var result = new List<ItemViewModel>(reportModel.SoldFromWarehouse.Count);
         foreach (var kvp in reportModel.SoldFromWarehouse)
         {
-            result.Add(new ItemViewModel(kvp.Key.Key, kvp.Value));
+            if (kvp.Value > 0)
+            {
+                result.Add(new ItemViewModel(kvp.Key.Key, kvp.Value));
+            }
         }
         return result.ToArray();
     }

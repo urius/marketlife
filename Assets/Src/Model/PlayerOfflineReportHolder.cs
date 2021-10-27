@@ -28,19 +28,22 @@ public class UserOfflineReportModel
     public readonly bool HasSellInfo;
     public readonly bool HasPersonalInfo;
     public readonly bool HasActivityInfo;
+    public readonly int UnwashesCleanedAmount;
 
     public UserOfflineReportModel(
         int timeFrom,
         int timeTo,
         Dictionary<ProductConfig, int> soldFromShelfs,
         Dictionary<ProductConfig, int> soldFromWarehouse,
-        Dictionary<ProductConfig, int> grabbedProducts)
+        Dictionary<ProductConfig, int> grabbedProducts,
+        int unwashesCleanedAmount)
     {
         TimeFrom = timeFrom;
         TimeTo = timeTo;
         SoldFromShelfs = soldFromShelfs;
         SoldFromWarehouse = soldFromWarehouse;
         GrabbedProducts = grabbedProducts;
+        UnwashesCleanedAmount = unwashesCleanedAmount;
         HoursPassed = (0.1f * (int)Math.Ceiling(10 * (TimeTo - TimeFrom) / 3600f));
         MinutesPassed = (int)Math.Ceiling((TimeTo - TimeFrom) / 60f);
         SellProfit = CalculateSellProfit(SoldFromWarehouse) + CalculateSellProfit(SoldFromShelfs);
@@ -48,7 +51,7 @@ public class UserOfflineReportModel
 
         var hasSoldFromWarehouse = SoldFromWarehouse.Any(kvp => kvp.Value > 0);
         HasSellInfo = SoldFromShelfs.Any(kvp => kvp.Value > 0) || hasSoldFromWarehouse;
-        HasPersonalInfo = hasSoldFromWarehouse;
+        HasPersonalInfo = (UnwashesCleanedAmount > 0) || hasSoldFromWarehouse;
         HasActivityInfo = GrabbedProducts.Any();
     }
 

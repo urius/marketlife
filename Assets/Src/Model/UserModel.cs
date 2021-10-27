@@ -259,6 +259,12 @@ public class UserModel
                 }
             }
 
+            if (isCleanerActive)
+            {
+                var maxUnwashesToClean = Math.Max(1, (int)Math.Ceiling(hourMultiplier * 10));
+                cleanedUnwashesAmount += CleanUnwashes(maxUnwashesToClean);
+            }
+
             if (haveProductsOnShefsFlag == false)
             {
                 break;
@@ -266,6 +272,21 @@ public class UserModel
         }
 
         return new OfflineCalculationResult(soldFromShelfsProducts, soldFromWarehouseProducts, grabbedProducts, unwashesCountAdded, cleanedUnwashesAmount);
+    }
+
+    private int CleanUnwashes(int maxUnwashesToClean)
+    {
+        var result = 0;
+        var restUnwashes = Math.Min(maxUnwashesToClean, ShopModel.Unwashes.Count);
+        while (restUnwashes > 0)
+        {
+            restUnwashes--;
+            if (ShopModel.RemoveUnwash(ShopModel.Unwashes.First().Key))
+            {
+                result++;
+            }
+        }
+        return result;
     }
 
     private void CorrectRestProductsAmountsByGrabbedProducts(ProductModel[] restProductsOnShelfs, Dictionary<ProductConfig, int> grabbedProductsAmounts)

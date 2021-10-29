@@ -5,7 +5,8 @@ public struct HandleAddMoneyClickCommand
     public async UniTaskVoid Execute(bool isGold)
     {
         var gameStateModel = GameStateModel.Instance;
-        var viewModel = new BankPopupViewModel(isGold ? 0 : 1);
+        var bankConfig = BankConfig.Instance;
+        var viewModel = new BankPopupViewModel(isGold ? 0 : 1, bankConfig);
         gameStateModel.ShowPopup(viewModel);
 
         AnalyticsManager.Instance.SendStoreOpened(isGold);

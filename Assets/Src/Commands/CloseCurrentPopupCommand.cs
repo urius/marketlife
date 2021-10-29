@@ -18,7 +18,7 @@ public struct CloseCurrentPopupCommand
             gameStateModel.RemoveCurrentPopupIfNeeded();
 
             var isAdsViewed = advertViewStateModel.IsRewardCharged;
-            var cashAmountToAdd = offlineReport.SellProfit + (isAdsViewed ? advertViewStateModel.ChargedReward.Value : 0);
+            var cashAmountToAdd = offlineReport.SellProfit + (isAdsViewed ? advertViewStateModel.Reward.Value : 0);
 
             warehouseModel.RemoveDeliveredProducts(offlineReport.SoldFromWarehouse, gameStateModel.ServerTime);
             userShopModel.RemoveProducts(offlineReport.SoldFromShelfs);

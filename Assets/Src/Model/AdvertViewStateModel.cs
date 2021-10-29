@@ -4,23 +4,38 @@ public class AdvertViewStateModel
 {
     public static readonly AdvertViewStateModel Instance = new AdvertViewStateModel();
 
-    public event Action RewardCharged = delegate { };
-    public event Action RewardChargeReset = delegate { };
+    public event Action RewardStateChanged = delegate { };
+    public event Action RewardStateReset = delegate { };
 
-    public bool IsRewardCharged { get; private set; } = false;
-    public Price ChargedReward { get; private set; }
+    public bool IsRewardCharged => RewardState == AdvertRewardState.Charged;
 
-    public void ChargeReward(Price reward)
+    public Price Reward { get; private set; }
+    public AdvertRewardState RewardState { get; private set; }
+
+    public void PrepareReward(Price reward)
     {
-        ChargedReward = reward;
-        IsRewardCharged = true;
-        RewardCharged();
+        Reward = reward;
+        RewardState = AdvertRewardState.Prepared;
+        RewardStateChanged();
+    }
+
+    public void ChargeReward()
+    {
+        RewardState = AdvertRewardState.Charged;
+        RewardStateChanged();
     }
 
     public void ResetChargedReward()
     {
-        ChargedReward = new Price();
-        IsRewardCharged = false;
-        RewardChargeReset();
+        Reward = new Price();
+        RewardState = AdvertRewardState.Default;
+        RewardStateReset();
     }
+}
+
+public enum AdvertRewardState
+{
+    Default,
+    Prepared,
+    Charged,
 }

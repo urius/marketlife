@@ -6,18 +6,32 @@ public struct ProcessShowAdsResultCommand
     {
         var gameStateModel = GameStateModel.Instance;
         var advertViewStateModel = AdvertViewStateModel.Instance;
+        var playerModel = PlayerModelHolder.Instance.UserModel;
 
         var deserialized = JsonConvert.DeserializeObject<JsShowAdsResultCommandDto>(message);
         if (deserialized.data.is_success == true
             && gameStateModel.ShowingPopupModel != null)
         {
+            advertViewStateModel.ChargeReward();
             switch (gameStateModel.ShowingPopupModel.PopupType)
             {
-                case PopupType.OfflineReport:
-                    var offlineReportPopupViewModel = gameStateModel.ShowingPopupModel as OfflineReportPopupViewModel;
-                    advertViewStateModel.ChargeReward(new Price(offlineReportPopupViewModel.TotalProfitFromSell, isGold: false));
+                case PopupType.Bank:
+                    if (advertViewStateModel.Reward.IsGold)
+                    {
+                        playerModel.AddGold(advertViewStateModel.Reward.Value);
+                    }
+                    else
+                    {
+                        playerModel.AddCash(advertViewStateModel.Reward.Value);
+                    }
+                    advertViewStateModel.ResetChargedReward();
+                    gameStateModel.RemoveCurrentPopupIfNeeded();
                     break;
             }
+        }
+        else
+        {
+            advertViewStateModel.ResetChargedReward();
         }
     }
 }

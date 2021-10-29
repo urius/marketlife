@@ -107,6 +107,7 @@ public class GameStateModel
     {
         if (ShowingPopupModel != null)
         {
+            ShowingPopupModel.Dispose();
             _showingPopupModelsStack.Pop();
             UpdatePausedState();
             PopupRemoved();

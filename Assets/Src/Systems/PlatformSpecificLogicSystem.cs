@@ -54,7 +54,9 @@ public class VKLogicModule : PlatformSpecificLogicModuleBase
     private readonly PlayerModelHolder _playerModelHolder;
     private readonly JsBridge _jsBridge;
     private readonly Dispatcher _dispatcher;
-    private readonly ScreenCalculator _scrennCalculator;
+    private readonly ScreenCalculator _screenCalculator;
+    private readonly AdvertViewStateModel _advertViewStateModel;
+
     //
     private WallPostContext _wallPostContext;
     private UserModel _playerModel;
@@ -65,7 +67,8 @@ public class VKLogicModule : PlatformSpecificLogicModuleBase
         _playerModelHolder = PlayerModelHolder.Instance;
         _jsBridge = JsBridge.Instance;
         _dispatcher = Dispatcher.Instance;
-        _scrennCalculator = ScreenCalculator.Instance;
+        _screenCalculator = ScreenCalculator.Instance;
+        _advertViewStateModel = AdvertViewStateModel.Instance;
     }
 
     public override async void Start()
@@ -85,6 +88,7 @@ public class VKLogicModule : PlatformSpecificLogicModuleBase
         _dispatcher.UILevelUpShareClicked += OnUILevelUpShareClicked;
         _dispatcher.UIOfflineReportShareClicked += OnUIOfflineReportShareClicked;
         _dispatcher.UIViewAdsClicked += OnUIViewAdsClicked;
+        _dispatcher.UIBankAdsItemClicked += OnUIBankAdsItemClicked;
     }
 
     private void ActivateAfterLoad()
@@ -117,6 +121,20 @@ public class VKLogicModule : PlatformSpecificLogicModuleBase
     {
         var popupType = _gameStateModel.ShowingPopupModel?.PopupType ?? PopupType.Unknown;
         AnalyticsManager.Instance.SendCustom(AnalyticsManager.EventAdsViewClick, ("popup_type", popupType.ToString()));
+        switch (popupType)
+        {
+            case PopupType.OfflineReport:
+                var offlineReportPopupViewModel = _gameStateModel.ShowingPopupModel as OfflineReportPopupViewModel;
+                _advertViewStateModel.PrepareReward(new Price(offlineReportPopupViewModel.TotalProfitFromSell, isGold: false));
+                break;
+        }
+        _jsBridge.SendCommandToJs("ShowAds", null);
+    }
+
+    private void OnUIBankAdsItemClicked(Price reward)
+    {
+        _advertViewStateModel.PrepareReward(reward);
+        AnalyticsManager.Instance.SendCustom(AnalyticsManager.EventBankAdsViewClick, ("is_gold", reward.IsGold));
         _jsBridge.SendCommandToJs("ShowAds", null);
     }
 
@@ -125,7 +143,7 @@ public class VKLogicModule : PlatformSpecificLogicModuleBase
         _dispatcher.UIShareSuccessCallback();
         if (_wallPostContext != null)
         {
-            var screenPoint = _scrennCalculator.WorldToScreenPoint(_wallPostContext.ShareButtonWorldPosition);
+            var screenPoint = _screenCalculator.WorldToScreenPoint(_wallPostContext.ShareButtonWorldPosition);
             _dispatcher.UIRequestAddGoldFlyAnimation(screenPoint, _wallPostContext.rewardAmountGold);
             _playerModel.AddGold(_wallPostContext.rewardAmountGold);
             _wallPostContext = null;

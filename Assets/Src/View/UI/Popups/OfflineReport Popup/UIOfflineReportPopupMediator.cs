@@ -73,7 +73,7 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
         _popupView.TabButtonClicked += OnTabButtonClicked;
         _popupView.ShareClicked += OnShareClicked;
         _popupView.AdsClicked += OnAdsClicked;
-        _advertViewStateModel.RewardCharged += OnAdsRewardCharged;
+        _advertViewStateModel.RewardStateChanged += OnAdsRewardCharged;
     }
 
     private void Deactivate()
@@ -83,12 +83,15 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
         _popupView.TabButtonClicked -= OnTabButtonClicked;
         _popupView.ShareClicked -= OnShareClicked;
         _popupView.AdsClicked -= OnAdsClicked;
-        _advertViewStateModel.RewardCharged -= OnAdsRewardCharged;
+        _advertViewStateModel.RewardStateChanged -= OnAdsRewardCharged;
     }
 
     private void OnAdsRewardCharged()
     {
-        RefreshTab();
+        if (_advertViewStateModel.IsRewardCharged)
+        {
+            RefreshTab();
+        }
     }
 
     private void OnUIShareSuccessCallback()
@@ -152,7 +155,7 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
         var bonusReward = 0;
         if (_advertViewStateModel.IsRewardCharged)
         {
-            bonusReward = _advertViewStateModel.ChargedReward.Value;
+            bonusReward = _advertViewStateModel.Reward.Value;
             PutNextOverallItem(_loc.GetLocalization(LocalizationKeys.PopupOfflineReportProfitTabBonus), $"+{FormattingHelper.ToCommaSeparatedNumber(bonusReward)}$");
         }
 

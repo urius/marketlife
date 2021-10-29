@@ -58,6 +58,7 @@ public class Dispatcher
     public Action<UpgradesPopupItemViewModelBase> UIUpgradePopupBuyClicked = delegate { };
     public Action TutorialActionPerformed = delegate { };
     public Action<BankConfigItem> UIBankItemClicked = delegate { };
+    public Action<Price> UIBankAdsItemClicked = delegate { };    
     public Action UIGetBonusButtonClicked = delegate { };
     public Action<Vector3> UICompensationPopupTakeClicked = delegate { };
     public Action<Vector3[]> UIDailyBonusTakeClicked = delegate { };

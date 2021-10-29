@@ -24,7 +24,7 @@ public class GameConfigManager : ScriptableObject
 
     public async UniTask<bool> LoadConfigAsync()
     {
-        var getConfigOperation = await new WebRequestsSender().GetAsync(_mainConfigUrl);
+        var getConfigOperation = await new WebRequestsSender().GetAsync(URLHelper.AddAntiCachePostfix(_mainConfigUrl));
         if (getConfigOperation.IsSuccess)
         {
             var mainConfigDto = JsonConvert.DeserializeObject<MainConfigDto>(getConfigOperation.Result);

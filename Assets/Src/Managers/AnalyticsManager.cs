@@ -24,6 +24,7 @@ public class AnalyticsManager
     public static string EventNameExpandWarehouseClick = "expand_warehouse_click";
     public static string EventNameManageClick = "expand_manage_click";
     public static string EventAutoPlaceClick = "auto_place_click";
+    public static string EventAdsViewClick = "auto_ads_click";
 
     private Dictionary<string, object> _metaParams = new Dictionary<string, object>();
 

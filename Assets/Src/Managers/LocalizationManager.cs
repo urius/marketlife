@@ -25,7 +25,7 @@ public class LocalizationManager : ScriptableObject
                 break;
         }
 
-        var getLocaleOperation = await new WebRequestsSender().GetAsync(localizationUrl);
+        var getLocaleOperation = await new WebRequestsSender().GetAsync(URLHelper.AddAntiCachePostfix(localizationUrl));
         if (getLocaleOperation.IsSuccess)
         {
             CurrentLocalization = JsonConvert.DeserializeObject<Dictionary<string, string>>(getLocaleOperation.Result);
@@ -130,7 +130,7 @@ public class LocalizationKeys
     public static string CommonPersonalNamePrefix = "common_personal_name_";
     public static string CommonContinue = "common_continue";
     public static string CommonShare = "common_share";
-    public static string CommonInvite = "common_invite";    
+    public static string CommonInvite = "common_invite";
     public static string CommonUpgradeNameFormat = "common_upgrade_name_format_";
     public static string CommonPayCurrencyNamePlural = "common_pay_currency_plural_";
     public static string HintTopPanelExpFomat = "hint_top_panel_exp_format";
@@ -163,6 +163,7 @@ public class LocalizationKeys
     public static string PopupOfflineReportPersonalTab = "popup_offline_report_personal_tab_name";
     public static string PopupOfflineReportActivityTab = "popup_offline_report_activity_tab_name";
     public static string PopupOfflineReportProfitTabOverallProfit = "popup_offline_report_profit_tab_overall_profit";
+    public static string PopupOfflineReportProfitTabBonus = "popup_offline_report_profit_tab_bonus";
     public static string PopupLevelUpTitle = "popup_levelup_title";
     public static string PopupLevelUpMessage = "popup_levelup_message";
     public static string PopupLevelUpNewElements = "popup_levelup_new_elements";

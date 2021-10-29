@@ -84,6 +84,7 @@ public class VKLogicModule : PlatformSpecificLogicModuleBase
         _dispatcher.UIBottomPanelInviteFriendsClicked += OnUIBottomPanelInviteFriendsClicked;
         _dispatcher.UILevelUpShareClicked += OnUILevelUpShareClicked;
         _dispatcher.UIOfflineReportShareClicked += OnUIOfflineReportShareClicked;
+        _dispatcher.UIViewAdsClicked += OnUIViewAdsClicked;
     }
 
     private void ActivateAfterLoad()
@@ -106,7 +107,17 @@ public class VKLogicModule : PlatformSpecificLogicModuleBase
             case "VkWallPostSuccess":
                 ProcessWallPostSuccess();
                 break;
+            case "ShowAdsResult":
+                new ProcessShowAdsResultCommand().Execute(message);
+                break;
         }
+    }
+
+    private void OnUIViewAdsClicked()
+    {
+        var popupType = _gameStateModel.ShowingPopupModel?.PopupType ?? PopupType.Unknown;
+        AnalyticsManager.Instance.SendCustom(AnalyticsManager.EventAdsViewClick, ("popup_type", popupType.ToString()));
+        _jsBridge.SendCommandToJs("ShowAds", null);
     }
 
     private void ProcessWallPostSuccess()

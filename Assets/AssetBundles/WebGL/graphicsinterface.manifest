@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1696306878
+CRC: 3983612838
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 9260208d1ab15652b6461a932e4f27b1
+    Hash: fb4d3e1facb4d27fe906f4ed284ed5b5
   TypeTreeHash:
     serializedVersion: 2
     Hash: ba23c2e8f8b3f5319028008a25497317
@@ -36,6 +36,7 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_long_blue.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/unwashes_icon_2.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/icon_giftbox_red.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/Icon_Video.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/Icon_next1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Water_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Cream_1.png
@@ -89,14 +90,15 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/TopPanel/skin_top_stribe_green.png
 - Assets/External Resources/InterfaceGraphicsBundle/Popups/content_item_skin_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/sign_rotate_left.png
-- Assets/External Resources/InterfaceGraphicsBundle/Popups/UpgradesPopup/sign_upgrade_wh_slot.png
-- Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall6.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Sausage_1.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/Icon_ads.png
+- Assets/External Resources/InterfaceGraphicsBundle/Popups/UpgradesPopup/sign_upgrade_wh_slot.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/white_circle_200.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Candy_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/sign_4arrows.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/Icon_Up3.png
 - Assets/External Resources/InterfaceGraphicsBundle/Popups/UpgradesPopup/sign_expand_shop_y.png
+- Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall6.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall2.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/square_88_white.png
 - Assets/External Resources/InterfaceGraphicsBundle/Popups/UpgradesPopup/icon_personal_1.png

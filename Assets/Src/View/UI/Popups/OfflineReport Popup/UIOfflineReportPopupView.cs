@@ -6,7 +6,9 @@ using UnityEngine.UI;
 public class UIOfflineReportPopupView : UITabbedContentPopupView
 {
     public event Action ShareClicked = delegate { };
+    public event Action AdsClicked = delegate { };    
 
+    [SerializeField] private Button _adsButton;
     [SerializeField] private Button _shareButton;
     [SerializeField] private TMP_Text _shareButtonText;
     [SerializeField] private TMP_Text _shareRevenueAmountText;
@@ -18,6 +20,7 @@ public class UIOfflineReportPopupView : UITabbedContentPopupView
         base.Awake();
 
         _shareButton.AddOnClickListener(OnShareClicked);
+        _adsButton.AddOnClickListener(OnAdsClicked);
     }
 
     public void SetShareButtonText(string text)
@@ -35,8 +38,23 @@ public class UIOfflineReportPopupView : UITabbedContentPopupView
         _shareButton.interactable = interactable;
     }
 
+    public void SetAdsButtonInteractable(bool interactable)
+    {
+        _adsButton.interactable = interactable;
+    }
+
+    public void SetAdsButtonVisibility(bool isVisible)
+    {
+        _adsButton.gameObject.SetActive(isVisible);
+    }
+
     private void OnShareClicked()
     {
         ShareClicked();
+    }
+
+    private void OnAdsClicked()
+    {
+        AdsClicked();
     }
 }

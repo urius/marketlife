@@ -11,7 +11,7 @@ public struct LoadBankConfigCommand
         var getBankURL = URLsHolder.Instance.GetBankDataURL(playerModelHolder.SocialType);
         var bankConfig = BankConfig.Instance;
 
-        var getConfigOperation = await new WebRequestsSender().GetAsync(getBankURL);
+        var getConfigOperation = await new WebRequestsSender().GetAsync(URLHelper.AddAntiCachePostfix(getBankURL));
         if (getConfigOperation.IsSuccess)
         {
             var bankConfigDto = JsonConvert.DeserializeObject<Dictionary<string, BankItemValueDto>>(getConfigOperation.Result);

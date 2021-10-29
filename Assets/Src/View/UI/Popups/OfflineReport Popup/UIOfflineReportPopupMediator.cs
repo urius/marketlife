@@ -11,9 +11,12 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
     private readonly SpritesProvider _spritesProvider;
     private readonly Dispatcher _dispatcher;
     private readonly MainConfig _config;
+    private readonly AdvertViewStateModel _advertViewStateModel;
+
     //
     private UIOfflineReportPopupView _popupView;
     private OfflineReportPopupViewModel _viewModel;
+    private int _currentTabIndex;
 
     protected override UIContentPopupView PopupView => _popupView;
 
@@ -27,6 +30,7 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
         _spritesProvider = SpritesProvider.Instance;
         _dispatcher = Dispatcher.Instance;
         _config = GameConfigManager.Instance.MainConfig;
+        _advertViewStateModel = AdvertViewStateModel.Instance;
     }
 
     public override async void Mediate()
@@ -43,6 +47,7 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
         _popupView.SetupTabButtons(_viewModel.Tabs.Select(ToTabName).ToArray());
         _popupView.SetShareButtonText(_loc.GetLocalization(LocalizationKeys.CommonShare));
         _popupView.SetShareRevenueButtonText($"+{_config.ShareOfflineReportRewardGold}");
+        _popupView.SetAdsButtonVisibility(_viewModel.TotalProfitFromSell > 0);
         ShowTab(0);
 
         await _popupView.Appear2Async();
@@ -67,6 +72,8 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
         _popupView.ButtonCloseClicked += OnCloseClicked;
         _popupView.TabButtonClicked += OnTabButtonClicked;
         _popupView.ShareClicked += OnShareClicked;
+        _popupView.AdsClicked += OnAdsClicked;
+        _advertViewStateModel.RewardCharged += OnAdsRewardCharged;
     }
 
     private void Deactivate()
@@ -75,6 +82,13 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
         _popupView.ButtonCloseClicked -= OnCloseClicked;
         _popupView.TabButtonClicked -= OnTabButtonClicked;
         _popupView.ShareClicked -= OnShareClicked;
+        _popupView.AdsClicked -= OnAdsClicked;
+        _advertViewStateModel.RewardCharged -= OnAdsRewardCharged;
+    }
+
+    private void OnAdsRewardCharged()
+    {
+        RefreshTab();
     }
 
     private void OnUIShareSuccessCallback()
@@ -85,6 +99,12 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
     private void OnShareClicked()
     {
         _dispatcher.UIOfflineReportShareClicked(_popupView.ShareButtonTransform.position);
+    }
+
+    private void OnAdsClicked()
+    {
+        _popupView.SetAdsButtonInteractable(false);
+        _dispatcher.UIViewAdsClicked();
     }
 
     private void OnTabButtonClicked(int tabIndex)
@@ -99,6 +119,7 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
 
     private void ShowTab(int tabIndex)
     {
+        _currentTabIndex = tabIndex;
         ClearDisplayedItems();
 
         _popupView.SetTabButtonSelected(tabIndex);
@@ -116,6 +137,11 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
         }
     }
 
+    private void RefreshTab()
+    {
+        ShowTab(_currentTabIndex);
+    }
+
     private void ShowProfitTab()
     {
         foreach (var itemViewMdoel in _viewModel.SoldProducts)
@@ -123,7 +149,14 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
             PutNextReportItem(_spritesProvider.GetProductIcon(itemViewMdoel.ProductKey), $"x{FormattingHelper.ToCommaSeparatedNumber(itemViewMdoel.Amount)}", $"+{FormattingHelper.ToCommaSeparatedNumber(itemViewMdoel.Profit)}$");
         }
 
-        PutNextOverallItem(_loc.GetLocalization(LocalizationKeys.PopupOfflineReportProfitTabOverallProfit), $"{FormattingHelper.ToCommaSeparatedNumber(_viewModel.TotalProfitFromSell)}$");
+        var bonusReward = 0;
+        if (_advertViewStateModel.IsRewardCharged)
+        {
+            bonusReward = _advertViewStateModel.ChargedReward.Value;
+            PutNextOverallItem(_loc.GetLocalization(LocalizationKeys.PopupOfflineReportProfitTabBonus), $"+{FormattingHelper.ToCommaSeparatedNumber(bonusReward)}$");
+        }
+
+        PutNextOverallItem(_loc.GetLocalization(LocalizationKeys.PopupOfflineReportProfitTabOverallProfit), $"{FormattingHelper.ToCommaSeparatedNumber(bonusReward + _viewModel.TotalProfitFromSell)}$");
     }
 
     private void ShowPersonalTab()

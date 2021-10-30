@@ -13,7 +13,7 @@ public class UIRootCanvasMediator : MonoBehaviour
     [SerializeField] private Canvas _tutorialCanvas;
     [SerializeField] private Canvas _poolCanvas;
 
-    private const int ClickPositionSensitivity = 30;
+    private const int ClickPositionSensitivity = 300;
     private const int ClickFramesSensitivity = 30;
 
     private Dispatcher _dispatcher;

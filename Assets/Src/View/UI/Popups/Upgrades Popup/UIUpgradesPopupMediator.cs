@@ -222,7 +222,9 @@ public class UIUpgradesPopupMediator : IMediator
             itemView.SetupState(isUnlocked: true, isWorking);
             UpdatePersonalItemState(itemView, restWorkTimeSec);
             itemView.SetIconSprite(_spritesProvider.GetPersonalIcon(personalConfig.Key));
-            itemView.SetTitleText(_loc.GetLocalization($"{LocalizationKeys.CommonPersonalNamePrefix}{personalConfig.TypeIdStr}"));
+            var hoursStr = string.Format(_loc.GetLocalization(LocalizationKeys.CommonHoursShortFormat), personalConfig.WorkHours);
+            var personalNameStr = _loc.GetLocalization($"{LocalizationKeys.CommonPersonalNamePrefix}{personalConfig.TypeIdStr}");
+            itemView.SetTitleText($"{personalNameStr} ({hoursStr})");
             itemView.SetDescriptionText(_loc.GetLocalization($"{LocalizationKeys.PopupUpgradesPersonalDescriptionPrefix}{personalConfig.TypeIdStr}"));
             itemView.SetPrice(personalConfig.Price.IsGold, personalConfig.Price.Value);
         }

@@ -38,7 +38,6 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
         _viewModel = _gameStateModel.ShowingPopupModel as OfflineReportPopupViewModel;
         var popupGo = GameObject.Instantiate(_prefabsHolder.UIOfflineReportPopupPrefab, _parentTransform);
         _popupView = popupGo.GetComponent<UIOfflineReportPopupView>();
-        _popupView.SetSize(670, 730);
 
         var titleTimePassedStr = _viewModel.ReportModel.HoursPassed >= 1
             ? string.Format(_loc.GetLocalization(LocalizationKeys.CommonHoursShortFormat), (int)_viewModel.ReportModel.HoursPassed)

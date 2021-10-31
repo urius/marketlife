@@ -145,25 +145,27 @@ public class ShelfViewMediator : ShopObjectMediatorBase
         if (_gameStateModel.GameState == GameStateName.ShopSimulation)
         {
             var totalFullness = 0f;
+            var haveEmptySlots = false;
             for (var i = 0; i < _shelfModel.Slots.Length; i++)
             {
-                totalFullness += _shelfModel.GetFullnessOnFloor(i);
+                var fullnessOnFloor = _shelfModel.GetFullnessOnFloor(i);
+                totalFullness += fullnessOnFloor;
+                if (fullnessOnFloor <= 0) haveEmptySlots = true;
             }
             var totalFullnessFactor = totalFullness / _shelfModel.Slots.Length;
 
-            _fullnessIndicatorView.gameObject.SetActive(totalFullnessFactor <= 0.8f);
-            if (totalFullnessFactor > 0.4f)
+            var needToShowFullnessIndicator = false;
+            if (totalFullnessFactor <= 0)
             {
-                _fullnessIndicatorView.color = _fullnessIndicatorView.color.SetRGBFromColor(Color.yellow);
-            }
-            else if (totalFullnessFactor > 0)
-            {
-                _fullnessIndicatorView.color = _fullnessIndicatorView.color.SetRGBFromColor(Color.magenta);
-            }
-            else
-            {
+                needToShowFullnessIndicator = true;
                 _fullnessIndicatorView.color = _fullnessIndicatorView.color.SetRGBFromColor(Color.red);
             }
+            else if (haveEmptySlots == true)
+            {
+                needToShowFullnessIndicator = true;
+                _fullnessIndicatorView.color = _fullnessIndicatorView.color.SetRGBFromColor(Color.magenta);
+            }
+            _fullnessIndicatorView.gameObject.SetActive(needToShowFullnessIndicator);
         }
         else
         {

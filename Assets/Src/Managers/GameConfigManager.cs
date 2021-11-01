@@ -17,7 +17,7 @@ public class GameConfigManager : ScriptableObject
     public IWallsConfig WallsConfig => MainConfig;
     public IWindowsConfig WindowsConfig => MainConfig;
     public IDoorsConfig DoorsConfig => MainConfig;
-    public IPersonalConfig PersonalConfig => MainConfig;
+    public IPersonalsConfig PersonalsConfig => MainConfig;
     public IUpgradesConfig UpgradesConfig => MainConfig;
     public ILevelsConfig LevelsConfig => MainConfig;
     public IDailyBonusConfig DailyBonusConfig => MainConfig;
@@ -46,7 +46,7 @@ public class GameConfigManager : ScriptableObject
         var personalConfig = ToPersonalConfigs(mainConfigDto.PersonalConfig);
         var levelsConfig = ToLevelsConfig(mainConfigDto.LevelsConfig);
         var dailyBonusConfig = ToDailyBonusConfig(mainConfigDto.DailyBonusConfig);
-
+        
         return new MainConfig(
             mainConfigDto,
             productsConfig,
@@ -142,7 +142,16 @@ public class GameConfigManager : ScriptableObject
         var result = new Dictionary<string, PersonalConfig>();
         foreach (var kvp in configsDtosDictionary)
         {
-            result[kvp.Key] = new PersonalConfig(kvp.Key, kvp.Value);
+            var personalType = PersonalConfig.GetPersonalTypeByIdStr(kvp.Key);
+            switch(personalType)
+            {
+                case PersonalType.Merchandiser:
+                    result[kvp.Key] = new MerchandiserPersonalConfig(kvp.Key, kvp.Value);
+                    break;
+                default:
+                    result[kvp.Key] = new PersonalConfig(kvp.Key, kvp.Value);
+                    break;
+            }
         }
 
         return result;

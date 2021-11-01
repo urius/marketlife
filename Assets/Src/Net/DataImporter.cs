@@ -157,7 +157,7 @@ public class DataImporter
     private ShopPersonalModel ToPersonalModel(string[] personal)
     {
         var result = new ShopPersonalModel();
-        var personalConfig = GameConfigManager.Instance.PersonalConfig;
+        var personalConfig = GameConfigManager.Instance.PersonalsConfig;
         if (personal != null)
         {
             foreach (var personalItem in personal)

@@ -47,7 +47,7 @@ public class ShopModel
     public float MoodMultiplier => _moodMultiplier;
     public int SlotsFullnessPercent => (int)(100 * ((float)_totalUsedShelfSlots / (_totalUsedShelfSlots + _totalFreeShelfSlots)));
     public int ClarityPercent => (int)(100 * (1f - (float)Unwashes.Count / (ShopDesign.SizeX * ShopDesign.SizeY)));
-
+    
     public bool CanPlaceUnwash(Vector2Int coords)
     {
         if (Grid.TryGetValue(coords, out var gridItem))
@@ -890,11 +890,8 @@ public class ShopPersonalModel
     public event Action<PersonalConfig> PersonalWorkingTimeUpdated = delegate { };
 
     public Dictionary<PersonalConfig, int> PersonalData => _personalWorkingTimes;
-    private Dictionary<PersonalConfig, int> _personalWorkingTimes = new Dictionary<PersonalConfig, int>();
 
-    public ShopPersonalModel()
-    {
-    }
+    private Dictionary<PersonalConfig, int> _personalWorkingTimes = new Dictionary<PersonalConfig, int>();
 
     public void SetPersonalWorkingTime(PersonalConfig personalConfig, int endWorkTime)
     {
@@ -922,6 +919,18 @@ public class ShopPersonalModel
             }
         }
         return result;
+    }
+
+    public PersonalConfig GetPersonalConfigWorkingAt(PersonalType personalType, int targetTime)
+    {
+        foreach (var kvp in _personalWorkingTimes)
+        {
+            if (kvp.Key.TypeId == personalType && kvp.Value > targetTime)
+            {
+                return kvp.Key;
+            }
+        }
+        return null;
     }
 }
 

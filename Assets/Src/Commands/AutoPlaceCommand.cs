@@ -1,20 +1,35 @@
 using System;
+using System.Collections.Generic;
 
 public struct AutoPlaceCommand
 {
     public void Execute()
     {
-        var playerModel = PlayerModelHolder.Instance.UserModel;
-        var warehouseModel = playerModel.ShopModel.WarehouseModel;
-        var mainConfig = GameConfigManager.Instance.MainConfig;
-        var dispatcher = Dispatcher.Instance;
         var gameStateModel = GameStateModel.Instance;
+        var viewingShopModel = gameStateModel.ViewingShopModel;
+        var playerShopModel = PlayerModelHolder.Instance.UserModel.ShopModel;
         var audioManager = AudioManager.Instance;
         var analyticsManager = AnalyticsManager.Instance;
         var isSuccess = false;
 
-        var productsAddedCount = ForEveryShelfSlot(AddOnExisting);
-        productsAddedCount += ForEveryShelfSlot(AddOnNew);
+        var warehouseSlot = playerShopModel.WarehouseModel.Slots[gameStateModel.PlacingProductWarehouseSlotIndex];
+
+        var productsAddedCount = 0;
+        var notEmptyShelfSlots = GetFilteredShelfSlots(FilterNotEmpty);
+        foreach (var shelfSlot in notEmptyShelfSlots)
+        {
+            if (shelfSlot.Product.NumericId == warehouseSlot.Product.NumericId)
+            {
+                productsAddedCount += new PutWarehouseProductOnShelfCommand().Execute(warehouseSlot.Index, shelfSlot);
+                if (warehouseSlot.HasProduct == false) break;
+            }
+        }
+        var emptyShelfSlots = GetFilteredShelfSlots(FilterEmpty);
+        foreach (var shelfSlot in emptyShelfSlots)
+        {
+            productsAddedCount += new PutWarehouseProductOnShelfCommand().Execute(warehouseSlot.Index, shelfSlot);
+            if (warehouseSlot.HasProduct == false) break;
+        }
 
         if (productsAddedCount > 0)
         {
@@ -27,49 +42,31 @@ public struct AutoPlaceCommand
         analyticsManager.SendCustom(AnalyticsManager.EventAutoPlaceClick, ("is_success", isSuccess));
     }
 
-    private int ForEveryShelfSlot(Func<ProductSlotModel, ProductSlotModel, int> action)
+    private IEnumerable<ProductSlotModel> GetFilteredShelfSlots(Func<ProductSlotModel, bool> filterFunc)
     {
-        var addedProductsCount = 0;
         var playerModel = PlayerModelHolder.Instance.UserModel;
-        var gameStateModel = GameStateModel.Instance;
         var shopModel = playerModel.ShopModel;
-        var placingProductSlot = shopModel.WarehouseModel.Slots[gameStateModel.PlacingProductWarehouseSlotIndex];
-        if (placingProductSlot.HasProduct)
+
+        foreach (var kvp in shopModel.ShopObjects)
         {
-            foreach (var kvp in shopModel.ShopObjects)
+            if (kvp.Value.Type == ShopObjectType.Shelf)
             {
-                if (kvp.Value.Type == ShopObjectType.Shelf)
+                var shelfModel = kvp.Value as ShelfModel;
+                foreach (var shelfSlot in shelfModel.Slots)
                 {
-                    var shelfModel = kvp.Value as ShelfModel;
-                    foreach (var shelfSlot in shelfModel.Slots)
-                    {
-                        addedProductsCount += action(placingProductSlot, shelfSlot);
-                        if (placingProductSlot.HasProduct == false) break;
-                    }
+                    if (filterFunc(shelfSlot) == true) yield return shelfSlot;
                 }
             }
         }
-
-        return addedProductsCount;
     }
 
-    private int AddOnExisting(ProductSlotModel slotFrom, ProductSlotModel slotTo)
+    private bool FilterNotEmpty(ProductSlotModel slotModel)
     {
-        if (slotTo.HasProduct && slotTo.Product.NumericId == slotFrom.Product.NumericId)
-        {
-            return new PutWarehouseProductOnShelfCommand().Execute(slotFrom.Index, slotTo);
-        }
-
-        return 0;
+        return slotModel.HasProduct;
     }
 
-    private int AddOnNew(ProductSlotModel slotFrom, ProductSlotModel slotTo)
+    private bool FilterEmpty(ProductSlotModel slotModel)
     {
-        if (slotTo.HasProduct == false)
-        {
-            return new PutWarehouseProductOnShelfCommand().Execute(slotFrom.Index, slotTo);
-        }
-
-        return 0;
+        return !slotModel.HasProduct;
     }
 }

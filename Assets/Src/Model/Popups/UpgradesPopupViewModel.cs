@@ -13,13 +13,13 @@ public class UpgradesPopupViewModel : PopupViewModelBase
 
     private readonly UserModel _playerModel;
     private readonly ShopModel _shopModel;
-    private readonly IPersonalConfig _personalConfig;
+    private readonly IPersonalsConfig _personalConfig;
     private readonly IUpgradesConfig _upgradesConfig;
     private readonly List<TabType> _tabs = new List<TabType>(MaxTabsCount);
 
     public UpgradesPopupViewModel(
         UserModel playerModel,
-        IPersonalConfig personalConfig,
+        IPersonalsConfig personalConfig,
         IUpgradesConfig upgradesConfig,
         TabType showOnTab = TabType.Undefined)
     {

@@ -70,7 +70,7 @@ public struct ProcessLevelUpCommand
 
     private IReadOnlyList<PersonalConfig> GetNewPersonalConfigs(int previousLevel, int currentLevel)
     {
-        var configs = GameConfigManager.Instance.PersonalConfig;
+        var configs = GameConfigManager.Instance.PersonalsConfig;
         var configsForCurrentLevel = configs.GetPersonalConfigsForLevel(currentLevel);
         return FilterConfigsByMinLevel(configsForCurrentLevel, previousLevel + 1);
     }

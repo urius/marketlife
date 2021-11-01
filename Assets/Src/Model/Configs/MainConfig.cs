@@ -9,7 +9,7 @@ public class MainConfig :
     IWallsConfig,
     IWindowsConfig,
     IDoorsConfig,
-    IPersonalConfig,
+    IPersonalsConfig,
     IUpgradesConfig,
     ILevelsConfig,
     IDailyBonusConfig
@@ -452,7 +452,7 @@ public class PersonalConfig : IUnlockableConfig
         RawIdStr = id;
         var splitted = id.Split('_');
         TypeIdStr = splitted[0];
-        TypeId = GetPersonalTypeByString(TypeIdStr);
+        TypeId = GetPersonalTypeByIdStr(id);
         NumericId = int.Parse(splitted[1]);
         Key = dto.key;
         UnlockLevel = dto.unlock_level;
@@ -462,8 +462,9 @@ public class PersonalConfig : IUnlockableConfig
 
     public int UnlockLevel { get; private set; }
 
-    private static PersonalType GetPersonalTypeByString(string personalTypeStr)
+    public static PersonalType GetPersonalTypeByIdStr(string personalTypeIdStr)
     {
+        var personalTypeStr = personalTypeIdStr.Split('_')[0];
         return personalTypeStr switch
         {
             Constants.PersonalMerchandiserStr => PersonalType.Merchandiser,
@@ -471,6 +472,16 @@ public class PersonalConfig : IUnlockableConfig
             Constants.PersonalSecurityStr => PersonalType.Security,
             _ => PersonalType.Undefined,
         };
+    }
+}
+
+public class MerchandiserPersonalConfig : PersonalConfig
+{
+    public readonly int VolumePerHour;
+    public MerchandiserPersonalConfig(string id, PersonalConfigDto dto)
+        : base(id, dto)
+    {
+        VolumePerHour = dto.volume_per_hour;
     }
 }
 
@@ -562,7 +573,7 @@ public interface IDoorsConfig
     ItemConfig<ShopDecorationConfigDto> GetDoorConfigByNumericId(int levelId);
 }
 
-public interface IPersonalConfig
+public interface IPersonalsConfig
 {
     IEnumerable<PersonalConfig> GetPersonalConfigsForLevel(int level);
     PersonalConfig GetPersonalConfigByIds(PersonalType typeId, int numericId);

@@ -4,7 +4,7 @@ public struct UIShowManagePopupCommand
     {
         var gameStateModel = GameStateModel.Instance;
         var playerModel = PlayerModelHolder.Instance.UserModel;
-        var personalConfig = GameConfigManager.Instance.PersonalConfig;
+        var personalConfig = GameConfigManager.Instance.PersonalsConfig;
         var upgradesConfig = GameConfigManager.Instance.UpgradesConfig;
         var analyticsManager = AnalyticsManager.Instance;
 

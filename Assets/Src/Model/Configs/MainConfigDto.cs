@@ -67,6 +67,7 @@ public struct PersonalConfigDto
     public string price;
     public int unlock_level;
     public int work_hours;
+    public int volume_per_hour;
 }
 
 public struct UpgradeConfigDto

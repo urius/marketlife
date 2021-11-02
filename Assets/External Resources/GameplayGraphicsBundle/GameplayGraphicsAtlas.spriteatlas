@@ -44,8 +44,8 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 5804ef6ef86794aa6ac1d44028fafb7e, type: 3}
-    totalSpriteSurfaceArea: 859652
-    bindAsDefault: 0
+    totalSpriteSurfaceArea: 870808
+    bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
@@ -55,6 +55,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: abf5d7d0a8c894e71b64fb7a54bf715d, type: 3}
   - {fileID: 21300000, guid: bdc9ede03a860411589a7f194b22c8ec, type: 3}
   - {fileID: 21300000, guid: b4768321d7a634af9b3e41bd092bc23d, type: 3}
+  - {fileID: 21300000, guid: c8252361c91604a2fb1143507439e58b, type: 3}
   - {fileID: 21300000, guid: a83cf2810cb2549f59fe518d64108df3, type: 3}
   - {fileID: 21300000, guid: a1974581eeca34d9a9bff845f9f946e9, type: 3}
   - {fileID: 21300000, guid: bf45db9111eb34e3a8eeb9dec1e0fd42, type: 3}
@@ -78,6 +79,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 6ded7ef2939564324b5961fcee1bd3e0, type: 3}
   - {fileID: 21300000, guid: 8e13d3938e4694af892b18ad41c6d5e6, type: 3}
   - {fileID: 21300000, guid: 505e4ab35bbef49439afbfe3d6849564, type: 3}
+  - {fileID: 21300000, guid: a700eeb3f488e42b88a3561a7acc9d9f, type: 3}
   - {fileID: 21300000, guid: d2e81cc3afaf24f39b4c1b6022cd3180, type: 3}
   - {fileID: 21300000, guid: 339a03d3c08f4459f9ddff7b9857334b, type: 3}
   - {fileID: 21300000, guid: dad769d3bf3cc466eaf903869d448511, type: 3}
@@ -197,6 +199,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 8423814f4aedd4693b43224d55f30e6f, type: 3}
   - {fileID: 21300000, guid: f9bb6c4f3c9bb491eaf933fa38d1fc17, type: 3}
   - {fileID: 21300000, guid: 8a27377fb59604de2996a3a02cc2d903, type: 3}
+  - {fileID: 21300000, guid: 787b568f235fa46aa8190fed362e9881, type: 3}
   - {fileID: 21300000, guid: 0f4a73aff517a48979a94bd6a708617a, type: 3}
   - {fileID: 21300000, guid: 2f8cafaf516e446d5ab5538d97be7f98, type: 3}
   - {fileID: 21300000, guid: 5286bfaf4394d48618551a1bd2b51356, type: 3}
@@ -211,6 +214,7 @@ SpriteAtlas:
   - FloorGrass2
   - FootClothes2
   - Mouth6
+  - BillboardStick
   - Hair5
   - EyePupilBase
   - Hair2_Profile
@@ -234,6 +238,7 @@ SpriteAtlas:
   - Mouth9
   - Clothes1_Profile
   - HandClothes5
+  - BillboardSquare
   - Wall3
   - Hair7_Profile
   - FootClothes3_Profile
@@ -353,6 +358,7 @@ SpriteAtlas:
   - FootClothes5_Profile
   - FootClothes7_Profile
   - HandClothes6
+  - BillboardBaseSquare
   - Banana
   - Clothes5_Profile
   - Cake

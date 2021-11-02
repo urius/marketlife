@@ -82,6 +82,11 @@ public struct SaveDataCommand
             result[Constants.FieldSettings] = dataExporter.ExportSettings(userModel.UserSettingsModel);
         }
 
+        if (CheckSaveField(saveFields, SaveField.Billboard))
+        {
+            result[Constants.FieldBillboard] = dataExporter.ExportBillboardState(shopModel.BillboardModel);
+        }
+
         return result;
     }
 

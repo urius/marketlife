@@ -19,6 +19,15 @@ public class DataExporter
         };
     }
 
+    public UserBillboardStateDto ExportBillboardState(ShopBillboardModel billboardModel)
+    {
+        return new UserBillboardStateDto()
+        {
+            is_available = billboardModel.IsAvailable,
+            text_64 = Base64Helper.Base64Encode(billboardModel.Text),
+        };
+    }
+
     public UserGameSettingsDto ExportSettings(UserSettingsModel settingsModel)
     {
         return new UserGameSettingsDto()

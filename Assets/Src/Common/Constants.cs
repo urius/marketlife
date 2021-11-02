@@ -17,6 +17,7 @@ public class Constants
     public const string FieldAvailableActionsData = "actions_data";    
     public const string FieldBonus = "bonus";
     public const string FieldSettings = "settings";
+    public const string FieldBillboard = "billboard";
     public const string FieldExternalActions = "actions";
 
     public const string LevelsMultiplier = "multiplier";    

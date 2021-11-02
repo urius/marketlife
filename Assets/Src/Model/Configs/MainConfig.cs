@@ -23,6 +23,7 @@ public class MainConfig :
     public readonly int ActionDefaultCooldownMinutes;
     public readonly int ActionResetCooldownPrice;
     public readonly int ShareOfflineReportRewardGold = 1;
+    public readonly int BillboardUnlockLevel;
 
     public readonly Dictionary<string, ProductConfig> ProductsConfig;
     public readonly Dictionary<string, ItemConfig<ShelfConfigDto>> ShelfsConfig;
@@ -65,6 +66,7 @@ public class MainConfig :
         ActionDefaultAmount = dto.ActionDefaultAmount;
         ActionDefaultCooldownMinutes = dto.ActionDefaultCooldownMinutes;
         ActionResetCooldownPrice = dto.ActionResetCooldownPrice;
+        BillboardUnlockLevel = dto.BillboardUnlockLevel;
         ProductsConfig = productsConfig;
         ShelfsConfig = shelfsConfig;
         ShopObjectsConfig = shopObjectsConfig;

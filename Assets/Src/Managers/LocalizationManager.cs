@@ -100,7 +100,8 @@ public struct BuiltinLocalizationItem
 }
 
 public class LocalizationKeys
-{
+{    
+    public static string BillboardDefaultText = "billboard_default_text";
     public static string HintBottomPanelVisitFriend = "hint_bottom_panel_visit_friend";
     public static string HintBottomPanelInviteFriends = "hint_bottom_panel_invite_friends";
     public static string HintBottomPanelShelfDescription = "hint_bottom_panel_shelf_description";

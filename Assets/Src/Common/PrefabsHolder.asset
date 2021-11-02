@@ -31,6 +31,8 @@ MonoBehaviour:
     type: 3}
   SimpleObjectPrefab: {fileID: 6576891290403185464, guid: f3d74fafec01f45ba842fa5430b194ae,
     type: 3}
+  BillboardPrefab: {fileID: 6630295845615234644, guid: 290df05e1018f4bd3a2b9d47883089fa,
+    type: 3}
   CashDesk1Prefab: {fileID: 6641321208875300283, guid: 92a4f788eb6fa43d197e37dc5340d867,
     type: 3}
   Shelf1Prefab: {fileID: 6576891290403185464, guid: 99e1b847d070246e3b6e094476c38d0f,

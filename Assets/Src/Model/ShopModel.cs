@@ -14,6 +14,7 @@ public class ShopModel
     public readonly ShopPersonalModel PersonalModel;
     public readonly ShopWarehouseModel WarehouseModel;
     public readonly ShoDesignModel ShopDesign;
+    public readonly ShopBillboardModel BillboardModel;
     public readonly Dictionary<Vector2Int, ShopObjectModelBase> ShopObjects;
     public readonly Dictionary<Vector2Int, int> Unwashes;
     public readonly Dictionary<Vector2Int, (int buildState, ShopObjectModelBase reference)> Grid;
@@ -27,7 +28,8 @@ public class ShopModel
         Dictionary<Vector2Int, ShopObjectModelBase> shopObjects,
         Dictionary<Vector2Int, int> unwashes,
         ShopPersonalModel personalModel,
-        ShopWarehouseModel warehouseModel)
+        ShopWarehouseModel warehouseModel,
+        ShopBillboardModel billboardModel)
     {
         Grid = new Dictionary<Vector2Int, (int buildState, ShopObjectModelBase reference)>();
 
@@ -36,6 +38,7 @@ public class ShopModel
         Unwashes = unwashes;
         PersonalModel = personalModel;
         WarehouseModel = warehouseModel;
+        BillboardModel = billboardModel;
 
         RecalculateMood();
 
@@ -47,7 +50,7 @@ public class ShopModel
     public float MoodMultiplier => _moodMultiplier;
     public int SlotsFullnessPercent => (int)(100 * ((float)_totalUsedShelfSlots / (_totalUsedShelfSlots + _totalFreeShelfSlots)));
     public int ClarityPercent => (int)(100 * (1f - (float)Unwashes.Count / (ShopDesign.SizeX * ShopDesign.SizeY)));
-    
+
     public bool CanPlaceUnwash(Vector2Int coords)
     {
         if (Grid.TryGetValue(coords, out var gridItem))
@@ -931,6 +934,38 @@ public class ShopPersonalModel
             }
         }
         return null;
+    }
+}
+
+public class ShopBillboardModel
+{
+    public event Action AvailabilityChanged = delegate { };
+    public event Action TextChanged = delegate { };
+
+    public ShopBillboardModel()
+        : this(false, string.Empty)
+    {
+    }
+
+    public ShopBillboardModel(bool isAvailable, string text)
+    {
+        IsAvailable = isAvailable;
+        Text = text;
+    }
+
+    public bool IsAvailable { get; private set; }
+    public string Text { get; private set; }
+
+    public void SetAvailable(bool isAvailable)
+    {
+        IsAvailable = isAvailable;
+        AvailabilityChanged();
+    }
+
+    public void SetText(string text)
+    {
+        Text = text;
+        TextChanged();
     }
 }
 

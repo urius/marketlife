@@ -10,7 +10,8 @@ public class MainConfigDto
     public int ActionDefaultAmount;
     public int ActionDefaultCooldownMinutes;
     public int ActionResetCooldownPrice;
-    
+    public int BillboardUnlockLevel;
+
     public Dictionary<string, ShelfConfigDto> ShelfsConfig;
     public Dictionary<string, ShopObjectConfigDto> ShopObjectsConfig;
     public Dictionary<string, ShopDecorationConfigDto> FloorsConfig;

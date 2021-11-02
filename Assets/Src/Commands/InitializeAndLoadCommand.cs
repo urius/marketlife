@@ -16,6 +16,7 @@ public struct InitializeAndLoadCommand
             (LoadGamePhase.LoadConfigs, new LoadConfigsCommand()),
             (LoadGamePhase.LoadAssets, new LoadAssetsCommand()),
             (LoadGamePhase.LoadShopData, new LoadPlayerShopCommand()),
+            (LoadGamePhase.ActualizeData, new ActualizePlayerDataCommand()),
             (LoadGamePhase.LoadCompensationData, new LoadCompensationDataCommand()),
         };
         loadGameProgressModel.SetupPartsCount(phasesData.Length);

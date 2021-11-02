@@ -12,14 +12,15 @@ public class ShopObjectsMediator : MonoBehaviour
     private SpritesProvider _spritesProvider;
 
     //
+    private readonly Vector2Int _billboardCoords = new Vector2Int(2, -4);
     private readonly Dictionary<Vector2Int, ShopObjectMediatorBase> _shopObjectMediators = new Dictionary<Vector2Int, ShopObjectMediatorBase>();
     private readonly List<SpriteRenderer> _treesList = new List<SpriteRenderer>(MaxTreesAmount);
+    private readonly List<GameObject> _debugSquaresList = new List<GameObject>();//debug
 
     private PlacingShopObjectMediator _currentPlacingShopObjectMediator;
+    private BillboardMediator _billboardMediator;
     private ShopModel _currentShopModel;
     private System.Random _random;
-
-    private readonly List<GameObject> _debugSquaresList = new List<GameObject>();
 
     private void Awake()
     {
@@ -27,6 +28,8 @@ public class ShopObjectsMediator : MonoBehaviour
         _prefabsHolder = PrefabsHolder.Instance;
         _gridCalculator = GridCalculator.Instance;
         _spritesProvider = SpritesProvider.Instance;
+
+        _billboardMediator = new BillboardMediator(transform, _billboardCoords);
     }
 
     private void Start()
@@ -37,6 +40,8 @@ public class ShopObjectsMediator : MonoBehaviour
         {
             HandleNewShopModel(_gameStateModel.ViewingShopModel);
         }
+
+        _billboardMediator.Mediate();
     }
 
     private void HandleNewShopModel(ShopModel viewingShopModel)
@@ -79,10 +84,11 @@ public class ShopObjectsMediator : MonoBehaviour
             var coords = new Vector2Int(
                 _random.Next(-treesPadding, shopDesignModel.SizeX + treesPadding),
                 _random.Next(-treesPadding, shopDesignModel.SizeY + treesPadding));
-            if (coords.x < -treesGap
+            if (coords != _billboardCoords
+                && (coords.x < -treesGap
                 || coords.y < -treesGap
                 || coords.x > shopDesignModel.SizeX + treesGap
-                || coords.y > shopDesignModel.SizeY + treesGap)
+                || coords.y > shopDesignModel.SizeY + treesGap))
             {
                 SpriteRenderer treeRenderer;
                 if (_treesList.Count <= createdAmount)

@@ -420,5 +420,6 @@ public enum SaveField
     AvailableActionsData = 1 << 7,
     Bonus = 1 << 8,
     Settings = 1 << 9,
-    All = Progress | Personal | Warehouse | Design | ShopObjects | Unwashes | TutorialSteps | AvailableActionsData | Bonus | Settings,
+    Billboard = 1 << 10,
+    All = Progress | Personal | Warehouse | Design | ShopObjects | Unwashes | TutorialSteps | AvailableActionsData | Bonus | Settings | Billboard,
 }

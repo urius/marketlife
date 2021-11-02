@@ -68,6 +68,7 @@ public class UserDataDto
     public string[] actions_data;
     public BonusStateDto bonus;
     public UserGameSettingsDto settings;
+    public UserBillboardStateDto billboard;    
 }
 
 public class ExternalDataDto
@@ -142,4 +143,10 @@ public struct UserGameSettingsDto
 {
     public bool mute_music;
     public bool mute_audio;
+}
+
+public struct UserBillboardStateDto
+{
+    public bool is_available;
+    public string text_64;
 }

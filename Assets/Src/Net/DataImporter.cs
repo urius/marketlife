@@ -21,7 +21,8 @@ public class DataImporter
             shopObjects,
             new Dictionary<Vector2Int, int>(),
             new ShopPersonalModel(),
-            warehouseModel);
+            warehouseModel,
+            new ShopBillboardModel());
 
         return new UserModel(dto.data.uid, shopProgress, shopModel, new UserStatsData(), new UserBonusState(), null,
             new AvailableFriendShopActionsDataModel(Array.Empty<AvailableFriendShopActionData>()), new UserSettingsModel(false, false), new ExternalActionsModel());
@@ -134,13 +135,24 @@ public class DataImporter
         var designModel = ToDesignModel(dataDto.design);
         var shopObjects = ToObjectsModel(dataDto.objects);
         var unwashes = ToUnwashesModel(dataDto.unwashes);
+        var billboardModel = ToBillboardModel(dataDto.billboard);
 
         return new ShopModel(
             designModel,
             shopObjects,
             unwashes,
             personalModel,
-            warehouseModel);
+            warehouseModel,
+            billboardModel);
+    }
+
+    private ShopBillboardModel ToBillboardModel(UserBillboardStateDto billboardDto)
+    {
+        return new ShopBillboardModel(
+            billboardDto.is_available,
+            billboardDto.text_64 != null
+                ? Base64Helper.Base64Decode(billboardDto.text_64)
+                : string.Empty);
     }
 
     private Dictionary<Vector2Int, int> ToUnwashesModel(string[] unwashes)

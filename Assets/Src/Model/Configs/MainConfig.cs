@@ -24,6 +24,7 @@ public class MainConfig :
     public readonly int ActionResetCooldownPrice;
     public readonly int ShareOfflineReportRewardGold = 1;
     public readonly int BillboardUnlockLevel;
+    public readonly int MaxBillboardTextLength = 128;    
 
     public readonly Dictionary<string, ProductConfig> ProductsConfig;
     public readonly Dictionary<string, ItemConfig<ShelfConfigDto>> ShelfsConfig;

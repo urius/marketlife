@@ -23,4 +23,5 @@ public enum PopupType
     OldGameCompensation,
     Error,
     DailyBonus,
+    Billboard,
 }

@@ -188,6 +188,8 @@ public class LocalizationKeys
     public static string PopupCompensationMessage = "popup_compensation_message";
     public static string PopupDailyBonusTitle = "popup_daily_bonus_title";
     public static string PopupDailyBonusDayFormat = "popup_daily_bonus_day_format";
+    public static string PopupBillboardTitle = "popup_billboard_title";
+    public static string PopupBillboardMessage = "popup_billboard_message";    
 
     public static string TutorialTitleDefault = "tutorial_title_default";
     public static string TutorialMessagePrefix = "tutorial_message_";

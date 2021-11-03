@@ -65,6 +65,9 @@ public class PopupsMediator : IMediator
             case PopupType.DailyBonus:
                 newMediator = new UIDailyBonusPopupMediator(_contentTransform);
                 break;
+            case PopupType.Billboard:
+                newMediator = new UIBillboardPopupMediator(_contentTransform);
+                break;
         };
         newMediator.Mediate();
         _popupMediators.Push(newMediator);

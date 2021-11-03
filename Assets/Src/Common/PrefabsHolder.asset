@@ -115,3 +115,5 @@ MonoBehaviour:
     type: 3}
   UIOfflineReportPopupPrefab: {fileID: 9111168395692323060, guid: ca3085ef29ab04d18a474c360539bbfd,
     type: 3}
+  UIBillboardPopupPrefab: {fileID: 2802262165401310153, guid: 5fb6b23b84eb64180bf2f489276bc78c,
+    type: 3}

@@ -70,9 +70,21 @@ public class EventsHandleSystem
         _dispatcher.UIMuteAudioClicked += OnUIMuteAudioClicked;
         _dispatcher.UIMuteMusicClicked += OnUIMuteMusicClicked;
         _dispatcher.UIBankItemClicked += OnUIBankItemClicked;
+        _dispatcher.UIDispatchBillboardClick += OnUIDispatchBillboardClick;
+        _dispatcher.UIBillboardPopupApplyTextClicked += OnUIBillboardPopupApplyTextClicked;
 
         _gameStateModel.ActionStateChanged += OnActionStateChanged;
         _gameStateModel.GameStateChanged += OnGameStateChanged;
+    }
+
+    private void OnUIBillboardPopupApplyTextClicked(string text)
+    {
+        new HandleBillboardPopupApplyTextCommand().Execute(text);
+    }
+
+    private void OnUIDispatchBillboardClick()
+    {
+        new HandleBillboardClickCommand().Execute();
     }
 
     private void OnUIBankItemClicked(BankConfigItem itemConfig)

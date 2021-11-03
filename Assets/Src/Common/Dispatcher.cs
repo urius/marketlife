@@ -4,8 +4,8 @@ using UnityEngine;
 public class Dispatcher
 {
     public Action<Vector3> CameraMoved = delegate { };
-    public Action MouseMoved = delegate { };
-
+    public Action UIMouseMoved = delegate { };
+    public Action UIGameViewMouseMoved = delegate { };
     public Action UIGameViewMouseDown = delegate { };
     public Action UIGameViewMouseUp = delegate { };
     public Action UIGameViewMouseClick = delegate { };
@@ -18,7 +18,8 @@ public class Dispatcher
     public Action UITopPanelLevelUpAnimationFinished = delegate { };
     public Action<bool> UITopPanelAddMoneyClicked = delegate { };
     public Action<Vector2, int> UIRequestAddCashFlyAnimation = delegate { };
-    public Action<Vector2, int> UIRequestAddGoldFlyAnimation = delegate { };    
+    public Action<Vector2, int> UIRequestAddGoldFlyAnimation = delegate { };
+    public Action UIDispatchBillboardClick = delegate { };    
 
     public Action<int> UIBottomPanelPlaceShelfClicked = delegate { };
     public Action<int> UIBottomPanelPlaceFloorClicked = delegate { };

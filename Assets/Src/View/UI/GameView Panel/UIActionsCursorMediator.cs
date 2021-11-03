@@ -63,13 +63,13 @@ public class UIActionsCursorMediator : IMediator
             {
                 UpdateAmount();
                 UpdateViewPosition();
-                _dispatcher.MouseMoved -= OnMouseMoved;
-                _dispatcher.MouseMoved += OnMouseMoved;
+                _dispatcher.UIMouseMoved -= OnMouseMoved;
+                _dispatcher.UIMouseMoved += OnMouseMoved;
             }
         }
         else if (previousState != ActionStateName.None)
         {
-            _dispatcher.MouseMoved -= OnMouseMoved;
+            _dispatcher.UIMouseMoved -= OnMouseMoved;
             switch (previousState)
             {
                 case ActionStateName.PlacingProduct:

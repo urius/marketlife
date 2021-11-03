@@ -282,7 +282,6 @@ public struct HighlightState
         HighlightedShopObject = null
     };
 
-
     public bool IsHighlighted => IsHighlightedDecoration || IsHighlightedUnwash || HighlightedShopObject != null;
 }
 

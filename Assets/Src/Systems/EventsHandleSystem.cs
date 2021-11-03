@@ -315,7 +315,7 @@ public class EventsHandleSystem
     {
         if (currentState == ActionStateName.None)
         {
-            var mouseCoords = MouseCellCoordsProvider.Instance.MouseCellCoords;
+            var mouseCoords = MouseDataProvider.Instance.MouseCellCoords;
             new ProcessHighlightCommand().Execute(mouseCoords);
         }
         else

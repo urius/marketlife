@@ -6,7 +6,7 @@ public class PlacingFloorMediator : IMediator
 
     private readonly GameStateModel _gameStateModel;
     private readonly Dispatcher _dispatcher;
-    private readonly MouseCellCoordsProvider _mouseCellCoordsProvider;
+    private readonly MouseDataProvider _mouseCellCoordsProvider;
     private readonly GridCalculator _gridCalculator;
 
     private SpriteRenderer _currentPlacingSprite;
@@ -18,7 +18,7 @@ public class PlacingFloorMediator : IMediator
 
         _gameStateModel = GameStateModel.Instance;
         _dispatcher = Dispatcher.Instance;
-        _mouseCellCoordsProvider = MouseCellCoordsProvider.Instance;
+        _mouseCellCoordsProvider = MouseDataProvider.Instance;
         _gridCalculator = GridCalculator.Instance;
     }
 

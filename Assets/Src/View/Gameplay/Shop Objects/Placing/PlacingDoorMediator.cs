@@ -6,7 +6,7 @@ public class PlacingDoorMediator : IMediator
 
     private readonly GameStateModel _gameStateModel;
     private readonly Dispatcher _dispatcher;
-    private readonly MouseCellCoordsProvider _mouseCellCoordsProvider;
+    private readonly MouseDataProvider _mouseCellCoordsProvider;
 
     private DoorView _currentPlacingDoor;
     private ShopModel _currentShopModel;
@@ -17,7 +17,7 @@ public class PlacingDoorMediator : IMediator
 
         _gameStateModel = GameStateModel.Instance;
         _dispatcher = Dispatcher.Instance;
-        _mouseCellCoordsProvider = MouseCellCoordsProvider.Instance;
+        _mouseCellCoordsProvider = MouseDataProvider.Instance;
     }
 
     public void Mediate()

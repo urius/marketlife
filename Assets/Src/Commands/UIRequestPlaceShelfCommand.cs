@@ -9,7 +9,7 @@ public struct UIRequestPlaceShelfCommand
         if (gameStateModel.ActionState != ActionStateName.None) return;
 
         Dispatcher.Instance.RequestForceMouseCellPositionUpdate();
-        var mouseCellCoords = MouseCellCoordsProvider.Instance.MouseCellCoords;
+        var mouseCellCoords = MouseDataProvider.Instance.MouseCellCoords;
         var model = new ShopObjectModelFactory().CreateShelf(shelfNumericId, mouseCellCoords);
         gameStateModel.SetPlacingObject(model);
     }

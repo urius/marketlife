@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 906799135
+CRC: 3471702041
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 80a241a82afad75552d411bc8360a4fc
+    Hash: 4cf8f1cd7d398aa81affabb4cc97f88a
   TypeTreeHash:
     serializedVersion: 2
     Hash: 3dbb92f992534c06c4e322444b68580f
@@ -58,6 +58,7 @@ Assets:
 - Assets/External Resources/GameplayGraphicsBundle/Shop/Windows/Window2.png
 - Assets/External Resources/GameplayGraphicsBundle/Outside/Tree.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Mouth4.png
+- Assets/External Resources/GameplayGraphicsBundle/Outside/BillboardSquare.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Hair3.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/Clothes1_Profile.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Glasses2.png
@@ -149,6 +150,7 @@ Assets:
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/FootClothes1.png
 - Assets/External Resources/GameplayGraphicsBundle/Products/Orange.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/HeadBase.png
+- Assets/External Resources/GameplayGraphicsBundle/Outside/BillboardBaseSquare.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/Clothes6.png
 - Assets/External Resources/GameplayGraphicsBundle/Products/Perfume_2.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/Clothes5.png
@@ -157,9 +159,10 @@ Assets:
 - Assets/External Resources/GameplayGraphicsBundle/Objects/Shelf_1_back.png
 - Assets/External Resources/GameplayGraphicsBundle/Products/Candy_1.png
 - Assets/External Resources/GameplayGraphicsBundle/Outside/FloorGrass2.png
-- Assets/External Resources/GameplayGraphicsBundle/Objects/Shelf_4/Shelf_4_front.png
+- Assets/External Resources/GameplayGraphicsBundle/Outside/BillboardStick.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Hair7.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/Clothes3.png
+- Assets/External Resources/GameplayGraphicsBundle/Objects/Shelf_4/Shelf_4_front.png
 - Assets/External Resources/GameplayGraphicsBundle/Products/Cream_1.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Hair5_Profile.png
 - Assets/External Resources/GameplayGraphicsBundle/Products/Peppers_1.png

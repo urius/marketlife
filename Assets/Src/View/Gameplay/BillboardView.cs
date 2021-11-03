@@ -4,10 +4,10 @@ using UnityEngine;
 public class BillboardView : MonoBehaviour
 {
     [SerializeField] private TMP_Text _text;
-    [SerializeField] private Collider _collider;
     [SerializeField] private SpriteRenderer[] _highlightableSprites;
+    [SerializeField] private Transform[] _boundPointTransforms;
 
-    public Collider Collider => _collider;
+    public Transform[] BoundPointTransforms => _boundPointTransforms;
 
     public void SetText(string text)
     {

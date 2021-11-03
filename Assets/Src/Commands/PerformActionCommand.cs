@@ -6,7 +6,7 @@ public struct PerformActionCommand
     public void Execute()
     {
         var gameStateModel = GameStateModel.Instance;
-        var mouseCellCoords = MouseCellCoordsProvider.Instance.MouseCellCoords;
+        var mouseCellCoords = MouseDataProvider.Instance.MouseCellCoords;
         var audioManager = AudioManager.Instance;
 
         var actionResult = false;
@@ -69,7 +69,7 @@ public struct PerformActionCommand
         var gameStateModel = GameStateModel.Instance;
         var viewingUserModel = GameStateModel.Instance.ViewingUserModel;
         var viewingShopModel = viewingUserModel.ShopModel;
-        var mouseCellCoordsProvider = MouseCellCoordsProvider.Instance;
+        var mouseCellCoordsProvider = MouseDataProvider.Instance;
         var actionId = FriendShopActionId.AddUnwash;
         var actionData = playerActionsDataModel.ActionsById[actionId];
         var screenCalculator = ScreenCalculator.Instance;

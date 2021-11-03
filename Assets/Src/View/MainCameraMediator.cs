@@ -8,7 +8,8 @@ public class MainCameraMediator : MonoBehaviour
     private Dispatcher _dispatcher;
     private UpdatesProvider _updatesProvider;
     private GridCalculator _gridCalculator;
-    private MouseCellCoordsProvider _mouseCellCoordsProvider;
+    private ScreenCalculator _screenCalculator;
+    private MouseDataProvider _mouseDataProvider;
     private bool _isMouseDown;
     private Vector3 _mouseDownWorldPosition;
     private Vector3 _deltaWorldMouse;
@@ -16,7 +17,7 @@ public class MainCameraMediator : MonoBehaviour
     private int _framesCounter3;
     private Vector3 _previousMousePosition;
     private Vector3 _currentMousePosition;
-    private bool _needToUpdateMouseCellPosition;
+    private bool _isMouseOverGameView;
     private bool _needToForceUpdateMouseCellPosition;
 
     private void Awake()
@@ -24,7 +25,8 @@ public class MainCameraMediator : MonoBehaviour
         _dispatcher = Dispatcher.Instance;
         _updatesProvider = UpdatesProvider.Instance;
         _gridCalculator = GridCalculator.Instance;
-        _mouseCellCoordsProvider = MouseCellCoordsProvider.Instance;
+        _screenCalculator = ScreenCalculator.Instance;
+        _mouseDataProvider = MouseDataProvider.Instance;
     }
 
     private void Start()
@@ -47,12 +49,14 @@ public class MainCameraMediator : MonoBehaviour
 
     private void OnGameViewMouseEnter()
     {
-        _needToUpdateMouseCellPosition = true;
+        _isMouseOverGameView = true;
+        _mouseDataProvider.SetMouseOverGameView(_isMouseOverGameView);
     }
 
     private void OnGameViewMouseExit()
     {
-        _needToUpdateMouseCellPosition = false;
+        _isMouseOverGameView = false;
+        _mouseDataProvider.SetMouseOverGameView(_isMouseOverGameView);
     }
 
     private void OnGameViewMouseDown()
@@ -74,7 +78,11 @@ public class MainCameraMediator : MonoBehaviour
         ProcessMouseCellPositionCalculation();
         if (_currentMousePosition != _previousMousePosition)
         {
-            _dispatcher.MouseMoved();
+            _dispatcher.UIMouseMoved();
+            if (_isMouseOverGameView == true)
+            {
+                _dispatcher.UIGameViewMouseMoved();
+            }
         }
     }
 
@@ -83,12 +91,13 @@ public class MainCameraMediator : MonoBehaviour
         if (_previousMousePosition != _currentMousePosition || _needToForceUpdateMouseCellPosition)
         {
             _framesCounter3++;
-            if (_framesCounter3 >= 3 && (_needToUpdateMouseCellPosition || _needToForceUpdateMouseCellPosition))
+            if (_framesCounter3 >= 3 && (_isMouseOverGameView || _needToForceUpdateMouseCellPosition))
             {
                 _framesCounter3 = 0;
                 var mouseWorld = GetOnPlaneMouseWorldPoint();
                 var mouseCell = _gridCalculator.WorldToCell(mouseWorld);
-                _mouseCellCoordsProvider.SetMouseCellCoords(mouseCell, _needToForceUpdateMouseCellPosition);
+                _mouseDataProvider.SetMouseProjectedOnPlaneWorldPosition(_screenCalculator.ScreenPointToPlaneWorldPoint(_currentMousePosition));
+                _mouseDataProvider.SetMouseCellCoords(mouseCell, _needToForceUpdateMouseCellPosition);
                 _needToForceUpdateMouseCellPosition = false;
             }
         }
@@ -119,6 +128,6 @@ public class MainCameraMediator : MonoBehaviour
 
     private Vector3 GetOnPlaneMouseWorldPoint()
     {
-        return _gridCalculator.ScreenPointToPlaneWorldPoint(_camera, _currentMousePosition);
+        return _screenCalculator.ScreenPointToPlaneWorldPoint(_currentMousePosition);
     }
 }

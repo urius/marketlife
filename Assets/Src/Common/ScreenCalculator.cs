@@ -29,6 +29,23 @@ public class ScreenCalculator
         return WorldToScreenPoint(worldPoint);
     }
 
+    public Vector3 ScreenPointToPlaneWorldPoint(Vector2 screenPoint)
+    {
+        var mouseWorldPoint = GetCamera().ScreenToWorldPoint(new Vector3(screenPoint.x, screenPoint.y));
+        return WorldToPlaneProjection(mouseWorldPoint);
+    }
+
+    public Vector3 WorldToPlaneProjection(Vector3 worldPoint)
+    {
+        var cameraTransform = GetCamera().transform;
+        var rotationX = Mathf.Deg2Rad * cameraTransform.rotation.eulerAngles.x;
+        var distance = (float)(Math.Abs(worldPoint.z) / Math.Cos(rotationX));
+
+        var result = worldPoint + cameraTransform.forward * distance;
+
+        return result;
+    }
+
     private Camera GetCamera()
     {
         if (_camera == null)

@@ -6,7 +6,7 @@ public class ShopObjectActionsPanelMediator : IMediator
     private readonly RectTransform _contentTransform;
     private readonly Dispatcher _dispatcher;
     private readonly GameStateModel _gameStateModel;
-    private readonly MouseCellCoordsProvider _mouseCellCoordsProvider;
+    private readonly MouseDataProvider _mouseCellCoordsProvider;
     private readonly ScreenCalculator _screenCalculator;
     private readonly PrefabsHolder _prefabsHolder;
     private readonly PoolCanvasProvider _poolCanvasProvider;
@@ -20,7 +20,7 @@ public class ShopObjectActionsPanelMediator : IMediator
 
         _dispatcher = Dispatcher.Instance;
         _gameStateModel = GameStateModel.Instance;
-        _mouseCellCoordsProvider = MouseCellCoordsProvider.Instance;
+        _mouseCellCoordsProvider = MouseDataProvider.Instance;
         _screenCalculator = ScreenCalculator.Instance;
         _prefabsHolder = PrefabsHolder.Instance;
         _poolCanvasProvider = PoolCanvasProvider.Instance;

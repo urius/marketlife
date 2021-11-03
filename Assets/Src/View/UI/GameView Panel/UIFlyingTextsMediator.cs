@@ -107,7 +107,7 @@ public class UIFlyingTextsMediator : IMediator
         var flyingTextGo = flyingTextView.gameObject;
 
         var rectTransform = flyingTextGo.transform as RectTransform;
-        var groundWorldPoint = _gridCalculator.ScreenPointToPlaneWorldPoint(_camera, screenPoint);
+        var groundWorldPoint = _screenCalculator.ScreenPointToPlaneWorldPoint(screenPoint);
         _itemsWithOffsetsList.Add((rectTransform, groundWorldPoint));
 
         var duration = 2f;

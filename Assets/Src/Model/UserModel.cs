@@ -38,6 +38,7 @@ public class UserModel
         BonusState = bonusState;
         ActionsDataModel = actionsDataModel;
         SessionDataModel = new UserSessionDataModel();
+        //TutorialSteps = new List<int>(new int[] { 0,1,2,3,4,5,6,7,8 });
         TutorialSteps = new List<int>(tutorialSteps ?? Enumerable.Empty<int>());
         UserSettingsModel = userSettingsModel;
         ExternalActionsModel = externalActionsModel;

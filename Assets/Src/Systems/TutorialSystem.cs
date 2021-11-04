@@ -1,17 +1,31 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
 public class TutorialSystem
 {
-    private const int LastTutorialStepIndex = 15;
-
     private readonly GameStateModel _gameStateModel;
     private readonly Dispatcher _dispatcher;
     private readonly PlayerModelHolder _playerModelHolder;
     private readonly AnalyticsManager _analyticsManager;
-    private readonly List<int> _openTutorialSteps;
-    private readonly Dictionary<int, int[]> _tutorialSpecialOpenStepsLogic = new Dictionary<int, int[]>();
+    private readonly List<TutorialStep> _openTutorialSteps;
+    private readonly TutorialStep[][] _tutorialSequences = new TutorialStep[][] {
+        new TutorialStep[]{
+            TutorialStep.Welcome,
+            TutorialStep.OpenWarehouse,
+            TutorialStep.OpenOrderPopup,
+            TutorialStep.OrderProduct,
+            TutorialStep.Delivering,
+            TutorialStep.PlacingProduct,
+            TutorialStep.FinishPlacingProduct,
+            TutorialStep.ShowMoodInteriorAndFriendsUI,
+            TutorialStep.ShowSaveIcon,
+            TutorialStep.ReadyToPlay,
+        },
+        new TutorialStep[]{
+            TutorialStep.FriendUI
+        },
+    };
+    private readonly int[] _tutorialSequencesIndexes;
 
     private UserModel _playerModel;
 
@@ -22,7 +36,9 @@ public class TutorialSystem
         _playerModelHolder = PlayerModelHolder.Instance;
         _analyticsManager = AnalyticsManager.Instance;
 
-        _openTutorialSteps = new List<int>(5) { 0 };
+        _tutorialSequencesIndexes = new int[_tutorialSequences.Length];
+        _openTutorialSteps = new List<TutorialStep>(5);
+        _openTutorialSteps.AddRange(_tutorialSequences.Select(s => s[0]));
     }
 
     public async void Start()
@@ -46,7 +62,7 @@ public class TutorialSystem
     private void OnUITutorialActionPerformed()
     {
         var stepIndex = _gameStateModel.ShowingTutorialModel.StepIndex;
-        _analyticsManager.SendTutorialStep(stepIndex, GetTutorialIdByStepIndex(stepIndex));
+        _analyticsManager.SendTutorialStep(stepIndex, GetTutorialIdByStepIndex((TutorialStep)stepIndex));
         _playerModel.AddPassedTutorialStep(stepIndex);
         UpdateOpenedSteps();
         _gameStateModel.RemoveCurrentTutorialStepIfNeeded();
@@ -55,39 +71,47 @@ public class TutorialSystem
 
     private void UpdateOpenedSteps()
     {
-        var i = 0;
-        while (i < _openTutorialSteps.Count)
+        for (var i = 0; i < _tutorialSequences.Length; i++)
         {
-            var stepIndex = _openTutorialSteps[i];
-            if (stepIndex < LastTutorialStepIndex
-                && _playerModel.IsTutorialStepPassed(stepIndex))
+            while (_tutorialSequencesIndexes[i] < _tutorialSequences[i].Length)
             {
-                if (_tutorialSpecialOpenStepsLogic.ContainsKey(stepIndex) == false)
+                var stepIndex = _tutorialSequencesIndexes[i];
+                var sequence = _tutorialSequences[i];
+                var step = sequence[stepIndex];
+                if (_playerModel.IsTutorialStepPassed((int)step))
                 {
-                    _openTutorialSteps.RemoveAt(i);
-                    _openTutorialSteps.Add(stepIndex + 1);
-                    continue;
+                    _openTutorialSteps.Remove(step);
+                    _tutorialSequencesIndexes[i]++;
+                    stepIndex = _tutorialSequencesIndexes[i];
+                    if (stepIndex < sequence.Length)
+                    {
+                        step = sequence[stepIndex];
+                        _openTutorialSteps.Add(step);
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
                 else
                 {
-                    //todo: use _tutorialSpecialOpenStepsLogic to add few steps
+                    break;
                 }
             }
-            i++;
         }
     }
 
     private bool ShowTutorialIfNeeded(bool immediateMode = false)
     {
         if (_gameStateModel.ShowingTutorialModel != null) return false;
-        foreach (var tutorialStepIndex in _openTutorialSteps)
+        foreach (var tutorialStep in _openTutorialSteps)
         {
-            if (CheckTutorialConditions(tutorialStepIndex))
+            if (CheckTutorialConditions(tutorialStep))
             {
-                _gameStateModel.ShowTutorialStep(new TutorialStepViewModel(tutorialStepIndex, immediateMode));
-                if (tutorialStepIndex == 0)
+                _gameStateModel.ShowTutorialStep(new TutorialStepViewModel((int)tutorialStep, immediateMode));
+                if (tutorialStep == 0)
                 {
-                    _analyticsManager.SendTutorialStart(GetTutorialIdByStepIndex(tutorialStepIndex));
+                    _analyticsManager.SendTutorialStart(GetTutorialIdByStepIndex(tutorialStep));
                 }
                 return true;
             }
@@ -96,10 +120,10 @@ public class TutorialSystem
         return false;
     }
 
-    private bool CheckTutorialConditions(int tutorialStepIndex)
+    private bool CheckTutorialConditions(TutorialStep tutorialStep)
     {
         if (_gameStateModel.ShowingTutorialModel != null) return false;
-        return (TutorialStep)tutorialStepIndex switch
+        return tutorialStep switch
         {
             TutorialStep.Welcome => HasNoOpenedPopups()
                 && HasNoPlacingMode()
@@ -174,15 +198,13 @@ public class TutorialSystem
         ShowTutorialIfNeeded();
     }
 
-    private string GetTutorialIdByStepIndex(int stepIndex)
+    private string GetTutorialIdByStepIndex(TutorialStep step)
     {
-        switch ((TutorialStep)stepIndex)
+        return step switch
         {
-            case TutorialStep.FriendUI:
-                return "TutorialFriend";
-            default:
-                return "TutorialMain";
-        }
+            TutorialStep.FriendUI => "TutorialFriend",
+            _ => "TutorialMain",
+        };
     }
 }
 

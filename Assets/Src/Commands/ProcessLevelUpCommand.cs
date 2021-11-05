@@ -24,6 +24,8 @@ public struct ProcessLevelUpCommand
 
         var popupViewModel = new LevelUpPopupViewModel(newProducts, newShelfs, newFloors, newWalls, newWindows, newDoors, newPersonal, newUpgrades);
         gameStateModel.ShowPopup(popupViewModel);
+
+        new ActualizePlayerDataCommand().Execute();
     }
 
     private IReadOnlyList<ProductConfig> GetNewProductConfigs(int previousLevel, int currentLevel)

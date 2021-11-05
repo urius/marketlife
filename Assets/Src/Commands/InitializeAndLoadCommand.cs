@@ -16,7 +16,6 @@ public struct InitializeAndLoadCommand
             (LoadGamePhase.LoadConfigs, new LoadConfigsCommand()),
             (LoadGamePhase.LoadAssets, new LoadAssetsCommand()),
             (LoadGamePhase.LoadShopData, new LoadPlayerShopCommand()),
-            (LoadGamePhase.ActualizeData, new ActualizePlayerDataCommand()),
             (LoadGamePhase.LoadCompensationData, new LoadCompensationDataCommand()),
         };
         loadGameProgressModel.SetupPartsCount(phasesData.Length);
@@ -37,6 +36,7 @@ public struct InitializeAndLoadCommand
 
         await UniTask.Delay(500);
         gameStateModel.SetGameState(GameStateName.Loaded);
+        new ActualizePlayerDataCommand().Execute();
         gameStateModel.SetViewingUserModel(playerModelHolder.UserModel);
 
         await UniTask.Delay(1500);

@@ -46,6 +46,17 @@ public class ScreenCalculator
         return result;
     }
 
+    public Vector3 PlaneToCameraProjection(Vector3 worldPoint)
+    {
+        var cameraTransform = GetCamera().transform;
+        var rotationX = Mathf.Deg2Rad * cameraTransform.rotation.eulerAngles.x;
+        var distance = (float)(Math.Abs(cameraTransform.position.z) / Math.Cos(rotationX));
+
+        var result = worldPoint - cameraTransform.forward * distance;
+
+        return result;
+    }
+
     private Camera GetCamera()
     {
         if (_camera == null)

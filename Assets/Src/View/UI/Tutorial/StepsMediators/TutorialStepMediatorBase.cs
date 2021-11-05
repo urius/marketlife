@@ -54,7 +54,7 @@ public abstract class TutorialStepMediatorBase : IMediator
         {
             _tutorialOverlayView.PlaceManRight();
         }
-        _tutorialOverlayView.Appear(animateBgFlag: !_viewModel.IsImmediate, true);
+        _tutorialOverlayView.Appear(animateBgFlag: !_viewModel.IsImmediate, animatePopupFlag: true);
     }
 
     public virtual void Unmediate()

@@ -20,6 +20,7 @@ public class TutorialSystem
             TutorialStep.ShowMoodInteriorAndFriendsUI,
             TutorialStep.ShowSaveIcon,
             TutorialStep.ReadyToPlay,
+            TutorialStep.Billboard,
         },
         new TutorialStep[]{
             TutorialStep.FriendUI
@@ -159,6 +160,10 @@ public class TutorialSystem
             TutorialStep.FriendUI => HasNoOpenedPopups()
                 && HasNoPlacingMode()
                 && CheckGameState(GameStateName.ShopFriend),
+            TutorialStep.Billboard => HasNoOpenedPopups()
+                && HasNoPlacingMode()
+                && CheckGameState(GameStateName.ShopSimulation)
+                && _playerModel.ShopModel.BillboardModel.IsAvailable,
             _ => false//throw new ArgumentException($"CheckTutorialConditions: {nameof(tutorialStepIndex)} {tutorialStepIndex} is not supported"),
         };
     }
@@ -221,5 +226,6 @@ public enum TutorialStep
     ShowSaveIcon = 8,
     ReadyToPlay = 9,
     FriendUI = 10,
+    Billboard = 11,
 }
 

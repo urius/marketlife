@@ -74,6 +74,8 @@ public class SaveDataSystem
         _shopModel.ShopObjectRemoved += OnShopObjectRemoved;
         _shopModel.UnwashAdded += OnUnwashAdded;
         _shopModel.UnwashRemoved += OnUnwashRemoved;
+        _shopModel.BillboardModel.AvailabilityChanged += OnBillboardStateChanged;
+        _shopModel.BillboardModel.TextChanged += OnBillboardStateChanged;
 
         _playerModel.TutorialStepPassed += OnTutorialStepPassed;
         _playerModel.BonusStateUpdated += OnBonusStateUpdated;
@@ -105,6 +107,11 @@ public class SaveDataSystem
         _gameStateModel.ViewingUserModelChanged += OnViewingUserModelChanged;
 
         _updatesProvider.RealtimeSecondUpdate += OnRealtimeSecondUpdate;
+    }
+
+    private void OnBillboardStateChanged()
+    {
+        MarkToSaveField(SaveField.Billboard);
     }
 
     private void OnPlayerSettingsUpdated()

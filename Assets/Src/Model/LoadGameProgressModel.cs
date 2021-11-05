@@ -59,6 +59,5 @@ public enum LoadGamePhase
     LoadConfigs,
     LoadAssets,
     LoadShopData,
-    ActualizeData,
     LoadCompensationData,
 }

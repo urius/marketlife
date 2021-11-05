@@ -19,7 +19,8 @@ public class Dispatcher
     public Action<bool> UITopPanelAddMoneyClicked = delegate { };
     public Action<Vector2, int> UIRequestAddCashFlyAnimation = delegate { };
     public Action<Vector2, int> UIRequestAddGoldFlyAnimation = delegate { };
-    public Action UIDispatchBillboardClick = delegate { };    
+    public Action UIDispatchBillboardClick = delegate { };
+    public Action<Vector3, float> UIRequestMoveCamera = delegate { };    
 
     public Action<int> UIBottomPanelPlaceShelfClicked = delegate { };
     public Action<int> UIBottomPanelPlaceFloorClicked = delegate { };

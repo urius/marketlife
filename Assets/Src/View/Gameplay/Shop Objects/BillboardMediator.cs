@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using UnityEngine;
 
@@ -11,6 +10,7 @@ public class BillboardMediator : IMediator
     private readonly UpdatesProvider _updatesProvider;
     private readonly MouseDataProvider _mouseDataProvider;
     private readonly Dispatcher _dispatcher;
+    private readonly TutorialUIElementsProvider _tutorialUIElementsProvider;
     private readonly Vector2Int _billboardCellCoords;
     private readonly HighlightableMediatorComponent _highlightableComponent;
 
@@ -30,6 +30,7 @@ public class BillboardMediator : IMediator
         _updatesProvider = UpdatesProvider.Instance;
         _mouseDataProvider = MouseDataProvider.Instance;
         _dispatcher = Dispatcher.Instance;
+        _tutorialUIElementsProvider = TutorialUIElementsProvider.Instance;
 
         _billboardCellCoords = coords;
         _highlightableComponent = new HighlightableMediatorComponent();
@@ -155,6 +156,7 @@ public class BillboardMediator : IMediator
                 _billboardView = go.GetComponent<BillboardView>();
                 var boundPoints = _billboardView.BoundPointTransforms.Select(t => t.position).ToArray();
                 _highlightableComponent.UpdateBoundPoints(boundPoints);
+                _tutorialUIElementsProvider.SetElement(TutorialUIElement.BillboardTransform, _billboardView.transform);
             }
 
             _billboardView.gameObject.SetActive(true);

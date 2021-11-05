@@ -1,8 +1,6 @@
-using Cysharp.Threading.Tasks;
-
-public struct ActualizePlayerDataCommand : IAsyncGameLoadCommand
+public struct ActualizePlayerDataCommand
 {
-    public UniTask<bool> ExecuteAsync()
+    public void Execute()
     {
         var mainConfig = GameConfigManager.Instance.MainConfig;
         var playerModel = PlayerModelHolder.Instance.UserModel;
@@ -17,7 +15,5 @@ public struct ActualizePlayerDataCommand : IAsyncGameLoadCommand
                 billboardModel.SetAvailable(true);
             }
         }
-
-        return UniTask.FromResult(true);
     }
 }

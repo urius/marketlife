@@ -38,6 +38,7 @@ public class MainCameraMediator : MonoBehaviour
         _dispatcher.UIGameViewMouseEnter += OnGameViewMouseEnter;
         _dispatcher.UIGameViewMouseExit += OnGameViewMouseExit;
         _dispatcher.RequestForceMouseCellPositionUpdate += OnRequestForceMouseCellPositionUpdate;
+        _dispatcher.UIRequestMoveCamera += OnUIRequestMoveCamera;
 
         _updatesProvider.RealtimeUpdate += OnRealtimeUpdate;
     }
@@ -121,9 +122,27 @@ public class MainCameraMediator : MonoBehaviour
         }
 
         var newCameraPos = _camera.transform.position - _deltaWorldMouse;
-        newCameraPos.z = _cameraZ;
-        _camera.transform.position = newCameraPos;
+        _camera.transform.position = CorrectCameraCoords(newCameraPos);
         _dispatcher.CameraMoved(_deltaWorldMouse);
+    }
+
+    private Vector3 CorrectCameraCoords(Vector3 newCameraPos)
+    {
+        newCameraPos.z = _cameraZ;
+        return newCameraPos;
+    }
+
+    private void OnUIRequestMoveCamera(Vector3 targetWorldPlanePos, float durationSeconds)
+    {
+        MoveCameraViewToPlanePointAnimated(targetWorldPlanePos, durationSeconds);
+    }
+
+    private void MoveCameraViewToPlanePointAnimated(Vector3 targetWorldPlanePos, float durationSeconds)
+    {
+        LeanTween.cancel(_camera.gameObject);
+
+        var cameraTargetPos = CorrectCameraCoords(_screenCalculator.PlaneToCameraProjection(targetWorldPlanePos));
+        LeanTween.move(_camera.gameObject, cameraTargetPos, durationSeconds).setEaseOutCubic();
     }
 
     private Vector3 GetOnPlaneMouseWorldPoint()

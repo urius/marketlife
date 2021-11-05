@@ -53,4 +53,5 @@ public enum TutorialUIElement
     BottomPanelFriendShopTakeButton,
     BottomPanelFriendShopAddUnwashButton,
     TopSaveIcon,
+    BillboardTransform,
 }

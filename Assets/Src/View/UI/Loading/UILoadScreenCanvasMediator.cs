@@ -104,7 +104,6 @@ public class UILoadScreenCanvasMediator : MonoBehaviour
             LoadGamePhase.LoadConfigs => "load_configs",
             LoadGamePhase.LoadAssets => "load_assets",
             LoadGamePhase.LoadShopData => "load_data",      
-            LoadGamePhase.ActualizeData => "actualize_data",
             LoadGamePhase.LoadCompensationData => "load_additional_data",
             _ => "loading",
         };

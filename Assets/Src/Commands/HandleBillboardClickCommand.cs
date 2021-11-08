@@ -11,7 +11,10 @@ public class HandleBillboardClickCommand : MonoBehaviour
             && gameStateModel.ActionState == ActionStateName.None
             && gameStateModel.ShowingPopupModel == null)
         {
-            gameStateModel.ShowPopup(new BillboardPopupViewModel(playerModelHolder.ShopModel.BillboardModel));
+            if (gameStateModel.GameState == GameStateName.ShopSimulation)
+            {
+                gameStateModel.ShowPopup(new BillboardPopupViewModel(playerModelHolder.ShopModel.BillboardModel));
+            }
         }
     }
 }

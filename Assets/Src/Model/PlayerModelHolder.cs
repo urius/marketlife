@@ -6,6 +6,8 @@ public class PlayerModelHolder
     public static PlayerModelHolder Instance => _instance.Value;
     private static Lazy<PlayerModelHolder> _instance = new Lazy<PlayerModelHolder>();
 
+    public event Action UserModelIsSet = delegate { };
+
     private UniTaskCompletionSource _setUidTcs = new UniTaskCompletionSource();
 
     public string Uid { get; private set; }
@@ -28,6 +30,7 @@ public class PlayerModelHolder
     public void SetUserModel(UserModel userModel)
     {
         UserModel = userModel;
+        UserModelIsSet();
     }
 }
 

@@ -12,7 +12,8 @@ public class MainConfig :
     IPersonalsConfig,
     IUpgradesConfig,
     ILevelsConfig,
-    IDailyBonusConfig
+    IDailyBonusConfig,
+    IFriendActionsConfig
 {
     public readonly int GameplayAtlasVersion;
     public readonly int InterfaceAtlasVersion;
@@ -329,6 +330,16 @@ public class MainConfig :
             _ => null,
         };
     }
+
+    public int GetDefaultActionAmount(FriendShopActionId actionId)
+    {
+        return ActionDefaultAmount;
+    }
+
+    public int GetDefaultActionCooldownMinutes(FriendShopActionId actionId)
+    {
+        return ActionDefaultCooldownMinutes;
+    }
 }
 
 public class ItemConfig<TConfigDto> : IUnlockableConfig
@@ -605,4 +616,10 @@ public interface ILevelsConfig
 public interface IUnlockableConfig
 {
     int UnlockLevel { get; }
+}
+
+public interface IFriendActionsConfig
+{
+    int GetDefaultActionAmount(FriendShopActionId actionId);
+    int GetDefaultActionCooldownMinutes(FriendShopActionId actionId);
 }

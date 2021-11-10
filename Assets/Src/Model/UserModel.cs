@@ -14,8 +14,8 @@ public class UserModel
     public readonly ShopModel ShopModel;
     public readonly UserStatsData StatsData;
     public readonly UserSessionDataModel SessionDataModel;
+    public readonly AllFriendsShopsActionsModel FriendsActionsDataModels;
     public readonly List<int> TutorialSteps;
-    public readonly AvailableFriendShopActionsDataModel ActionsDataModel;
     public readonly UserSettingsModel UserSettingsModel;
     public readonly ExternalActionsModel ExternalActionsModel;
     public readonly int RandomSeed;
@@ -27,7 +27,7 @@ public class UserModel
         UserStatsData statsData,
         UserBonusState bonusState,
         int[] tutorialSteps,
-        AvailableFriendShopActionsDataModel actionsDataModel,
+        AllFriendsShopsActionsModel friendsActionsDataModel,
         UserSettingsModel userSettingsModel,
         ExternalActionsModel externalActionsModel)
     {
@@ -36,7 +36,7 @@ public class UserModel
         ShopModel = shopModel;
         StatsData = statsData;
         BonusState = bonusState;
-        ActionsDataModel = actionsDataModel;
+        FriendsActionsDataModels = friendsActionsDataModel;
         SessionDataModel = new UserSessionDataModel();
         //TutorialSteps = new List<int>(new int[] { 0,1,2,3,4,5,6,7,8 });
         TutorialSteps = new List<int>(tutorialSteps ?? Enumerable.Empty<int>());
@@ -525,47 +525,122 @@ public class OfflineCalculationResult
     }
 }
 
-public class AvailableFriendShopActionsDataModel
+public class AllFriendsShopsActionsModel
 {
-    public const int SupportedActionsCount = 2;
+    public event Action<string, FriendShopActionData> ActionDataAmountChanged = delegate { };
+    public event Action<string, FriendShopActionData> ActionDataCooldownTimestampChanged = delegate { };
 
-    public event Action<AvailableFriendShopActionData> ActionDataAmountChanged = delegate { };
-    public event Action<AvailableFriendShopActionData> ActionDataCooldownTimestampChanged = delegate { };
+    private readonly Dictionary<string, FriendShopActionsModel> _friendShopActionsModelById = new Dictionary<string, FriendShopActionsModel>();
 
-    private readonly Dictionary<FriendShopActionId, AvailableFriendShopActionData> _actionsById = new Dictionary<FriendShopActionId, AvailableFriendShopActionData>();
-
-    public AvailableFriendShopActionsDataModel(AvailableFriendShopActionData[] actionsData)
+    public AllFriendsShopsActionsModel()
     {
-        foreach (var actionData in actionsData)
+    }
+
+    public AllFriendsShopsActionsModel(IEnumerable<FriendShopActionsModel> actionsModels)
+        : this()
+    {
+        foreach (var actionsModel in actionsModels)
         {
-            _actionsById[actionData.ActionId] = actionData;
-            actionData.AmountChanged += OnActionDataAmountChanged;
-            actionData.EndCooldownTimestampChanged += OnActionDataCooldownTimestampChanged;
+            _friendShopActionsModelById[actionsModel.FriendId] = actionsModel;
+            Subscribe(actionsModel);
         }
     }
 
-    private void OnActionDataCooldownTimestampChanged(AvailableFriendShopActionData actionData)
+    public IReadOnlyDictionary<string, FriendShopActionsModel> FriendShopActionsModelByUid => _friendShopActionsModelById;
+
+    public FriendShopActionsModel GetFriendShopActionsModel(string friendId)
     {
-        ActionDataCooldownTimestampChanged(actionData);
+        return _friendShopActionsModelById[friendId];
     }
 
-    private void OnActionDataAmountChanged(AvailableFriendShopActionData actionData)
+    public void AddActionsModelForUid(string friendId)
     {
-        ActionDataAmountChanged(actionData);
+        var actionsModel = new FriendShopActionsModel(friendId);
+        _friendShopActionsModelById[friendId] = actionsModel;
+        Subscribe(actionsModel);
     }
 
-    public IEnumerable<AvailableFriendShopActionData> ActionsData => _actionsById.Values;
-    public IReadOnlyDictionary<FriendShopActionId, AvailableFriendShopActionData> ActionsById => _actionsById;
+    private void Subscribe(FriendShopActionsModel actionsModel)
+    {
+        actionsModel.ActionDataAmountChanged += OnActionDataAmountChanged;
+        actionsModel.ActionDataCooldownTimestampChanged += OnActionDataCooldownTimestampChanged;
+    }
+
+    private void OnActionDataAmountChanged(string friendUid, FriendShopActionData actionData)
+    {
+        ActionDataAmountChanged(friendUid, actionData);
+    }
+
+    private void OnActionDataCooldownTimestampChanged(string friendUid, FriendShopActionData actionData)
+    {
+        ActionDataCooldownTimestampChanged(friendUid, actionData);
+    }
 }
 
-public class AvailableFriendShopActionData
+public class FriendShopActionsModel
 {
-    public event Action<AvailableFriendShopActionData> AmountChanged = delegate { };
-    public event Action<AvailableFriendShopActionData> EndCooldownTimestampChanged = delegate { };
+    public static readonly FriendShopActionId[] SupportedActions = new FriendShopActionId[] {
+        FriendShopActionId.AddUnwash,
+        FriendShopActionId.Take
+    };
+
+    public event Action<string, FriendShopActionData> ActionDataAmountChanged = delegate { };
+    public event Action<string, FriendShopActionData> ActionDataCooldownTimestampChanged = delegate { };
+
+    public readonly string FriendId;
+
+    private readonly Dictionary<FriendShopActionId, FriendShopActionData> _actionsById = new Dictionary<FriendShopActionId, FriendShopActionData>();
+
+    public FriendShopActionsModel(string friendId)
+    {
+        FriendId = friendId;
+    }
+
+    public FriendShopActionsModel(string friendId, IEnumerable<FriendShopActionData> actionsData)
+        : this(friendId)
+    {
+        foreach (var actionData in actionsData)
+        {
+            AddActionData(actionData);
+        }
+    }
+
+    public bool AddActionData(FriendShopActionData friendShopActionData)
+    {
+        var friendShopActionId = friendShopActionData.ActionId;
+
+        if (_actionsById.ContainsKey(friendShopActionId)
+            || Array.IndexOf(SupportedActions, friendShopActionId) < 0) return false;
+
+        _actionsById[friendShopActionId] = friendShopActionData;
+        friendShopActionData.AmountChanged += OnActionDataAmountChanged;
+        friendShopActionData.EndCooldownTimestampChanged += OnActionDataCooldownTimestampChanged;
+
+        return true;
+    }
+
+    private void OnActionDataCooldownTimestampChanged(FriendShopActionData actionData)
+    {
+        ActionDataCooldownTimestampChanged(FriendId, actionData);
+    }
+
+    private void OnActionDataAmountChanged(FriendShopActionData actionData)
+    {
+        ActionDataAmountChanged(FriendId, actionData);
+    }
+
+    public IEnumerable<FriendShopActionData> ActionsData => _actionsById.Values;
+    public IReadOnlyDictionary<FriendShopActionId, FriendShopActionData> ActionsById => _actionsById;
+}
+
+public class FriendShopActionData
+{
+    public event Action<FriendShopActionData> AmountChanged = delegate { };
+    public event Action<FriendShopActionData> EndCooldownTimestampChanged = delegate { };
 
     public readonly FriendShopActionId ActionId;
 
-    public AvailableFriendShopActionData(FriendShopActionId actionId, int restAmount, int endCooldownTimestamp = 0)
+    public FriendShopActionData(FriendShopActionId actionId, int restAmount, int endCooldownTimestamp = 0)
     {
         ActionId = actionId;
         RestAmount = restAmount;

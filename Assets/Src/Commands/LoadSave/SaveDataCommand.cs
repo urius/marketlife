@@ -67,7 +67,7 @@ public struct SaveDataCommand
             result[Constants.FieldTutorialSteps] = dataExporter.ExportTutorialSteps(userModel);
         }
 
-        if (CheckSaveField(saveFields, SaveField.AvailableActionsData))
+        if (CheckSaveField(saveFields, SaveField.FriendsActionsData))
         {
             result[Constants.FieldAvailableActionsData] = dataExporter.ExportAvailableActionsData(userModel);
         }

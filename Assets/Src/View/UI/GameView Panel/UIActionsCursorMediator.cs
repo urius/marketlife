@@ -13,7 +13,7 @@ public class UIActionsCursorMediator : IMediator
 
     private PlacingProductView _actionCursorView;
     private ProductModel _placingProductModel;
-    private AvailableFriendShopActionsDataModel _playerActionsDataModel;
+    private AllFriendsShopsActionsModel _friendsActionsDataModel;
 
     public UIActionsCursorMediator(RectTransform contentTransform)
     {
@@ -29,7 +29,7 @@ public class UIActionsCursorMediator : IMediator
 
     public void Mediate()
     {
-        _playerActionsDataModel = _playerModelHolder.UserModel.ActionsDataModel;
+        _friendsActionsDataModel = _playerModelHolder.UserModel.FriendsActionsDataModels;
         _gameStateModel.ActionStateChanged += OnActionStateChanged;
     }
 
@@ -94,15 +94,15 @@ public class UIActionsCursorMediator : IMediator
 
     private void SubscribeOnActionAmountChanged()
     {
-        _playerActionsDataModel.ActionDataAmountChanged += OnActionAmountChanged;
+        _friendsActionsDataModel.ActionDataAmountChanged += OnActionAmountChanged;
     }
 
     private void UnsubscribeFromActionAmountChanged()
     {
-        _playerActionsDataModel.ActionDataAmountChanged -= OnActionAmountChanged;
+        _friendsActionsDataModel.ActionDataAmountChanged -= OnActionAmountChanged;
     }
 
-    private void OnActionAmountChanged(AvailableFriendShopActionData friendShopActionData)
+    private void OnActionAmountChanged(string friendId, FriendShopActionData friendShopActionData)
     {
         UpdateAmount();
     }
@@ -161,7 +161,8 @@ public class UIActionsCursorMediator : IMediator
 
     private void UpdateActionAmount(FriendShopActionId actionId)
     {
-        var actionData = _playerActionsDataModel.ActionsById[actionId];
+        var friendUid = _gameStateModel.ViewingUserModel.Uid;
+        var actionData = _friendsActionsDataModel.GetFriendShopActionsModel(friendUid).ActionsById[actionId];
         _actionCursorView.SetText($"{actionData.RestAmount}x");
     }
 }

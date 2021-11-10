@@ -7,7 +7,7 @@ public class FriendsDataHolder
     public static FriendsDataHolder Instance => _instance.Value;
     private static readonly Lazy<FriendsDataHolder> _instance = new Lazy<FriendsDataHolder>();
 
-    public event Action FriendsDataIsSet = delegate { };
+    public event Action FriendsDataWasSetup = delegate { };
 
     private FriendData[] _friends;
 
@@ -17,18 +17,18 @@ public class FriendsDataHolder
 
     public int InGameFriendsCount => _friends?.Length ?? 0;
     public IReadOnlyList<FriendData> Friends => _friends ?? Array.Empty<FriendData>();
+    public bool FriendsDataIsSet => _friends != null;
 
     public void SetupFriendsData(FriendData[] friendsData)
     {
         _friends = friendsData;
-        FriendsDataIsSet();
+        FriendsDataWasSetup();
     }
 
     public FriendData GetFriendData(string uid)
     {
         return _friends.FirstOrDefault(d => d.Uid == uid);
     }
-
 }
 
 public class FriendData

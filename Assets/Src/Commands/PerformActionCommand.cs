@@ -65,13 +65,13 @@ public struct PerformActionCommand
         var result = false;
 
         var playerModel = PlayerModelHolder.Instance.UserModel;
-        var playerActionsDataModel = playerModel.ActionsDataModel;
-        var gameStateModel = GameStateModel.Instance;
         var viewingUserModel = GameStateModel.Instance.ViewingUserModel;
         var viewingShopModel = viewingUserModel.ShopModel;
+        var friendActionsDataModel = playerModel.FriendsActionsDataModels.GetFriendShopActionsModel(viewingUserModel.Uid);
+        var gameStateModel = GameStateModel.Instance;
         var mouseCellCoordsProvider = MouseDataProvider.Instance;
         var actionId = FriendShopActionId.AddUnwash;
-        var actionData = playerActionsDataModel.ActionsById[actionId];
+        var actionData = friendActionsDataModel.ActionsById[actionId];
         var screenCalculator = ScreenCalculator.Instance;
         var dispatcher = Dispatcher.Instance;
         var coords = mouseCellCoordsProvider.MouseCellCoords;
@@ -99,10 +99,11 @@ public struct PerformActionCommand
 
             if (actionData.RestAmount <= 0)
             {
-                ResetActionData(actionId);
+                ResetActionData(viewingUserModel.Uid, actionId);
                 gameStateModel.ResetActionState();
             }
-        } else
+        }
+        else
         {
             var screenCoords = screenCalculator.CellToScreenPoint(coords);
             dispatcher.UIRequestFlyingText(screenCoords, loc.GetLocalization(LocalizationKeys.FlyingTextUnwashCantBePlacedOutside));
@@ -116,13 +117,13 @@ public struct PerformActionCommand
         var result = false;
 
         var dispatcher = Dispatcher.Instance;
+        var gameStateModel = GameStateModel.Instance;
+        var viewingUserModel = gameStateModel.ViewingUserModel;
         var playerModel = PlayerModelHolder.Instance.UserModel;
         var playerWarehouseModel = playerModel.ShopModel.WarehouseModel;
-        var playerActionsDataModel = playerModel.ActionsDataModel;
-        var gameStateModel = GameStateModel.Instance;
+        var playerActionsDataModel = playerModel.FriendsActionsDataModels.GetFriendShopActionsModel(viewingUserModel.Uid);
         var highlightState = gameStateModel.HighlightState;
         var highlightedShopObject = highlightState.HighlightedShopObject;
-        var viewingUserModel = gameStateModel.ViewingUserModel;
         var actionId = FriendShopActionId.Take;
         var actionData = playerActionsDataModel.ActionsById[actionId];
         var screenCalculator = ScreenCalculator.Instance;
@@ -169,21 +170,21 @@ public struct PerformActionCommand
 
         if (actionData.RestAmount <= 0)
         {
-            ResetActionData(actionId);
+            ResetActionData(viewingUserModel.Uid, actionId);
             gameStateModel.ResetActionState();
         }
 
         return result;
     }
 
-    private void ResetActionData(FriendShopActionId actionId)
+    private void ResetActionData(string friendUId, FriendShopActionId actionId)
     {
         var gameStateModel = GameStateModel.Instance;
-        var actionsDataModel = PlayerModelHolder.Instance.UserModel.ActionsDataModel;
-        var mainConfig = GameConfigManager.Instance.MainConfig;
+        var actionsDataModel = PlayerModelHolder.Instance.UserModel.FriendsActionsDataModels.GetFriendShopActionsModel(friendUId);
+        var actionsConfig = GameConfigManager.Instance.FriendActionsConfig;
 
-        actionsDataModel.ActionsById[actionId].SetEndCooldownTime(mainConfig.ActionDefaultCooldownMinutes * 60 + gameStateModel.ServerTime);
-        actionsDataModel.ActionsById[actionId].SetAmount(mainConfig.ActionDefaultAmount);
+        actionsDataModel.ActionsById[actionId].SetEndCooldownTime(actionsConfig.GetDefaultActionCooldownMinutes(actionId) * 60 + gameStateModel.ServerTime);
+        actionsDataModel.ActionsById[actionId].SetAmount(actionsConfig.GetDefaultActionAmount(actionId));
     }
 
     private bool PlaceProductOnHighlightedShelf()

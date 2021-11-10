@@ -130,13 +130,23 @@ public class DataExporter
 
     public string[] ExportAvailableActionsData(UserModel userModel)
     {
-        var result = new List<string>(AvailableFriendShopActionsDataModel.SupportedActionsCount);
-        foreach (var actionData in userModel.ActionsDataModel.ActionsData)
+        var friendsActionsDataModels = userModel.FriendsActionsDataModels;
+
+        var result = new List<string>(friendsActionsDataModels.FriendShopActionsModelByUid.Count);
+        foreach (var kvp in friendsActionsDataModels.FriendShopActionsModelByUid)
         {
-            result.Add($"{actionData.ActionIdInt}|{actionData.RestAmount}|{actionData.EndCooldownTimestamp}");
+            result.Add($"{kvp.Key}:{ExportFriendActionsDataStr(kvp.Value)}");
         }
 
         return result.ToArray();
+    }
+
+    private string ExportFriendActionsDataStr(FriendShopActionsModel actionsModel)
+    {
+        var resultArr = actionsModel.ActionsData
+            .Select(a => $"{(int)a.ActionId}|{a.RestAmount}|{a.EndCooldownTimestamp}")
+            .ToArray();
+        return string.Join(",", resultArr);
     }
 
     private string ExportAction(ExternalActionModelBase action)

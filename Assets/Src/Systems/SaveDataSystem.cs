@@ -56,7 +56,7 @@ public class SaveDataSystem
     private void Activate()
     {
         var progressModel = _playerModel.ProgressModel;
-        var actionsDataModel = _playerModel.ActionsDataModel;
+        var actionsDataModel = _playerModel.FriendsActionsDataModels;
         var designModel = _shopModel.ShopDesign;
         var warehouseModel = _shopModel.WarehouseModel;
         var personalModel = _shopModel.PersonalModel;
@@ -152,14 +152,14 @@ public class SaveDataSystem
         }
     }
 
-    private void OnActionDataAmountChanged(AvailableFriendShopActionData actionData)
+    private void OnActionDataAmountChanged(string friendId, FriendShopActionData actionData)
     {
-        MarkToSaveField(SaveField.AvailableActionsData);
+        MarkToSaveField(SaveField.FriendsActionsData);
     }
 
-    private void OnActionDataCooldownTimestampChanged(AvailableFriendShopActionData actionData)
+    private void OnActionDataCooldownTimestampChanged(string friendId, FriendShopActionData actionData)
     {
-        MarkToSaveField(SaveField.AvailableActionsData);
+        MarkToSaveField(SaveField.FriendsActionsData);
         TriggerSave();
     }
 
@@ -424,9 +424,9 @@ public enum SaveField
     ShopObjects = 1 << 4,
     Unwashes = 1 << 5,
     TutorialSteps = 1 << 6,
-    AvailableActionsData = 1 << 7,
+    FriendsActionsData = 1 << 7,
     Bonus = 1 << 8,
     Settings = 1 << 9,
     Billboard = 1 << 10,
-    All = Progress | Personal | Warehouse | Design | ShopObjects | Unwashes | TutorialSteps | AvailableActionsData | Bonus | Settings | Billboard,
+    All = Progress | Personal | Warehouse | Design | ShopObjects | Unwashes | TutorialSteps | FriendsActionsData | Bonus | Settings | Billboard,
 }

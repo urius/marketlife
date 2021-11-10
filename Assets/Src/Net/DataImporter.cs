@@ -25,7 +25,7 @@ public class DataImporter
             new ShopBillboardModel());
 
         return new UserModel(dto.data.uid, shopProgress, shopModel, new UserStatsData(), new UserBonusState(), null,
-            new AvailableFriendShopActionsDataModel(Array.Empty<AvailableFriendShopActionData>()), new UserSettingsModel(false, false), new ExternalActionsModel());
+            new AllFriendsShopsActionsModel(Enumerable.Empty<FriendShopActionsModel>()), new UserSettingsModel(false, false), new ExternalActionsModel());
     }
 
     public UserModel Import(GetDataResponseDto deserializedData)
@@ -34,7 +34,7 @@ public class DataImporter
         var shopModel = ToShopModel(dataDto);
         var shopProgress = ToProgressModel(dataDto.progress);
         var statsData = new UserStatsData(deserializedData.first_visit_time, deserializedData.last_visit_time, deserializedData.days_play);
-        var actionsDataModel = ToAvailableActionsDataModel(dataDto.actions_data);
+        var actionsDataModel = ToFriendShopActionsModels(dataDto.actions_data);
         var bonusState = ToBonusState(dataDto.bonus);
         var settingsModel = ToSettingsModel(dataDto.settings);
         var externalActionsModel = ToExternalActionsModel(deserializedData.external_data);
@@ -97,35 +97,39 @@ public class DataImporter
         return null;
     }
 
-    private AvailableFriendShopActionsDataModel ToAvailableActionsDataModel(string[] actionsDataRaw)
+    //"actions_data": ["1|9|0", "2|10|1636379172"]
+    //"actions_data": ["48982:1|9|0,2|10|1636379172"]
+    private AllFriendsShopsActionsModel ToFriendShopActionsModels(string[] actionsDataRaw)
     {
-        var actionsDataConverted = new AvailableFriendShopActionData[actionsDataRaw != null ? actionsDataRaw.Length : 0];
         if (actionsDataRaw != null)
         {
-            for (var i = 0; i < actionsDataRaw.Length; i++)
-            {
-                var actionDataStr = actionsDataRaw[i];
-                var splitted = actionDataStr.Split('|');
-                var id = (FriendShopActionId)int.Parse(splitted[0]);
-                var amountRest = int.Parse(splitted[1]);
-                var endCooldownTimestamp = int.Parse(splitted[2]);
-                actionsDataConverted[i] = new AvailableFriendShopActionData(id, amountRest, endCooldownTimestamp);
-            }
+            var actionModels = actionsDataRaw
+                .Where(d => d.IndexOf(':') > 0)
+                .Select(ToFriendShopActionsModel);
+            return new AllFriendsShopsActionsModel(actionModels);
         }
 
-        var actionsDataResult = new AvailableFriendShopActionData[AvailableFriendShopActionsDataModel.SupportedActionsCount];
-        var mainConfig = GameConfigManager.Instance.MainConfig;
-        for (var i = 0; i < AvailableFriendShopActionsDataModel.SupportedActionsCount; i++)
+        return new AllFriendsShopsActionsModel();
+    }
+
+    private FriendShopActionsModel ToFriendShopActionsModel(string dataStr)
+    {
+        var splitted = dataStr.Split(':');
+        var userIdStr = splitted[0];
+        splitted = splitted[1].Split(',');
+
+        var actionsData = new FriendShopActionData[splitted.Length];
+        for (var i = 0; i < splitted.Length; i++)
         {
-            var actionId = i + 1;
-            var haveAction = actionsDataConverted.Any(a => (int)a.ActionId == actionId);
-            var actionData = haveAction ?
-                actionsDataConverted.First(a => (int)a.ActionId == actionId) :
-                new AvailableFriendShopActionData((FriendShopActionId)actionId, mainConfig.ActionDefaultAmount);
-            actionsDataResult[i] = actionData;
+            var actionDataStr = splitted[i];
+            var splitted1 = actionDataStr.Split('|');
+            var actionId = (FriendShopActionId)int.Parse(splitted1[0]);
+            var amountRest = int.Parse(splitted1[1]);
+            var endCooldownTimestamp = int.Parse(splitted1[2]);
+            actionsData[i] = new FriendShopActionData(actionId, amountRest, endCooldownTimestamp);
         }
 
-        return new AvailableFriendShopActionsDataModel(actionsDataResult);
+        return new FriendShopActionsModel(userIdStr, actionsData);
     }
 
     private ShopModel ToShopModel(UserDataDto dataDto)

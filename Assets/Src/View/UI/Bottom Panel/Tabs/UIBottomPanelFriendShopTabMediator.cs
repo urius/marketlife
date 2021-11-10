@@ -14,7 +14,8 @@ public class UIBottomPanelFriendShopTabMediator : UIBottomPanelTabMediatorBase
 
     //
     private UIBottomPanelFriendsTabView _tabView;
-    private AvailableFriendShopActionsDataModel _playerAvailableActionsDataModel;
+    private string _viewingFriendUid;
+    private FriendShopActionsModel _playerAvailableActionsDataModel;
     private FriendData _viewingFriendSocialData;
 
     public UIBottomPanelFriendShopTabMediator(BottomPanelView view) : base(view)
@@ -34,8 +35,9 @@ public class UIBottomPanelFriendShopTabMediator : UIBottomPanelTabMediatorBase
     {
         base.Mediate();
 
-        _playerAvailableActionsDataModel = _playerModelHolder.UserModel.ActionsDataModel;
-        _viewingFriendSocialData = _friendsDataHolder.GetFriendData(_gameStateModel.ViewingUserModel.Uid);
+        _viewingFriendUid = _gameStateModel.ViewingUserModel.Uid;
+        _playerAvailableActionsDataModel = _playerModelHolder.UserModel.FriendsActionsDataModels.GetFriendShopActionsModel(_viewingFriendUid);
+        _viewingFriendSocialData = _friendsDataHolder.GetFriendData(_viewingFriendUid);
         var tabViewGo = GameObject.Instantiate(_prefabsHolder.UIBottomPanelFriendTabPrefab, View.transform);
         _tabView = tabViewGo.GetComponent<UIBottomPanelFriendsTabView>();
         SetupView();
@@ -92,7 +94,7 @@ public class UIBottomPanelFriendShopTabMediator : UIBottomPanelTabMediatorBase
         SetupActionButtonView(FriendShopActionId.AddUnwash);
     }
 
-    private void OnActionDataAmountChanged(AvailableFriendShopActionData actionData)
+    private void OnActionDataAmountChanged(string friendId, FriendShopActionData actionData)
     {
         var view = GetViewByActionId(actionData.ActionId);
         if (view != null)
@@ -101,7 +103,7 @@ public class UIBottomPanelFriendShopTabMediator : UIBottomPanelTabMediatorBase
         }
     }
 
-    private void OnActionDataCooldownTimestampChanged(AvailableFriendShopActionData actionData)
+    private void OnActionDataCooldownTimestampChanged(string friendId, FriendShopActionData actionData)
     {
         SetupActionButtonView(actionData.ActionId);
     }
@@ -177,12 +179,12 @@ public class UIBottomPanelFriendShopTabMediator : UIBottomPanelTabMediatorBase
         }
     }
 
-    private void UpdateAmount(UIBottomPanelFriendTabActionButtonView actionView, AvailableFriendShopActionData actionData)
+    private void UpdateAmount(UIBottomPanelFriendTabActionButtonView actionView, FriendShopActionData actionData)
     {
         actionView.SetAmountText(actionData.RestAmount.ToString());
     }
 
-    private void UpdateCooldownTime(UIBottomPanelFriendTabActionButtonView actionView, AvailableFriendShopActionData actionData)
+    private void UpdateCooldownTime(UIBottomPanelFriendTabActionButtonView actionView, FriendShopActionData actionData)
     {
         actionView.SetTimeText(FormattingHelper.ToSeparatedTimeFormat(actionData.EndCooldownTimestamp - _gameStateModel.ServerTime));
     }

@@ -21,6 +21,7 @@ public class GameConfigManager : ScriptableObject
     public IUpgradesConfig UpgradesConfig => MainConfig;
     public ILevelsConfig LevelsConfig => MainConfig;
     public IDailyBonusConfig DailyBonusConfig => MainConfig;
+    public IFriendActionsConfig FriendActionsConfig => MainConfig;
 
     public async UniTask<bool> LoadConfigAsync()
     {

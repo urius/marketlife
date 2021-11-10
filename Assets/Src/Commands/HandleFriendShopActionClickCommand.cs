@@ -3,8 +3,9 @@ public struct HandleFriendShopActionClickCommand
     public void Execute(FriendShopActionId actionId, bool isBuyClicked)
     {
         var gameStateModel = GameStateModel.Instance;
+        var viewingUserModel = gameStateModel.ViewingUserModel;
         var playerModel = PlayerModelHolder.Instance.UserModel;
-        var playerActionsDataModel = playerModel.ActionsDataModel;
+        var friendActionsDataModel = playerModel.FriendsActionsDataModels.GetFriendShopActionsModel(viewingUserModel.Uid);
         var mainConfig = GameConfigManager.Instance.MainConfig;
         var dispatcher = Dispatcher.Instance;
         var analyticsManager = AnalyticsManager.Instance;
@@ -29,7 +30,7 @@ public struct HandleFriendShopActionClickCommand
             var success = playerModel.TrySpendMoney(price);
             if (success)
             {
-                playerActionsDataModel.ActionsById[actionId].SetEndCooldownTime(gameStateModel.ServerTime - 1);
+                friendActionsDataModel.ActionsById[actionId].SetEndCooldownTime(gameStateModel.ServerTime - 1);
             }
             else
             {

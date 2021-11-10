@@ -44,13 +44,13 @@ public class UIBottomPanelFriendsTabMediator : UIBottomPanelScrollItemsTabMediat
 
     private void Activate()
     {
-        _friendsDataHolder.FriendsDataIsSet += OnFriendsDataSet;
+        _friendsDataHolder.FriendsDataWasSetup += OnFriendsDataSet;
         _avatarsManager.AvatarLoadedForId += OnAvatarLoadedForId;
     }
 
     private void Deactivate()
     {
-        _friendsDataHolder.FriendsDataIsSet -= OnFriendsDataSet;
+        _friendsDataHolder.FriendsDataWasSetup -= OnFriendsDataSet;
         _avatarsManager.AvatarLoadedForId -= OnAvatarLoadedForId;
     }
 

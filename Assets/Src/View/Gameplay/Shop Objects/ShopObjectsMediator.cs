@@ -84,7 +84,7 @@ public class ShopObjectsMediator : MonoBehaviour
             var coords = new Vector2Int(
                 _random.Next(-treesPadding, shopDesignModel.SizeX + treesPadding),
                 _random.Next(-treesPadding, shopDesignModel.SizeY + treesPadding));
-            if (coords != _billboardCoords
+            if (IsNearBillboard(coords) == false
                 && (coords.x < -treesGap
                 || coords.y < -treesGap
                 || coords.x > shopDesignModel.SizeX + treesGap
@@ -116,6 +116,15 @@ public class ShopObjectsMediator : MonoBehaviour
             GameObject.Destroy(item.gameObject);
             _treesList.RemoveAt(lastIndex);
         }
+    }
+
+    private bool IsNearBillboard(Vector2Int coords)
+    {
+        const int distance = 2;
+        return coords.x >= _billboardCoords.x - distance
+            && coords.x <= _billboardCoords.x + distance
+            && coords.y >= _billboardCoords.y - distance
+            && coords.y <= _billboardCoords.y + distance;
     }
 
     private void ForgetCurrentShopModel()

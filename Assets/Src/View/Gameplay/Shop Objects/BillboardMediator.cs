@@ -8,7 +8,6 @@ public class BillboardMediator : IMediator
     private readonly PrefabsHolder _prefabsHolder;
     private readonly GridCalculator _gridCalculator;
     private readonly UpdatesProvider _updatesProvider;
-    private readonly MouseDataProvider _mouseDataProvider;
     private readonly Dispatcher _dispatcher;
     private readonly TutorialUIElementsProvider _tutorialUIElementsProvider;
     private readonly Vector2Int _billboardCellCoords;
@@ -28,7 +27,6 @@ public class BillboardMediator : IMediator
         _prefabsHolder = PrefabsHolder.Instance;
         _gridCalculator = GridCalculator.Instance;
         _updatesProvider = UpdatesProvider.Instance;
-        _mouseDataProvider = MouseDataProvider.Instance;
         _dispatcher = Dispatcher.Instance;
         _tutorialUIElementsProvider = TutorialUIElementsProvider.Instance;
 

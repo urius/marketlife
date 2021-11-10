@@ -146,8 +146,12 @@ public struct PerformActionCommand
                     var takenAmount = playerWarehouseModel.AddProduct(productConfig, amountToTake);
                     if (takenAmount > 0)
                     {
-                        slot.ChangeProductAmount(-amountToTake);
-                        viewingUserModel.ExternalActionsModel.AddAction(new ExternalActionTake(playerModel.Uid, shelf.Coords, productConfig, amountToTake));
+                        var securityEndWorkTime = viewingUserModel.ShopModel.PersonalModel.GetMaxEndWorkTimeForPersonalType(PersonalType.Security);
+                        if (securityEndWorkTime < gameStateModel.ServerTime)
+                        {
+                            slot.ChangeProductAmount(-amountToTake);
+                            viewingUserModel.ExternalActionsModel.AddAction(new ExternalActionTake(playerModel.Uid, shelf.Coords, productConfig, amountToTake));
+                        }
                         actionData.SetAmount(actionData.RestAmount - 1);
                         break;
                     }

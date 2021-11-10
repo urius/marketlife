@@ -318,25 +318,15 @@ public class UserModel
             }
         }
 
-        var securityEndWorkTime = ShopModel.PersonalModel.GetMaxEndWorkTimeForPersonalType(PersonalType.Security);
-        var grabMultiplier = 1f;
-        if (securityEndWorkTime > startCalculationTime)
-        {
-            grabMultiplier = (targetTime - Math.Min(targetTime, securityEndWorkTime)) / (targetTime - startCalculationTime);
-        }
-
         var restProductsDict = restProducts.ToDictionary(m => m.Config, m => m.Amount);
-        if (grabMultiplier > 0)
+        var grabbedProductConfigs = grabbedProductsDict.Keys.ToArray();
+        foreach (var productConfig in grabbedProductConfigs)
         {
-            var grabbedProductConfigs = grabbedProductsDict.Keys.ToArray();
-            foreach (var productConfig in grabbedProductConfigs)
+            if (restProductsDict.ContainsKey(productConfig))
             {
-                if (restProductsDict.ContainsKey(productConfig))
-                {
-                    var restAmount = restProductsDict[productConfig];
-                    var amountTaken = Math.Min(restAmount, (int)Math.Floor(grabbedProductsDict[productConfig] * grabMultiplier));
-                    grabbedProductsDict[productConfig] = amountTaken;
-                }
+                var restAmount = restProductsDict[productConfig];
+                var amountTaken = Math.Min(restAmount, grabbedProductsDict[productConfig]);
+                grabbedProductsDict[productConfig] = amountTaken;
             }
         }
 

@@ -7,6 +7,8 @@ public class UserSessionDataModel
     public event Action<CustomerModel> CustomerAdded = delegate { };
     public event Action<CustomerModel> CustomerRemoved = delegate { };
 
+    public readonly Dictionary<ProductConfig, ProductInfoForBuy> ProductsData = new Dictionary<ProductConfig, ProductInfoForBuy>();
+
     public int SpawnCooldown = 0;
 
     private readonly List<CustomerModel> _customers = new List<CustomerModel>(Constants.MaxCustomersCount);

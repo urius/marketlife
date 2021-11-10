@@ -18,7 +18,6 @@ public class HumansControlSystem
     private ShelfModel[] _allShelfs;
     private WalkableCellsProvider _cellsProvider;
     private WalkableCellsConsiderHumansProvider _cellsConsiderHumansProvider;
-    private Dictionary<ProductConfig, ProductInfoForBuy> _productsData = new Dictionary<ProductConfig, ProductInfoForBuy>();
 
     public HumansControlSystem()
     {
@@ -336,7 +335,10 @@ public class HumansControlSystem
                 {
                     var productBuyInfo = GetProductInfoForBuying(slot.Product);
                     var moodMultiplier = _viewingUserModel.ShopModel.MoodMultiplier;
-                    if (productBuyInfo.TakenAmount < productBuyInfo.CanTakeMaxAmount || (moodMultiplier >= 0.5 && Random.Range(0, 2) <= moodMultiplier))
+                    if (productBuyInfo.TakenAmount < productBuyInfo.CanTakeMaxAmount
+                        || (_viewingUserModel.ProgressModel.Level < 10
+                            && moodMultiplier >= 0.5
+                            && Random.Range(0, 2) <= moodMultiplier))
                     {
                         var product = slot.Product;
                         var productConfig = product.Config;
@@ -414,15 +416,16 @@ public class HumansControlSystem
 
     private ProductInfoForBuy GetProductInfoForBuying(ProductModel product)
     {
-        if (_productsData.ContainsKey(product.Config) == false)
+        var productsData = _viewingSessionDataModel.ProductsData;
+        if (productsData.ContainsKey(product.Config) == false)
         {
-            _productsData[product.Config] = new ProductInfoForBuy();
+            productsData[product.Config] = new ProductInfoForBuy();
         }
         var hoursPassed = Time.realtimeSinceStartup / 3600f;
         var demandMultiplier = product.Config.Demand * hoursPassed * _viewingShopModel.MoodMultiplier;
-        _productsData[product.Config].CanTakeMaxAmount = CalculationHelper.GetIntegerDemand(demandMultiplier);
+        productsData[product.Config].CanTakeMaxAmount = CalculationHelper.GetIntegerDemand(demandMultiplier);
 
-        return _productsData[product.Config];
+        return productsData[product.Config];
     }
 
     private Mood GetCostumerMood()

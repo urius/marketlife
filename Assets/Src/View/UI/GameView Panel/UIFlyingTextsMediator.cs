@@ -48,23 +48,32 @@ public class UIFlyingTextsMediator : IMediator
 
     private void OnUIRequestFlyingExp(Vector2 screenPoint, int expAmount)
     {
-        var icon = _spritesProvider.GetStarIcon(isBig: false);
-        var view = CreateFlyingTextWithIcon(screenPoint, icon, expAmount);
-        ShowAsFlyingText(view, screenPoint);
+        if (ScreenPointIsOnScreen(screenPoint) == true)
+        {
+            var icon = _spritesProvider.GetStarIcon(isBig: false);
+            var view = CreateFlyingTextWithIcon(screenPoint, icon, expAmount);
+            ShowAsFlyingText(view, screenPoint);
+        }
     }
 
     private void OnUIRequestFlyingProduct(Vector2 screenPoint, string productKey, int amount)
     {
-        var icon = _spritesProvider.GetProductIcon(productKey);
-        var flyingPriceView = CreateFlyingTextWithIcon(screenPoint, icon, amount);
-        ShowAsFlyingText(flyingPriceView, screenPoint, amount < 0);
+        if (ScreenPointIsOnScreen(screenPoint) == true)
+        {
+            var icon = _spritesProvider.GetProductIcon(productKey);
+            var flyingPriceView = CreateFlyingTextWithIcon(screenPoint, icon, amount);
+            ShowAsFlyingText(flyingPriceView, screenPoint, amount < 0);
+        }
     }
 
     private void OnUIRequestFlyingPrice(Vector2 screenPoint, bool isGold, int amount)
     {
-        var priceIcon = isGold ? _spritesProvider.GetGoldIcon() : _spritesProvider.GetCashIcon();
-        var flyingPriceView = CreateFlyingTextWithIcon(screenPoint, priceIcon, amount);
-        ShowAsFlyingText(flyingPriceView, screenPoint);
+        if (ScreenPointIsOnScreen(screenPoint) == true)
+        {
+            var priceIcon = isGold ? _spritesProvider.GetGoldIcon() : _spritesProvider.GetCashIcon();
+            var flyingPriceView = CreateFlyingTextWithIcon(screenPoint, priceIcon, amount);
+            ShowAsFlyingText(flyingPriceView, screenPoint);
+        }
     }
 
     private UIFlyingTextView CreateFlyingTextWithIcon(Vector2 screenPoint, Sprite image, int amount)
@@ -86,8 +95,17 @@ public class UIFlyingTextsMediator : IMediator
 
     private void OnUIRequestFlyingText(Vector2 screenPoint, string text)
     {
-        var flyingPriceView = CreateFlyingText(screenPoint, text);
-        ShowAsFlyingText(flyingPriceView, screenPoint);
+        if (ScreenPointIsOnScreen(screenPoint) == true)
+        {
+            var flyingPriceView = CreateFlyingText(screenPoint, text);
+            ShowAsFlyingText(flyingPriceView, screenPoint);
+        }
+    }
+
+    private bool ScreenPointIsOnScreen(Vector2 screenPoint)
+    {
+        if (screenPoint.x > Screen.width || screenPoint.x < 0 || screenPoint.y > Screen.height || screenPoint.y < 0) return false;
+        return true;
     }
 
     private UIFlyingTextView CreateFlyingText(Vector2 screenPoint, string text)

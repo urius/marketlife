@@ -588,6 +588,7 @@ public class ShoDesignModel
 
     public int SizeX { get; private set; }
     public int SizeY { get; private set; }
+    public int Square => SizeX * SizeY;
 
     public void SetSizeX(int value)
     {

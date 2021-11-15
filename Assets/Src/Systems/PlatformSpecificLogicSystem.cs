@@ -89,6 +89,13 @@ public class VKLogicModule : PlatformSpecificLogicModuleBase
         _dispatcher.UIOfflineReportShareClicked += OnUIOfflineReportShareClicked;
         _dispatcher.UIViewAdsClicked += OnUIViewAdsClicked;
         _dispatcher.UIBankAdsItemClicked += OnUIBankAdsItemClicked;
+        _dispatcher.RequestNotifyInactiveFriend += OnRequestNotifyInactiveFriend;
+    }
+
+    private void OnRequestNotifyInactiveFriend(string friendUid)
+    {
+        _jsBridge.SendCommandToJs("NotifyInactiveFriend", new NotifyInactiveFriendJsPayload(friendUid));
+        AnalyticsManager.Instance.SendCustom(AnalyticsManager.EventNotifyInactiveFriendRequest);
     }
 
     private void ActivateAfterLoad()
@@ -210,6 +217,16 @@ public struct PostNewLevelJsPayload
     public PostNewLevelJsPayload(int value)
     {
         level = value;
+    }
+}
+
+public struct NotifyInactiveFriendJsPayload
+{
+    public string uid;
+
+    public NotifyInactiveFriendJsPayload(string friendUid)
+    {
+        uid = friendUid;
     }
 }
 

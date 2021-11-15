@@ -36,8 +36,6 @@ public class GameStateModel
         _showingPopupModelsStack = new Stack<PopupViewModelBase>();
     }
 
-    public OldGameCompensationHolder test => OldGameCompensationHolder.Instance;
-
     public Task GameDataLoadedTask => _dataLoadedTcs.Task;
     public bool IsGamePaused { get; private set; } = false;
     public GameStateName GameState { get; private set; } = GameStateName.Initializing;
@@ -52,6 +50,7 @@ public class GameStateModel
     public HighlightState HighlightState { get; private set; } = HighlightState.Default;
     public PopupViewModelBase ShowingPopupModel => _showingPopupModelsStack.Count > 0 ? _showingPopupModelsStack.Peek() : null;
     public TutorialStepViewModel ShowingTutorialModel { get; private set; }
+    public int StartGameServerTime { get; private set; }
     public int ServerTime
     {
         get
@@ -64,6 +63,7 @@ public class GameStateModel
 
     public void SetServerTime(int serverTime)
     {
+        if (StartGameServerTime <= 0) StartGameServerTime = serverTime;
         _lastCheckedServerTime = serverTime;
         _realtimeSinceStartupCheckpoint = Time.realtimeSinceStartup;
     }

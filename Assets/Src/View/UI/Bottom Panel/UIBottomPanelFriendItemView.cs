@@ -13,7 +13,6 @@ public class UIBottomPanelFriendItemView : UIBottomPanelScrollItemViewBase
     [SerializeField] private UIHintableView _mainHintableView;
     [SerializeField] private Button _bottomButton;
     [SerializeField] private Color _colorTextDefault;
-    [SerializeField] private Color _colorBgAlt;
 
     public override void Awake()
     {
@@ -56,14 +55,14 @@ public class UIBottomPanelFriendItemView : UIBottomPanelScrollItemViewBase
         _topText.color = Color.white;
     }
 
-    public void SetImageDefaultColor()
+    public void SetBgImageDefaultColor()
     {
         _bgImage.color = Color.white;
     }
 
-    public void SetImageAltColor()
+    public void SetBgImageColor(Color color)
     {
-        _bgImage.color = _colorBgAlt;
+        _bgImage.color = color;
     }
 
     private void OnBottomButtonClicked()

@@ -103,6 +103,7 @@ public class LocalizationKeys
 {    
     public static string BillboardDefaultText = "billboard_default_text";
     public static string HintBottomPanelVisitFriend = "hint_bottom_panel_visit_friend";
+    public static string HintBottomPanelInactiveFriend = "hint_bottom_panel_inactive_friend";
     public static string HintBottomPanelInviteFriends = "hint_bottom_panel_invite_friends";
     public static string HintBottomPanelShelfDescription = "hint_bottom_panel_shelf_description";
     public static string HintOldGameBonus = "hint_old_game_bonus";
@@ -189,7 +190,9 @@ public class LocalizationKeys
     public static string PopupDailyBonusTitle = "popup_daily_bonus_title";
     public static string PopupDailyBonusDayFormat = "popup_daily_bonus_day_format";
     public static string PopupBillboardTitle = "popup_billboard_title";
-    public static string PopupBillboardMessage = "popup_billboard_message";    
+    public static string PopupBillboardMessage = "popup_billboard_message";
+    public static string PopupNotifyInactiveFriendTitle = "popup_notify_inactive_friend_title";
+    public static string PopupNotifyInactiveFriendMessage = "popup_notify_inactive_friend_message";    
 
     public static string TutorialTitleDefault = "tutorial_title_default";
     public static string TutorialMessagePrefix = "tutorial_message_";

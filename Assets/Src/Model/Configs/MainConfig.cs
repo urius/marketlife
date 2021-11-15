@@ -25,7 +25,8 @@ public class MainConfig :
     public readonly int ActionResetCooldownPrice;
     public readonly int ShareOfflineReportRewardGold = 1;
     public readonly int BillboardUnlockLevel;
-    public readonly int MaxBillboardTextLength = 128;    
+    public readonly int MaxBillboardTextLength = 128;
+    public readonly int FriendInactivityThresholdHours = 70;
 
     public readonly Dictionary<string, ProductConfig> ProductsConfig;
     public readonly Dictionary<string, ItemConfig<ShelfConfigDto>> ShelfsConfig;
@@ -459,7 +460,7 @@ public class PersonalConfig : IUnlockableConfig
     public readonly int NumericId;
     public readonly string Key;
     public readonly int WorkHours;
-    public readonly Price Price;
+    public readonly Price PricePerCell;
 
     public PersonalConfig(string id, PersonalConfigDto dto)
     {
@@ -471,10 +472,17 @@ public class PersonalConfig : IUnlockableConfig
         Key = dto.key;
         UnlockLevel = dto.unlock_level;
         WorkHours = dto.work_hours;
-        Price = Price.FromString(dto.price);
+        PricePerCell = Price.FromString(dto.price_per_cell);
     }
 
     public int UnlockLevel { get; private set; }
+
+    public Price GetPrice(int shopSquare)
+    {
+        var result = PricePerCell;
+        result.Value *= shopSquare;
+        return result;
+    }
 
     public static PersonalType GetPersonalTypeByIdStr(string personalTypeIdStr)
     {

@@ -11,6 +11,7 @@ public class InitScript : MonoBehaviour
     [SerializeField] private GraphicsManager _graphicsManager;
     [SerializeField] private GameConfigManager _gameConfigManager;
     [SerializeField] private LocalizationManager _localizationManager;
+    [SerializeField] private ColorsHolder _colorsHolder;
 
     private PlayerModelHolder _playerModelHolder;
 

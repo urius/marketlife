@@ -10,6 +10,7 @@ public class UIBottomPanelFriendsTabMediator : UIBottomPanelScrollItemsTabMediat
     private readonly AvatarsManager _avatarsManager;
     private readonly Dispatcher _dispatcher;
     private readonly SpritesProvider _spritesProvider;
+    private readonly ColorsHolder _colorsHolder;
     private readonly PrefabsHolder _prefabsHolder;
     private readonly Queue<UIBottomPanelFriendItemView> _cachedViews = new Queue<UIBottomPanelFriendItemView>();
 
@@ -22,6 +23,7 @@ public class UIBottomPanelFriendsTabMediator : UIBottomPanelScrollItemsTabMediat
         _avatarsManager = AvatarsManager.Instance;
         _dispatcher = Dispatcher.Instance;
         _spritesProvider = SpritesProvider.Instance;
+        _colorsHolder = ColorsHolder.Instance;
     }
 
     public override void Mediate()
@@ -114,17 +116,22 @@ public class UIBottomPanelFriendsTabMediator : UIBottomPanelScrollItemsTabMediat
             var friendData = viewModel.FriendData;
             itemView.SetTextDefaultColor();
             itemView.SetTopText(friendData.FirstName);
-            itemView.SetImageDefaultColor();
-            if (friendData.IsApp)
+            itemView.SetBgImageDefaultColor();
+            itemView.SetBottomButtonEnabled(false);
+
+            //if (friendData.IsApp)
             {
-                itemView.SetBottomButtonEnabled(false);
-                itemView.SetMainHintEnabled(true);
-                itemView.SetMainHintText(_loc.GetLocalization(LocalizationKeys.HintBottomPanelVisitFriend));
-            }
-            else
-            {
-                itemView.SetBottomButtonEnabled(true);
-                itemView.SetMainHintEnabled(false);
+                if (friendData.IsInactive())
+                {
+                    itemView.SetBgImageColor(_colorsHolder.BottomPanelFriendsInactiveFriendButtonColor);
+                    itemView.SetMainHintEnabled(true);
+                    itemView.SetMainHintText(_loc.GetLocalization(LocalizationKeys.HintBottomPanelInactiveFriend));
+                }
+                else
+                {
+                    itemView.SetMainHintEnabled(true);
+                    itemView.SetMainHintText(_loc.GetLocalization(LocalizationKeys.HintBottomPanelVisitFriend));
+                }
             }
 
             var avatarSprite = _avatarsManager.GetAvatarSprite(friendData.Uid);
@@ -137,7 +144,7 @@ public class UIBottomPanelFriendsTabMediator : UIBottomPanelScrollItemsTabMediat
         else
         {
             itemView.SetTextAltColor();
-            itemView.SetImageAltColor();
+            itemView.SetBgImageColor(_colorsHolder.BottomPanelFriendsTabAddButtonColor);
             itemView.SetTopText(_loc.GetLocalization(LocalizationKeys.CommonInvite));
             itemView.SetBottomButtonEnabled(false);
             itemView.SetMainHintEnabled(true);

@@ -226,7 +226,8 @@ public class UIUpgradesPopupMediator : IMediator
             var personalNameStr = _loc.GetLocalization($"{LocalizationKeys.CommonPersonalNamePrefix}{personalConfig.TypeIdStr}");
             itemView.SetTitleText($"{personalNameStr} ({hoursStr})");
             itemView.SetDescriptionText(_loc.GetLocalization($"{LocalizationKeys.PopupUpgradesPersonalDescriptionPrefix}{personalConfig.TypeIdStr}"));
-            itemView.SetPrice(personalConfig.Price.IsGold, personalConfig.Price.Value);
+            var price = personalConfig.GetPrice(_playerModel.ShopModel.ShopDesign.Square);
+            itemView.SetPrice(price.IsGold, price.Value);
         }
         else if (viewModel.ItemType == UpgradesPopupItemType.Upgrade)
         {

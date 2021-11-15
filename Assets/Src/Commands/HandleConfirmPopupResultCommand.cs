@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public struct HandleRemovePopupResultCommand
+public struct HandleConfirmPopupResultCommand
 {
     public void Execute(bool result)
     {
@@ -39,6 +39,10 @@ public struct HandleRemovePopupResultCommand
             {
                 shopModel.WarehouseModel.Slots[removeProductPopupViewModel.SlotIndex].RemoveProduct();
                 audioManader.PlaySound(SoundNames.Remove);
+            }
+            else if (popupModel is NotifyInactiveFriendPopupViewModel notifyInactiveFriendPopupViewModel)
+            {
+                dispatcher.RequestNotifyInactiveFriend(notifyInactiveFriendPopupViewModel.FriendUid);
             }
 
             if (popupModel is IConfirmRemoveWithRefundPopupViewModel confirmRemoveWithRefundViewModel)

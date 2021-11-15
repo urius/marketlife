@@ -33,15 +33,16 @@ public struct UIUpgradePopupBuyClickCommand
         {
             var personalConfigToBuy = (viewModel as UpgradesPopupPersonalItemViewModel).PersonalConfig;
             var isSuccess = false;
-            if (playerModel.CanSpendMoney(personalConfigToBuy.Price))
+            var price = personalConfigToBuy.GetPrice(shopModel.ShopDesign.Square);
+            if (playerModel.CanSpendMoney(price))
             {
-                playerModel.TrySpendMoney(personalConfigToBuy.Price);
+                playerModel.TrySpendMoney(price);
                 shopModel.PersonalModel.SetPersonalWorkingTime(personalConfigToBuy, gameStateModel.ServerTime + personalConfigToBuy.WorkHours * 3600);
                 isSuccess = true;
             }
             else
             {
-                dispatcher.UIRequestBlinkMoney(personalConfigToBuy.Price.IsGold);
+                dispatcher.UIRequestBlinkMoney(price.IsGold);
             }
 
             analyticsManager.SendCustom(AnalyticsManager.EventNameHirePersonalUpgrade,

@@ -19,9 +19,11 @@ public class FriendsDataHolder
     public IReadOnlyList<FriendData> Friends => _friends ?? Array.Empty<FriendData>();
     public bool FriendsDataIsSet => _friends != null;
 
-    public void SetupFriendsData(FriendData[] friendsData)
+    public void SetupFriendsData(IEnumerable<FriendData> friendsData)
     {
-        _friends = friendsData;
+        var friendsDataArr = friendsData.ToArray();
+        Array.Sort(friendsDataArr);
+        _friends = friendsDataArr;
         FriendsDataWasSetup();
     }
 
@@ -31,7 +33,7 @@ public class FriendsDataHolder
     }
 }
 
-public class FriendData
+public class FriendData : IComparable<FriendData>
 {
     public readonly string Uid;
     public readonly bool IsApp;
@@ -48,11 +50,35 @@ public class FriendData
         Picture50Url = picture50Url;
     }
 
+    public int LastVisitTime { get; private set; }
     public UserModel UserModel { get; private set; }
     public bool IsUserModelLoaded => UserModel != null;
 
+    public int CompareTo(FriendData other)
+    {
+        return other.LastVisitTime - LastVisitTime;
+    }
+
+    public void SetLastVisitTime(int lastVisitTime)
+    {
+        LastVisitTime = Math.Max(LastVisitTime, lastVisitTime);
+    }
+
     public void SetUserModel(UserModel userModel)
     {
+        SetLastVisitTime(userModel.StatsData.LastVisitTimestamp);
         UserModel = userModel;
+    }
+}
+
+public static class FriendDataExtensions
+{
+    public static bool IsInactive(this FriendData friendData)
+    {
+        if (friendData.LastVisitTime <= 0) return true;
+        var thresholdHours = GameConfigManager.Instance.MainConfig.FriendInactivityThresholdHours;
+        var startPlayTime = GameStateModel.Instance.StartGameServerTime;
+        var hoursSinceFriendsLastVisit = Math.Max(0, startPlayTime - friendData.LastVisitTime) / 3600f;
+        return hoursSinceFriendsLastVisit > thresholdHours;
     }
 }

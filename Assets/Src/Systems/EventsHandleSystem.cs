@@ -39,7 +39,7 @@ public class EventsHandleSystem
         _dispatcher.UIActionsRotateLeftClicked += OnUIActionsRotateLeftClicked;
         _dispatcher.UIActionsMoveClicked += OnUIActionsMoveClicked;
         _dispatcher.UIActionsRemoveClicked += OnUIActionsRemoveClicked;
-        _dispatcher.UIRemovePopupResult += OnUIRemovePopupResult;
+        _dispatcher.UIConfirmPopupResult += OnUIConfirmPopupResult;
         _dispatcher.UIRequestRemoveCurrentPopup += OnUIRequestRemoveCurrentPopup;
         _dispatcher.UIOrderProductClicked += OnUIOrderProductClicked;
         _dispatcher.UIShelfContentAddProductClicked += OnUIShelfContentAddProductClicked;
@@ -119,7 +119,7 @@ public class EventsHandleSystem
 
     private void OnUIBottomPanelFriendClicked(FriendData friendData)
     {
-        new SwitchToFriendShopCommand().Execute(friendData);
+        new HandleBottomPanelFriendClickedCommand().Execute(friendData);
     }
 
     private void OnUITopPanelAddMoneyClicked(bool isGold)
@@ -211,9 +211,9 @@ public class EventsHandleSystem
         _dispatcher.RequestForceMouseCellPositionUpdate();
     }
 
-    private void OnUIRemovePopupResult(bool result)
+    private void OnUIConfirmPopupResult(bool result)
     {
-        new HandleRemovePopupResultCommand().Execute(result);
+        new HandleConfirmPopupResultCommand().Execute(result);
     }
 
     private void OnUIActionsRemoveClicked()

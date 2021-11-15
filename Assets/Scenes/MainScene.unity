@@ -4567,6 +4567,7 @@ MonoBehaviour:
   _gameConfigManager: {fileID: 11400000, guid: 602bdf3847c344182bb11d66994c2ec6, type: 2}
   _localizationManager: {fileID: 11400000, guid: 896d83f0651d245229990a6d40d7740d,
     type: 2}
+  _colorsHolder: {fileID: 11400000, guid: e3f38c4c1965048dea3f80f3697ca748, type: 2}
 --- !u!114 &1026738519
 MonoBehaviour:
   m_ObjectHideFlags: 0

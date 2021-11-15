@@ -1,26 +1,14 @@
 using System.Collections.Generic;
-using System.Linq;
 using Newtonsoft.Json;
 
 public struct SetVkFriendsDataCommand
 {
     public void Execute(string friendsDataStr)
     {
-        var friendsDataHolder = FriendsDataHolder.Instance;
-        var avatarsManager = AvatarsManager.Instance;
         var deserialisedData = JsonConvert.DeserializeObject<VkFriendsDataDto>(friendsDataStr);
-        var analyticsManager = AnalyticsManager.Instance;
+        var friendDatas = ToFriendsData(deserialisedData.data);
 
-        var friendsData = ToFriendsData(deserialisedData.data);
-        foreach (var friendData in friendsData)
-        {
-            avatarsManager.SetupAvatarSettings(friendData.Uid, friendData.Picture50Url);
-        }
-
-        friendsDataHolder.SetupFriendsData(friendsData);
-
-        analyticsManager.SetupMetaParameter(AnalyticsManager.NumFriendsParamName, friendsData.Length);
-        analyticsManager.SetupMetaParameter(AnalyticsManager.NumAppFriendsParamName, friendsData.Where(f => f.IsApp).Count());
+        new SetupFriendsDataCommand().Execute(friendDatas);
     }
 
     private FriendData[] ToFriendsData(IList<VkFriendDataDto> items)

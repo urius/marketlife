@@ -43,7 +43,7 @@ public class Dispatcher
     public Action UIActionsRotateLeftClicked = delegate { };
     public Action UIActionsMoveClicked = delegate { };
     public Action UIActionsRemoveClicked = delegate { };
-    public Action<bool> UIRemovePopupResult = delegate { };
+    public Action<bool> UIConfirmPopupResult = delegate { };
 
     public Action<bool> UIRequestBlinkMoney = delegate { };
     public Action<Vector2, bool, int> UIRequestFlyingPrice = delegate { };
@@ -90,6 +90,8 @@ public class Dispatcher
     public Action BottomPanelRotateRightClicked = delegate { };
     public Action BottomPanelRotateLeftClicked = delegate { };
     public Action NotifyNotEnoughtMoney = delegate { };
+
+    public Action<string> RequestNotifyInactiveFriend = delegate { };    
 
     public Action<bool> SaveStateChanged = delegate { };
     public Action<bool> TutorialSaveStateChanged = delegate { };

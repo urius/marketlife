@@ -65,7 +65,7 @@ public struct ProductConfigDto
 public struct PersonalConfigDto
 {
     public string key;
-    public string price;
+    public string price_per_cell;
     public int unlock_level;
     public int work_hours;
     public int volume_per_hour;

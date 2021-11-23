@@ -436,7 +436,7 @@ public class ProductConfig : IUnlockableConfig
         PricePer1000v = Price.FromString(dto.price_per_1000v);
 
         ProfitPer1000v = dto.profit_per_1000v;
-        SellPricePer1000v = PricePer1000v.IsGold ? ProfitPer1000v : PricePer1000v.Value + ProfitPer1000v;
+        SellPricePer1000v = PricePer1000v.IsGold ? ProfitPer1000v : (PricePer1000v.Value + ProfitPer1000v);
         SellPrice = (float)SellPricePer1000v / _amountIn1000Volume;
 
         Demand = (int)((DemandPer1000v * _amountIn1000Volume) * 100) * 0.01f;

@@ -148,9 +148,16 @@ public class UITopPanelMediator : MonoBehaviour
     private void OnUIRequestAddGoldFlyAnimation(Vector2 screenCoords, int amount)
     {
         _updateGoldAnimationDelayMs = 500;
-        for (var i = 0; i < amount; i++)
+        if (amount > 1)
         {
-            AnimateFlyingGold(Random.insideUnitCircle * 100 + screenCoords);
+            for (var i = 0; i < amount; i++)
+            {
+                AnimateFlyingGold(Random.insideUnitCircle * 100 + screenCoords);
+            }
+        }
+        else
+        {
+            AnimateFlyingGold(screenCoords);
         }
     }
 
@@ -183,7 +190,7 @@ public class UITopPanelMediator : MonoBehaviour
         var itemRect = image.rectTransform;
         var delay = Random.Range(0f, 0.2f);
         LeanTween.alpha(itemRect, 1, Random.Range(0.2f, 0.5f)).setDelay(delay);
-        var descr = LeanTween.move(itemRect, targetLocalPos, Random.Range(0.6f, 0.9f)).setEaseInBack().setDelay(delay);
+        var descr = LeanTween.move(itemRect, targetLocalPos, Random.Range(0.6f, 0.9f)).setEaseInCubic().setDelay(delay);
         descr.destroyOnComplete = true;
     }
 

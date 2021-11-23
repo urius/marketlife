@@ -190,6 +190,11 @@ public class SpritesProvider
         return GetSprite(SpriteAtlasId.InterfaceAtlas, "sign_plus_big");
     }
 
+    public Sprite GetMoonIcon()
+    {
+        return GetSprite(SpriteAtlasId.InterfaceAtlas, "Icon_Moon");
+    }
+
     private Sprite GetSprite(SpriteAtlasId gameplayAtlas, string name)
     {
         if (_graphicsManager == null)

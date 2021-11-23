@@ -47,9 +47,11 @@ public class GameConfigManager : ScriptableObject
         var personalConfig = ToPersonalConfigs(mainConfigDto.PersonalConfig);
         var levelsConfig = ToLevelsConfig(mainConfigDto.LevelsConfig);
         var dailyBonusConfig = ToDailyBonusConfig(mainConfigDto.DailyBonusConfig);
-        
+        var friendActionsConfig = ToFriendActionsConfig(mainConfigDto.FriendActionsConfig);
+
         return new MainConfig(
             mainConfigDto,
+            friendActionsConfig,
             productsConfig,
             shelfsConfig,
             shopObjectsConfig,
@@ -64,6 +66,19 @@ public class GameConfigManager : ScriptableObject
             ToUpgradeConfigs(UpgradeType.ExpandY, mainConfigDto.ExtendShopYUpgradesConfig),
             levelsConfig,
             dailyBonusConfig);
+    }
+
+    private FriendActionConfig[] ToFriendActionsConfig(Dictionary<string, FriendActionConfigDto> friendActionsConfig)
+    {
+        var result = new FriendActionConfig[friendActionsConfig.Count];
+        var i = 0;
+        foreach (var kvp in friendActionsConfig)
+        {
+            result[i] = new FriendActionConfig(kvp.Key, kvp.Value);
+            i++;
+        }
+
+        return result;
     }
 
     private DailyBonusConfig[] ToDailyBonusConfig(List<string> dailyBonusConfigDto)
@@ -144,7 +159,7 @@ public class GameConfigManager : ScriptableObject
         foreach (var kvp in configsDtosDictionary)
         {
             var personalType = PersonalConfig.GetPersonalTypeByIdStr(kvp.Key);
-            switch(personalType)
+            switch (personalType)
             {
                 case PersonalType.Merchandiser:
                     result[kvp.Key] = new MerchandiserPersonalConfig(kvp.Key, kvp.Value);

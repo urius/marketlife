@@ -14,6 +14,7 @@ public class UIBottomPanelFriendsTabView : MonoBehaviour
 
     public UIBottomPanelFriendTabActionButtonView TakeActionView => _takeActionView;
     public UIBottomPanelFriendTabActionButtonView UnwashActionView => _unwashActionView;
+    public RectTransform IconImageTransform => _userIconImage.rectTransform;
 
     public void SetNameText(string text)
     {

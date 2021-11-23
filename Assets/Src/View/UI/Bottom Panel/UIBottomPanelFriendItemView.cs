@@ -9,6 +9,7 @@ public class UIBottomPanelFriendItemView : UIBottomPanelScrollItemViewBase
 
     [SerializeField] private TMP_Text _topText;
     [SerializeField] private Image _mainIconImage;
+    [SerializeField] private Image _statusIconImage;
     [SerializeField] private Image _bgImage;
     [SerializeField] private UIHintableView _mainHintableView;
     [SerializeField] private Button _bottomButton;
@@ -28,6 +29,16 @@ public class UIBottomPanelFriendItemView : UIBottomPanelScrollItemViewBase
     public void SetMainIconImageSprite(Sprite sprite)
     {
         _mainIconImage.sprite = sprite;
+    }
+
+    public void SetStatusIconImageSprite(Sprite sprite)
+    {
+        var isShown = sprite != null;
+        _statusIconImage.gameObject.SetActive(isShown);
+        if (isShown)
+        {
+            _statusIconImage.sprite = sprite;
+        }
     }
 
     public void SetMainHintEnabled(bool isEnabled)

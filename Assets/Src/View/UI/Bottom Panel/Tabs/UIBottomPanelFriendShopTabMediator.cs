@@ -11,6 +11,7 @@ public class UIBottomPanelFriendShopTabMediator : UIBottomPanelTabMediatorBase
     private readonly Dispatcher _dispatcher;
     private readonly UpdatesProvider _updatesProvider;
     private readonly TutorialUIElementsProvider _tutorialUIElementsProvider;
+    private readonly ScreenCalculator _screenCalculator;
 
     //
     private UIBottomPanelFriendsTabView _tabView;
@@ -29,6 +30,7 @@ public class UIBottomPanelFriendShopTabMediator : UIBottomPanelTabMediatorBase
         _dispatcher = Dispatcher.Instance;
         _updatesProvider = UpdatesProvider.Instance;
         _tutorialUIElementsProvider = TutorialUIElementsProvider.Instance;
+        _screenCalculator = ScreenCalculator.Instance;
     }
 
     public override void Mediate()
@@ -46,6 +48,8 @@ public class UIBottomPanelFriendShopTabMediator : UIBottomPanelTabMediatorBase
         _tutorialUIElementsProvider.SetElement(TutorialUIElement.BottomPanelFriendShopAddUnwashButton, _tabView.UnwashActionView.transform);
 
         Activate();
+
+        _dispatcher.UIFriendShopBottomPanelUserViewCreated(_screenCalculator.WorldToScreenPoint(_tabView.IconImageTransform.position));
     }
 
     public override void Unmediate()
@@ -169,7 +173,7 @@ public class UIBottomPanelFriendShopTabMediator : UIBottomPanelTabMediatorBase
             {
                 actionView.SetChargingState(true);
                 UpdateCooldownTime(actionView, actionData);
-                actionView.SetBuyPriceText(_mainConfig.ActionResetCooldownPrice.ToString());
+                actionView.SetBuyPriceText(_mainConfig.GetActionResetCooldownPriceGold(actionId).ToString());
             }
             else
             {

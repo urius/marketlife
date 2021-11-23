@@ -571,7 +571,8 @@ public class FriendShopActionsModel
 {
     public static readonly FriendShopActionId[] SupportedActions = new FriendShopActionId[] {
         FriendShopActionId.AddUnwash,
-        FriendShopActionId.Take
+        FriendShopActionId.Take,
+        FriendShopActionId.VisitBonus,
     };
 
     public event Action<string, FriendShopActionData> ActionDataAmountChanged = delegate { };
@@ -652,6 +653,11 @@ public class FriendShopActionData
         EndCooldownTimestamp = endCooldownTimestamp;
         EndCooldownTimestampChanged(this);
     }
+
+    public bool IsAvailable(int targetTime)
+    {
+        return EndCooldownTimestamp <= targetTime && RestAmount > 0;
+    }
 }
 
 public enum FriendShopActionId
@@ -659,6 +665,7 @@ public enum FriendShopActionId
     None = 0,
     Take = 1,
     AddUnwash = 2,
+    VisitBonus = 3,
 }
 
 public class ExternalActionsModel

@@ -11,6 +11,8 @@ public class UIBottomPanelFriendsTabMediator : UIBottomPanelScrollItemsTabMediat
     private readonly Dispatcher _dispatcher;
     private readonly SpritesProvider _spritesProvider;
     private readonly ColorsHolder _colorsHolder;
+    private readonly PlayerModelHolder _playerModelHolder;
+    private readonly GameStateModel _gameStateModel;
     private readonly PrefabsHolder _prefabsHolder;
     private readonly Queue<UIBottomPanelFriendItemView> _cachedViews = new Queue<UIBottomPanelFriendItemView>();
 
@@ -24,6 +26,8 @@ public class UIBottomPanelFriendsTabMediator : UIBottomPanelScrollItemsTabMediat
         _dispatcher = Dispatcher.Instance;
         _spritesProvider = SpritesProvider.Instance;
         _colorsHolder = ColorsHolder.Instance;
+        _playerModelHolder = PlayerModelHolder.Instance;
+        _gameStateModel = GameStateModel.Instance;
     }
 
     public override void Mediate()
@@ -124,11 +128,15 @@ public class UIBottomPanelFriendsTabMediator : UIBottomPanelScrollItemsTabMediat
                 if (friendData.IsInactive())
                 {
                     itemView.SetBgImageColor(_colorsHolder.BottomPanelFriendsInactiveFriendButtonColor);
+                    itemView.SetStatusIconImageSprite(_spritesProvider.GetMoonIcon());
                     itemView.SetMainHintEnabled(true);
                     itemView.SetMainHintText(_loc.GetLocalization(LocalizationKeys.HintBottomPanelInactiveFriend));
                 }
                 else
                 {
+                    var friendActionsModel = _playerModelHolder.UserModel.FriendsActionsDataModels.GetFriendShopActionsModel(friendData.Uid);
+                    var isVisitBonusAvailable = friendActionsModel.ActionsById[FriendShopActionId.VisitBonus].IsAvailable(_gameStateModel.ServerTime);
+                    itemView.SetStatusIconImageSprite(isVisitBonusAvailable ? _spritesProvider.GetGoldIcon() : null);
                     itemView.SetMainHintEnabled(true);
                     itemView.SetMainHintText(_loc.GetLocalization(LocalizationKeys.HintBottomPanelVisitFriend));
                 }
@@ -150,6 +158,7 @@ public class UIBottomPanelFriendsTabMediator : UIBottomPanelScrollItemsTabMediat
             itemView.SetMainHintEnabled(true);
             itemView.SetMainHintText(_loc.GetLocalization(LocalizationKeys.HintBottomPanelInviteFriends));
             itemView.SetMainIconImageSprite(_spritesProvider.GetBigPlusSignIcon());
+            itemView.SetStatusIconImageSprite(null);
         }
     }
 

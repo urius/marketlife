@@ -9,9 +9,9 @@ public class MainConfigDto
     public int QuickDeliverPriceGoldPerHour;
     public int ActionDefaultAmount;
     public int ActionDefaultCooldownMinutes;
-    public int ActionResetCooldownPrice;
     public int BillboardUnlockLevel;
 
+    public Dictionary<string, FriendActionConfigDto> FriendActionsConfig;
     public Dictionary<string, ShelfConfigDto> ShelfsConfig;
     public Dictionary<string, ShopObjectConfigDto> ShopObjectsConfig;
     public Dictionary<string, ShopDecorationConfigDto> FloorsConfig;
@@ -26,6 +26,14 @@ public class MainConfigDto
     public UpgradeConfigDto[] ExtendShopXUpgradesConfig;
     public UpgradeConfigDto[] ExtendShopYUpgradesConfig;
     public List<string> DailyBonusConfig;
+}
+
+public class FriendActionConfigDto
+{
+    public int action_id;
+    public int amount;
+    public int cooldown_minutes;
+    public int reset_price_gold;
 }
 
 public class PlaceableItemConfigDto

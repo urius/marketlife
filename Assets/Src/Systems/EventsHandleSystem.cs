@@ -72,9 +72,15 @@ public class EventsHandleSystem
         _dispatcher.UIBankItemClicked += OnUIBankItemClicked;
         _dispatcher.UIDispatchBillboardClick += OnUIDispatchBillboardClick;
         _dispatcher.UIBillboardPopupApplyTextClicked += OnUIBillboardPopupApplyTextClicked;
+        _dispatcher.UIFriendShopBottomPanelUserViewCreated += OnUIFriendShopBottomPanelUserViewCreated;
 
         _gameStateModel.ActionStateChanged += OnActionStateChanged;
         _gameStateModel.GameStateChanged += OnGameStateChanged;
+    }
+
+    private void OnUIFriendShopBottomPanelUserViewCreated(Vector3 screenCoords)
+    {
+        new TakeVisitFriendBonusCommand().Execute(screenCoords);
     }
 
     private void OnUIBillboardPopupApplyTextClicked(string text)

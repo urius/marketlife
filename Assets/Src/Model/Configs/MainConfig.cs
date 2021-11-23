@@ -22,12 +22,10 @@ public class MainConfig :
     public readonly int QuickDeliverPriceGoldPerHour;
     public readonly int ActionDefaultAmount;
     public readonly int ActionDefaultCooldownMinutes;
-    public readonly int ActionResetCooldownPrice;
     public readonly int ShareOfflineReportRewardGold = 1;
     public readonly int BillboardUnlockLevel;
     public readonly int MaxBillboardTextLength = 128;
     public readonly int FriendInactivityThresholdHours = 70;
-
     public readonly Dictionary<string, ProductConfig> ProductsConfig;
     public readonly Dictionary<string, ItemConfig<ShelfConfigDto>> ShelfsConfig;
     public readonly Dictionary<string, ItemConfig<ShopObjectConfigDto>> ShopObjectsConfig;
@@ -43,9 +41,11 @@ public class MainConfig :
     public readonly DailyBonusConfig[] DailyBonusConfig;
 
     private readonly float[] _levelsConfig;
+    private readonly FriendActionConfig[] _friendActionConfigs;
 
     public MainConfig(
         MainConfigDto dto,
+        FriendActionConfig[] friendActionConfigs,
         Dictionary<string, ProductConfig> productsConfig,
         Dictionary<string, ItemConfig<ShelfConfigDto>> shelfsConfig,
         Dictionary<string, ItemConfig<ShopObjectConfigDto>> shopObjectsConfig,
@@ -68,7 +68,6 @@ public class MainConfig :
         QuickDeliverPriceGoldPerHour = dto.QuickDeliverPriceGoldPerHour;
         ActionDefaultAmount = dto.ActionDefaultAmount;
         ActionDefaultCooldownMinutes = dto.ActionDefaultCooldownMinutes;
-        ActionResetCooldownPrice = dto.ActionResetCooldownPrice;
         BillboardUnlockLevel = dto.BillboardUnlockLevel;
         ProductsConfig = productsConfig;
         ShelfsConfig = shelfsConfig;
@@ -82,8 +81,10 @@ public class MainConfig :
         WarehouseSlotsUpgradesConfig = warehouseSlotsUpgradesConfig;
         ExtendShopXUpgradesConfig = extendShopXUpgradesConfig;
         ExtendShopYUpgradesConfig = extendShopYUpgradesConfig;
-        _levelsConfig = levelsConfig;
         DailyBonusConfig = dailyBonusConfig;
+
+        _levelsConfig = levelsConfig;
+        _friendActionConfigs = friendActionConfigs;
     }
 
     DailyBonusConfig[] IDailyBonusConfig.DailyBonusConfig => DailyBonusConfig;
@@ -334,12 +335,38 @@ public class MainConfig :
 
     public int GetDefaultActionAmount(FriendShopActionId actionId)
     {
+        foreach (var actionConfig in _friendActionConfigs)
+        {
+            if (actionConfig.ActionId == actionId)
+            {
+                return actionConfig.Amount;
+            }
+        }
         return ActionDefaultAmount;
     }
 
     public int GetDefaultActionCooldownMinutes(FriendShopActionId actionId)
     {
+        foreach (var actionConfig in _friendActionConfigs)
+        {
+            if (actionConfig.ActionId == actionId)
+            {
+                return actionConfig.CooldownMinutes;
+            }
+        }
         return ActionDefaultCooldownMinutes;
+    }
+
+    public int GetActionResetCooldownPriceGold(FriendShopActionId actionId)
+    {
+        foreach (var actionConfig in _friendActionConfigs)
+        {
+            if (actionConfig.ActionId == actionId)
+            {
+                return actionConfig.ResetPrice.Value;
+            }
+        }
+        return 0;
     }
 }
 
@@ -358,6 +385,26 @@ public class ItemConfig<TConfigDto> : IUnlockableConfig
     }
 
     public int UnlockLevel => ConfigDto.unlock_level;
+}
+
+public class FriendActionConfig
+{
+    public readonly int ActionIdInt;
+    public readonly FriendShopActionId ActionId;
+    public readonly string Key;
+    public readonly int CooldownMinutes;
+    public readonly int Amount;
+    public readonly Price ResetPrice;
+
+    public FriendActionConfig(string key, FriendActionConfigDto dto)
+    {
+        Key = key;
+        ActionIdInt = dto.action_id;
+        ActionId = (FriendShopActionId)ActionIdInt;
+        CooldownMinutes = dto.cooldown_minutes;
+        Amount = dto.amount;
+        ResetPrice = new Price(dto.reset_price_gold, isGold: true);
+    }
 }
 
 public class ProductConfig : IUnlockableConfig
@@ -630,4 +677,5 @@ public interface IFriendActionsConfig
 {
     int GetDefaultActionAmount(FriendShopActionId actionId);
     int GetDefaultActionCooldownMinutes(FriendShopActionId actionId);
+    int GetActionResetCooldownPriceGold(FriendShopActionId actionId);
 }

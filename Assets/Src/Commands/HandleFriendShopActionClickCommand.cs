@@ -26,18 +26,22 @@ public struct HandleFriendShopActionClickCommand
         }
         else
         {
-            var price = new Price(mainConfig.ActionResetCooldownPrice, isGold: true);
-            var success = playerModel.TrySpendMoney(price);
-            if (success)
+            var priceGoldAmount = mainConfig.GetActionResetCooldownPriceGold(actionId);
+            if (priceGoldAmount > 0)
             {
-                friendActionsDataModel.ActionsById[actionId].SetEndCooldownTime(gameStateModel.ServerTime - 1);
-            }
-            else
-            {
-                dispatcher.UIRequestBlinkMoney(price.IsGold);
-            }
+                var price = new Price(priceGoldAmount, isGold: true);
+                var success = playerModel.TrySpendMoney(price);
+                if (success)
+                {
+                    friendActionsDataModel.ActionsById[actionId].SetEndCooldownTime(gameStateModel.ServerTime - 1);
+                }
+                else
+                {
+                    dispatcher.UIRequestBlinkMoney(price.IsGold);
+                }
 
-            analyticsManager.SendCustom(AnalyticsManager.EventNameFriendActionBuyRecharge, ("action", actionId.ToString()), ("success", success));
+                analyticsManager.SendCustom(AnalyticsManager.EventNameFriendActionBuyRecharge, ("action", actionId.ToString()), ("success", success));
+            }
         }
     }
 }

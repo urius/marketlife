@@ -26,6 +26,7 @@ public class MainConfig :
     public readonly int BillboardUnlockLevel;
     public readonly int MaxBillboardTextLength = 128;
     public readonly int FriendInactivityThresholdHours = 70;
+    public readonly int GoldToCashConversionRate = 100;
     public readonly Dictionary<string, ProductConfig> ProductsConfig;
     public readonly Dictionary<string, ItemConfig<ShelfConfigDto>> ShelfsConfig;
     public readonly Dictionary<string, ItemConfig<ShopObjectConfigDto>> ShopObjectsConfig;
@@ -69,6 +70,7 @@ public class MainConfig :
         ActionDefaultAmount = dto.ActionDefaultAmount;
         ActionDefaultCooldownMinutes = dto.ActionDefaultCooldownMinutes;
         BillboardUnlockLevel = dto.BillboardUnlockLevel;
+        GoldToCashConversionRate = dto.GoldToCashConversionRate;
         ProductsConfig = productsConfig;
         ShelfsConfig = shelfsConfig;
         ShopObjectsConfig = shopObjectsConfig;

@@ -3,6 +3,12 @@ using UnityEngine;
 
 public class CalculationHelper
 {
+    public static int GetGoldToCashConversionRate()
+    {
+        var mainConfig = GameConfigManager.Instance.MainConfig;
+        return mainConfig.GoldToCashConversionRate;
+    }
+
     public static Price GetPriceForDeliver(int quickDeliverPriceGoldPerHour, int restDeliverTimeSecnds)
     {
         return new Price(Mathf.Max(1, Mathf.CeilToInt(quickDeliverPriceGoldPerHour * restDeliverTimeSecnds / 3600f)), true);
@@ -15,7 +21,7 @@ public class CalculationHelper
 
     public static int GetSellPrice(Price originalPrice)
     {
-        return originalPrice.IsGold ? originalPrice.Value * 1000 : (int)(originalPrice.Value * 0.5f);
+        return originalPrice.IsGold ? originalPrice.Value * GetGoldToCashConversionRate() : (int)(originalPrice.Value * 0.5f);
     }
 
     public static float CalculateMood(int usedValue, int totalValue, int unwashesCount, int totalShopSquare)

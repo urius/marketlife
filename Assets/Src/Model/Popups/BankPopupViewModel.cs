@@ -65,7 +65,7 @@ public class BankItemViewModel
     {
         IsAds = true;
         IsGold = isGold;
-        Value = isGold ? 1 : 100;
+        Value = isGold ? 1 : CalculationHelper.GetGoldToCashConversionRate();
         Price = 0;
         ExtraPercent = 0;
     }

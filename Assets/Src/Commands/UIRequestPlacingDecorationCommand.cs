@@ -11,28 +11,28 @@ public struct UIRequestPlacingDecorationCommand
         {
             case ShopDecorationObjectType.Floor:
                 var floorConfig = GameConfigManager.Instance.MainConfig.GetFloorConfigByNumericId(numericId);
-                if (CheckCanSpendOrBlink(floorConfig.Price))
+                if (CheckCanSpendOrNotEnoughtMoneySequence(floorConfig.Price))
                 {
                     gameStateModel.SetPlacingFloor(numericId);
                 }
                 break;
             case ShopDecorationObjectType.Wall:
                 var wallConfig = GameConfigManager.Instance.MainConfig.GetWallConfigByNumericId(numericId);
-                if (CheckCanSpendOrBlink(wallConfig.Price))
+                if (CheckCanSpendOrNotEnoughtMoneySequence(wallConfig.Price))
                 {
                     gameStateModel.SetPlacingWall(numericId);
                 }
                 break;
             case ShopDecorationObjectType.Window:
                 var windowConfig = GameConfigManager.Instance.MainConfig.GetWindowConfigByNumericId(numericId);
-                if (CheckCanSpendOrBlink(windowConfig.Price))
+                if (CheckCanSpendOrNotEnoughtMoneySequence(windowConfig.Price))
                 {
                     gameStateModel.SetPlacingWindow(numericId);
                 }
                 break;
             case ShopDecorationObjectType.Door:
                 var doorConfig = GameConfigManager.Instance.MainConfig.GetDoorConfigByNumericId(numericId);
-                if (CheckCanSpendOrBlink(doorConfig.Price))
+                if (CheckCanSpendOrNotEnoughtMoneySequence(doorConfig.Price))
                 {
                     gameStateModel.SetPlacingDoor(numericId);
                 }
@@ -40,7 +40,7 @@ public struct UIRequestPlacingDecorationCommand
         }
     }
 
-    private bool CheckCanSpendOrBlink(Price price)
+    private bool CheckCanSpendOrNotEnoughtMoneySequence(Price price)
     {
         var playerModel = PlayerModelHolder.Instance.UserModel;
         if (playerModel.CanSpendMoney(price))
@@ -49,7 +49,7 @@ public struct UIRequestPlacingDecorationCommand
         }
         else
         {
-            Dispatcher.Instance.UIRequestBlinkMoney(price.IsGold);
+            new NotEnoughtMoneySequenceCommand().Execute(price.IsGold);
             return false;
         }
     }

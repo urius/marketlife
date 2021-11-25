@@ -23,7 +23,7 @@ public struct UIUpgradePopupBuyClickCommand
             }
             else
             {
-                dispatcher.UIRequestBlinkMoney(upgradeConfigToBuy.Price.IsGold);
+                new NotEnoughtMoneySequenceCommand().Execute(upgradeConfigToBuy.Price.IsGold);
             }
 
             analyticsManager.SendCustom(AnalyticsManager.EventNameApplyUpgrade,
@@ -42,7 +42,7 @@ public struct UIUpgradePopupBuyClickCommand
             }
             else
             {
-                dispatcher.UIRequestBlinkMoney(price.IsGold);
+                new NotEnoughtMoneySequenceCommand().Execute(price.IsGold);
             }
 
             analyticsManager.SendCustom(AnalyticsManager.EventNameHirePersonalUpgrade,

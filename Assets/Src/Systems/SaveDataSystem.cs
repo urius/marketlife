@@ -106,7 +106,14 @@ public class SaveDataSystem
         _gameStateModel.PopupRemoved += OnPopupRemoved;
         _gameStateModel.ViewingUserModelChanged += OnViewingUserModelChanged;
 
+        _dispatcher.RequestMarkToSaveField += OnRequestMarkToSaveField;
+
         _updatesProvider.RealtimeSecondUpdate += OnRealtimeSecondUpdate;
+    }
+
+    private void OnRequestMarkToSaveField(SaveField saveField)
+    {
+        MarkToSaveField(saveField);
     }
 
     private void OnBillboardStateChanged()

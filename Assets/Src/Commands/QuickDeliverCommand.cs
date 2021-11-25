@@ -16,10 +16,11 @@ public struct QuickDeliverCommand
             if (playerModel.TrySpendMoney(price))
             {
                 slotModel.Product.DeliverTime = 0;
+                dispatcher.RequestMarkToSaveField(SaveField.Warehouse);
             }
             else
             {
-                dispatcher.UIRequestBlinkMoney(price.IsGold);
+                new NotEnoughtMoneySequenceCommand().Execute(price.IsGold);
             }
         }
     }

@@ -8,9 +8,17 @@ public struct UIRequestPlaceShelfCommand
 
         if (gameStateModel.ActionState != ActionStateName.None) return;
 
-        Dispatcher.Instance.RequestForceMouseCellPositionUpdate();
-        var mouseCellCoords = MouseDataProvider.Instance.MouseCellCoords;
-        var model = new ShopObjectModelFactory().CreateShelf(shelfNumericId, mouseCellCoords);
-        gameStateModel.SetPlacingObject(model);
+        var playerModel = PlayerModelHolder.Instance.UserModel;
+        if (playerModel.CanSpendMoney(shelfConfig.Price))
+        {
+            Dispatcher.Instance.RequestForceMouseCellPositionUpdate();
+            var mouseCellCoords = MouseDataProvider.Instance.MouseCellCoords;
+            var model = new ShopObjectModelFactory().CreateShelf(shelfNumericId, mouseCellCoords);
+            gameStateModel.SetPlacingObject(model);
+        }
+        else
+        {
+            new NotEnoughtMoneySequenceCommand().Execute(shelfConfig.Price.IsGold);
+        }
     }
 }

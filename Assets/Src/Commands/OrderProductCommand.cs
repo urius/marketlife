@@ -29,7 +29,7 @@ public struct OrderProductCommand
         }
         else
         {
-            dispatcher.UIRequestBlinkMoney(price.IsGold);
+            new NotEnoughtMoneySequenceCommand().Execute(price.IsGold);
         }
     }
 }

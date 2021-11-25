@@ -37,7 +37,7 @@ public struct HandleFriendShopActionClickCommand
                 }
                 else
                 {
-                    dispatcher.UIRequestBlinkMoney(price.IsGold);
+                    new NotEnoughtMoneySequenceCommand().Execute(price.IsGold);
                 }
 
                 analyticsManager.SendCustom(AnalyticsManager.EventNameFriendActionBuyRecharge, ("action", actionId.ToString()), ("success", success));

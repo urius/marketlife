@@ -719,7 +719,6 @@ MonoBehaviour:
   - {fileID: 6576891288807614679}
   - {fileID: 6576891290330359688}
   - {fileID: 6576891289248132804}
-  _fullnessIndicatorImage: {fileID: 0}
   _productFloors:
   - ProductSprites:
     - {fileID: 6576891290700758606}

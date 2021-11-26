@@ -153,9 +153,12 @@ public class DataExporter
     {
         switch (action.ActionId)
         {
-            case FriendShopActionId.Take:
-                var takeAction = action as ExternalActionTake;
+            case FriendShopActionId.TakeProduct:
+                var takeAction = action as ExternalActionTakeProduct;
                 return $"{(int)takeAction.ActionId}|{ExportCoords(takeAction.Coords)}|{ExportProduct(takeAction.ProductConfig, takeAction.Amount)}";
+            case FriendShopActionId.AddProduct:
+                var addProductAction = action as ExternalActionAddProduct;
+                return $"{(int)addProductAction.ActionId}|{ExportCoords(addProductAction.Coords)}|{addProductAction.ShelfSlotIndex}|{ExportProduct(addProductAction.ProductConfig, addProductAction.Amount)}";
             case FriendShopActionId.AddUnwash:
                 var addUnwashAction = action as ExternalActionAddUnwash;
                 return $"{(int)addUnwashAction.ActionId}|{ExportCoords(addUnwashAction.Coords)}";

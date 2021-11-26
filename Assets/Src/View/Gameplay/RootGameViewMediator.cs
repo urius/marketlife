@@ -39,10 +39,10 @@ public class RootGameViewMediator : MonoBehaviour
     {
         switch (currentState)
         {
-            case GameStateName.ShopSimulation:
+            case GameStateName.PlayerShopSimulation:
                 _guiCursorRenderer.color = Color.green;
                 break;
-            case GameStateName.ShopInterior:
+            case GameStateName.PlayerShopInterior:
                 _guiCursorRenderer.color = Color.blue;
                 break;
         }

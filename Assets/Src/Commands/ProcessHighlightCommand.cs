@@ -8,7 +8,8 @@ public struct ProcessHighlightCommand
         var gameState = gameStateModel.GameState;
 
         if (gameStateModel.ActionState != ActionStateName.None
-            && gameStateModel.ActionState != ActionStateName.PlacingProduct
+            && gameStateModel.ActionState != ActionStateName.PlacingProductPlayer
+            && gameStateModel.ActionState != ActionStateName.PlacingProductFriend
             && gameStateModel.ActionState != ActionStateName.FriendShopTakeProduct
             && gameStateModel.ActionState != ActionStateName.FriendShopAddUnwash)
         {
@@ -16,7 +17,8 @@ public struct ProcessHighlightCommand
         }
 
         var shopModel = gameStateModel.ViewingShopModel;
-        if (gameStateModel.ActionState == ActionStateName.PlacingProduct)
+        if (gameStateModel.ActionState == ActionStateName.PlacingProductPlayer
+            || gameStateModel.ActionState == ActionStateName.PlacingProductFriend)
         {
             if (shopModel.Grid.TryGetValue(coords, out var shopObjectData)
                              && shopObjectData.buildState > 0
@@ -36,11 +38,11 @@ public struct ProcessHighlightCommand
             {
                 gameStateModel.SetHighlightedShopObject(shopObjectData.reference);
             }
-            else if (gameState != GameStateName.ShopInterior && shopModel.Unwashes.TryGetValue(coords, out var unwashNumericId))
+            else if (gameState != GameStateName.PlayerShopInterior && shopModel.Unwashes.TryGetValue(coords, out var unwashNumericId))
             {
                 gameStateModel.SetHighlightedUnwashOn(coords);
             }
-            else if (gameState != GameStateName.ShopSimulation && shopModel.ShopDesign.IsHighlightableDecorationOn(coords))
+            else if (gameState != GameStateName.PlayerShopSimulation && shopModel.ShopDesign.IsHighlightableDecorationOn(coords))
             {
                 gameStateModel.SetHighlightedDecorationOn(coords);
             }

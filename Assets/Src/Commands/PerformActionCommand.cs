@@ -36,7 +36,8 @@ public struct PerformActionCommand
             case ActionStateName.MovingDoor:
                 actionResult = PlaceMovingDecoration(mouseCellCoords, ShopDecorationObjectType.Door, gameStateModel.PlacingDecorationNumericId);
                 break;
-            case ActionStateName.PlacingProduct:
+            case ActionStateName.PlacingProductPlayer:
+            case ActionStateName.PlacingProductFriend:
                 actionResult = PlaceProductOnHighlightedShelf();
                 break;
             case ActionStateName.FriendShopTakeProduct:
@@ -49,7 +50,7 @@ public struct PerformActionCommand
 
         if (actionResult)
         {
-            if (gameStateModel.ActionState == ActionStateName.PlacingProduct)
+            if (gameStateModel.ActionState == ActionStateName.PlacingProductPlayer)
             {
                 audioManager.PlaySound(SoundNames.ProductPut);
             }
@@ -92,7 +93,11 @@ public struct PerformActionCommand
             }
             else if (viewingShopModel.AddUnwash(coords, 1))
             {
-                viewingUserModel.ExternalActionsModel.AddAction(new ExternalActionAddUnwash(playerModel.Uid, coords));
+                var cleanerEndWorkTime = viewingUserModel.ShopModel.PersonalModel.GetMaxEndWorkTimeForPersonalType(PersonalType.Cleaner);
+                if (cleanerEndWorkTime < gameStateModel.ServerTime)
+                {
+                    viewingUserModel.ExternalActionsModel.AddAction(new ExternalActionAddUnwash(playerModel.Uid, coords));
+                }
                 actionData.SetAmount(actionData.RestAmount - 1);
                 result = true;
             }
@@ -124,7 +129,7 @@ public struct PerformActionCommand
         var playerActionsDataModel = playerModel.FriendsActionsDataModels.GetFriendShopActionsModel(viewingUserModel.Uid);
         var highlightState = gameStateModel.HighlightState;
         var highlightedShopObject = highlightState.HighlightedShopObject;
-        var actionId = FriendShopActionId.Take;
+        var actionId = FriendShopActionId.TakeProduct;
         var actionData = playerActionsDataModel.ActionsById[actionId];
         var screenCalculator = ScreenCalculator.Instance;
         var loc = LocalizationManager.Instance;
@@ -150,7 +155,7 @@ public struct PerformActionCommand
                         if (securityEndWorkTime < gameStateModel.ServerTime)
                         {
                             slot.ChangeProductAmount(-amountToTake);
-                            viewingUserModel.ExternalActionsModel.AddAction(new ExternalActionTake(playerModel.Uid, shelf.Coords, productConfig, amountToTake));
+                            viewingUserModel.ExternalActionsModel.AddAction(new ExternalActionTakeProduct(playerModel.Uid, shelf.Coords, productConfig, amountToTake));
                         }
                         actionData.SetAmount(actionData.RestAmount - 1);
                         break;
@@ -196,12 +201,15 @@ public struct PerformActionCommand
         var result = false;
         var dispatcher = Dispatcher.Instance;
         var gameStateModel = GameStateModel.Instance;
-        var shopModel = gameStateModel.ViewingShopModel;
+        var playerModel = PlayerModelHolder.Instance.UserModel;
+        var viewingUserModel = gameStateModel.ViewingUserModel;
+        var viewingShopModel = gameStateModel.ViewingShopModel;
         var highlightState = gameStateModel.HighlightState;
         var highlightedShopObject = highlightState.HighlightedShopObject;
         var loc = LocalizationManager.Instance;
         var screenCalculator = ScreenCalculator.Instance;
         var audioManager = AudioManager.Instance;
+        var isOnFriendShop = gameStateModel.GameState == GameStateName.ShopFriend;
 
         if (highlightState.IsHighlighted
             && highlightedShopObject != null
@@ -209,23 +217,27 @@ public struct PerformActionCommand
         {
             var shelf = highlightedShopObject as ShelfModel;
             string flyingTextToShow = null;
-            for (var i = 0; i < shelf.PartsCount; i++)
-            {
-                flyingTextToShow = null;
 
-                var placedAmount = new PutWarehouseProductOnShelfCommand().Execute(gameStateModel.PlacingProductWarehouseSlotIndex, shelf.Slots[i]);
-                result = placedAmount > 0;
-                if (placedAmount > 0)
+            var placingProductSlot = playerModel.ShopModel.WarehouseModel.Slots[gameStateModel.PlacingProductWarehouseSlotIndex];
+            if (placingProductSlot.HasProduct)
+            {
+                for (var i = 0; i < shelf.PartsCount; i++)
                 {
-                    break;
-                }
-                else
-                {
-                    flyingTextToShow = loc.GetLocalization(LocalizationKeys.FlyingTextShelfDoesntHaveFreeSpace);
+                    flyingTextToShow = null;
+
+                    var placedAmount = new PutWarehouseProductOnShelfCommand().Execute(gameStateModel.PlacingProductWarehouseSlotIndex, viewingUserModel, shelf, i);
+                    result = placedAmount > 0;
+                    if (placedAmount > 0)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        flyingTextToShow = loc.GetLocalization(LocalizationKeys.FlyingTextShelfDoesntHaveFreeSpace);
+                    }
                 }
             }
 
-            var placingProductSlot = shopModel.WarehouseModel.Slots[gameStateModel.PlacingProductWarehouseSlotIndex];
             if (placingProductSlot.HasProduct == false)
             {
                 gameStateModel.ResetActionState();

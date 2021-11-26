@@ -21,6 +21,11 @@ public class UIBottomPanelFriendTabActionButtonView : MonoBehaviour
         _buyButton.AddOnClickListener(OnBuyButtonClicked);
     }
 
+    public void SetAmountTextVisibility(bool isVisible)
+    {
+        _amountText.gameObject.SetActive(isVisible);
+    }
+
     public void SetAmountText(string text)
     {
         _amountText.text = text;
@@ -39,7 +44,7 @@ public class UIBottomPanelFriendTabActionButtonView : MonoBehaviour
     public void SetChargingState(bool isChargingEnabled)
     {
         _hintableView.SetEnabled(!isChargingEnabled);
-        _amountText.gameObject.SetActive(!isChargingEnabled);
+        SetAmountTextVisibility(!isChargingEnabled);
         _timeText.gameObject.SetActive(isChargingEnabled);
         _mainButton.interactable = !isChargingEnabled;
         _buyButton.gameObject.SetActive(isChargingEnabled);

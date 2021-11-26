@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class UIBottomPanelFriendShopTabMediator : UIBottomPanelTabMediatorBase
@@ -44,6 +45,7 @@ public class UIBottomPanelFriendShopTabMediator : UIBottomPanelTabMediatorBase
         _tabView = tabViewGo.GetComponent<UIBottomPanelFriendsTabView>();
         SetupView();
 
+        _tutorialUIElementsProvider.SetElement(TutorialUIElement.BottomPanelFriendShopAddProductButton, _tabView.AddProductActionView.transform);
         _tutorialUIElementsProvider.SetElement(TutorialUIElement.BottomPanelFriendShopTakeButton, _tabView.TakeActionView.transform);
         _tutorialUIElementsProvider.SetElement(TutorialUIElement.BottomPanelFriendShopAddUnwashButton, _tabView.UnwashActionView.transform);
 
@@ -54,6 +56,7 @@ public class UIBottomPanelFriendShopTabMediator : UIBottomPanelTabMediatorBase
 
     public override void Unmediate()
     {
+        _tutorialUIElementsProvider.ClearElement(TutorialUIElement.BottomPanelFriendShopAddProductButton);
         _tutorialUIElementsProvider.ClearElement(TutorialUIElement.BottomPanelFriendShopTakeButton);
         _tutorialUIElementsProvider.ClearElement(TutorialUIElement.BottomPanelFriendShopAddUnwashButton);
 
@@ -71,6 +74,7 @@ public class UIBottomPanelFriendShopTabMediator : UIBottomPanelTabMediatorBase
     private void Activate()
     {
         _avatarsManager.AvatarLoadedForId += OnAvatarLoaded;
+        _tabView.AddProductActionView.Clicked += OnAddProductActionView;
         _tabView.TakeActionView.Clicked += OnTakeActionClicked;
         _tabView.TakeActionView.BuyButtonClicked += OnBuyTakeActionClicked;
         _tabView.UnwashActionView.Clicked += OnAddUnwashActionClicked;
@@ -83,6 +87,7 @@ public class UIBottomPanelFriendShopTabMediator : UIBottomPanelTabMediatorBase
     private void Deactivate()
     {
         _avatarsManager.AvatarLoadedForId -= OnAvatarLoaded;
+        _tabView.AddProductActionView.Clicked -= OnAddProductActionView;
         _tabView.TakeActionView.Clicked -= OnTakeActionClicked;
         _tabView.TakeActionView.BuyButtonClicked -= OnBuyTakeActionClicked;
         _tabView.UnwashActionView.Clicked -= OnAddUnwashActionClicked;
@@ -94,7 +99,7 @@ public class UIBottomPanelFriendShopTabMediator : UIBottomPanelTabMediatorBase
 
     private void OnRealtimeSecondUpdate()
     {
-        SetupActionButtonView(FriendShopActionId.Take);
+        SetupActionButtonView(FriendShopActionId.TakeProduct);
         SetupActionButtonView(FriendShopActionId.AddUnwash);
     }
 
@@ -103,7 +108,7 @@ public class UIBottomPanelFriendShopTabMediator : UIBottomPanelTabMediatorBase
         var view = GetViewByActionId(actionData.ActionId);
         if (view != null)
         {
-            UpdateAmount(view, actionData);
+            UpdateAmount(view, actionData.RestAmount);
         }
     }
 
@@ -116,20 +121,26 @@ public class UIBottomPanelFriendShopTabMediator : UIBottomPanelTabMediatorBase
     {
         return actionId switch
         {
-            FriendShopActionId.Take => _tabView.TakeActionView,
+            FriendShopActionId.AddProduct => _tabView.AddProductActionView,
+            FriendShopActionId.TakeProduct => _tabView.TakeActionView,
             FriendShopActionId.AddUnwash => _tabView.UnwashActionView,
             _ => null,
         };
     }
 
+    private void OnAddProductActionView()
+    {
+        _dispatcher.UIBottomPanelFriendShopActionClicked(FriendShopActionId.AddProduct);
+    }
+
     private void OnTakeActionClicked()
     {
-        _dispatcher.UIBottomPanelFriendShopActionClicked(FriendShopActionId.Take);
+        _dispatcher.UIBottomPanelFriendShopActionClicked(FriendShopActionId.TakeProduct);
     }
 
     private void OnBuyTakeActionClicked()
     {
-        _dispatcher.UIBottomPanelBuyFriendShopActionClicked(FriendShopActionId.Take);
+        _dispatcher.UIBottomPanelBuyFriendShopActionClicked(FriendShopActionId.TakeProduct);
     }
 
     private void OnAddUnwashActionClicked()
@@ -159,33 +170,46 @@ public class UIBottomPanelFriendShopTabMediator : UIBottomPanelTabMediatorBase
         _tabView.SetExpText(FormattingHelper.ToCommaSeparatedNumber(friendShopUserModel.ProgressModel.ExpAmount));
         _tabView.SetCashText(FormattingHelper.ToCommaSeparatedNumber(friendShopUserModel.ProgressModel.Cash));
 
-        SetupActionButtonView(FriendShopActionId.Take);
+        SetupActionButtonView(FriendShopActionId.AddProduct);
+        SetupActionButtonView(FriendShopActionId.TakeProduct);
         SetupActionButtonView(FriendShopActionId.AddUnwash);
     }
 
     private void SetupActionButtonView(FriendShopActionId actionId)
     {
-        var actionData = _playerAvailableActionsDataModel.ActionsById[actionId];
         var actionView = GetViewByActionId(actionId);
-        if (actionView != null)
+        if (_playerAvailableActionsDataModel.ActionsById.ContainsKey(actionId))
         {
-            if (actionData.EndCooldownTimestamp > _gameStateModel.ServerTime)
+            var actionData = _playerAvailableActionsDataModel.ActionsById[actionId];
+            if (actionView != null)
             {
-                actionView.SetChargingState(true);
-                UpdateCooldownTime(actionView, actionData);
-                actionView.SetBuyPriceText(_mainConfig.GetActionResetCooldownPriceGold(actionId).ToString());
+                if (actionData.EndCooldownTimestamp > _gameStateModel.ServerTime)
+                {
+                    actionView.SetChargingState(true);
+                    UpdateCooldownTime(actionView, actionData);
+                    actionView.SetBuyPriceText(_mainConfig.GetActionResetCooldownPriceGold(actionId).ToString());
+                }
+                else
+                {
+                    actionView.SetChargingState(false);
+                    UpdateAmount(actionView, actionData.RestAmount);
+                }
             }
-            else
-            {
-                actionView.SetChargingState(false);
-                UpdateAmount(actionView, actionData);
-            }
+        }
+        else
+        {
+            actionView.SetChargingState(false);
+            UpdateAmount(actionView, 0);
         }
     }
 
-    private void UpdateAmount(UIBottomPanelFriendTabActionButtonView actionView, FriendShopActionData actionData)
+    private void UpdateAmount(UIBottomPanelFriendTabActionButtonView actionView, int amount)
     {
-        actionView.SetAmountText(actionData.RestAmount.ToString());
+        actionView.SetAmountTextVisibility(amount > 0);
+        if (amount > 0)
+        {
+            actionView.SetAmountText(amount.ToString());
+        }
     }
 
     private void UpdateCooldownTime(UIBottomPanelFriendTabActionButtonView actionView, FriendShopActionData actionData)

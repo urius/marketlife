@@ -32,6 +32,9 @@ public class TutorialFriendUIStepMediator : TutorialStepMediatorBase
             case 2:
                 HandleAddUnwashPhase();
                 break;
+            case 3:
+                HandleAddProductPhase();
+                break;
             default:
                 base.OnViewButtonClicked();
                 break;
@@ -52,6 +55,14 @@ public class TutorialFriendUIStepMediator : TutorialStepMediatorBase
         View.SetMessageText(message);
         View.SetButtonText(buttonText);
         HighlightUIElement(TutorialUIElement.BottomPanelFriendShopAddUnwashButton);
+    }
+
+    private void HandleAddProductPhase()
+    {
+        var (message, buttonText) = GetTextsForCurrentPhase();
+        View.SetMessageText(message);
+        View.SetButtonText(buttonText);
+        HighlightUIElement(TutorialUIElement.BottomPanelFriendShopAddProductButton);
     }
 
     private (string message, string buttonText) GetTextsForCurrentPhase()

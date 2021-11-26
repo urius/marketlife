@@ -38,7 +38,7 @@ public class UserModel
         BonusState = bonusState;
         FriendsActionsDataModels = friendsActionsDataModel;
         SessionDataModel = new UserSessionDataModel();
-        //TutorialSteps = new List<int>(new int[] { 0,1,2,3,4,5,6,7,8 });
+        //TutorialSteps = new List<int>(new int[] { 0,1,2,3,4,5,6,7,8,9 });
         TutorialSteps = new List<int>(tutorialSteps ?? Enumerable.Empty<int>());
         UserSettingsModel = userSettingsModel;
         ExternalActionsModel = externalActionsModel;
@@ -74,18 +74,75 @@ public class UserModel
 
     public void ApplyExternalActions()
     {
+        ApplyExternalAction(FriendShopActionId.AddUnwash);
+        ApplyExternalAction(FriendShopActionId.AddProduct);
+        ApplyExternalAction(FriendShopActionId.TakeProduct);
+        ShopModel.TrimProducts();
+    }
+
+    private void ApplyExternalAction(FriendShopActionId actionId)
+    {
         foreach (var action in ExternalActionsModel.Actions)
         {
-            switch (action.ActionId)
+            if (action.ActionId == actionId)
             {
-                case FriendShopActionId.Take:
-                    ApplyTakeAction(action as ExternalActionTake);
-                    break;
-                case FriendShopActionId.AddUnwash:
-                    ApplyAddUnwashAction(action as ExternalActionAddUnwash);
-                    break;
+                switch (action.ActionId)
+                {
+                    case FriendShopActionId.AddProduct:
+                        ApplyAddProductAction(action as ExternalActionAddProduct);
+                        break;
+                    case FriendShopActionId.TakeProduct:
+                        ApplyTakeAction(action as ExternalActionTakeProduct);
+                        break;
+                    case FriendShopActionId.AddUnwash:
+                        ApplyAddUnwashAction(action as ExternalActionAddUnwash);
+                        break;
+                }
             }
         }
+    }
+
+    private void ApplyAddProductAction(ExternalActionAddProduct addProductAction)
+    {
+        var amountToAdd = addProductAction.Amount;
+        if (amountToAdd > 0
+            && ShopModel.ShopObjects.TryGetValue(addProductAction.Coords, out var shopObjectModel)
+            && shopObjectModel.Type == ShopObjectType.Shelf)
+        {
+            var shelfModel = shopObjectModel as ShelfModel;
+            var slot = shelfModel.Slots[addProductAction.ShelfSlotIndex];
+            if (slot.HasProduct
+                && slot.Product.Config.Key == addProductAction.ProductConfig.Key)
+            {
+                slot.ChangeProductAmount(amountToAdd);
+            }
+            else if (slot.HasProduct == false)
+            {
+                slot.SetProduct(new ProductModel(addProductAction.ProductConfig, amountToAdd));
+            }
+        }
+    }
+
+    private void ApplyTakeAction(ExternalActionTakeProduct takeAction)
+    {
+        var takeAmountRest = takeAction.Amount;
+        if (ShopModel.ShopObjects.TryGetValue(takeAction.Coords, out var shopObjectModel) && shopObjectModel.Type == ShopObjectType.Shelf)
+        {
+            var shelfModel = shopObjectModel as ShelfModel;
+            foreach (var slot in shelfModel.Slots)
+            {
+                if (slot.HasProduct && slot.Product.Config.Key == takeAction.ProductConfig.Key)
+                {
+                    takeAmountRest += slot.ChangeProductAmount(-takeAmountRest);
+                }
+                if (takeAmountRest <= 0) break;
+            }
+        }
+    }
+
+    private void ApplyAddUnwashAction(ExternalActionAddUnwash addUnwashAction)
+    {
+        ShopModel.AddUnwash(addUnwashAction.Coords, 1);
     }
 
     private void SubscribeForSettingsModel()
@@ -108,28 +165,6 @@ public class UserModel
     {
         BonusState = newBonusState;
         BonusStateUpdated();
-    }
-
-    private void ApplyTakeAction(ExternalActionTake takeAction)
-    {
-        var takeAmountRest = takeAction.Amount;
-        if (ShopModel.ShopObjects.TryGetValue(takeAction.Coords, out var shopObjectModel) && shopObjectModel.Type == ShopObjectType.Shelf)
-        {
-            var shelfModel = shopObjectModel as ShelfModel;
-            foreach (var slot in shelfModel.Slots)
-            {
-                if (slot.HasProduct && slot.Product.Config.Key == takeAction.ProductConfig.Key)
-                {
-                    takeAmountRest += slot.ChangeProductAmount(-takeAmountRest);
-                }
-                if (takeAmountRest <= 0) break;
-            }
-        }
-    }
-
-    private void ApplyAddUnwashAction(ExternalActionAddUnwash addUnwashAction)
-    {
-        ShopModel.AddUnwash(addUnwashAction.Coords, 1);
     }
 
     public void AddPassedTutorialStep(int stepIndex)
@@ -306,9 +341,9 @@ public class UserModel
         var grabbedProductsDict = new Dictionary<ProductConfig, int>();
         foreach (var action in ExternalActionsModel.Actions)
         {
-            if (action.ActionId == FriendShopActionId.Take)
+            if (action.ActionId == FriendShopActionId.TakeProduct)
             {
-                var takeAction = action as ExternalActionTake;
+                var takeAction = action as ExternalActionTakeProduct;
                 if (grabbedProductsDict.ContainsKey(takeAction.ProductConfig) == false)
                 {
                     grabbedProductsDict[takeAction.ProductConfig] = 0;
@@ -571,7 +606,7 @@ public class FriendShopActionsModel
 {
     public static readonly FriendShopActionId[] SupportedActions = new FriendShopActionId[] {
         FriendShopActionId.AddUnwash,
-        FriendShopActionId.Take,
+        FriendShopActionId.TakeProduct,
         FriendShopActionId.VisitBonus,
     };
 
@@ -663,9 +698,10 @@ public class FriendShopActionData
 public enum FriendShopActionId
 {
     None = 0,
-    Take = 1,
+    TakeProduct = 1,
     AddUnwash = 2,
     VisitBonus = 3,
+    AddProduct = 4,
 }
 
 public class ExternalActionsModel
@@ -728,13 +764,14 @@ public abstract class ExternalActionModelBase
     public abstract void Combine(ExternalActionModelBase another);
 }
 
-public class ExternalActionTake : ExternalActionModelBase
+public class ExternalActionTakeProduct : ExternalActionModelBase
 {
     public readonly Vector2Int Coords;
     public readonly ProductConfig ProductConfig;
+
     public int Amount;
 
-    public ExternalActionTake(string performerId, Vector2Int coords, ProductConfig productConfig, int amount)
+    public ExternalActionTakeProduct(string performerId, Vector2Int coords, ProductConfig productConfig, int amount)
         : base(performerId)
     {
         Coords = coords;
@@ -742,16 +779,53 @@ public class ExternalActionTake : ExternalActionModelBase
         Amount = amount;
     }
 
-    public override FriendShopActionId ActionId => FriendShopActionId.Take;
+    public override FriendShopActionId ActionId => FriendShopActionId.TakeProduct;
 
     public override bool CanCombine(ExternalActionModelBase another)
     {
-        return base.CanCombine(another) && (another as ExternalActionTake).ProductConfig.Key == ProductConfig.Key;
+        var anotherAction = another as ExternalActionTakeProduct;
+        return base.CanCombine(another)
+            && anotherAction.Coords == Coords
+            && anotherAction.ProductConfig.Key == ProductConfig.Key;
     }
 
     public override void Combine(ExternalActionModelBase another)
     {
-        Amount += (another as ExternalActionTake).Amount;
+        Amount += (another as ExternalActionTakeProduct).Amount;
+    }
+}
+
+public class ExternalActionAddProduct : ExternalActionModelBase
+{
+    public readonly Vector2Int Coords;
+    public readonly int ShelfSlotIndex;
+    public readonly ProductConfig ProductConfig;
+
+    public int Amount;
+
+    public ExternalActionAddProduct(string performerId, Vector2Int coords, int shelfSlotIndex, ProductConfig productConfig, int amount)
+        : base(performerId)
+    {
+        Coords = coords;
+        ShelfSlotIndex = shelfSlotIndex;
+        ProductConfig = productConfig;
+        Amount = amount;
+    }
+
+    public override FriendShopActionId ActionId => FriendShopActionId.AddProduct;
+
+    public override bool CanCombine(ExternalActionModelBase another)
+    {
+        var anotherAction = another as ExternalActionAddProduct;
+        return base.CanCombine(another)
+            && anotherAction.Coords == Coords
+            && anotherAction.ProductConfig.Key == ProductConfig.Key
+            && anotherAction.ShelfSlotIndex == ShelfSlotIndex;
+    }
+
+    public override void Combine(ExternalActionModelBase another)
+    {
+        Amount += (another as ExternalActionAddProduct).Amount;
     }
 }
 

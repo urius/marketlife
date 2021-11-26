@@ -51,6 +51,21 @@ public class ShopModel
     public int SlotsFullnessPercent => (int)(100 * ((float)_totalUsedShelfSlots / (_totalUsedShelfSlots + _totalFreeShelfSlots)));
     public int ClarityPercent => (int)(100 * (1f - (float)Unwashes.Count / (ShopDesign.SizeX * ShopDesign.SizeY)));
 
+    public void TrimProducts()
+    {
+        foreach (var kvp in ShopObjects)
+        {
+            if (kvp.Value.Type == ShopObjectType.Shelf)
+            {
+                var shelfModel = kvp.Value as ShelfModel;
+                foreach (var slot in shelfModel.Slots)
+                {
+                    slot.Trim();
+                }
+            }
+        }
+    }
+
     public bool CanPlaceUnwash(Vector2Int coords)
     {
         if (Grid.TryGetValue(coords, out var gridItem))

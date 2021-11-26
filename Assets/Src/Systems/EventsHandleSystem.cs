@@ -172,9 +172,9 @@ public class EventsHandleSystem
         new UIUpgradePopupBuyClickCommand().Execute(itemViewModel);
     }
 
-    private void OnUIWarehousePopupSlotClicked(WarehousePopupViewModel popupModel, int warehouseSlotIndex)
+    private void OnUIWarehousePopupSlotClicked(int warehouseSlotIndex)
     {
-        new UIWarehousePopupSlotClickedCommand().Execute(popupModel, warehouseSlotIndex);
+        new UIWarehousePopupSlotClickedCommand().Execute(warehouseSlotIndex);
     }
 
     private void OnUIShelfContentAddProductClicked(ShelfContentPopupViewModel popupModel, int shelfSlotIndex)
@@ -281,7 +281,7 @@ public class EventsHandleSystem
 
     private void BottomPanelInteriorClicked()
     {
-        _gameStateModel.SetGameState(GameStateName.ShopInterior);
+        _gameStateModel.SetGameState(GameStateName.PlayerShopInterior);
     }
 
     private void BottomPanelManageClicked()

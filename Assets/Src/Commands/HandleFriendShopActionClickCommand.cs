@@ -7,14 +7,16 @@ public struct HandleFriendShopActionClickCommand
         var playerModel = PlayerModelHolder.Instance.UserModel;
         var friendActionsDataModel = playerModel.FriendsActionsDataModels.GetFriendShopActionsModel(viewingUserModel.Uid);
         var mainConfig = GameConfigManager.Instance.MainConfig;
-        var dispatcher = Dispatcher.Instance;
         var analyticsManager = AnalyticsManager.Instance;
 
         if (isBuyClicked == false)
         {
             switch (actionId)
             {
-                case FriendShopActionId.Take:
+                case FriendShopActionId.AddProduct:
+                    gameStateModel.ShowPopup(new WarehousePopupViewModel());
+                    break;
+                case FriendShopActionId.TakeProduct:
                     gameStateModel.SetTakeProductAction();
                     break;
                 case FriendShopActionId.AddUnwash:

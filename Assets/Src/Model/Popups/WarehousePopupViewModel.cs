@@ -1,11 +1,18 @@
 public class WarehousePopupViewModel : PopupViewModelBase
 {
-    public readonly ProductSlotModel TargetShelfSlot;
+    public override PopupType PopupType => PopupType.Warehouse;
+}
 
-    public WarehousePopupViewModel(ProductSlotModel targetShelfSlot)
+public class WarehousePopupForShelfViewModel : PopupViewModelBase
+{
+    public readonly ShelfModel TargetShelfModel;
+    public readonly int TargetShelfSlotIndex;
+
+    public WarehousePopupForShelfViewModel(ShelfModel targetShelfModel, int targetShelfSlotIndex)
     {
-        TargetShelfSlot = targetShelfSlot;
+        TargetShelfModel = targetShelfModel;
+        TargetShelfSlotIndex = targetShelfSlotIndex;
     }
 
-    public override PopupType PopupType => PopupType.Warehouse;
+    public override PopupType PopupType => PopupType.WarehouseForShelf;
 }

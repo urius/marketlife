@@ -6,12 +6,12 @@ public struct BottomPanelHandleBackClickCommand
         var playerModelHolder = PlayerModelHolder.Instance;
         switch (gameStateModel.GameState)
         {
-            case GameStateName.ShopInterior:
-                gameStateModel.SetGameState(GameStateName.ShopSimulation);
+            case GameStateName.PlayerShopInterior:
+                gameStateModel.SetGameState(GameStateName.PlayerShopSimulation);
                 break;
             case GameStateName.ShopFriend:
                 gameStateModel.SetViewingUserModel(playerModelHolder.UserModel);
-                gameStateModel.SetGameState(GameStateName.ShopSimulation);
+                gameStateModel.SetGameState(GameStateName.PlayerShopSimulation);
                 break;
         }
     }

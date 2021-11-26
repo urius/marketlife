@@ -15,6 +15,7 @@ public enum PopupType
     Confirm,
     OrderProduct,
     ShelfContent,
+    WarehouseForShelf,
     Warehouse,
     Upgrades,
     OfflineReport,

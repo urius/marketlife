@@ -57,7 +57,7 @@ public class TutorialDeliveringStepMediator : TutorialStepMediatorBase
 
     private void OnActionStateChanged(ActionStateName prev, ActionStateName current)
     {
-        if (current == ActionStateName.PlacingProduct)
+        if (current == ActionStateName.PlacingProductPlayer)
         {
             DispatchTutorialActionPerformed();
         }

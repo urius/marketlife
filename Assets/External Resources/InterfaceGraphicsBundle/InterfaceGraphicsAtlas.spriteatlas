@@ -32,7 +32,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 46b41057a82fe4010b5245cd9e8b4afa, type: 3}
-    totalSpriteSurfaceArea: 1434272
+    totalSpriteSurfaceArea: 1452110
     bindAsDefault: 0
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -117,8 +117,10 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 8fcee709520284d7799a69863b2222b4, type: 3}
   - {fileID: 21300000, guid: 9380ae0982d0d4cdb8bf5eec4395ef33, type: 3}
   - {fileID: 21300000, guid: 6c7776190662c4b5489ae8cfe0e468de, type: 3}
+  - {fileID: 21300000, guid: 94b2df397a5344873850595c93935b83, type: 3}
   - {fileID: 21300000, guid: 21876a599f887488689f6ae9c22449f0, type: 3}
   - {fileID: 21300000, guid: 607dc3a9340b04ec6bd721454157dba4, type: 3}
+  - {fileID: 21300000, guid: 69a362c9bd5794642a398d5655befeed, type: 3}
   - {fileID: 21300000, guid: cfe69cf998df545fd8e8af949b957762, type: 3}
   - {fileID: 21300000, guid: b00b140a1468748619c82d75ffc5ed5e, type: 3}
   - {fileID: 21300000, guid: f59ca50a261b248c8937898c4e4e3c84, type: 3}
@@ -261,8 +263,10 @@ SpriteAtlas:
   - hint_arrow_up
   - skin_top_stribe_blue
   - Icon_Video
+  - icon_cleaning
   - Banana
   - icon_personal_1
+  - icon_action_add_product
   - button_3_long_crimson
   - button_1_long_green
   - Door2

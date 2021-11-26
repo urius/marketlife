@@ -82,7 +82,7 @@ public class BillboardMediator : IMediator
 
     private void ProcessHighlight()
     {
-        if (_gameStateModel.GameState == GameStateName.ShopSimulation
+        if (_gameStateModel.GameState == GameStateName.PlayerShopSimulation
             && _gameStateModel.ActionState == ActionStateName.None)
         {
             if (_billboardView != null && _billboardView.gameObject.activeSelf == true)

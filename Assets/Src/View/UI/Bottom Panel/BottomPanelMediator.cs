@@ -52,8 +52,8 @@ public class BottomPanelMediator : UINotMonoMediatorBase
     {
         return gameState switch
         {
-            GameStateName.ShopSimulation => GetSimulationModeTabMediator(),
-            GameStateName.ShopInterior => GetInteriorModeTabMediator(),
+            GameStateName.PlayerShopSimulation => GetSimulationModeTabMediator(),
+            GameStateName.PlayerShopInterior => GetInteriorModeTabMediator(),
             GameStateName.ShopFriend => new UIBottomPanelFriendShopTabMediator(_view),
             _ => null,
         };
@@ -164,7 +164,8 @@ public class BottomPanelMediator : UINotMonoMediatorBase
                     case ActionStateName.PlacingNewDoor:
                         await _view.ShowActionButtonsAsync(ActionModeType.PlacingShopDecoration);
                         break;
-                    case ActionStateName.PlacingProduct:
+                    case ActionStateName.PlacingProductPlayer:
+                    case ActionStateName.PlacingProductFriend:
                         await _view.ShowActionButtonsAsync(ActionModeType.PlacingProduct);
                         break;
                     case ActionStateName.FriendShopTakeProduct:
@@ -208,10 +209,10 @@ public class BottomPanelMediator : UINotMonoMediatorBase
     {
         switch (newState)
         {
-            case GameStateName.ShopInterior:
+            case GameStateName.PlayerShopInterior:
                 _view.ShowInteriorModeBG();
                 return _view.ShowInteriorModeButtonsAsync();
-            case GameStateName.ShopSimulation:
+            case GameStateName.PlayerShopSimulation:
                 _view.ShowSimulationModeBG();
                 return _view.ShowSimulationModeButtonsAsync();
             case GameStateName.ShopFriend:
@@ -226,9 +227,9 @@ public class BottomPanelMediator : UINotMonoMediatorBase
     {
         switch (previousState)
         {
-            case GameStateName.ShopSimulation:
+            case GameStateName.PlayerShopSimulation:
                 return _view.HideSimulationModeButtonsAsync();
-            case GameStateName.ShopInterior:
+            case GameStateName.PlayerShopInterior:
                 return _view.HideInteriorModeButtonsAsync();
             case GameStateName.ShopFriend:
                 return _view.HideFriendShopModeButtonsAsync();

@@ -28,7 +28,7 @@ public struct CalculateForReportCommand
         }
         else
         {
-            gameStateModel.SetGameState(GameStateName.ShopSimulation);
+            gameStateModel.SetGameState(GameStateName.PlayerShopSimulation);
         }
     }
 }

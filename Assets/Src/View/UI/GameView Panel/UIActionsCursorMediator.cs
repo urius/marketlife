@@ -44,7 +44,8 @@ public class UIActionsCursorMediator : IMediator
         {
             switch (currentState)
             {
-                case ActionStateName.PlacingProduct:
+                case ActionStateName.PlacingProductPlayer:
+                case ActionStateName.PlacingProductFriend:
                     _placingProductModel = _playerModelHolder.ShopModel.WarehouseModel.Slots[_gameStateModel.PlacingProductWarehouseSlotIndex].Product;
                     CreateCursorWithIcon(_spritesProvider.GetProductIcon(_placingProductModel.Config.Key));
                     SubscribeOnPlacingProduct();
@@ -72,7 +73,7 @@ public class UIActionsCursorMediator : IMediator
             _dispatcher.UIMouseMoved -= OnMouseMoved;
             switch (previousState)
             {
-                case ActionStateName.PlacingProduct:
+                case ActionStateName.PlacingProductPlayer:
                     UnsubscribeFromPlacingProduct();
                     _placingProductModel = null;
                     break;
@@ -147,11 +148,12 @@ public class UIActionsCursorMediator : IMediator
     {
         switch (_gameStateModel.ActionState)
         {
-            case ActionStateName.PlacingProduct:
+            case ActionStateName.PlacingProductPlayer:
+            case ActionStateName.PlacingProductFriend:
                 _actionCursorView.SetText($"{_placingProductModel.Amount}x");
                 break;
             case ActionStateName.FriendShopTakeProduct:
-                UpdateActionAmount(FriendShopActionId.Take);
+                UpdateActionAmount(FriendShopActionId.TakeProduct);
                 break;
             case ActionStateName.FriendShopAddUnwash:
                 UpdateActionAmount(FriendShopActionId.AddUnwash);

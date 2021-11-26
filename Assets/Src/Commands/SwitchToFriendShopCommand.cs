@@ -20,9 +20,10 @@ public struct SwitchToFriendShopCommand
 
             if (friendData.IsUserModelLoaded)
             {
-                friendData.UserModel.ApplyExternalActions();
-                var calculationResult = friendData.UserModel.CalculateOfflineToTime(gameStateModel.ServerTime);
-                friendData.UserModel.ShopModel.RemoveProducts(calculationResult.SoldFromShelfs);
+                var friendModel = friendData.UserModel;
+                var calculationResult = friendModel.CalculateOfflineToTime(gameStateModel.ServerTime);
+                friendModel.ShopModel.RemoveProducts(calculationResult.SoldFromShelfs);
+                friendModel.ApplyExternalActions();
             }
         }
         if (friendData.IsUserModelLoaded)

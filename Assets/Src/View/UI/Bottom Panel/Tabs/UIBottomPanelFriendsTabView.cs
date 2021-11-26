@@ -9,9 +9,11 @@ public class UIBottomPanelFriendsTabView : MonoBehaviour
     [SerializeField] private TMP_Text _userLevelText;
     [SerializeField] private TMP_Text _userExpText;
     [SerializeField] private TMP_Text _userCashText;
+    [SerializeField] private UIBottomPanelFriendTabActionButtonView _addProductActionView;
     [SerializeField] private UIBottomPanelFriendTabActionButtonView _takeActionView;
     [SerializeField] private UIBottomPanelFriendTabActionButtonView _unwashActionView;
 
+    public UIBottomPanelFriendTabActionButtonView AddProductActionView => _addProductActionView;
     public UIBottomPanelFriendTabActionButtonView TakeActionView => _takeActionView;
     public UIBottomPanelFriendTabActionButtonView UnwashActionView => _unwashActionView;
     public RectTransform IconImageTransform => _userIconImage.rectTransform;

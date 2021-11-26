@@ -1,38 +1,24 @@
-using System;
-
 public struct PutWarehouseProductOnShelfCommand
 {
-    public int Execute(int warehouseSlotIndex, ProductSlotModel shelfSlot)
+    public int Execute(int warehouseSlotIndex, UserModel targetUserModel, ShelfModel shelfModel, int shelfSlotIndex)
     {
-        var gameStateModel = GameStateModel.Instance;
-        var playerShopModel = PlayerModelHolder.Instance.ShopModel;
+        var playerModelHolder = PlayerModelHolder.Instance;
+        var playerModel = playerModelHolder.UserModel;
+        var playerShopModel = playerModelHolder.ShopModel;
         var warehouseSlot = playerShopModel.WarehouseModel.Slots[warehouseSlotIndex];
-        var placedProductsCount = 0;
 
-        if (warehouseSlot.HasProduct && warehouseSlot.Product.DeliverTime <= gameStateModel.ServerTime)
+        var placedProductsCount = 0;
+        if (warehouseSlot.HasProduct)
         {
-            var placingProduct = warehouseSlot.Product;
-            if (shelfSlot.HasProduct && shelfSlot.Product.NumericId == warehouseSlot.Product.NumericId)
+            var shelfSlot = shelfModel.Slots[shelfSlotIndex];
+            var isPlayerShop = playerModel == targetUserModel;
+            var placingProductConfig = warehouseSlot.Product.Config;
+
+            placedProductsCount = new PutProductFromSlotToSlotCommand().Execute(warehouseSlot, shelfSlot);
+
+            if (isPlayerShop == false && placedProductsCount > 0)
             {
-                var maxSlotAmount = CalculationHelper.GetAmountForProductInVolume(placingProduct.Config, shelfSlot.Volume);
-                var amountToAdd = Math.Min(maxSlotAmount - shelfSlot.Product.Amount, placingProduct.Amount);
-                if (amountToAdd > 0)
-                {
-                    shelfSlot.ChangeProductAmount(amountToAdd);
-                    warehouseSlot.ChangeProductAmount(-amountToAdd);
-                    placedProductsCount = amountToAdd;
-                }
-            }
-            else if (shelfSlot.HasProduct == false)
-            {
-                var maxSlotAmount = CalculationHelper.GetAmountForProductInVolume(placingProduct.Config, shelfSlot.Volume);
-                var amountToAdd = Math.Min(maxSlotAmount, placingProduct.Amount);
-                if (amountToAdd > 0)
-                {
-                    shelfSlot.SetProduct(new ProductModel(placingProduct.Config, amountToAdd));
-                    warehouseSlot.ChangeProductAmount(-amountToAdd);
-                    placedProductsCount = amountToAdd;
-                }
+                targetUserModel.ExternalActionsModel.AddAction(new ExternalActionAddProduct(playerModel.Uid, shelfModel.Coords, shelfSlotIndex, placingProductConfig, placedProductsCount));
             }
         }
 

@@ -46,11 +46,27 @@ public class ProductSlotModel
             else
             {
                 result = deltaAmount;
-                Product.Amount += deltaAmount;
+                Product.Amount += result;
             }
         }
 
         return result;
+    }
+
+    public void Trim()
+    {
+        if (HasProduct)
+        {
+            var maxAmount = CalculationHelper.GetAmountForProductInVolume(Product.Config, Volume);
+            if (Product.Amount > maxAmount)
+            {
+                Product.Amount = maxAmount;
+            }
+            else if (Product.Amount <= 0)
+            {
+                RemoveProduct();
+            }
+        }
     }
 
     public bool RemoveProduct()

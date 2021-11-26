@@ -60,7 +60,7 @@ public class ShopObjectActionsPanelMediator : IMediator
 
     private async void Update()
     {
-        if (_gameStateModel.GameState != GameStateName.ShopInterior || _gameStateModel.ActionState != ActionStateName.None)
+        if (_gameStateModel.GameState != GameStateName.PlayerShopInterior || _gameStateModel.ActionState != ActionStateName.None)
         {
             HideActionsView();
             return;

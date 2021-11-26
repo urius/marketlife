@@ -128,41 +128,41 @@ public class TutorialSystem
         {
             TutorialStep.Welcome => HasNoOpenedPopups()
                 && HasNoPlacingMode()
-                && CheckGameState(GameStateName.ShopSimulation),
+                && CheckGameState(GameStateName.PlayerShopSimulation),
             TutorialStep.OpenWarehouse => HasNoOpenedPopups()
                 && HasNoPlacingMode()
-                && CheckGameState(GameStateName.ShopSimulation)
+                && CheckGameState(GameStateName.PlayerShopSimulation)
                 && _gameStateModel.BottomPanelViewModel.SimulationModeTab != BottomPanelSimulationModeTab.Warehouse,
             TutorialStep.OpenOrderPopup => HasNoOpenedPopups()
                 && HasNoPlacingMode()
-                && CheckGameState(GameStateName.ShopSimulation)
+                && CheckGameState(GameStateName.PlayerShopSimulation)
                 && _gameStateModel.BottomPanelViewModel.SimulationModeTab == BottomPanelSimulationModeTab.Warehouse
                 && _playerModel.ShopModel.WarehouseModel.Slots.Any(s => !s.HasProduct),
             TutorialStep.OrderProduct => HasNoOpenedPopups() == false
                 && _gameStateModel.ShowingPopupModel.PopupType == PopupType.OrderProduct,
             TutorialStep.Delivering => HasNoOpenedPopups()
                 && HasNoPlacingMode()
-                && CheckGameState(GameStateName.ShopSimulation)
+                && CheckGameState(GameStateName.PlayerShopSimulation)
                 && _playerModel.ShopModel.WarehouseModel.Slots.Any(s => s.HasProduct && s.Product.DeliverTime > _gameStateModel.ServerTime),
             TutorialStep.PlacingProduct => HasNoOpenedPopups()
-                && _gameStateModel.ActionState == ActionStateName.PlacingProduct,
+                && _gameStateModel.ActionState == ActionStateName.PlacingProductPlayer,
             TutorialStep.FinishPlacingProduct => HasNoOpenedPopups()
                 && HasNoPlacingMode(),
             TutorialStep.ShowMoodInteriorAndFriendsUI => HasNoOpenedPopups()
                 && HasNoPlacingMode()
-                && CheckGameState(GameStateName.ShopSimulation),
+                && CheckGameState(GameStateName.PlayerShopSimulation),
             TutorialStep.ShowSaveIcon => HasNoOpenedPopups()
                 && HasNoPlacingMode()
-                && CheckGameState(GameStateName.ShopSimulation),
+                && CheckGameState(GameStateName.PlayerShopSimulation),
             TutorialStep.ReadyToPlay => HasNoOpenedPopups()
                 && HasNoPlacingMode()
-                && CheckGameState(GameStateName.ShopSimulation),
+                && CheckGameState(GameStateName.PlayerShopSimulation),
             TutorialStep.FriendUI => HasNoOpenedPopups()
                 && HasNoPlacingMode()
                 && CheckGameState(GameStateName.ShopFriend),
             TutorialStep.Billboard => HasNoOpenedPopups()
                 && HasNoPlacingMode()
-                && CheckGameState(GameStateName.ShopSimulation)
+                && CheckGameState(GameStateName.PlayerShopSimulation)
                 && _playerModel.ShopModel.BillboardModel.IsAvailable,
             _ => false//throw new ArgumentException($"CheckTutorialConditions: {nameof(tutorialStepIndex)} {tutorialStepIndex} is not supported"),
         };

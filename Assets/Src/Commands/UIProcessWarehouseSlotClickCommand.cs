@@ -13,18 +13,18 @@ public struct UIProcessWarehouseSlotClickCommand
         {
             if (slotModel.Product.DeliverTime <= gameStateModel.ServerTime)
             {
-                gameStateModel.SetPlacingProductSlotIndex(slotIndex);
+                gameStateModel.SetPlacingProductOnPlayersShop(slotIndex);
             }
         }
         else
         {
-            var popupModel = GetPopupModel(slotIndex);
+            var popupModel = GetOrderProductPopupModel(slotIndex);
             gameStateModel.CachePopup(popupModel);
             gameStateModel.ShowPopup(popupModel);
         }
     }
 
-    private OrderProductPopupViewModel GetPopupModel(int slotIndex)
+    private OrderProductPopupViewModel GetOrderProductPopupModel(int slotIndex)
     {
         var gameStateModel = GameStateModel.Instance;
         var playerModel = PlayerModelHolder.Instance.UserModel;

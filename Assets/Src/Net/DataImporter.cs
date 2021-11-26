@@ -86,9 +86,13 @@ public class DataImporter
             var actionId = (FriendShopActionId)actionIdInt;
             switch (actionId)
             {
-                case FriendShopActionId.Take:
+                case FriendShopActionId.TakeProduct:
                     var product = ToProductModel(splitted[2]);
-                    return new ExternalActionTake(performerId, ParseCoords(splitted[1]), product.Config, product.Amount);
+                    return new ExternalActionTakeProduct(performerId, ParseCoords(splitted[1]), product.Config, product.Amount);
+                case FriendShopActionId.AddProduct:
+                    product = ToProductModel(splitted[3]);
+                    var slotIndex = int.Parse(splitted[2]);
+                    return new ExternalActionAddProduct(performerId, ParseCoords(splitted[1]), slotIndex, product.Config, product.Amount);
                 case FriendShopActionId.AddUnwash:
                     return new ExternalActionAddUnwash(performerId, ParseCoords(splitted[1]));
             }

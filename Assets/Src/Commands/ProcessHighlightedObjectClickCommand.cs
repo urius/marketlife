@@ -4,7 +4,7 @@ public struct ProcessHighlightedObjectClickCommand
     {
         var gameStateModel = GameStateModel.Instance;
 
-        if (gameStateModel.GameState == GameStateName.ShopSimulation
+        if (gameStateModel.GameState == GameStateName.PlayerShopSimulation
                && gameStateModel.ShowingPopupModel == null)
         {
             ProcessHighlightedObjectInternal();

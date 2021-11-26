@@ -69,7 +69,7 @@ public class ShelfViewMediator : ShopObjectMediatorBase
 
     private void Activate()
     {
-        _gameStateModel.GameStateChanged += OnGameStateChanged;
+        _gameStateModel.ActionStateChanged += OnactionStateChanged;
         _shelfModel.ProductIsSetOnSlot += OnProductIsSetOnSlot;
         _shelfModel.ProductRemovedFromSlot += OnProductRemovedFromSlot;
         _shelfModel.ProductAmountChangedOnSlot += OnProductAmountChangedOnSlot;
@@ -77,13 +77,13 @@ public class ShelfViewMediator : ShopObjectMediatorBase
 
     private void Deactivate()
     {
-        _gameStateModel.GameStateChanged -= OnGameStateChanged;
+        _gameStateModel.ActionStateChanged -= OnactionStateChanged;
         _shelfModel.ProductIsSetOnSlot -= OnProductIsSetOnSlot;
         _shelfModel.ProductRemovedFromSlot -= OnProductRemovedFromSlot;
         _shelfModel.ProductAmountChangedOnSlot -= OnProductAmountChangedOnSlot;
     }
 
-    private void OnGameStateChanged(GameStateName prev, GameStateName current)
+    private void OnactionStateChanged(ActionStateName prev, ActionStateName current)
     {
         UpdateFullnessIndicator();
     }
@@ -142,7 +142,8 @@ public class ShelfViewMediator : ShopObjectMediatorBase
 
     private void UpdateFullnessIndicator()
     {
-        if (_gameStateModel.GameState == GameStateName.ShopSimulation)
+        if (_gameStateModel.ActionState == ActionStateName.PlacingProductPlayer
+            || _gameStateModel.ActionState == ActionStateName.PlacingProductFriend)
         {
             var totalFullness = 0f;
             var haveEmptySlots = false;

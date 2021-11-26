@@ -6,6 +6,7 @@ public struct AutoPlaceCommand
     public void Execute()
     {
         var gameStateModel = GameStateModel.Instance;
+        var viewingUserModel = gameStateModel.ViewingUserModel;
         var viewingShopModel = gameStateModel.ViewingShopModel;
         var playerShopModel = PlayerModelHolder.Instance.UserModel.ShopModel;
         var audioManager = AudioManager.Instance;
@@ -15,19 +16,19 @@ public struct AutoPlaceCommand
         var warehouseSlot = playerShopModel.WarehouseModel.Slots[gameStateModel.PlacingProductWarehouseSlotIndex];
 
         var productsAddedCount = 0;
-        var notEmptyShelfSlots = GetFilteredShelfSlots(FilterNotEmpty);
-        foreach (var shelfSlot in notEmptyShelfSlots)
+        var notEmptyShelfSlots = GetFilteredShelfSlots(viewingShopModel, FilterNotEmpty);
+        foreach (var shelfSlotData in notEmptyShelfSlots)
         {
-            if (shelfSlot.Product.NumericId == warehouseSlot.Product.NumericId)
+            if (shelfSlotData.ShelfModel.Slots[shelfSlotData.SlotIndex].Product.NumericId == warehouseSlot.Product.NumericId)
             {
-                productsAddedCount += new PutWarehouseProductOnShelfCommand().Execute(warehouseSlot.Index, shelfSlot);
+                productsAddedCount += new PutWarehouseProductOnShelfCommand().Execute(warehouseSlot.Index, viewingUserModel, shelfSlotData.ShelfModel, shelfSlotData.SlotIndex);
                 if (warehouseSlot.HasProduct == false) break;
             }
         }
-        var emptyShelfSlots = GetFilteredShelfSlots(FilterEmpty);
-        foreach (var shelfSlot in emptyShelfSlots)
+        var emptyShelfSlots = GetFilteredShelfSlots(viewingShopModel, FilterEmpty);
+        foreach (var shelfSlotData in emptyShelfSlots)
         {
-            productsAddedCount += new PutWarehouseProductOnShelfCommand().Execute(warehouseSlot.Index, shelfSlot);
+            productsAddedCount += new PutWarehouseProductOnShelfCommand().Execute(warehouseSlot.Index, viewingUserModel, shelfSlotData.ShelfModel, shelfSlotData.SlotIndex);
             if (warehouseSlot.HasProduct == false) break;
         }
 
@@ -42,10 +43,9 @@ public struct AutoPlaceCommand
         analyticsManager.SendCustom(AnalyticsManager.EventAutoPlaceClick, ("is_success", isSuccess));
     }
 
-    private IEnumerable<ProductSlotModel> GetFilteredShelfSlots(Func<ProductSlotModel, bool> filterFunc)
+    private IEnumerable<(ShelfModel ShelfModel, int SlotIndex)> GetFilteredShelfSlots(ShopModel shopModel, Func<ProductSlotModel, bool> filterFunc)
     {
         var playerModel = PlayerModelHolder.Instance.UserModel;
-        var shopModel = playerModel.ShopModel;
 
         foreach (var kvp in shopModel.ShopObjects)
         {
@@ -54,7 +54,7 @@ public struct AutoPlaceCommand
                 var shelfModel = kvp.Value as ShelfModel;
                 foreach (var shelfSlot in shelfModel.Slots)
                 {
-                    if (filterFunc(shelfSlot) == true) yield return shelfSlot;
+                    if (filterFunc(shelfSlot) == true) yield return (shelfModel, shelfSlot.Index);
                 }
             }
         }

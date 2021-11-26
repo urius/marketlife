@@ -39,8 +39,8 @@ public class GameStateModel
     public Task GameDataLoadedTask => _dataLoadedTcs.Task;
     public bool IsGamePaused { get; private set; } = false;
     public GameStateName GameState { get; private set; } = GameStateName.Initializing;
-    public bool IsSimulationState => GameState == GameStateName.ShopSimulation || GameState == GameStateName.ShopFriend;
-    public bool IsPlayingState => GameState == GameStateName.ShopSimulation || GameState == GameStateName.ShopInterior || GameState == GameStateName.ShopFriend;
+    public bool IsSimulationState => GameState == GameStateName.PlayerShopSimulation || GameState == GameStateName.ShopFriend;
+    public bool IsPlayingState => GameState == GameStateName.PlayerShopSimulation || GameState == GameStateName.PlayerShopInterior || GameState == GameStateName.ShopFriend;
     public ActionStateName ActionState { get; private set; } = ActionStateName.None;
     public int PlacingDecorationNumericId => _placingIntParameter;
     public int PlacingProductWarehouseSlotIndex => _placingIntParameter;
@@ -99,6 +99,15 @@ public class GameStateModel
         if (_popupViewModelsCache.ContainsKey(popupType))
         {
             return _popupViewModelsCache[popupType];
+        }
+        return null;
+    }
+
+    public PopupViewModelBase GetFirstPopupOfTypeOrDefault(PopupType popupType)
+    {
+        foreach (var popupModel in _showingPopupModelsStack)
+        {
+            if (popupModel.PopupType == popupType) return popupModel;
         }
         return null;
     }
@@ -179,10 +188,16 @@ public class GameStateModel
         SetActionState(isNew ? ActionStateName.PlacingNewDoor : ActionStateName.MovingDoor);
     }
 
-    public void SetPlacingProductSlotIndex(int slotIndex)
+    public void SetPlacingProductOnPlayersShop(int slotIndex)
     {
         _placingIntParameter = slotIndex;
-        SetActionState(ActionStateName.PlacingProduct);
+        SetActionState(ActionStateName.PlacingProductPlayer);
+    }
+
+    public void SetPlacingProductOnFriendsShopAction(int slotIndex)
+    {
+        _placingIntParameter = slotIndex;
+        SetActionState(ActionStateName.PlacingProductFriend);
     }
 
     public void SetTakeProductAction()
@@ -292,8 +307,8 @@ public enum GameStateName
     Loading,
     Loaded,
     ReadyForStart,
-    ShopSimulation,
-    ShopInterior,
+    PlayerShopSimulation,
+    PlayerShopInterior,
     ShopFriend,
 }
 
@@ -308,7 +323,8 @@ public enum ActionStateName
     MovingWindow,
     PlacingNewDoor,
     MovingDoor,
-    PlacingProduct,
+    PlacingProductPlayer,
+    PlacingProductFriend,
     FriendShopTakeProduct,
     FriendShopAddUnwash,
 }

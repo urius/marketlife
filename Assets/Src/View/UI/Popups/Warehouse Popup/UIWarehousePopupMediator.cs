@@ -10,7 +10,6 @@ public class UIWarehousePopupMediator : IMediator
     private readonly Dispatcher _dispatcher;
     private readonly SpritesProvider _spritesProvider;
 
-    private WarehousePopupViewModel _model;
     private UIContentPopupView _popupView;
     private Vector2Int _popupSize;
     private List<(UIWarehousePopupItemView View, ProductSlotModel ViewModel)> _displayedItems = new List<(UIWarehousePopupItemView View, ProductSlotModel ViewModel)>();
@@ -28,8 +27,6 @@ public class UIWarehousePopupMediator : IMediator
 
     public async void Mediate()
     {
-        _model = _gameStateModel.ShowingPopupModel as WarehousePopupViewModel;
-
         var popupGo = GameObject.Instantiate(_prefabsHolder.UIContentPopupPrefab, _parentTransfoem);
         _popupView = popupGo.GetComponent<UIContentPopupView>();
         _popupSize = new Vector2Int(940, 700);
@@ -87,7 +84,7 @@ public class UIWarehousePopupMediator : IMediator
         {
             if (View == itemView)
             {
-                _dispatcher.UIWarehousePopupSlotClicked(_model, ViewModel.Index);
+                _dispatcher.UIWarehousePopupSlotClicked(ViewModel.Index);
                 return;
             }
         }

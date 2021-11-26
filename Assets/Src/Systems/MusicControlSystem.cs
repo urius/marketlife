@@ -65,9 +65,9 @@ public class MusicControlSystem
         return state switch
         {
             GameStateName.ReadyForStart => MusicType.Game,
-            GameStateName.ShopSimulation => MusicType.Game,
+            GameStateName.PlayerShopSimulation => MusicType.Game,
             GameStateName.ShopFriend => MusicType.Game,
-            GameStateName.ShopInterior => MusicType.Build,
+            GameStateName.PlayerShopInterior => MusicType.Build,
             _ => MusicType.None,
         };
     }

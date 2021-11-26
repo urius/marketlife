@@ -1,12 +1,23 @@
 public struct UIWarehousePopupSlotClickedCommand
 {
-    public void Execute(WarehousePopupViewModel popupModel, int warehouseSlotIndex)
+    public void Execute(int warehouseSlotIndex)
     {
-        var targetShelfSlot = popupModel.TargetShelfSlot;
         var gameStateModel = GameStateModel.Instance;
+        var viewingUserModel = gameStateModel.ViewingUserModel;
 
-        new PutWarehouseProductOnShelfCommand().Execute(warehouseSlotIndex, targetShelfSlot);
-
-        gameStateModel.RemoveCurrentPopupIfNeeded();
+        if (gameStateModel.GameState == GameStateName.PlayerShopSimulation)
+        {
+            var popupModel = gameStateModel.GetFirstPopupOfTypeOrDefault(PopupType.WarehouseForShelf) as WarehousePopupForShelfViewModel;
+            new PutWarehouseProductOnShelfCommand().Execute(warehouseSlotIndex, viewingUserModel, popupModel.TargetShelfModel, popupModel.TargetShelfSlotIndex);
+            gameStateModel.RemoveCurrentPopupIfNeeded();
+        }
+        else if (gameStateModel.GameState == GameStateName.ShopFriend)
+        {
+            if (gameStateModel.GetFirstPopupOfTypeOrDefault(PopupType.Warehouse) is WarehousePopupViewModel popupModel)
+            {
+                gameStateModel.SetPlacingProductOnFriendsShopAction(warehouseSlotIndex);
+                gameStateModel.RemoveCurrentPopupIfNeeded();
+            }
+        }
     }
 }

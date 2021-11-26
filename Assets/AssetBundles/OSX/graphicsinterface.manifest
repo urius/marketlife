@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1259179050
+CRC: 3702494285
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 3f0a3c73c4ba8defcb8b39c374b0140b
+    Hash: 3c1af261c37121e44ee3cb67acce7f15
   TypeTreeHash:
     serializedVersion: 2
     Hash: ba23c2e8f8b3f5319028008a25497317
@@ -61,8 +61,9 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_long_crimson.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/icon_crystal.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/sign_paint_floor.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/ToothBrushes_1.png
+- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/icon_action_add_product.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Fanta.png
+- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/ToothBrushes_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/ToothPaste.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/MilkBottles.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Banana.png
@@ -150,6 +151,7 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Hamburger.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Carrots_1.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/Icon_Down2.png
+- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/icon_cleaning.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/Icon_Back1.png
 - Assets/External Resources/InterfaceGraphicsBundle/Popups/UpgradesPopup/icon_personal_3.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Cheese_1.png

@@ -41,6 +41,7 @@ public class PopupsMediator : IMediator
             case PopupType.ShelfContent:
                 newMediator = new UIShelfContentPopupMediator(_contentTransform);
                 break;
+            case PopupType.WarehouseForShelf:
             case PopupType.Warehouse:
                 newMediator = new UIWarehousePopupMediator(_contentTransform);
                 break;

@@ -21,7 +21,6 @@ public struct CalculateForReportCommand
             gameStateModel.ServerTime,
             calculationResult.SoldFromShelfs,
             calculationResult.SoldFromWarehouse,
-            calculationResult.GrabbedProducts,
             calculationResult.UnwashesCleanedAmount,
             CreateGuestOfflineActionModels(playerModel.ExternalActionsModel));
         playerOfflineReportHolder.SetReport(report);

@@ -307,7 +307,7 @@ public class UserModel
             }
         }
 
-        return new OfflineCalculationResult(soldFromShelfsProducts, soldFromWarehouseProducts, grabbedProducts, unwashesCountAdded, cleanedUnwashesAmount);
+        return new OfflineCalculationResult(soldFromShelfsProducts, soldFromWarehouseProducts, unwashesCountAdded, cleanedUnwashesAmount);
     }
 
     private int CleanUnwashes(int maxUnwashesToClean)
@@ -530,7 +530,6 @@ public class OfflineCalculationResult
 {
     public readonly Dictionary<ProductConfig, int> SoldFromShelfs;
     public readonly Dictionary<ProductConfig, int> SoldFromWarehouse;
-    public readonly Dictionary<ProductConfig, int> GrabbedProducts;
 
     public readonly int UnwashesAddedAmount;
     public readonly int UnwashesCleanedAmount;
@@ -538,13 +537,11 @@ public class OfflineCalculationResult
     public OfflineCalculationResult(
         Dictionary<ProductConfig, int> soldFromShelfs,
         Dictionary<ProductConfig, int> soldFromWarehouse,
-        Dictionary<ProductConfig, int> grabbedProducts,
         int unwashesAddedAmount,
         int unwashesCleanedAmount)
     {
         SoldFromShelfs = soldFromShelfs;
         SoldFromWarehouse = soldFromWarehouse;
-        GrabbedProducts = grabbedProducts;
         UnwashesAddedAmount = unwashesAddedAmount;
         UnwashesCleanedAmount = unwashesCleanedAmount;
     }

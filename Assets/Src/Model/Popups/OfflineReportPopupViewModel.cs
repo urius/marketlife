@@ -22,7 +22,6 @@ public class OfflineReportPopupViewModel : PopupViewModelBase
         MerchandiserResult = GetMerchandiserResult(reportModel);
     }
 
-    public Dictionary<ProductConfig, int> GrabbedProducts => ReportModel.GrabbedProducts;
     public int UnwashesCleanedAmount => ReportModel.UnwashesCleanedAmount;
 
     private ItemViewModel[] GetMerchandiserResult(UserOfflineReportModel reportModel)

@@ -15,3 +15,7 @@ MonoBehaviour:
   BottomPanelFriendsTabAddButtonColor: {r: 1, g: 1, b: 0.6, a: 1}
   BottomPanelFriendsInactiveFriendButtonColor: {r: 0.83137256, g: 0.83137256, b: 0.83137256,
     a: 1}
+  ReportPopupItemRightTextProfitColor: {r: 0.54509807, g: 0.972549, b: 0.50980395,
+    a: 1}
+  ReportPopupItemPositiveActionColor: {r: 0.44313726, g: 1, b: 0.34509805, a: 1}
+  ReportPopupItemNegativeActionColor: {r: 1, g: 0.3160377, b: 0.3160377, a: 1}

@@ -29,6 +29,7 @@ public class UserOfflineReportModel
     public readonly bool HasPersonalInfo;
     public readonly bool HasActivityInfo;
     public readonly int UnwashesCleanedAmount;
+    public readonly IEnumerable<GuestOfflineReportActionModel> GuestOfflineActionModels;
 
     public UserOfflineReportModel(
         int timeFrom,
@@ -36,7 +37,8 @@ public class UserOfflineReportModel
         Dictionary<ProductConfig, int> soldFromShelfs,
         Dictionary<ProductConfig, int> soldFromWarehouse,
         Dictionary<ProductConfig, int> grabbedProducts,
-        int unwashesCleanedAmount)
+        int unwashesCleanedAmount,
+        IEnumerable<GuestOfflineReportActionModel> guestOfflineActionModels)
     {
         TimeFrom = timeFrom;
         TimeTo = timeTo;
@@ -44,6 +46,7 @@ public class UserOfflineReportModel
         SoldFromWarehouse = soldFromWarehouse;
         GrabbedProducts = grabbedProducts;
         UnwashesCleanedAmount = unwashesCleanedAmount;
+        GuestOfflineActionModels = guestOfflineActionModels;
         HoursPassed = (0.1f * (int)Math.Ceiling(10 * (TimeTo - TimeFrom) / 3600f));
         MinutesPassed = (int)Math.Ceiling((TimeTo - TimeFrom) / 60f);
         SellProfit = CalculateSellProfit(SoldFromWarehouse) + CalculateSellProfit(SoldFromShelfs);
@@ -66,5 +69,25 @@ public class UserOfflineReportModel
             result += kvp.Key.GetSellPriceForAmount(kvp.Value);
         }
         return result;
+    }
+}
+
+public class GuestOfflineReportActionModel
+{
+    public readonly string UserId;
+    public readonly IEnumerable<ProductModel> TakenProducts;
+    public readonly IEnumerable<ProductModel> AddedProducts;
+    public readonly int AddedUnwashes;
+
+    public GuestOfflineReportActionModel(
+        string userId,
+        IEnumerable<ProductModel> takenProducts,
+        IEnumerable<ProductModel> addedProducts,
+        int addedUnwashes)
+    {
+        UserId = userId;
+        TakenProducts = takenProducts;
+        AddedProducts = addedProducts;
+        AddedUnwashes = addedUnwashes;
     }
 }

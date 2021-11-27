@@ -15,7 +15,7 @@ public class OfflineReportPopupViewModel : PopupViewModelBase
         var tabs = new List<OfflineReportTabType>(3);
         if (ReportModel.HasSellInfo) tabs.Add(OfflineReportTabType.SellProfit);
         if (ReportModel.HasPersonalInfo) tabs.Add(OfflineReportTabType.Personal);
-        if (ReportModel.HasActivityInfo) tabs.Add(OfflineReportTabType.Activity);
+        if (ReportModel.HasActivityInfo) tabs.Add(OfflineReportTabType.Guests);
         Tabs = tabs.ToArray();
 
         (SoldProducts, TotalProfitFromSell) = GetDataForProfitTab(reportModel);
@@ -95,5 +95,5 @@ public enum OfflineReportTabType
     None,
     SellProfit,
     Personal,
-    Activity,
+    Guests,
 }

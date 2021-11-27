@@ -135,6 +135,7 @@ public class LocalizationKeys
     public static string CommonInvite = "common_invite";
     public static string CommonUpgradeNameFormat = "common_upgrade_name_format_";
     public static string CommonPayCurrencyNamePlural = "common_pay_currency_plural_";
+    public static string CommonUnknownName = "common_unknown_name";    
     public static string HintTopPanelExpFomat = "hint_top_panel_exp_format";
     public static string HintTopPanelMoodFormat = "hint_top_panel_mood_format";
     public static string PopupRemoveObjectTitle = "popup_remove_object_title";
@@ -163,9 +164,13 @@ public class LocalizationKeys
     public static string PopupOfflineReportTitleFormat = "popup_offline_report_title_format";
     public static string PopupOfflineReportProfitTab = "popup_offline_report_profit_tab_name";
     public static string PopupOfflineReportPersonalTab = "popup_offline_report_personal_tab_name";
-    public static string PopupOfflineReportActivityTab = "popup_offline_report_activity_tab_name";
+    public static string PopupOfflineReportGuestsTab = "popup_offline_report_guests_tab_name";
     public static string PopupOfflineReportProfitTabOverallProfit = "popup_offline_report_profit_tab_overall_profit";
     public static string PopupOfflineReportProfitTabBonus = "popup_offline_report_profit_tab_bonus";
+    public static string PopupOfflineReportGift = "popup_offline_report_gift";
+    public static string PopupOfflineReportGrabbed = "popup_offline_report_grabbed";
+    public static string PopupOfflineReportAddedUnwash = "popup_offline_report_added_unwash";
+    
     public static string PopupLevelUpTitle = "popup_levelup_title";
     public static string PopupLevelUpMessage = "popup_levelup_message";
     public static string PopupLevelUpNewElements = "popup_levelup_new_elements";

@@ -12,6 +12,8 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
     private readonly Dispatcher _dispatcher;
     private readonly MainConfig _config;
     private readonly AdvertViewStateModel _advertViewStateModel;
+    private readonly FriendsDataHolder _friendsHolder;
+    private readonly ColorsHolder _colorsHolder;
 
     //
     private UIOfflineReportPopupView _popupView;
@@ -31,6 +33,8 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
         _dispatcher = Dispatcher.Instance;
         _config = GameConfigManager.Instance.MainConfig;
         _advertViewStateModel = AdvertViewStateModel.Instance;
+        _friendsHolder = FriendsDataHolder.Instance;
+        _colorsHolder = ColorsHolder.Instance;
     }
 
     public override async void Mediate()
@@ -133,7 +137,7 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
             case OfflineReportTabType.Personal:
                 ShowPersonalTab();
                 break;
-            case OfflineReportTabType.Activity:
+            case OfflineReportTabType.Guests:
                 ShowActivityTab();
                 break;
         }
@@ -181,10 +185,31 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
 
     private void ShowActivityTab()
     {
-        foreach (var kvp in _viewModel.GrabbedProducts)
+        foreach (var guestOfflineActionsModel in _viewModel.ReportModel.GuestOfflineActionModels)
         {
-            var productConfig = kvp.Key;
-            PutNextReportItem(_spritesProvider.GetProductIcon(productConfig.Key), $"x{FormattingHelper.ToCommaSeparatedNumber(kvp.Value)}");
+            var name = _loc.GetLocalization(LocalizationKeys.CommonUnknownName);
+            var friendData = _friendsHolder.GetFriendData(guestOfflineActionsModel.UserId);
+            if (friendData != null)
+            {
+                name = friendData.FullName;
+            }
+
+            PutNextCaption($"{name}:");
+
+            foreach (var addedProduct in guestOfflineActionsModel.AddedProducts)
+            {
+                PutNextReportGuestTabPositiveActionItem(_spritesProvider.GetProductIcon(addedProduct.Config.Key), $"+{FormattingHelper.ToCommaSeparatedNumber(addedProduct.Amount)}", _loc.GetLocalization(LocalizationKeys.PopupOfflineReportGift));
+            }
+
+            foreach (var takenProduct in guestOfflineActionsModel.TakenProducts)
+            {
+                PutNextReportGuestTabNegativeActionItem(_spritesProvider.GetProductIcon(takenProduct.Config.Key), $"-{FormattingHelper.ToCommaSeparatedNumber(takenProduct.Amount)}", _loc.GetLocalization(LocalizationKeys.PopupOfflineReportGrabbed));
+            }
+
+            if (guestOfflineActionsModel.AddedUnwashes > 0)
+            {
+                PutNextReportGuestTabNegativeActionItem(_spritesProvider.GetRandomUnwashIcon(), $"+{FormattingHelper.ToCommaSeparatedNumber(guestOfflineActionsModel.AddedUnwashes)}", _loc.GetLocalization(LocalizationKeys.PopupOfflineReportAddedUnwash));
+            }
         }
     }
 
@@ -196,18 +221,30 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
         itemView.SetRightText(rightText);
     }
 
-    private void PutNextReportItem(Sprite iconSprite, string lextText, TextAlignmentOptions leftTextAlignment, string rightText, TextAlignmentOptions rightTextAlignment)
+    private void PutNextReportItem(Sprite iconSprite, string lextText, Color leftTextColor, TextAlignmentOptions leftTextAlignment, string rightText, Color rightTextColor, TextAlignmentOptions rightTextAlignment)
     {
         var itemTransform = GetOrCreateItemToDisplay(_prefabsHolder.UIOfflineReportPopupItemPrefab);
         var itemView = itemTransform.GetComponent<UIOfflineReportPopupReportItemView>();
         itemView.SetImageSprite(iconSprite);
         itemView.SetLeftText(lextText, leftTextAlignment);
+        itemView.SetLeftTextColor(leftTextColor);
         itemView.SetRightText(rightText, rightTextAlignment);
+        itemView.SetRightTextColor(rightTextColor);
     }
 
     private void PutNextReportItem(Sprite iconSprite, string lextText, string rightText = "")
     {
-        PutNextReportItem(iconSprite, lextText, TextAlignmentOptions.Left, rightText, TextAlignmentOptions.Right);
+        PutNextReportItem(iconSprite, lextText, Color.white, TextAlignmentOptions.Left, rightText, _colorsHolder.ReportPopupItemRightTextProfitColor,  TextAlignmentOptions.Right);
+    }
+
+    private void PutNextReportGuestTabPositiveActionItem(Sprite iconSprite, string lextText, string rightText)
+    {
+        PutNextReportItem(iconSprite, lextText, Color.green, TextAlignmentOptions.Left, rightText, _colorsHolder.ReportPopupItemPositiveActionColor, TextAlignmentOptions.Right);
+    }
+
+    private void PutNextReportGuestTabNegativeActionItem(Sprite iconSprite, string lextText, string rightText)
+    {
+        PutNextReportItem(iconSprite, lextText, Color.red, TextAlignmentOptions.Left, rightText, _colorsHolder.ReportPopupItemNegativeActionColor, TextAlignmentOptions.Right);
     }
 
     private void PutNextCaption(string captionText)
@@ -228,8 +265,8 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
             case OfflineReportTabType.Personal:
                 tabKey = LocalizationKeys.PopupOfflineReportPersonalTab;
                 break;
-            case OfflineReportTabType.Activity:
-                tabKey = LocalizationKeys.PopupOfflineReportActivityTab;
+            case OfflineReportTabType.Guests:
+                tabKey = LocalizationKeys.PopupOfflineReportGuestsTab;
                 break;
         }
 

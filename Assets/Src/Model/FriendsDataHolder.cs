@@ -53,6 +53,7 @@ public class FriendData : IComparable<FriendData>
     public int LastVisitTime { get; private set; }
     public UserModel UserModel { get; private set; }
     public bool IsUserModelLoaded => UserModel != null;
+    public string FullName => $"{FirstName} {LastName}";
 
     public int CompareTo(FriendData other)
     {

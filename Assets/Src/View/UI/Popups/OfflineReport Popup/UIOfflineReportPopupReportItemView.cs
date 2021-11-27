@@ -20,9 +20,19 @@ public class UIOfflineReportPopupReportItemView : MonoBehaviour
         _leftText.text = text;
     }
 
+    public void SetLeftTextColor(Color color)
+    {
+        _leftText.color = color;
+    }
+
     public void SetRightText(string text, TextAlignmentOptions alignmentOptions = TextAlignmentOptions.Right)
     {
         _rightText.alignment = alignmentOptions;
         _rightText.text = text;
+    }
+
+    public void SetRightTextColor(Color color)
+    {
+        _rightText.color = color;
     }
 }

@@ -8,6 +8,10 @@ public class ColorsHolder : ScriptableObject
     [Space(10)]
     public Color BottomPanelFriendsTabAddButtonColor;
     public Color BottomPanelFriendsInactiveFriendButtonColor;
+    [Space(10)]
+    public Color ReportPopupItemRightTextProfitColor;
+    public Color ReportPopupItemPositiveActionColor;
+    public Color ReportPopupItemNegativeActionColor;
 
     private void OnEnable()
     {

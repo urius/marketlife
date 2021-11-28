@@ -152,9 +152,9 @@ public struct PerformActionCommand
                     if (takenAmount > 0)
                     {
                         var securityEndWorkTime = viewingUserModel.ShopModel.PersonalModel.GetMaxEndWorkTimeForPersonalType(PersonalType.Security);
+                        slot.ChangeProductAmount(-amountToTake);
                         if (securityEndWorkTime < gameStateModel.ServerTime)
                         {
-                            slot.ChangeProductAmount(-amountToTake);
                             viewingUserModel.ExternalActionsModel.AddAction(new ExternalActionTakeProduct(playerModel.Uid, shelf.Coords, productConfig, amountToTake));
                         }
                         actionData.SetAmount(actionData.RestAmount - 1);

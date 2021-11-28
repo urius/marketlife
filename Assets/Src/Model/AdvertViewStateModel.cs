@@ -1,41 +1,67 @@
 using System;
+using System.Collections.Generic;
 
 public class AdvertViewStateModel
 {
     public static readonly AdvertViewStateModel Instance = new AdvertViewStateModel();
 
-    public event Action RewardStateChanged = delegate { };
-    public event Action RewardStateReset = delegate { };
+    public event Action<AdvertTargetType> WatchStateChanged = delegate { };
 
-    public bool IsRewardCharged => RewardState == AdvertRewardState.Charged;
+    private Dictionary<AdvertTargetType, AdvertWatchState> _advertStates = new Dictionary<AdvertTargetType, AdvertWatchState>();
+    private AdvertTargetType _lastPreparedTarget;
 
-    public Price Reward { get; private set; }
-    public AdvertRewardState RewardState { get; private set; }
-
-    public void PrepareReward(Price reward)
+    public void PrepareTarget(AdvertTargetType target)
     {
-        Reward = reward;
-        RewardState = AdvertRewardState.Prepared;
-        RewardStateChanged();
+        _advertStates[target] = AdvertWatchState.Prepared;
+        _lastPreparedTarget = target;
+        WatchStateChanged(_lastPreparedTarget);
     }
 
-    public void ChargeReward()
+    public void MarkCurrentAsWatched()
     {
-        RewardState = AdvertRewardState.Charged;
-        RewardStateChanged();
+        _advertStates[_lastPreparedTarget] = AdvertWatchState.Watched;
+        WatchStateChanged(_lastPreparedTarget);
     }
 
-    public void ResetChargedReward()
+    public void ResetTarget(AdvertTargetType target)
     {
-        Reward = new Price();
-        RewardState = AdvertRewardState.Default;
-        RewardStateReset();
+        if (_advertStates.ContainsKey(target))
+        {
+            _advertStates[target] = AdvertWatchState.Default;
+        }
+        if (_lastPreparedTarget == target)
+        {
+            _lastPreparedTarget = AdvertTargetType.None;
+        }
+    }
+
+    public AdvertWatchState GetWatchState(AdvertTargetType target)
+    {
+        if (_advertStates.ContainsKey(target))
+        {
+            return _advertStates[target];
+        }
+
+        return AdvertWatchState.Default;
+    }
+
+    public bool IsWatched(AdvertTargetType target)
+    {
+        return GetWatchState(target) == AdvertWatchState.Watched;
     }
 }
 
-public enum AdvertRewardState
+public enum AdvertTargetType
+{
+    None,
+    OfflineProfitX2,
+    BankGold,
+    BankCash,
+}
+
+public enum AdvertWatchState
 {
     Default,
     Prepared,
-    Charged,
+    Watched,
 }

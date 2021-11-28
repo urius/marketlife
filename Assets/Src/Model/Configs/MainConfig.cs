@@ -23,6 +23,7 @@ public class MainConfig :
     public readonly int ActionDefaultAmount;
     public readonly int ActionDefaultCooldownMinutes;
     public readonly int ShareOfflineReportRewardGold = 1;
+    public readonly int BankAdvertRewardGold = 1;
     public readonly int BillboardUnlockLevel;
     public readonly int MaxBillboardTextLength = 128;
     public readonly int FriendInactivityThresholdHours = 70;

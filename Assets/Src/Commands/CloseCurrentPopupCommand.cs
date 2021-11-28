@@ -15,8 +15,8 @@ public struct CloseCurrentPopupCommand
 
             gameStateModel.RemoveCurrentPopupIfNeeded();
 
-            var isAdsViewed = advertViewStateModel.IsRewardCharged;
-            var cashAmountToAdd = offlineReport.SellProfit + (isAdsViewed ? advertViewStateModel.Reward.Value : 0);
+            var isX2AdsViewed = advertViewStateModel.IsWatched(AdvertTargetType.OfflineProfitX2);
+            var cashAmountToAdd = offlineReport.SellProfit * (isX2AdsViewed ? 2 : 1);
 
             warehouseModel.RemoveDeliveredProducts(offlineReport.SoldFromWarehouse, gameStateModel.ServerTime);
             userShopModel.RemoveProducts(offlineReport.SoldFromShelfs);
@@ -26,12 +26,12 @@ public struct CloseCurrentPopupCommand
             playerModel.ApplyExternalActions();
             playerModel.ExternalActionsModel.Clear();
 
-            advertViewStateModel.ResetChargedReward();
+            advertViewStateModel.ResetTarget(AdvertTargetType.OfflineProfitX2);
 
             gameStateModel.SetGameState(GameStateName.PlayerShopSimulation);
 
             AnalyticsManager.Instance.SendCustom(AnalyticsManager.EventNameOfflineProfit,
-                ("cash", offlineReport.SellProfit), ("exp", offlineReport.ExpToAdd), ("ads_viewed", isAdsViewed));
+                ("cash", offlineReport.SellProfit), ("exp", offlineReport.ExpToAdd), ("ads_viewed", isX2AdsViewed));
         }
         else
         {

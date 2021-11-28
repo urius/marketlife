@@ -7,31 +7,29 @@ public struct ProcessShowAdsResultCommand
         var gameStateModel = GameStateModel.Instance;
         var advertViewStateModel = AdvertViewStateModel.Instance;
         var playerModel = PlayerModelHolder.Instance.UserModel;
+        var mainConfig = GameConfigManager.Instance.MainConfig;
 
         var deserialized = JsonConvert.DeserializeObject<JsShowAdsResultCommandDto>(message);
         if (deserialized.data.is_success == true
             && gameStateModel.ShowingPopupModel != null)
         {
-            advertViewStateModel.ChargeReward();
+            advertViewStateModel.MarkCurrentAsWatched();
             switch (gameStateModel.ShowingPopupModel.PopupType)
             {
                 case PopupType.Bank:
-                    if (advertViewStateModel.Reward.IsGold)
+                    if (advertViewStateModel.IsWatched(AdvertTargetType.BankGold))
                     {
-                        playerModel.AddGold(advertViewStateModel.Reward.Value);
+                        playerModel.AddGold(mainConfig.BankAdvertRewardGold);
+                        advertViewStateModel.ResetTarget(AdvertTargetType.BankGold);
                     }
-                    else
+                    else if (advertViewStateModel.IsWatched(AdvertTargetType.BankCash))
                     {
-                        playerModel.AddCash(advertViewStateModel.Reward.Value);
+                        playerModel.AddCash(mainConfig.BankAdvertRewardGold * CalculationHelper.GetGoldToCashConversionRate());
+                        advertViewStateModel.ResetTarget(AdvertTargetType.BankCash);
                     }
-                    advertViewStateModel.ResetChargedReward();
                     gameStateModel.RemoveCurrentPopupIfNeeded();
                     break;
             }
-        }
-        else
-        {
-            advertViewStateModel.ResetChargedReward();
         }
     }
 }

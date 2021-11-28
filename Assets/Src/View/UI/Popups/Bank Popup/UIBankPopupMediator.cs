@@ -156,7 +156,7 @@ public class UIBankPopupMediator : UIContentPopupMediator
         var viewModel = _modelByViewDict[view];
         if (viewModel.IsAds == true)
         {
-            _dispatcher.UIBankAdsItemClicked(new Price(viewModel.Value, viewModel.IsGold));
+            _dispatcher.UIBankAdsItemClicked(viewModel.IsGold);
         }
         else
         {

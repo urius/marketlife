@@ -8,13 +8,14 @@ public class BankPopupViewModel : PopupViewModelBase
     public readonly int InitialTabIndex;
 
     private readonly BankConfig _bankConfig;
+    private readonly MainConfig _mainConfig;
 
-    public BankPopupViewModel(int initialTabIndex, BankConfig bankConfig)
+    public BankPopupViewModel(int initialTabIndex, BankConfig bankConfig, MainConfig mainConfig)
     {
         InitialTabIndex = initialTabIndex;
 
         _bankConfig = bankConfig;
-
+        _mainConfig = mainConfig;
         UpdateItems();
 
         _bankConfig.ItemsUpdated += OnConfigItemsUpdated;
@@ -38,11 +39,11 @@ public class BankPopupViewModel : PopupViewModelBase
 
     private void UpdateItems()
     {
-        GoldItems = new[] { new BankItemViewModel(isGold: true) }
+        GoldItems = new[] { new BankItemViewModel(isGold: true, goldReward: _mainConfig.BankAdvertRewardGold) }
             .Concat(_bankConfig.GoldItems
             .Select(c => new BankItemViewModel(c)))
             .ToArray();
-        CashItems = new[] { new BankItemViewModel(isGold: false) }
+        CashItems = new[] { new BankItemViewModel(isGold: false, goldReward: _mainConfig.BankAdvertRewardGold) }
             .Concat(_bankConfig.CashItems
             .Select(c => new BankItemViewModel(c)))
             .ToArray();
@@ -61,11 +62,11 @@ public class BankItemViewModel
 
     private readonly BankConfigItem _bankConfigItem;
 
-    public BankItemViewModel(bool isGold)
+    public BankItemViewModel(bool isGold, int goldReward)
     {
         IsAds = true;
         IsGold = isGold;
-        Value = isGold ? 1 : CalculationHelper.GetGoldToCashConversionRate();
+        Value = isGold ? goldReward : goldReward * CalculationHelper.GetGoldToCashConversionRate();
         Price = 0;
         ExtraPercent = 0;
     }

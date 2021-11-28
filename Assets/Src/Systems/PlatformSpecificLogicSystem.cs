@@ -131,17 +131,16 @@ public class VKLogicModule : PlatformSpecificLogicModuleBase
         switch (popupType)
         {
             case PopupType.OfflineReport:
-                var offlineReportPopupViewModel = _gameStateModel.ShowingPopupModel as OfflineReportPopupViewModel;
-                _advertViewStateModel.PrepareReward(new Price(offlineReportPopupViewModel.TotalProfitFromSell, isGold: false));
+                _advertViewStateModel.PrepareTarget(AdvertTargetType.OfflineProfitX2);
                 break;
         }
         _jsBridge.SendCommandToJs("ShowAds", null);
     }
 
-    private void OnUIBankAdsItemClicked(Price reward)
+    private void OnUIBankAdsItemClicked(bool isGold)
     {
-        _advertViewStateModel.PrepareReward(reward);
-        AnalyticsManager.Instance.SendCustom(AnalyticsManager.EventBankAdsViewClick, ("is_gold", reward.IsGold));
+        _advertViewStateModel.PrepareTarget(isGold ? AdvertTargetType.BankGold : AdvertTargetType.BankCash);
+        AnalyticsManager.Instance.SendCustom(AnalyticsManager.EventBankAdsViewClick, ("is_gold", isGold));
         _jsBridge.SendCommandToJs("ShowAds", null);
     }
 

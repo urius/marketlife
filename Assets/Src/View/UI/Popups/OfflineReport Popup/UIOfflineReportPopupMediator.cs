@@ -76,7 +76,7 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
         _popupView.TabButtonClicked += OnTabButtonClicked;
         _popupView.ShareClicked += OnShareClicked;
         _popupView.AdsClicked += OnAdsClicked;
-        _advertViewStateModel.RewardStateChanged += OnAdsRewardCharged;
+        _advertViewStateModel.WatchStateChanged += OnWatchStateChanged;
     }
 
     private void Deactivate()
@@ -86,12 +86,12 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
         _popupView.TabButtonClicked -= OnTabButtonClicked;
         _popupView.ShareClicked -= OnShareClicked;
         _popupView.AdsClicked -= OnAdsClicked;
-        _advertViewStateModel.RewardStateChanged -= OnAdsRewardCharged;
+        _advertViewStateModel.WatchStateChanged -= OnWatchStateChanged;
     }
 
-    private void OnAdsRewardCharged()
+    private void OnWatchStateChanged(AdvertTargetType advertTarget)
     {
-        if (_advertViewStateModel.IsRewardCharged)
+        if (advertTarget == AdvertTargetType.OfflineProfitX2)
         {
             RefreshTab();
         }
@@ -156,9 +156,9 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
         }
 
         var bonusReward = 0;
-        if (_advertViewStateModel.IsRewardCharged)
+        if (_advertViewStateModel.IsWatched(AdvertTargetType.OfflineProfitX2))
         {
-            bonusReward = _advertViewStateModel.Reward.Value;
+            bonusReward = _viewModel.TotalProfitFromSell;
             PutNextOverallItem(_loc.GetLocalization(LocalizationKeys.PopupOfflineReportProfitTabBonus), $"+{FormattingHelper.ToCommaSeparatedNumber(bonusReward)}$");
         }
 
@@ -234,7 +234,7 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
 
     private void PutNextReportItem(Sprite iconSprite, string lextText, string rightText = "")
     {
-        PutNextReportItem(iconSprite, lextText, Color.white, TextAlignmentOptions.Left, rightText, _colorsHolder.ReportPopupItemRightTextProfitColor,  TextAlignmentOptions.Right);
+        PutNextReportItem(iconSprite, lextText, Color.white, TextAlignmentOptions.Left, rightText, _colorsHolder.ReportPopupItemRightTextProfitColor, TextAlignmentOptions.Right);
     }
 
     private void PutNextReportGuestTabPositiveActionItem(Sprite iconSprite, string lextText, string rightText)

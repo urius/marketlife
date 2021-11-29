@@ -88,8 +88,7 @@ public class VKLogicModule : PlatformSpecificLogicModuleBase
         _dispatcher.UIBottomPanelInviteFriendsClicked += OnUIBottomPanelInviteFriendsClicked;
         _dispatcher.UILevelUpShareClicked += OnUILevelUpShareClicked;
         _dispatcher.UIOfflineReportShareClicked += OnUIOfflineReportShareClicked;
-        _dispatcher.UIViewAdsClicked += OnUIViewAdsClicked;
-        _dispatcher.UIBankAdsItemClicked += OnUIBankAdsItemClicked;
+        _dispatcher.RequestShowAdvert += OnRequestShowAdvert;
         _dispatcher.RequestNotifyInactiveFriend += OnRequestNotifyInactiveFriend;
     }
 
@@ -125,31 +124,16 @@ public class VKLogicModule : PlatformSpecificLogicModuleBase
         }
     }
 
-    private async void OnUIViewAdsClicked()
+    private async void OnRequestShowAdvert()
     {
         var popupType = _gameStateModel.ShowingPopupModel?.PopupType ?? PopupType.Unknown;
         AnalyticsManager.Instance.SendCustom(AnalyticsManager.EventAdsViewClick, ("popup_type", popupType.ToString()));
-        switch (popupType)
-        {
-            case PopupType.OfflineReport:
-                _advertViewStateModel.PrepareTarget(AdvertTargetType.OfflineProfitX2);
-                break;
-            case PopupType.DailyBonus:
-                //must be already prepared from command
-                break;
-        }
+        
         _jsBridge.SendCommandToJs("ShowAds", null);
 
         _dispatcher.UIRequestBlockRaycasts();
         await UniTask.Delay(2000);
         _dispatcher.UIRequestUnblockRaycasts();
-    }
-
-    private void OnUIBankAdsItemClicked(bool isGold)
-    {
-        _advertViewStateModel.PrepareTarget(isGold ? AdvertTargetType.BankGold : AdvertTargetType.BankCash);
-        AnalyticsManager.Instance.SendCustom(AnalyticsManager.EventBankAdsViewClick, ("is_gold", isGold));
-        _jsBridge.SendCommandToJs("ShowAds", null);
     }
 
     private void ProcessWallPostSuccess()

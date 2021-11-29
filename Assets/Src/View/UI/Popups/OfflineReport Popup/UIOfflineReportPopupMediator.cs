@@ -109,8 +109,7 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
 
     private void OnAdsClicked()
     {
-        _popupView.SetAdsButtonInteractable(false);
-        _dispatcher.UIViewAdsClicked();
+        _dispatcher.UIOfflineReportPopupViewAdsClicked();
     }
 
     private void OnTabButtonClicked(int tabIndex)
@@ -141,6 +140,8 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
                 ShowActivityTab();
                 break;
         }
+
+        _popupView.SetAdsButtonInteractable(_advertViewStateModel.IsWatched(AdvertTargetType.OfflineProfitX2) == false);
     }
 
     private void RefreshTab()

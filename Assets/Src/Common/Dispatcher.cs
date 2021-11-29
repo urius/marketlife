@@ -68,10 +68,10 @@ public class Dispatcher
     public Action<Vector3[]> UIDailyBonusTakeClicked = delegate { };
     public Action<Vector3> UILevelUpShareClicked = delegate { };
     public Action<Vector3> UIOfflineReportShareClicked = delegate { };
-    public Action UIViewAdsClicked = delegate { };    
     public Action UIShareSuccessCallback = delegate { };
     public Action<string> UIBillboardPopupApplyTextClicked = delegate { };
-    public Action<int> UIDailyBonusDoubleClicked = delegate { };    
+    public Action<int> UIDailyBonusDoubleClicked = delegate { };
+    public Action UIOfflineReportPopupViewAdsClicked = delegate { };
 
     public Action<CustomerModel> CustomerAnimationEnded = delegate { };
 
@@ -94,6 +94,7 @@ public class Dispatcher
     public Action BottomPanelRotateLeftClicked = delegate { };
     public Action NotifyNotEnoughtMoney = delegate { };
 
+    public Action RequestShowAdvert = delegate { };
     public Action<string> RequestNotifyInactiveFriend = delegate { };    
 
     public Action<bool> SaveStateChanged = delegate { };

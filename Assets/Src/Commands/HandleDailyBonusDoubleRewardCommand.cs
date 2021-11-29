@@ -11,7 +11,7 @@ public struct HandleDailyBonusDoubleRewardCommand
             && advertStateModel.IsWatched(advertTarget) == false)
         {
             advertStateModel.PrepareTarget(advertTarget);
-            dispatcher.UIViewAdsClicked();
+            dispatcher.RequestShowAdvert();
         }
     }
 }

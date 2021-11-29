@@ -70,13 +70,25 @@ public class EventsHandleSystem
         _dispatcher.UIMuteAudioClicked += OnUIMuteAudioClicked;
         _dispatcher.UIMuteMusicClicked += OnUIMuteMusicClicked;
         _dispatcher.UIBankItemClicked += OnUIBankItemClicked;
+        _dispatcher.UIBankAdsItemClicked += OnUIBankAdsItemClicked;
         _dispatcher.UIDispatchBillboardClick += OnUIDispatchBillboardClick;
         _dispatcher.UIBillboardPopupApplyTextClicked += OnUIBillboardPopupApplyTextClicked;
         _dispatcher.UIFriendShopBottomPanelUserViewCreated += OnUIFriendShopBottomPanelUserViewCreated;
         _dispatcher.UIDailyBonusDoubleClicked += OnUIDailyBonusDoubleClicked;
+        _dispatcher.UIOfflineReportPopupViewAdsClicked += OnUIOfflineReportPopupViewAdsClicked;
 
         _gameStateModel.ActionStateChanged += OnActionStateChanged;
         _gameStateModel.GameStateChanged += OnGameStateChanged;
+    }
+
+    private void OnUIBankAdsItemClicked(bool isGold)
+    {
+        new HanleBankAdvertItemClickedCommand().Execute(isGold);
+    }
+
+    private void OnUIOfflineReportPopupViewAdsClicked()
+    {
+        new HandleOfflineReportDoubleRewardCommand().Execute();
     }
 
     private void OnUIDailyBonusDoubleClicked(int itemIndex)

@@ -73,9 +73,15 @@ public class EventsHandleSystem
         _dispatcher.UIDispatchBillboardClick += OnUIDispatchBillboardClick;
         _dispatcher.UIBillboardPopupApplyTextClicked += OnUIBillboardPopupApplyTextClicked;
         _dispatcher.UIFriendShopBottomPanelUserViewCreated += OnUIFriendShopBottomPanelUserViewCreated;
+        _dispatcher.UIDailyBonusDoubleClicked += OnUIDailyBonusDoubleClicked;
 
         _gameStateModel.ActionStateChanged += OnActionStateChanged;
         _gameStateModel.GameStateChanged += OnGameStateChanged;
+    }
+
+    private void OnUIDailyBonusDoubleClicked(int itemIndex)
+    {
+        new HandleDailyBonusDoubleRewardCommand().Execute(itemIndex);
     }
 
     private void OnUIFriendShopBottomPanelUserViewCreated(Vector3 screenCoords)

@@ -267,27 +267,6 @@ public class MainConfig :
         return result;
     }
 
-    public (int CashAmount, int GoldAmount) GetDailyBonusRewardForDay(int dayNum)
-    {
-        var cashAmount = 0;
-        var goldAmount = 0;
-        foreach (var config in DailyBonusConfig)
-        {
-            if (dayNum >= config.DayNum)
-            {
-                if (config.Reward.IsGold)
-                {
-                    goldAmount += config.Reward.Value;
-                }
-                else
-                {
-                    cashAmount += config.Reward.Value;
-                }
-            }
-        }
-        return (cashAmount, goldAmount);
-    }
-
     private IEnumerable<ItemConfig<T>> GetConfigsForLevel<T>(Dictionary<string, ItemConfig<T>> configsDictionary, int level)
         where T : PlaceableItemConfigDto
     {
@@ -662,7 +641,6 @@ public interface IUpgradesConfig
 public interface IDailyBonusConfig
 {
     DailyBonusConfig[] DailyBonusConfig { get; }
-    (int CashAmount, int GoldAmount) GetDailyBonusRewardForDay(int dayNum);
 }
 
 public interface ILevelsConfig

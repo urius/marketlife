@@ -49,6 +49,19 @@ public class AdvertViewStateModel
     {
         return GetWatchState(target) == AdvertWatchState.Watched;
     }
+
+    public AdvertTargetType GetAdvertTargetTypeByDailyBonusDayNum(int dayNum)
+    {
+        return dayNum switch
+        {
+            1 => AdvertTargetType.DailyDouble1,
+            2 => AdvertTargetType.DailyDouble2,
+            3 => AdvertTargetType.DailyDouble3,
+            4 => AdvertTargetType.DailyDouble4,
+            5 => AdvertTargetType.DailyDouble5,
+            _ => AdvertTargetType.None,
+        };
+    }
 }
 
 public enum AdvertTargetType
@@ -57,6 +70,11 @@ public enum AdvertTargetType
     OfflineProfitX2,
     BankGold,
     BankCash,
+    DailyDouble1,
+    DailyDouble2,
+    DailyDouble3,
+    DailyDouble4,
+    DailyDouble5,
 }
 
 public enum AdvertWatchState

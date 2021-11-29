@@ -10,6 +10,7 @@ public struct HandleTakeDailyBonusCommand
         var bonusConfig = GameConfigManager.Instance.DailyBonusConfig;
         var dispatcher = Dispatcher.Instance;
         var screenCalculator = ScreenCalculator.Instance;
+        var advertStateModel = AdvertViewStateModel.Instance;
 
         if (gameStateModel.ShowingPopupModel != null && gameStateModel.ShowingPopupModel.PopupType == PopupType.DailyBonus)
         {
@@ -18,31 +19,37 @@ public struct HandleTakeDailyBonusCommand
             if (DateTimeHelper.IsSameDays(lastBonusTakeTime, dailyBonusPopupViewModel.OpenTimestamp) == false)
             {
                 var bonusConfigItems = bonusConfig.DailyBonusConfig;
+                var totalCashReward = 0;
+                var totalGoldReward = 0;
                 for (var i = 0; i < bonusConfigItems.Length; i++)
                 {
                     var bonusConfigItem = bonusConfigItems[i];
                     if (dailyBonusPopupViewModel.CurrentBonusDay >= bonusConfigItem.DayNum)
                     {
                         var screenPoint = screenCalculator.WorldToScreenPoint(itemsWorldPositions[i]);
+                        var advertTarget = advertStateModel.GetAdvertTargetTypeByDailyBonusDayNum(bonusConfigItem.DayNum);
+                        var isDoubled = advertTarget != AdvertTargetType.None && advertStateModel.IsWatched(advertTarget);
                         if (bonusConfigItem.Reward.IsGold)
                         {
+                            totalGoldReward += bonusConfigItem.Reward.Value * (isDoubled ? 2 : 1);
                             dispatcher.UIRequestAddGoldFlyAnimation(screenPoint, bonusConfigItem.Reward.Value);
                         }
                         else
                         {
+                            totalCashReward += bonusConfigItem.Reward.Value * (isDoubled ? 2 : 1);
                             dispatcher.UIRequestAddCashFlyAnimation(screenPoint, 5 * (i + 1));
                         }
+                        advertStateModel.ResetTarget(advertTarget);
                     }
                 }
 
-                var reward = bonusConfig.GetDailyBonusRewardForDay(dailyBonusPopupViewModel.CurrentBonusDay);
-                if (reward.CashAmount > 0)
+                if (totalCashReward > 0)
                 {
-                    playerModel.AddCash(reward.CashAmount);
+                    playerModel.AddCash(totalCashReward);
                 }
-                if (reward.GoldAmount > 0)
+                if (totalGoldReward > 0)
                 {
-                    playerModel.AddGold(reward.GoldAmount);
+                    playerModel.AddGold(totalGoldReward);
                 }
 
                 playerModel.UpdateDailyBonus(dailyBonusPopupViewModel.OpenTimestamp, dailyBonusPopupViewModel.CurrentBonusDay);

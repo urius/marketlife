@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -124,7 +125,7 @@ public class VKLogicModule : PlatformSpecificLogicModuleBase
         }
     }
 
-    private void OnUIViewAdsClicked()
+    private async void OnUIViewAdsClicked()
     {
         var popupType = _gameStateModel.ShowingPopupModel?.PopupType ?? PopupType.Unknown;
         AnalyticsManager.Instance.SendCustom(AnalyticsManager.EventAdsViewClick, ("popup_type", popupType.ToString()));
@@ -133,8 +134,15 @@ public class VKLogicModule : PlatformSpecificLogicModuleBase
             case PopupType.OfflineReport:
                 _advertViewStateModel.PrepareTarget(AdvertTargetType.OfflineProfitX2);
                 break;
+            case PopupType.DailyBonus:
+                //must be already prepared from command
+                break;
         }
         _jsBridge.SendCommandToJs("ShowAds", null);
+
+        _dispatcher.UIRequestBlockRaycasts();
+        await UniTask.Delay(2000);
+        _dispatcher.UIRequestUnblockRaycasts();
     }
 
     private void OnUIBankAdsItemClicked(bool isGold)

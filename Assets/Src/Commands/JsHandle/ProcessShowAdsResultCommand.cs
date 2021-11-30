@@ -10,25 +10,28 @@ public struct ProcessShowAdsResultCommand
         var mainConfig = GameConfigManager.Instance.MainConfig;
 
         var deserialized = JsonConvert.DeserializeObject<JsShowAdsResultCommandDto>(message);
-        if (deserialized.data.is_success == true
-            && gameStateModel.ShowingPopupModel != null)
+        if (deserialized.data.is_success == true)
         {
             advertViewStateModel.MarkCurrentAsWatched();
-            switch (gameStateModel.ShowingPopupModel.PopupType)
+
+            if (gameStateModel.ShowingPopupModel != null)
             {
-                case PopupType.Bank:
-                    if (advertViewStateModel.IsWatched(AdvertTargetType.BankGold))
-                    {
-                        playerModel.AddGold(mainConfig.BankAdvertRewardGold);
-                        advertViewStateModel.ResetTarget(AdvertTargetType.BankGold);
-                    }
-                    else if (advertViewStateModel.IsWatched(AdvertTargetType.BankCash))
-                    {
-                        playerModel.AddCash(mainConfig.BankAdvertRewardGold * CalculationHelper.GetGoldToCashConversionRate());
-                        advertViewStateModel.ResetTarget(AdvertTargetType.BankCash);
-                    }
-                    gameStateModel.RemoveCurrentPopupIfNeeded();
-                    break;
+                switch (gameStateModel.ShowingPopupModel.PopupType)
+                {
+                    case PopupType.Bank:
+                        if (advertViewStateModel.IsWatched(AdvertTargetType.BankGold))
+                        {
+                            playerModel.AddGold(mainConfig.BankAdvertRewardGold);
+                            advertViewStateModel.ResetTarget(AdvertTargetType.BankGold);
+                        }
+                        else if (advertViewStateModel.IsWatched(AdvertTargetType.BankCash))
+                        {
+                            playerModel.AddCash(mainConfig.BankAdvertRewardGold * CalculationHelper.GetGoldToCashConversionRate());
+                            advertViewStateModel.ResetTarget(AdvertTargetType.BankCash);
+                        }
+                        gameStateModel.RemoveCurrentPopupIfNeeded();
+                        break;
+                }
             }
         }
     }

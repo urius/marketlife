@@ -331,7 +331,7 @@ MonoBehaviour:
   _bgImage: {fileID: 4831957965063238352}
   _mainHintableView: {fileID: 2313970469135378430}
   _bottomButton: {fileID: 6994024553890051948}
-  _colorTextDefault: {r: 1, g: 0.5764706, b: 0, a: 1}
+  _colorTextDefault: {r: 0.9137255, g: 0.5411765, b: 0.08235294, a: 1}
 --- !u!114 &2313970469135378430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -416,16 +416,16 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u041A\u043E\u043D\u0441\u0442\u0430\u043D\u0442\u0438\u043D"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 254b9d2d842324384bbdcaf91e82ab80, type: 2}
-  m_sharedMaterial: {fileID: 5332606772479439683, guid: 254b9d2d842324384bbdcaf91e82ab80,
+  m_fontAsset: {fileID: 11400000, guid: 4ca368568c3fd4330bb9ffeddf33bd24, type: 2}
+  m_sharedMaterial: {fileID: 5332606772479439683, guid: 4ca368568c3fd4330bb9ffeddf33bd24,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278227967
-  m_fontColor: {r: 1, g: 0.5773492, b: 0, a: 1}
+    rgba: 4279601897
+  m_fontColor: {r: 0.9150943, g: 0.543076, b: 0.082013145, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

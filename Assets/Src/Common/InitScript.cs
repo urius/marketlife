@@ -4,6 +4,7 @@ using UnityEngine;
 public class InitScript : MonoBehaviour
 {
     [SerializeField] private string _debugUid;
+    [SerializeField] private bool _disableSave;
     [Space(20)]
     [SerializeField] private AssetBundlesLoader _assetBundlesLoader;
     [SerializeField] private PrefabsHolder _prefabsHolder;
@@ -37,6 +38,12 @@ public class InitScript : MonoBehaviour
     {
 #if UNITY_EDITOR || UNITY_ANDROID
         new SetupExternalDebugDataCommand().Execute(_debugUid);
+        new SetupDebugSystemsCommand().Execute();
 #endif
+    }
+
+    private void OnValidate()
+    {
+        DebugDataHolder.Instance.IsSaveDisabled = _disableSave;
     }
 }

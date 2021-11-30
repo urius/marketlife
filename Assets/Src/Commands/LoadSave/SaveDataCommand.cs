@@ -7,6 +7,9 @@ public struct SaveDataCommand
 {
     public async UniTask<bool> ExecuteAsync(SaveField saveFields)
     {
+#if UNITY_EDITOR
+        if (DebugDataHolder.Instance.IsSaveDisabled == true) return true;
+#endif
         if (saveFields == SaveField.None) return true;
 
         Debug.Log("---SaveDataCommand: " + saveFields);

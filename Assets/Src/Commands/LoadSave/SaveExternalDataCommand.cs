@@ -8,6 +8,9 @@ public struct SaveExternalDataCommand
     public async UniTask<bool> ExecuteAsync(UserModel userModel)
     {
         Debug.Log("---SaveExternalDataCommand: " + userModel.Uid);
+#if UNITY_EDITOR
+        if (DebugDataHolder.Instance.IsSaveDisabled == true) return true;
+#endif
 
         var dataToSave = GetExportData(userModel.ExternalActionsModel);
         var dataToSaveStr = JsonConvert.SerializeObject(dataToSave);

@@ -167,6 +167,7 @@ public class LocalizationKeys
     public static string PopupOfflineReportPersonalTab = "popup_offline_report_personal_tab_name";
     public static string PopupOfflineReportGuestsTab = "popup_offline_report_guests_tab_name";
     public static string PopupOfflineReportProfitTabOverallProfit = "popup_offline_report_profit_tab_overall_profit";
+    public static string PopupOfflineReportProfitTabEarnedExp = "popup_offline_report_profit_tab_earned_exp";    
     public static string PopupOfflineReportProfitTabBonus = "popup_offline_report_profit_tab_bonus";
     public static string PopupOfflineReportGift = "popup_offline_report_gift";
     public static string PopupOfflineReportGrabbed = "popup_offline_report_grabbed";

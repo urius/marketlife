@@ -61,6 +61,7 @@ public class PrefabsHolder : ScriptableObject
     public GameObject UIOfflineReportPopupCaptionItemPrefab;
     public GameObject UIOfflineReportPopupItemPrefab;
     public GameObject UIOfflineReportPopupOverallItemPrefab;    
+    public GameObject UIOfflineReportPopupEarnedExpItemPrefab;
     public GameObject UILevelUpPopupPrefab;
     public GameObject UILevelUpPopupCaptionItemPrefab;
     public GameObject UILevelUpPopupItemPrefab;

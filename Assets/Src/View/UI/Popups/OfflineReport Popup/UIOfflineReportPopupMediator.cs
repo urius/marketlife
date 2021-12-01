@@ -164,6 +164,7 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
         }
 
         PutNextOverallItem(_loc.GetLocalization(LocalizationKeys.PopupOfflineReportProfitTabOverallProfit), $"{FormattingHelper.ToCommaSeparatedNumber(bonusReward + _viewModel.TotalProfitFromSell)}$");
+        PutNextEarnedExpItem(_loc.GetLocalization(LocalizationKeys.PopupOfflineReportProfitTabEarnedExp), $"+{FormattingHelper.ToCommaSeparatedNumber(_viewModel.ReportModel.ExpToAdd)}");
     }
 
     private void ShowPersonalTab()
@@ -212,6 +213,15 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
                 PutNextReportGuestTabNegativeActionItem(_spritesProvider.GetRandomUnwashIcon(), $"+{FormattingHelper.ToCommaSeparatedNumber(guestOfflineActionsModel.AddedUnwashes)}", _loc.GetLocalization(LocalizationKeys.PopupOfflineReportAddedUnwash));
             }
         }
+    }
+
+    private void PutNextEarnedExpItem(string lextText, string rightText)
+    {
+        var itemTransform = GetOrCreateItemToDisplay(_prefabsHolder.UIOfflineReportPopupEarnedExpItemPrefab);
+        var itemView = itemTransform.GetComponent<UIOfflineReportPopupEarnedExpItemView>();
+        itemView.SetImageSprite(_spritesProvider.GetStarIcon(isBig: false));
+        itemView.SetLeftText(lextText);
+        itemView.SetRightText(rightText);
     }
 
     private void PutNextOverallItem(string lextText, string rightText)

@@ -451,6 +451,12 @@ public class ProductConfig : IUnlockableConfig
         return (int)(demand * 100);
     }
 
+    public int GetDemandAmountForVolume(int volume)
+    {
+        var demand = GetDemandForVolume(volume);
+        return (int)Math.Ceiling(GetAmountInVolume(volume) * demand);
+    }
+
     public int GetAmountInVolume(int volume)
     {
         return volume / Volume;

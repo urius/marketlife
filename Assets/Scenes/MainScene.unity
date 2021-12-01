@@ -4558,14 +4558,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2305d6f2e27f140248f718ab79b80e4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _debugUid: test_1
+  _debugUid: test_2
   _disableSave: 1
+  _loadDebugConfigVersion: 1
   _assetBundlesLoader: {fileID: 11400000, guid: fbf27b609d1b04c23bbb3665f6bf7a19,
     type: 2}
   _prefabsHolder: {fileID: 11400000, guid: ef9b7d8e9f2f24fa5b28642d8858a2d4, type: 2}
   _urlsHolder: {fileID: 11400000, guid: 82f6a5b539c0540859d7a9ee4632f9f5, type: 2}
   _graphicsManager: {fileID: 11400000, guid: 3c651c81f401b4f6c9adfecf35f97506, type: 2}
-  _gameConfigManager: {fileID: 11400000, guid: 602bdf3847c344182bb11d66994c2ec6, type: 2}
   _localizationManager: {fileID: 11400000, guid: 896d83f0651d245229990a6d40d7740d,
     type: 2}
   _colorsHolder: {fileID: 11400000, guid: e3f38c4c1965048dea3f80f3697ca748, type: 2}

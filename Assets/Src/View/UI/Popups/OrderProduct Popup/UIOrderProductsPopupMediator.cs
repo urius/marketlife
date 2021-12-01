@@ -234,7 +234,7 @@ public class UIOrderProductsPopupMediator : IMediator
         itemView.SetTitleText(_loc.GetLocalization($"{LocalizationKeys.NameProductIdPrefix}{config.NumericId}"));
         var description = string.Format(
                 _loc.GetLocalization(LocalizationKeys.PopupOrderProductItemDescriptionText),
-                $"{config.GetDemandPercentForVolume(warehouseVolume)}%",
+                $"{config.GetDemandAmountForVolume(warehouseVolume)} {_loc.GetLocalization(LocalizationKeys.PopupOrderProductItemDemandMeasure)}",
                 config.GetAmountInVolume(warehouseVolume),
                 FormattingHelper.ToSeparatedTimeFormat(config.DeliverTimeSeconds),
                 config.GetSellPriceForVolume(warehouseVolume));

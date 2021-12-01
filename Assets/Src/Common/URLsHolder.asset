@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: URLsHolder
   m_EditorClassIdentifier: 
   _getTimeURL: https://devman.ru/marketVK/unity/DataProvider.php?command=get_time
+  _mainConfigUrl: https://devman.ru/marketVK/unity/GameConfigs/MainConfig.json
+  _debugMainConfigUrl: https://devman.ru/marketVK/unity/GameConfigs/MainConfig_Debug.json
   _getDataURL: https://devman.ru/marketVK/unity/DataProvider.php?command=get_data&id={0}
+  _getVisitTimesURL: https://devman.ru/marketVK/unity/DataProvider.php?command=get_users_last_visit&ids={0}
   _getFriendDataOldURL: https://devman.ru/marketVK/dataProvider.php?command=get_friend_data&id={0}
   _saveDataURL: https://devman.ru/marketVK/unity/DataProvider.php?command=save_data&id={0}
   _saveExternalDataURL: https://devman.ru/marketVK/unity/DataProvider.php?command=save_external_data&id={0}

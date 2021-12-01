@@ -335,10 +335,7 @@ public class HumansControlSystem
                 {
                     var productBuyInfo = GetProductInfoForBuying(slot.Product);
                     var moodMultiplier = _viewingUserModel.ShopModel.MoodMultiplier;
-                    if (productBuyInfo.TakenAmount < productBuyInfo.CanTakeMaxAmount
-                        || (_viewingUserModel.ProgressModel.Level < 10
-                            && moodMultiplier >= 0.5
-                            && Random.Range(0, 2) <= moodMultiplier))
+                    if (productBuyInfo.TakenAmount < productBuyInfo.CanTakeMaxAmount || moodMultiplier >= 1)
                     {
                         var product = slot.Product;
                         var productConfig = product.Config;

@@ -1,14 +1,10 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
-using UnityEngine;
 
-[CreateAssetMenu(fileName = "GameConfigManager", menuName = "Scriptable Objects/Managers/GameConfigManager")]
-public class GameConfigManager : ScriptableObject
+public class GameConfigManager
 {
-    public static GameConfigManager Instance { get; private set; }
-
-    [SerializeField] private string _mainConfigUrl;
+    public static GameConfigManager Instance = new GameConfigManager();
 
     public MainConfig MainConfig { get; private set; }
     public IProductsConfig ProductsConfig => MainConfig;
@@ -25,7 +21,12 @@ public class GameConfigManager : ScriptableObject
 
     public async UniTask<bool> LoadConfigAsync()
     {
-        var getConfigOperation = await new WebRequestsSender().GetAsync(URLHelper.AddAntiCachePostfix(_mainConfigUrl));
+        var urlsHolder = URLsHolder.Instance;
+        var url = urlsHolder.MainConfigUrl;
+#if UNITY_EDITOR
+        if (DebugDataHolder.Instance.UseTestConfigFile == true) url = urlsHolder.DebugMainConfigUrl;
+#endif
+        var getConfigOperation = await new WebRequestsSender().GetAsync(URLHelper.AddAntiCachePostfix(url));
         if (getConfigOperation.IsSuccess)
         {
             var mainConfigDto = JsonConvert.DeserializeObject<MainConfigDto>(getConfigOperation.Result);
@@ -171,10 +172,5 @@ public class GameConfigManager : ScriptableObject
         }
 
         return result;
-    }
-
-    private void OnEnable()
-    {
-        Instance = this;
     }
 }

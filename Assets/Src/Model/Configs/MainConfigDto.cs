@@ -35,6 +35,7 @@ public class FriendActionConfigDto
     public int amount;
     public int cooldown_minutes;
     public int reset_price_gold;
+    public bool is_disabled;
 }
 
 public class PlaceableItemConfigDto

@@ -9,11 +9,12 @@ public struct TakeVisitFriendBonusCommand
         var playerModel = PlayerModelHolder.Instance.UserModel;
         var actionsConfig = GameConfigManager.Instance.FriendActionsConfig;
         var dispatcher = Dispatcher.Instance;
+        var friendActionsConfig = GameConfigManager.Instance.FriendActionsConfig;
 
         var friendActionsModel = playerModel.FriendsActionsDataModels.GetFriendShopActionsModel(friendModel.Uid);
         var actionId = FriendShopActionId.VisitBonus;
         var visitBonusActionData = friendActionsModel.ActionsById[actionId];
-        if (visitBonusActionData.IsAvailable(gameStateModel.ServerTime))
+        if (friendActionsConfig.IsEnabled(actionId) && visitBonusActionData.IsAvailable(gameStateModel.ServerTime))
         {
             visitBonusActionData.SetEndCooldownTime(actionsConfig.GetDefaultActionCooldownMinutes(actionId) * 60 + gameStateModel.ServerTime);
             visitBonusActionData.SetAmount(actionsConfig.GetDefaultActionAmount(actionId));

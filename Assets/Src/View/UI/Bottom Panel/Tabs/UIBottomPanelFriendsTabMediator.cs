@@ -13,6 +13,7 @@ public class UIBottomPanelFriendsTabMediator : UIBottomPanelScrollItemsTabMediat
     private readonly ColorsHolder _colorsHolder;
     private readonly PlayerModelHolder _playerModelHolder;
     private readonly GameStateModel _gameStateModel;
+    private readonly MainConfig _friendActionsConfig;
     private readonly PrefabsHolder _prefabsHolder;
     private readonly Queue<UIBottomPanelFriendItemView> _cachedViews = new Queue<UIBottomPanelFriendItemView>();
 
@@ -28,6 +29,7 @@ public class UIBottomPanelFriendsTabMediator : UIBottomPanelScrollItemsTabMediat
         _colorsHolder = ColorsHolder.Instance;
         _playerModelHolder = PlayerModelHolder.Instance;
         _gameStateModel = GameStateModel.Instance;
+        _friendActionsConfig = GameConfigManager.Instance.MainConfig;
     }
 
     public override void Mediate()
@@ -135,7 +137,8 @@ public class UIBottomPanelFriendsTabMediator : UIBottomPanelScrollItemsTabMediat
                 else
                 {
                     var friendActionsModel = _playerModelHolder.UserModel.FriendsActionsDataModels.GetFriendShopActionsModel(friendData.Uid);
-                    var isVisitBonusAvailable = friendActionsModel.ActionsById[FriendShopActionId.VisitBonus].IsAvailable(_gameStateModel.ServerTime);
+                    var isVisitBonusAvailable = _friendActionsConfig.IsEnabled(FriendShopActionId.VisitBonus)
+                        && friendActionsModel.ActionsById[FriendShopActionId.VisitBonus].IsAvailable(_gameStateModel.ServerTime);
                     itemView.SetStatusIconImageSprite(isVisitBonusAvailable ? _spritesProvider.GetGoldIcon() : null);
                     itemView.SetMainHintEnabled(true);
                     itemView.SetMainHintText(_loc.GetLocalization(LocalizationKeys.HintBottomPanelVisitFriend));

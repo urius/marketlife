@@ -350,6 +350,18 @@ public class MainConfig :
         }
         return 0;
     }
+
+    public bool IsEnabled(FriendShopActionId actionId)
+    {
+        foreach (var actionConfig in _friendActionConfigs)
+        {
+            if (actionConfig.ActionId == actionId)
+            {
+                return actionConfig.IsEnabled;
+            }
+        }
+        return false;
+    }
 }
 
 public class ItemConfig<TConfigDto> : IUnlockableConfig
@@ -377,6 +389,7 @@ public class FriendActionConfig
     public readonly int CooldownMinutes;
     public readonly int Amount;
     public readonly Price ResetPrice;
+    public readonly bool IsEnabled;
 
     public FriendActionConfig(string key, FriendActionConfigDto dto)
     {
@@ -386,6 +399,7 @@ public class FriendActionConfig
         CooldownMinutes = dto.cooldown_minutes;
         Amount = dto.amount;
         ResetPrice = new Price(dto.reset_price_gold, isGold: true);
+        IsEnabled = !dto.is_disabled;
     }
 }
 
@@ -665,4 +679,5 @@ public interface IFriendActionsConfig
     int GetDefaultActionAmount(FriendShopActionId actionId);
     int GetDefaultActionCooldownMinutes(FriendShopActionId actionId);
     int GetActionResetCooldownPriceGold(FriendShopActionId actionId);
+    bool IsEnabled(FriendShopActionId actionId);
 }

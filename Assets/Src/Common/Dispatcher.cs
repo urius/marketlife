@@ -39,7 +39,9 @@ public class Dispatcher
     public Action<FriendShopActionId> UIBottomPanelBuyFriendShopActionClicked = delegate { };
     public Action<Vector3> UIFriendShopBottomPanelUserViewCreated = delegate { };    
     public Action UIMuteAudioClicked = delegate { };
-    public Action UIMuteMusicClicked = delegate { };    
+    public Action UIMuteMusicClicked = delegate { };
+    public Action UIScaleInClicked = delegate { };
+    public Action UIScaleOutClicked = delegate { };    
 
     public Action UIActionsRotateRightClicked = delegate { };
     public Action UIActionsRotateLeftClicked = delegate { };

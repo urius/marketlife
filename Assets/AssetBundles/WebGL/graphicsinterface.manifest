@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 105878355
+CRC: 4260766862
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 41118379bdb296a95722a42ffb7d633e
+    Hash: 4ae01830c7730df5089d87cd6e8f557a
   TypeTreeHash:
     serializedVersion: 2
     Hash: ba23c2e8f8b3f5319028008a25497317
@@ -155,8 +155,9 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/Common/Icon_Back1.png
 - Assets/External Resources/InterfaceGraphicsBundle/Popups/UpgradesPopup/icon_personal_3.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Cheese_1.png
-- Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Floors/Floor5.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/ICON_Enlarge.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/icon_star_big.png
+- Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Floors/Floor5.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/bottom_panel_bg_interior_mode.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/Icon_Tips4.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_small_blue.png
@@ -165,6 +166,7 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/Common/ICON_Mute.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/icon_grab.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Eggs_1.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/ICON_Narrow.png
 - Assets/External Resources/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_3.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Sushi.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/unwashes_icon_1.png

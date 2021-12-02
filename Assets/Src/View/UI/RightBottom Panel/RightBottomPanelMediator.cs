@@ -1,10 +1,11 @@
-using System;
 using UnityEngine;
 
 public class RightBottomPanelMediator : MonoBehaviour
 {
     [SerializeField] private UIToggleSpriteButtonView _muteMusicButton;
     [SerializeField] private UIToggleSpriteButtonView _muteAudioButton;
+    [SerializeField] private UIToggleSpriteButtonView _scaleInButton;
+    [SerializeField] private UIToggleSpriteButtonView _scaleOutButton;
 
     //
     private GameStateModel _gameStateModel;
@@ -25,6 +26,8 @@ public class RightBottomPanelMediator : MonoBehaviour
     {
         _muteMusicButton.gameObject.SetActive(isVisible);
         _muteAudioButton.gameObject.SetActive(isVisible);
+        _scaleInButton.gameObject.SetActive(isVisible);
+        _scaleOutButton.gameObject.SetActive(isVisible);
     }
 
     private async void Start()
@@ -43,6 +46,18 @@ public class RightBottomPanelMediator : MonoBehaviour
         _playerModel.SettingsUpdated += OnPlayerSettingsUpdated;
         _muteMusicButton.Clicked += OnMuteMusicClicked;
         _muteAudioButton.Clicked += OnMuteAudioClicked;
+        _scaleInButton.Clicked += OnScaleInClicked;
+        _scaleOutButton.Clicked += OnScaleOutClicked;
+    }
+
+    private void OnScaleInClicked()
+    {
+        _dispatcher.UIScaleInClicked();
+    }
+
+    private void OnScaleOutClicked()
+    {
+        _dispatcher.UIScaleOutClicked();
     }
 
     private void OnMuteAudioClicked()

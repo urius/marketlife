@@ -40,7 +40,7 @@ public class GameStateModel
     public bool IsGamePaused { get; private set; } = false;
     public GameStateName GameState { get; private set; } = GameStateName.Initializing;
     public bool IsSimulationState => GameState == GameStateName.PlayerShopSimulation || GameState == GameStateName.ShopFriend;
-    public bool IsPlayingState => GameState == GameStateName.PlayerShopSimulation || GameState == GameStateName.PlayerShopInterior || GameState == GameStateName.ShopFriend;
+    public bool IsPlayingState => CheckIsPlayingState(GameState);
     public ActionStateName ActionState { get; private set; } = ActionStateName.None;
     public int PlacingDecorationNumericId => _placingIntParameter;
     public int PlacingProductWarehouseSlotIndex => _placingIntParameter;
@@ -59,6 +59,18 @@ public class GameStateModel
             var result = _lastCheckedServerTime + delta;
             return result;
         }
+    }
+
+    public bool CheckIsPlayingState(GameStateName state)
+    {
+        switch (state)
+        {
+            case GameStateName.PlayerShopSimulation:
+            case GameStateName.PlayerShopInterior:
+            case GameStateName.ShopFriend:
+                return true;
+        }
+        return false;
     }
 
     public void SetServerTime(int serverTime)

@@ -5,11 +5,15 @@ public class MainCameraMediator : MonoBehaviour
 {
     [SerializeField] private Camera _camera;
 
+    private const int CameraMinSize = 3;
+    private const int CameraMaxSize = 8;
+
     private Dispatcher _dispatcher;
     private UpdatesProvider _updatesProvider;
     private GridCalculator _gridCalculator;
     private ScreenCalculator _screenCalculator;
     private MouseDataProvider _mouseDataProvider;
+    private GameStateModel _gameStateModel;
     private bool _isMouseDown;
     private Vector3 _mouseDownWorldPosition;
     private Vector3 _deltaWorldMouse;
@@ -27,6 +31,7 @@ public class MainCameraMediator : MonoBehaviour
         _gridCalculator = GridCalculator.Instance;
         _screenCalculator = ScreenCalculator.Instance;
         _mouseDataProvider = MouseDataProvider.Instance;
+        _gameStateModel = GameStateModel.Instance;
     }
 
     private void Start()
@@ -39,8 +44,52 @@ public class MainCameraMediator : MonoBehaviour
         _dispatcher.UIGameViewMouseExit += OnGameViewMouseExit;
         _dispatcher.RequestForceMouseCellPositionUpdate += OnRequestForceMouseCellPositionUpdate;
         _dispatcher.UIRequestMoveCamera += OnUIRequestMoveCamera;
+        _dispatcher.UIScaleInClicked += OnUIScaleInClicked;
+        _dispatcher.UIScaleOutClicked += OnUIScaleOutClicked;
+        _gameStateModel.GameStateChanged += OnGameStateChanged;
 
         _updatesProvider.RealtimeUpdate += OnRealtimeUpdate;
+    }
+
+    private void OnGameStateChanged(GameStateName prevState, GameStateName currentState)
+    {
+        if (_gameStateModel.CheckIsPlayingState(prevState) == false
+            && _gameStateModel.IsPlayingState)
+        {
+            //TweenCameraSize(5, 1f);
+        }
+    }
+
+    private void OnUIScaleInClicked()
+    {
+        var newSize = (int)_camera.orthographicSize - 1;
+        if (newSize >= CameraMinSize)
+        {
+            TweenCameraSize(newSize, .2f);
+        }
+        else
+        {
+            _camera.orthographicSize = CameraMinSize;
+        }
+    }
+
+    private void OnUIScaleOutClicked()
+    {
+        var newSize = (int)_camera.orthographicSize + 1;
+        if (newSize <= CameraMaxSize)
+        {
+            TweenCameraSize(newSize, .2f);
+        }
+        else
+        {
+            _camera.orthographicSize = CameraMaxSize;
+        }
+    }
+
+    private void TweenCameraSize(int targetSize, float duration)
+    {
+        LeanTween.cancel(_camera.gameObject);
+        LeanTween.value(_camera.gameObject, f => _camera.orthographicSize = f, _camera.orthographicSize, targetSize, duration);
     }
 
     private void OnRequestForceMouseCellPositionUpdate()

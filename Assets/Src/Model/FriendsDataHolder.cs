@@ -1,13 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 
 public class FriendsDataHolder
 {
-    public static FriendsDataHolder Instance => _instance.Value;
-    private static readonly Lazy<FriendsDataHolder> _instance = new Lazy<FriendsDataHolder>();
+    public static FriendsDataHolder Instance = new FriendsDataHolder();
 
     public event Action FriendsDataWasSetup = delegate { };
+
+    private UniTaskCompletionSource _friendsDataSetupTcs = new UniTaskCompletionSource();
 
     private FriendData[] _friends;
 
@@ -18,6 +20,7 @@ public class FriendsDataHolder
     public int InGameFriendsCount => _friends?.Length ?? 0;
     public IReadOnlyList<FriendData> Friends => _friends ?? Array.Empty<FriendData>();
     public bool FriendsDataIsSet => _friends != null;
+    public UniTask FriendsDataSetupTask => _friendsDataSetupTcs.Task;
 
     public void SetupFriendsData(IEnumerable<FriendData> friendsData)
     {
@@ -25,6 +28,7 @@ public class FriendsDataHolder
         Array.Sort(friendsDataArr);
         _friends = friendsDataArr;
         FriendsDataWasSetup();
+        _friendsDataSetupTcs.TrySetResult();
     }
 
     public FriendData GetFriendData(string uid)

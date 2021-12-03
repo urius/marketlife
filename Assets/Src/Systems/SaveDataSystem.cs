@@ -284,13 +284,15 @@ public class SaveDataSystem
     {
         var saveFieldsData = _saveFieldsData;
         _saveFieldsData = SaveField.None;
-        await new SaveDataCommand().ExecuteAsync(saveFieldsData);
+        var result = await new SaveDataCommand().ExecuteAsync(saveFieldsData);
+        _dispatcher.SaveCompleted(result);
     }
 
     private async Task SaveExternalDataAsync()
     {
         var saveUserModel = _saveExternalDataQueue.Dequeue();
-        await new SaveExternalDataCommand().ExecuteAsync(saveUserModel);
+        var result = await new SaveExternalDataCommand().ExecuteAsync(saveUserModel);
+        _dispatcher.SaveExternalDataCompleted(result);
     }
 
     private void OnSizeChanged(int previousValue, int currentValue)

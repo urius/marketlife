@@ -24,6 +24,10 @@ public class URLsHolder : ScriptableObject
     public string SaveDataURL => _saveDataURL;
     [SerializeField] private string _saveExternalDataURL = "https://devman.ru/marketVK/unity/DataProvider.php?command=save_external_data&id={0}";
     public string SaveExternalDataURL => _saveExternalDataURL;
+    [SerializeField] private string _resetNotificationsURL = "https://devman.ru/marketVK/unity/vk/VKNotificationsProcessor.php?command=reset_notifications&id={0}";
+    public string ResetNotificationsURL => _resetNotificationsURL;
+    [SerializeField] private string _addNotificationsURL = "https://devman.ru/marketVK/unity/vk/VKNotificationsProcessor.php?command=add_notifications&ids={0}&type={1}";
+    public string AddNotificationsURL => _addNotificationsURL;
     [SerializeField] private string _vkBankDataURL = "https://devman.ru/marketVK/unity/vk/VKBank.json";
 
     public string GetBankDataURL(SocialType platformType)

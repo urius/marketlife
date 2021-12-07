@@ -454,23 +454,6 @@ public class ProductConfig : IUnlockableConfig
         return new Price(newValue, PricePer1000v.IsGold);
     }
 
-    public float GetDemandForVolume(int volume)
-    {
-        return (int)(DemandPer1000v / (volume * 0.001) * 100) * 0.01f;
-    }
-
-    public float GetDemandPercentForVolume(int volume)
-    {
-        var demand = GetDemandForVolume(volume);
-        return (int)(demand * 100);
-    }
-
-    public int GetDemandAmountForVolume(int volume)
-    {
-        var demand = GetDemandForVolume(volume);
-        return (int)Math.Ceiling(GetAmountInVolume(volume) * demand);
-    }
-
     public int GetAmountInVolume(int volume)
     {
         return volume / Volume;

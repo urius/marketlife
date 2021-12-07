@@ -28,7 +28,6 @@ public class NotificationsSystem
     public async void Start()
     {
         await _gameStateModel.GameDataLoadedTask;
-        await SendResetNotificationsAsync();
         await _friendsDataHodler.FriendsDataSetupTask;
         if (false == DateTimeHelper.IsSameDays(_playerModelHodler.UserModel.StatsData.LastVisitTimestamp, _gameStateModel.ServerTime))
         {
@@ -138,12 +137,6 @@ public class NotificationsSystem
             _saveCompletedDelegate?.Invoke();
             _saveCompletedDelegate = null;
         }
-    }
-
-    private UniTask SendResetNotificationsAsync()
-    {
-        var url = string.Format(_urlsHolder.ResetNotificationsURL, _playerModelHodler.Uid);
-        return new WebRequestsSender().GetAsync(url);
     }
 
     private UniTask SendAddNotificationAsync(string uids, NotificationType type)

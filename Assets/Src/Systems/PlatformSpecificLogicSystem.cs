@@ -181,7 +181,7 @@ public class VKLogicModule : PlatformSpecificLogicModuleBase
         var payload = new PostOfflineRevenueJsPayload(
             offlineReportPopupModel.ReportModel.HoursPassed,
             offlineReportPopupModel.ReportModel.MinutesPassed,
-            offlineReportPopupModel.TotalProfitFromSell);
+            offlineReportPopupModel.ProfitFromSell);
         _jsBridge.SendCommandToJs("PostOfflineRevenue", payload);
     }
 }

@@ -10,5 +10,10 @@ public struct HandleOfflineReportDoubleRewardCommand
             advertViewStateModel.PrepareTarget(AdvertTargetType.OfflineProfitX2);
             dispatcher.RequestShowAdvert();
         }
+        else if (advertViewStateModel.IsWatched(AdvertTargetType.OfflineExpX2) == false)
+        {
+            advertViewStateModel.PrepareTarget(AdvertTargetType.OfflineExpX2);
+            dispatcher.RequestShowAdvert();
+        }
     }
 }

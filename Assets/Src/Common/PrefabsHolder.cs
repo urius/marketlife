@@ -58,10 +58,11 @@ public class PrefabsHolder : ScriptableObject
     public GameObject UIShelfContentPopupItemPrefab;
     public GameObject UIWarehousePopupItemPrefab;
     public GameObject UIUpgradePopupItemPrefab;
+    public GameObject UIOfflineReportPopupPrefab;
     public GameObject UIOfflineReportPopupCaptionItemPrefab;
+    public GameObject UIOfflineReportPopupSellItemPrefab;
     public GameObject UIOfflineReportPopupItemPrefab;
-    public GameObject UIOfflineReportPopupOverallItemPrefab;    
-    public GameObject UIOfflineReportPopupEarnedExpItemPrefab;
+    public GameObject UIOfflineReportPopupOverallItemPrefab;
     public GameObject UILevelUpPopupPrefab;
     public GameObject UILevelUpPopupCaptionItemPrefab;
     public GameObject UILevelUpPopupItemPrefab;
@@ -70,7 +71,6 @@ public class PrefabsHolder : ScriptableObject
     public GameObject UIBankPopupAdsItemPrefab;
     public GameObject UIDailyBonusPopupPrefab;
     public GameObject UIOldGameCompensationPopupPrefab;
-    public GameObject UIOfflineReportPopupPrefab;
     public GameObject UIBillboardPopupPrefab;
 
     //remote

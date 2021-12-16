@@ -74,6 +74,11 @@ public abstract class UIContentPopupMediator : IMediator
         DisplayedItems.Clear();
     }
 
+    protected void PutNextSpace(int height = 20)
+    {
+        _putPointer += height;
+    }
+
     private void PutNext(RectTransform itemTransform)
     {
         itemTransform.anchoredPosition = new Vector2(0, -_putPointer);

@@ -50,7 +50,7 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
         _popupView.SetupTabButtons(_viewModel.Tabs.Select(ToTabName).ToArray());
         _popupView.SetShareButtonText(_loc.GetLocalization(LocalizationKeys.CommonShare));
         _popupView.SetShareRevenueButtonText($"+{_config.ShareOfflineReportRewardGold}");
-        _popupView.SetAdsButtonVisibility(_viewModel.TotalProfitFromSell > 0);
+        _popupView.SetAdsButtonVisibility(_viewModel.ProfitFromSell > 0);
         ShowTab(0);
 
         await _popupView.Appear2Async();
@@ -91,10 +91,7 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
 
     private void OnWatchStateChanged(AdvertTargetType advertTarget)
     {
-        if (advertTarget == AdvertTargetType.OfflineProfitX2)
-        {
-            RefreshTab();
-        }
+        RefreshTab();
     }
 
     private void OnUIShareSuccessCallback()
@@ -141,7 +138,24 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
                 break;
         }
 
-        _popupView.SetAdsButtonInteractable(_advertViewStateModel.IsWatched(AdvertTargetType.OfflineProfitX2) == false);
+        UpdateAdsButton();
+    }
+
+    private void UpdateAdsButton()
+    {
+        _popupView.SetAdsButtonInteractable(
+            _advertViewStateModel.IsWatched(AdvertTargetType.OfflineProfitX2) == false
+            || _advertViewStateModel.IsWatched(AdvertTargetType.OfflineExpX2) == false);
+
+        if (_advertViewStateModel.IsWatched(AdvertTargetType.OfflineProfitX2) == false)
+        {
+            _popupView.SetAdsButtonText(_loc.GetLocalization(LocalizationKeys.PopupOfflineReportX2Profit));
+        }
+        else if (_advertViewStateModel.IsWatched(AdvertTargetType.OfflineExpX2) == false)
+        {
+            _popupView.SetAdsButtonText(_loc.GetLocalization(LocalizationKeys.PopupOfflineReportX2Exp));
+            _popupView.SetAdsButtonSkinSprite(_spritesProvider.GetOrangeButtonSprite());
+        }
     }
 
     private void RefreshTab()
@@ -153,18 +167,22 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
     {
         foreach (var itemViewMdoel in _viewModel.SoldProducts)
         {
-            PutNextReportItem(_spritesProvider.GetProductIcon(itemViewMdoel.ProductKey), $"x{FormattingHelper.ToCommaSeparatedNumber(itemViewMdoel.Amount)}", $"+{FormattingHelper.ToCommaSeparatedNumber(itemViewMdoel.Profit)}$");
+            PutNextSellItem(_spritesProvider.GetProductIcon(itemViewMdoel.ProductKey), $"x{FormattingHelper.ToCommaSeparatedNumber(itemViewMdoel.Amount)}", $"+{FormattingHelper.ToCommaSeparatedNumber(itemViewMdoel.Profit)}$", $"+{FormattingHelper.ToCommaSeparatedNumber(itemViewMdoel.ExpToAdd)}");
         }
+        PutNextSpace();
 
-        var bonusReward = 0;
-        if (_advertViewStateModel.IsWatched(AdvertTargetType.OfflineProfitX2))
+        var bonusCash = 0;
+        var bonusExp = 0;
+        var isWatchedX2ProfitAds = _advertViewStateModel.IsWatched(AdvertTargetType.OfflineProfitX2);
+        var isWatchedX2ExpAds = _advertViewStateModel.IsWatched(AdvertTargetType.OfflineExpX2);
+        if (isWatchedX2ProfitAds || isWatchedX2ExpAds)
         {
-            bonusReward = _viewModel.TotalProfitFromSell;
-            PutNextOverallItem(_loc.GetLocalization(LocalizationKeys.PopupOfflineReportProfitTabBonus), $"+{FormattingHelper.ToCommaSeparatedNumber(bonusReward)}$");
+            bonusCash = isWatchedX2ProfitAds ? _viewModel.ProfitFromSell : 0;
+            bonusExp = isWatchedX2ExpAds ? _viewModel.ReportModel.ExpFromSell : 0;
+            PutNextOverallItem(_loc.GetLocalization(LocalizationKeys.PopupOfflineReportProfitTabBonus), $"+{FormattingHelper.ToCommaSeparatedNumber(bonusCash)}$", $"+{FormattingHelper.ToCommaSeparatedNumber(bonusExp)}");
         }
 
-        PutNextOverallItem(_loc.GetLocalization(LocalizationKeys.PopupOfflineReportProfitTabOverallProfit), $"{FormattingHelper.ToCommaSeparatedNumber(bonusReward + _viewModel.TotalProfitFromSell)}$");
-        PutNextEarnedExpItem(_loc.GetLocalization(LocalizationKeys.PopupOfflineReportProfitTabEarnedExp), $"+{FormattingHelper.ToCommaSeparatedNumber(_viewModel.ReportModel.ExpToAdd)}");
+        PutNextOverallItem(_loc.GetLocalization(LocalizationKeys.PopupOfflineReportProfitTabOverallProfit), $"{FormattingHelper.ToCommaSeparatedNumber(bonusCash + _viewModel.ProfitFromSell)}$", $"{FormattingHelper.ToCommaSeparatedNumber(_viewModel.ReportModel.ExpFromSell + bonusExp)}");
     }
 
     private void ShowPersonalTab()
@@ -215,21 +233,13 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
         }
     }
 
-    private void PutNextEarnedExpItem(string lextText, string rightText)
-    {
-        var itemTransform = GetOrCreateItemToDisplay(_prefabsHolder.UIOfflineReportPopupEarnedExpItemPrefab);
-        var itemView = itemTransform.GetComponent<UIOfflineReportPopupEarnedExpItemView>();
-        itemView.SetImageSprite(_spritesProvider.GetStarIcon(isBig: false));
-        itemView.SetLeftText(lextText);
-        itemView.SetRightText(rightText);
-    }
-
-    private void PutNextOverallItem(string lextText, string rightText)
+    private void PutNextOverallItem(string lextText, string cashText, string expText)
     {
         var itemTransform = GetOrCreateItemToDisplay(_prefabsHolder.UIOfflineReportPopupOverallItemPrefab);
         var itemView = itemTransform.GetComponent<UIOfflineReportPopupOverallItemView>();
         itemView.SetLeftText(lextText);
-        itemView.SetRightText(rightText);
+        itemView.SetCashText(cashText);
+        itemView.SetExpText(expText);
     }
 
     private void PutNextReportItem(Sprite iconSprite, string lextText, Color leftTextColor, TextAlignmentOptions leftTextAlignment, string rightText, Color rightTextColor, TextAlignmentOptions rightTextAlignment)
@@ -241,6 +251,16 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
         itemView.SetLeftTextColor(leftTextColor);
         itemView.SetRightText(rightText, rightTextAlignment);
         itemView.SetRightTextColor(rightTextColor);
+    }
+
+    private void PutNextSellItem(Sprite iconSprite, string amountText, string cashText, string expText)
+    {
+        var itemTransform = GetOrCreateItemToDisplay(_prefabsHolder.UIOfflineReportPopupSellItemPrefab);
+        var itemView = itemTransform.GetComponent<UIOfflineReportPopupSellItemView>();
+        itemView.SetImageSprite(iconSprite);
+        itemView.SetAmountText(amountText);
+        itemView.SetCashText(cashText);
+        itemView.SetExpText(expText);
     }
 
     private void PutNextReportItem(Sprite iconSprite, string lextText, string rightText = "")

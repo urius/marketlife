@@ -68,6 +68,7 @@ public enum AdvertTargetType
 {
     None,
     OfflineProfitX2,
+    OfflineExpX2,
     BankGold,
     BankCash,
     DailyDouble1,

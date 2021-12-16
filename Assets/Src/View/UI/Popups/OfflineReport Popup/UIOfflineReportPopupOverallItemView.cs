@@ -4,27 +4,21 @@ using UnityEngine;
 public class UIOfflineReportPopupOverallItemView : MonoBehaviour
 {
     [SerializeField] private TMP_Text _leftText;
-    [SerializeField] private TMP_Text _rightText;
+    [SerializeField] private TMP_Text _cashText;
+    [SerializeField] private TMP_Text _expText;
 
     public void SetLeftText(string text)
     {
         _leftText.text = text;
     }
 
-    public void SetRightText(string text)
+    public void SetCashText(string text)
     {
-        _rightText.text = text;
+        _cashText.text = text;
     }
 
-    public void SetLeftText(string text, TextAlignmentOptions alignmentOptions)
+    public void SetExpText(string text)
     {
-        _leftText.alignment = alignmentOptions;
-        SetLeftText(text);
-    }
-
-    public void SetRightText(string text, TextAlignmentOptions alignmentOptions)
-    {
-        _rightText.alignment = alignmentOptions;
-        SetRightText(text);
+        _expText.text = text;
     }
 }

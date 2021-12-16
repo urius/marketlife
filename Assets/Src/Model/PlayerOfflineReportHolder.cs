@@ -23,7 +23,7 @@ public class UserOfflineReportModel
     public readonly Dictionary<ProductConfig, int> SoldFromShelfs;
     public readonly Dictionary<ProductConfig, int> SoldFromWarehouse;
     public readonly int SellProfit;
-    public readonly int ExpToAdd;
+    public readonly int ExpFromSell;
     public readonly bool HasSellInfo;
     public readonly bool HasPersonalInfo;
     public readonly bool HasActivityInfo;
@@ -47,7 +47,7 @@ public class UserOfflineReportModel
         HoursPassed = (0.1f * (int)Math.Ceiling(10 * (TimeTo - TimeFrom) / 3600f));
         MinutesPassed = (int)Math.Ceiling((TimeTo - TimeFrom) / 60f);
         SellProfit = CalculateSellProfit(SoldFromWarehouse) + CalculateSellProfit(SoldFromShelfs);
-        ExpToAdd = CalculationHelper.CalculateExpToAdd(SoldFromWarehouse) + CalculationHelper.CalculateExpToAdd(SoldFromShelfs);
+        ExpFromSell = CalculationHelper.CalculateExpToAdd(SoldFromWarehouse) + CalculationHelper.CalculateExpToAdd(SoldFromShelfs);
 
         var hasSoldFromWarehouse = SoldFromWarehouse.Any(kvp => kvp.Value > 0);
         HasSellInfo = SoldFromShelfs.Any(kvp => kvp.Value > 0) || hasSoldFromWarehouse;

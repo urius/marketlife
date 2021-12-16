@@ -16,7 +16,7 @@
             {
                 "type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
                 "key": "buildOutputDirList",
-                "value": "{\"m_Value\":\"/Users/yuris/Unity/market life/builds/beta_28;/Users/yuris/Unity/market life/builds/beta_27;/Users/yuris/Unity/market life/builds/beta_26;/Users/yuris/Unity/market life/builds/beta_25;/Users/yuris/Unity/market life/builds/beta_24;/Users/yuris/Unity/market life/builds/beta_23;/Users/yuris/Unity/market life/builds/beta_22;/Users/yuris/Unity/market life/builds/beta_21;/Users/yuris/Unity/market life/builds/beta_19;/Users/yuris/Unity/market life/builds/beta_18_1\"}"
+                "value": "{\"m_Value\":\"/Users/yuris/Unity/market life/builds/beta_29;/Users/yuris/Unity/market life/builds/beta_28;/Users/yuris/Unity/market life/builds/beta_27;/Users/yuris/Unity/market life/builds/beta_26;/Users/yuris/Unity/market life/builds/beta_25;/Users/yuris/Unity/market life/builds/beta_24;/Users/yuris/Unity/market life/builds/beta_23;/Users/yuris/Unity/market life/builds/beta_22;/Users/yuris/Unity/market life/builds/beta_21;/Users/yuris/Unity/market life/builds/beta_19\"}"
             }
         ]
     }

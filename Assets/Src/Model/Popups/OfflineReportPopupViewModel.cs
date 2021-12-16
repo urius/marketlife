@@ -3,7 +3,7 @@ using System.Collections.Generic;
 public class OfflineReportPopupViewModel : PopupViewModelBase
 {
     public readonly SoldProductViewModel[] SoldProducts;
-    public readonly int TotalProfitFromSell;
+    public readonly int ProfitFromSell;
     public readonly OfflineReportTabType[] Tabs;
     public readonly ItemViewModel[] MerchandiserResult;
     public readonly UserOfflineReportModel ReportModel;
@@ -18,7 +18,7 @@ public class OfflineReportPopupViewModel : PopupViewModelBase
         if (ReportModel.HasActivityInfo) tabs.Add(OfflineReportTabType.Guests);
         Tabs = tabs.ToArray();
 
-        (SoldProducts, TotalProfitFromSell) = GetDataForProfitTab(reportModel);
+        (SoldProducts, ProfitFromSell) = GetDataForProfitTab(reportModel);
         MerchandiserResult = GetMerchandiserResult(reportModel);
     }
 
@@ -58,8 +58,9 @@ public class OfflineReportPopupViewModel : PopupViewModelBase
         {
             var productConfig = kvp.Key;
             var sellPrice = productConfig.GetSellPriceForAmount(kvp.Value);
+            var expToAdd = CalculationHelper.CalculateExpToAdd(productConfig, kvp.Value);
             totalProfit += sellPrice;
-            result.Add(new SoldProductViewModel(productConfig.Key, kvp.Value, sellPrice));
+            result.Add(new SoldProductViewModel(productConfig.Key, kvp.Value, sellPrice, expToAdd));
         }
 
         return (result.ToArray(), totalProfit);
@@ -81,11 +82,13 @@ public class ItemViewModel
 public class SoldProductViewModel : ItemViewModel
 {
     public readonly int Profit;
+    public readonly int ExpToAdd;
 
-    public SoldProductViewModel(string productKey, int amount, int profit)
+    public SoldProductViewModel(string productKey, int amount, int profit, int expToAdd)
         : base(productKey, amount)
     {
         Profit = profit;
+        ExpToAdd = expToAdd;
     }
 }
 

@@ -6,9 +6,11 @@ using UnityEngine.UI;
 public class UIOfflineReportPopupView : UITabbedContentPopupView
 {
     public event Action ShareClicked = delegate { };
-    public event Action AdsClicked = delegate { };    
+    public event Action AdsClicked = delegate { };
 
+    [Space()]
     [SerializeField] private Button _adsButton;
+    [SerializeField] private TMP_Text _adsButtonText;
     [SerializeField] private Button _shareButton;
     [SerializeField] private TMP_Text _shareButtonText;
     [SerializeField] private TMP_Text _shareRevenueAmountText;
@@ -41,6 +43,16 @@ public class UIOfflineReportPopupView : UITabbedContentPopupView
     public void SetAdsButtonInteractable(bool interactable)
     {
         _adsButton.interactable = interactable;
+    }
+
+    public void SetAdsButtonText(string text)
+    {
+        _adsButtonText.text = text;
+    }
+
+    public void SetAdsButtonSkinSprite(Sprite sprite)
+    {
+        _adsButton.image.sprite = sprite;
     }
 
     public void SetAdsButtonVisibility(bool isVisible)

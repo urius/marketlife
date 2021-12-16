@@ -246,7 +246,7 @@ public class HumansControlSystem
                 var sellPrice = productToPay.SellPrice;
                 _viewingUserModel.ProgressModel.AddCash(sellPrice);
                 _viewingUserModel.ProgressModel.DelayedCash = Math.Max(0, _viewingUserModel.ProgressModel.DelayedCash - sellPrice);
-                _viewingUserModel.ProgressModel.AddExp(CalculationHelper.CalculateExpToAddOnline(productToPay.Config, productToPay.Amount));
+                _viewingUserModel.ProgressModel.AddExp(CalculationHelper.CalculateExpToAdd(productToPay.Config, productToPay.Amount));
                 customer.ToPayingState();
 
                 var screenPoint = _screenCalculator.CellToScreenPoint(customer.Coords);
@@ -335,7 +335,9 @@ public class HumansControlSystem
                 {
                     var productBuyInfo = GetProductInfoForBuying(slot.Product);
                     var moodMultiplier = _viewingUserModel.ShopModel.MoodMultiplier;
-                    if (productBuyInfo.TakenAmount < productBuyInfo.CanTakeMaxAmount || moodMultiplier >= 1)
+                    if (productBuyInfo.TakenAmount < productBuyInfo.CanTakeMaxAmount
+                        || (moodMultiplier >= 0.5
+                            && Random.Range(0, 2) <= moodMultiplier))
                     {
                         var product = slot.Product;
                         var productConfig = product.Config;

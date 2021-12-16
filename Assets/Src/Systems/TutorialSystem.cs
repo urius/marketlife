@@ -45,6 +45,9 @@ public class TutorialSystem
     public async void Start()
     {
         await _gameStateModel.GameDataLoadedTask;
+#if UNITY_EDITOR
+        if (DebugDataHolder.Instance.IsTutorialDisabled == true) return;
+#endif
 
         _playerModel = _playerModelHolder.UserModel;
         UpdateOpenedSteps();

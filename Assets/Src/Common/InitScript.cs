@@ -5,6 +5,7 @@ public class InitScript : MonoBehaviour
 {
     [SerializeField] private string _debugUid;
     [SerializeField] private bool _disableSave;
+    [SerializeField] private bool _disableTutorial;
     [SerializeField] private bool _loadDebugConfigVersion;
     [Space(20)]
     [SerializeField] private AssetBundlesLoader _assetBundlesLoader;
@@ -46,5 +47,6 @@ public class InitScript : MonoBehaviour
     {
         DebugDataHolder.Instance.IsSaveDisabled = _disableSave;
         DebugDataHolder.Instance.UseTestConfigFile = _loadDebugConfigVersion;
+        DebugDataHolder.Instance.IsTutorialDisabled = _disableTutorial;
     }
 }

@@ -103,7 +103,7 @@ public class ShopObjectsMediator : MonoBehaviour
                 }
 
                 treeRenderer.sortingLayerName = SortingLayers.OrderableOutside;
-                treeRenderer.sprite = _spritesProvider.GetTreeSprite();
+                treeRenderer.sprite = DateTimeHelper.IsWinter() ? _spritesProvider.GetWinterTreeSprite() : _spritesProvider.GetTreeSprite();
                 treeRenderer.transform.position = _gridCalculator.CellToWorld(coords);
                 createdAmount++;
             }

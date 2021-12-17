@@ -45,4 +45,10 @@ public class DateTimeHelper
         var now = DateTime.Now;
         return (now.Month == 12 && now.Day >= 15) || (now.Month == 1 && now.Day < 15);
     }
+
+    public static bool IsWinter()
+    {
+        var now = DateTime.Now;
+        return now.Month >= 12 || now.Month <= 2;
+    }
 }

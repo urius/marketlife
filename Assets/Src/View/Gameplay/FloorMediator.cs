@@ -181,15 +181,16 @@ public class FloorMediator : MonoBehaviour
                 if (!_floorSprites.ContainsKey(coords))
                 {
                     var grassId = _random.Next(1, 3);
+                    var sprite = DateTimeHelper.IsWinter() ? _spritesProvider.GetSnowSprite(grassId) : _spritesProvider.GetGrassSprite(grassId);
                     if (!_grassSprites.ContainsKey(coords))
                     {
-                        var floorGrassSprite = viewsFactory.CreateGrassFloor(transform, grassId);
+                        var floorGrassSprite = viewsFactory.CreateFloorView(transform, sprite);
                         floorGrassSprite.transform.position = _gridCalculator.CellToWorld(coords);
                         _grassSprites[coords] = floorGrassSprite;
                     }
                     else
                     {
-                        _grassSprites[coords].sprite = _spritesProvider.GetGrassSprite(grassId);
+                        _grassSprites[coords].sprite = sprite;
                     }
                 }
             }

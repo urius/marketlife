@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 253821405
+CRC: 3530100215
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 8c5584023db032d9704494af17a00fca
+    Hash: d3f1980441404b5c1590e4403621aff1
   TypeTreeHash:
     serializedVersion: 2
     Hash: 3dbb92f992534c06c4e322444b68580f
@@ -73,6 +73,7 @@ Assets:
 - Assets/External Resources/GameplayGraphicsBundle/Products/ToothBrushes_1.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Mouth3.png
 - Assets/External Resources/GameplayGraphicsBundle/Shop/Doors/Door2.png
+- Assets/External Resources/GameplayGraphicsBundle/Outside/FloorSnow2.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/EarProfileBase.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Glasses1.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Eye1Base.png
@@ -90,6 +91,7 @@ Assets:
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/Clothes1.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/FootClothes3_Profile.png
 - Assets/External Resources/GameplayGraphicsBundle/Products/Sausage_1.png
+- Assets/External Resources/GameplayGraphicsBundle/Outside/FloorSnow1.png
 - Assets/External Resources/GameplayGraphicsBundle/Products/Hamburger.png
 - Assets/External Resources/GameplayGraphicsBundle/People/HandSkinWhite.png
 - Assets/External Resources/GameplayGraphicsBundle/Products/Juice_1.png
@@ -168,6 +170,7 @@ Assets:
 - Assets/External Resources/GameplayGraphicsBundle/Products/Peppers_1.png
 - Assets/External Resources/GameplayGraphicsBundle/Shop/Common/ExclamationMark.png
 - Assets/External Resources/GameplayGraphicsBundle/Objects/Shelf_4/Shelf_4_floor.png
+- Assets/External Resources/GameplayGraphicsBundle/Outside/WinterTree.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Mouth1.png
 - Assets/External Resources/GameplayGraphicsBundle/Shop/Floors/Floor1.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/Clothes3_Profile.png

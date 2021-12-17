@@ -4,16 +4,8 @@ public struct ViewsFactory
 {
     public SpriteRenderer CreateFloor(Transform parentTransform, int numericId)
     {
-        var result = CreateFloorViewInternal(parentTransform);
-        result.sprite = SpritesProvider.Instance.GetFloorSprite(numericId);
-        return result;
-    }
-
-    public SpriteRenderer CreateGrassFloor(Transform parentTransform, int numericId)
-    {
-        var result = CreateFloorViewInternal(parentTransform);
-        result.sprite = SpritesProvider.Instance.GetGrassSprite(numericId);
-        return result;
+        var sprite = SpritesProvider.Instance.GetFloorSprite(numericId);
+        return CreateFloorView(parentTransform, sprite);
     }
 
     public SpriteRenderer CreateWall(Transform parentTransform, int numericId)
@@ -49,10 +41,11 @@ public struct ViewsFactory
         return doorlView;
     }
 
-    private SpriteRenderer CreateFloorViewInternal(Transform parentTransform)
+    public SpriteRenderer CreateFloorView(Transform parentTransform, Sprite sprite)
     {
         var floorGo = GameObject.Instantiate(PrefabsHolder.Instance.FloorPrefab, parentTransform);
         var result = floorGo.GetComponent<SpriteRenderer>();
+        result.sprite = sprite;
         return result;
     }
 }

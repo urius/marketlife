@@ -23,6 +23,11 @@ public class SpritesProvider
         return GetSprite(SpriteAtlasId.GameplayAtlas, $"FloorGrass{grassId}");
     }
 
+    public Sprite GetSnowSprite(int snowId)
+    {
+        return GetSprite(SpriteAtlasId.GameplayAtlas, $"FloorSnow{snowId}");
+    }
+
     public Sprite GetSantaHatSprite()
     {
         return GetSprite(SpriteAtlasId.GameplayAtlas, $"SantaHat");
@@ -36,6 +41,11 @@ public class SpritesProvider
     public Sprite GetTreeSprite()
     {
         return GetSprite(SpriteAtlasId.GameplayAtlas, $"Tree");
+    }
+
+    public Sprite GetWinterTreeSprite()
+    {
+        return GetSprite(SpriteAtlasId.GameplayAtlas, $"WinterTree");
     }
 
     public Sprite GetUnwashSprite(int numericId)

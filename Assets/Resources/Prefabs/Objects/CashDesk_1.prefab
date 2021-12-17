@@ -142,6 +142,8 @@ MonoBehaviour:
   - {fileID: 4079732136965632393}
   - {fileID: 4079732135542753873}
   - {fileID: 6641321209687870515}
+  - {fileID: 3890354491926533}
+  _hatSprite: {fileID: 3890354491926533}
 --- !u!1 &6641321209610452630
 GameObject:
   m_ObjectHideFlags: 0
@@ -419,6 +421,12 @@ SpriteRenderer:
 --- !u!212 &6506383081482284489 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 6679148589356761843, guid: 222b3c1d4388940fa92e1d49a1c54f89,
+    type: 3}
+  m_PrefabInstance: {fileID: 502796435276017466}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &3890354491926533 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 502038040495982399, guid: 222b3c1d4388940fa92e1d49a1c54f89,
     type: 3}
   m_PrefabInstance: {fileID: 502796435276017466}
   m_PrefabAsset: {fileID: 0}

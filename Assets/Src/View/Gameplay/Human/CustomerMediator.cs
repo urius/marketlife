@@ -18,7 +18,8 @@ public class CustomerMediator : IMediator
     private readonly UpdatesProvider _updatesProvider;
     private readonly Dispatcher _dispatcher;
     private readonly ShoDesignModel _shopDesignModel;
-
+    private readonly SpritesProvider _spritesProvider;
+    //
     private HumanView _humanView;
     private bool _isActive;
 
@@ -33,6 +34,7 @@ public class CustomerMediator : IMediator
         _updatesProvider = UpdatesProvider.Instance;
         _dispatcher = Dispatcher.Instance;
         _shopDesignModel = GameStateModel.Instance.ViewingShopModel.ShopDesign;
+        _spritesProvider = SpritesProvider.Instance;
     }
 
     public void Mediate()
@@ -42,6 +44,14 @@ public class CustomerMediator : IMediator
         _humanView.SetSortingLayer(SortingLayers.OrderableOutside);
         _humanView.SetupSkins(_customerModel.HairId, _customerModel.TopClothesId, _customerModel.BottomClothesId);
         _humanView.SetGlasses(_customerModel.GlassesId);
+        if (DateTimeHelper.IsNewYearsEve())
+        {
+            _humanView.SetHatSprite(_spritesProvider.GetSantaHatSprite());
+        }
+        else
+        {
+            _humanView.SetHatSprite(null);
+        }
 
         UpdateSortingLayer();
         _humanView.transform.position = _gridCalculator.CellToWorld(_customerModel.Coords);

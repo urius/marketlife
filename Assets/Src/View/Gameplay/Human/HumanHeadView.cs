@@ -6,6 +6,7 @@ public class HumanHeadView : HumanHeadViewBase
     public const string GLASSES_PREFIX = "Glasses";
 
     [SerializeField] private Animator _headAnimator;
+    [SerializeField] private SpriteRenderer _hatSprite;
     [SerializeField] private SpriteRenderer _hairSprite;
     [SerializeField] private SpriteRenderer _headBaseSprite;
     [SerializeField] private SpriteRenderer _brow1Sprite;
@@ -37,6 +38,12 @@ public class HumanHeadView : HumanHeadViewBase
     public void AnimationEventSwitchMouthSpriteRequested(int mouthId)
     {
         SetMouth(mouthId);
+    }
+
+    public override void SetHatSprite(Sprite hatSprite)
+    {
+        _hatSprite.sprite = hatSprite;
+        _hatSprite.gameObject.SetActive(hatSprite != null);
     }
 
     public override void SetHair(int hairId)

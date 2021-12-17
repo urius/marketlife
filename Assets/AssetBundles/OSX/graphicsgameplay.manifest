@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2536287748
+CRC: 253821405
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: e5a6b41c1c419ce4cf9ad8132ee45d8e
+    Hash: 8c5584023db032d9704494af17a00fca
   TypeTreeHash:
     serializedVersion: 2
     Hash: 3dbb92f992534c06c4e322444b68580f
@@ -174,6 +174,7 @@ Assets:
 - Assets/External Resources/GameplayGraphicsBundle/Shop/Floors/Floor5.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/Clothes7_Profile.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Mouth5.png
+- Assets/External Resources/GameplayGraphicsBundle/People/Head/SantaHat.png
 - Assets/External Resources/GameplayGraphicsBundle/Shop/Walls/Wall4.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/HandClothes3.png
 Dependencies: []

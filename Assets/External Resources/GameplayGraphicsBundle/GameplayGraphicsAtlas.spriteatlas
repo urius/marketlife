@@ -44,7 +44,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 5804ef6ef86794aa6ac1d44028fafb7e, type: 3}
-    totalSpriteSurfaceArea: 870808
+    totalSpriteSurfaceArea: 902488
     bindAsDefault: 0
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -145,6 +145,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 0dc4fed9858934a52b68af6bb52ba755, type: 3}
   - {fileID: 21300000, guid: 2125e7e960a55436c84e99bded01935d, type: 3}
   - {fileID: 21300000, guid: 624315f9c044142c2b2d000636063452, type: 3}
+  - {fileID: 21300000, guid: e0c7ac0a831be452b81398a157d9500e, type: 3}
   - {fileID: 21300000, guid: da26293a83c6247249dcdefff4807072, type: 3}
   - {fileID: 21300000, guid: 185d746a7c1014866b2106373d9b7d35, type: 3}
   - {fileID: 21300000, guid: 180e9a6aa6af04aedb4c1012cb4e229a, type: 3}
@@ -304,6 +305,7 @@ SpriteAtlas:
   - Wall5
   - Mouth3
   - Glasses2
+  - SantaHat
   - Eye1Base
   - Hair7
   - Mouth8

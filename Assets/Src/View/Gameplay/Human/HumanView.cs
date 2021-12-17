@@ -83,6 +83,12 @@ public class HumanView : MonoBehaviour
         _headViewProfile.SetHair(hairId);
     }
 
+    public void SetHatSprite(Sprite hatSprite)
+    {
+        _headViewFaceSide.SetHatSprite(hatSprite);
+        _headViewProfile.SetHatSprite(hatSprite);
+    }
+
     public void SetGlasses(int glassesId)
     {
         _glassesId = glassesId;

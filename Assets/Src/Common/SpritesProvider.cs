@@ -23,6 +23,11 @@ public class SpritesProvider
         return GetSprite(SpriteAtlasId.GameplayAtlas, $"FloorGrass{grassId}");
     }
 
+    public Sprite GetSantaHatSprite()
+    {
+        return GetSprite(SpriteAtlasId.GameplayAtlas, $"SantaHat");
+    }
+
     public Sprite GetExclamationMarkSprite()
     {
         return GetSprite(SpriteAtlasId.GameplayAtlas, $"ExclamationMark");

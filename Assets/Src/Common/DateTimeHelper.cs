@@ -39,4 +39,10 @@ public class DateTimeHelper
     {
         return date1.DayOfYear == date2.DayOfYear && date1.Year == date2.Year;
     }
+
+    public static bool IsNewYearsEve()
+    {
+        var now = DateTime.Now;
+        return (now.Month == 12 && now.Day >= 15) || (now.Month == 1 && now.Day < 15);
+    }
 }

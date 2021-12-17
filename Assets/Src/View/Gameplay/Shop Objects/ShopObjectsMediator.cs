@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ShopObjectsMediator : MonoBehaviour
 {
-    private const int MaxTreesAmount = 25;
+    private const int MaxTreesAmount = 35;
 
     private GameStateModel _gameStateModel;
     private PrefabsHolder _prefabsHolder;
@@ -73,7 +73,7 @@ public class ShopObjectsMediator : MonoBehaviour
 
     private void DisplayTrees()
     {
-        const int treesPadding = 10;
+        const int treesPadding = 15;
         const int treesGap = 2;
 
         var amount = _random.Next(0, MaxTreesAmount);

@@ -172,7 +172,7 @@ public class FloorMediator : MonoBehaviour
 
         //grass
         var designModel = _activeShopModel.ShopDesign;
-        var grassPadding = 10;
+        var grassPadding = 20;
         for (var x = -grassPadding; x < designModel.SizeX + grassPadding; x++)
         {
             for (var y = -grassPadding; y < designModel.SizeY + grassPadding; y++)

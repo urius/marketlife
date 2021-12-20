@@ -237,7 +237,8 @@ public class UIOrderProductsPopupMediator : IMediator
                 $"{(int)Math.Ceiling(config.Demand)} {_loc.GetLocalization(LocalizationKeys.PopupOrderProductItemDemandMeasure)}",
                 config.GetAmountInVolume(warehouseVolume),
                 FormattingHelper.ToSeparatedTimeFormat(config.DeliverTimeSeconds),
-                config.GetSellPriceForVolume(warehouseVolume));
+                config.GetExpForVolume(warehouseVolume),
+                config.GetProfitForVolume(warehouseVolume));
         itemView.SetDescriptionText(description);
     }
 

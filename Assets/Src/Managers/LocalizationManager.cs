@@ -146,7 +146,7 @@ public class LocalizationKeys
     public static string PopupShelfContentProductDescriptionFormat = "popup_shelf_content_product_description_format";
     public static string PopupShelfContentProductEmpty = "popup_shelf_content_product_empty";
     public static string PopupShelfContentProductTakeFromWarehouse = "popup_shelf_content_product_take_from_warehouse";
-    public static string PopupOrderProductItemDescriptionText = "popup_order_product_item_description_text";
+    public static string PopupOrderProductItemDescriptionText = "popup_order_product_item_description_text_2";
     public static string PopupOrderProductItemDemandMeasure = "popup_order_product_item_demand_measure";
     public static string PopupWarehouseTitle = "popup_warehouse_title";
     public static string PopupWarehouseItemAmountFormat = "popup_warehouse_item_amount_format";

@@ -120,6 +120,8 @@ public class UIBankPopupMediator : UIContentPopupMediator
 
     private void SetupItemView(UIBankPopupItemView itemView, BankItemViewModel viewModel)
     {
+        itemView.SetAvailable(viewModel.IsAvailable);
+
         itemView.SetIconSprite(viewModel.IsGold ? _spritesProvider.GetGoldIcon() : _spritesProvider.GetCashIcon());
         itemView.SetAmountText(FormattingHelper.ToCommaSeparatedNumber(viewModel.Value));
         if (viewModel.IsAds == true)

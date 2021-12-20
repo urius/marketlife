@@ -13,11 +13,22 @@ public class UIBankPopupItemView : MonoBehaviour
     [SerializeField] private Button _buyButton;
     [SerializeField] private Button _mainButton;
     [SerializeField] private TMP_Text _priceText;
+    [SerializeField] private TMP_Text _unavailableText;
 
     public void Awake()
     {
+        SetAvailable(true);
+
         _buyButton.AddOnClickListener(OnClick);
         _mainButton.AddOnClickListener(OnClick);
+    }
+
+    public void SetAvailable(bool isAvailable)
+    {
+        _mainButton.interactable = isAvailable;
+        _buyButton.gameObject.SetActive(isAvailable);
+        _priceText.gameObject.SetActive(isAvailable);
+        _unavailableText?.gameObject.SetActive(!isAvailable);
     }
 
     public void SetIconSprite(Sprite sprite)

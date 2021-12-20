@@ -470,6 +470,16 @@ public class ProductConfig : IUnlockableConfig
         return (int)(SellPricePer1000v * (float)volume / 1000);
     }
 
+    public int GetExpForVolume(int volume)
+    {
+        return CalculationHelper.CalculateExpToAdd(this, GetAmountInVolume(volume));
+    }
+
+    public int GetProfitForVolume(int volume)
+    {
+        return (int)(ProfitPer1000v * (float)volume / 1000);
+    }
+
     private int GetTotalSeconds(string deliverTimeStr)
     {
         var result = 0;

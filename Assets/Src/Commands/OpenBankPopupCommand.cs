@@ -5,7 +5,8 @@ public struct OpenBankPopupCommand
         var gameStateModel = GameStateModel.Instance;
         var bankConfig = BankConfig.Instance;
         var mainConfig = GameConfigManager.Instance.MainConfig;
-        var viewModel = new BankPopupViewModel(isGold ? 0 : 1, bankConfig, mainConfig);
+        var playerModelHolder = PlayerModelHolder.Instance;
+        var viewModel = new BankPopupViewModel(isGold ? 0 : 1, bankConfig, mainConfig, playerModelHolder.IsBuyInBankAllowed);
         gameStateModel.ShowPopup(viewModel);
 
         await new LoadBankConfigCommand().ExecuteAsync();

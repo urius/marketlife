@@ -9,13 +9,15 @@ public class BankPopupViewModel : PopupViewModelBase
 
     private readonly BankConfig _bankConfig;
     private readonly MainConfig _mainConfig;
+    private readonly bool _isBuyInBankAllowed;
 
-    public BankPopupViewModel(int initialTabIndex, BankConfig bankConfig, MainConfig mainConfig)
+    public BankPopupViewModel(int initialTabIndex, BankConfig bankConfig, MainConfig mainConfig, bool isBuyInBankAllowed)
     {
         InitialTabIndex = initialTabIndex;
 
         _bankConfig = bankConfig;
         _mainConfig = mainConfig;
+        _isBuyInBankAllowed = isBuyInBankAllowed;
         UpdateItems();
 
         _bankConfig.ItemsUpdated += OnConfigItemsUpdated;
@@ -41,11 +43,11 @@ public class BankPopupViewModel : PopupViewModelBase
     {
         GoldItems = new[] { new BankItemViewModel(isGold: true, goldReward: _mainConfig.BankAdvertRewardGold) }
             .Concat(_bankConfig.GoldItems
-            .Select(c => new BankItemViewModel(c)))
+            .Select(c => new BankItemViewModel(c, _isBuyInBankAllowed)))
             .ToArray();
         CashItems = new[] { new BankItemViewModel(isGold: false, goldReward: _mainConfig.BankAdvertRewardGold) }
             .Concat(_bankConfig.CashItems
-            .Select(c => new BankItemViewModel(c)))
+            .Select(c => new BankItemViewModel(c, _isBuyInBankAllowed)))
             .ToArray();
 
         ItemsUpdated();
@@ -59,6 +61,7 @@ public class BankItemViewModel
     public readonly int Value;
     public readonly int Price;
     public readonly int ExtraPercent;
+    public readonly bool IsAvailable = true;
 
     private readonly BankConfigItem _bankConfigItem;
 
@@ -71,13 +74,14 @@ public class BankItemViewModel
         ExtraPercent = 0;
     }
 
-    public BankItemViewModel(BankConfigItem bankConfigItem)
+    public BankItemViewModel(BankConfigItem bankConfigItem, bool isAvailable)
     {
         IsAds = false;
         IsGold = bankConfigItem.IsGold;
         Value = bankConfigItem.Value;
         Price = bankConfigItem.Price;
         ExtraPercent = bankConfigItem.ExtraPercent;
+        IsAvailable = isAvailable;
 
         _bankConfigItem = bankConfigItem;
     }

@@ -400,6 +400,7 @@ MonoBehaviour:
   _buyButton: {fileID: 1951502904657238225}
   _mainButton: {fileID: 1951502904711914465}
   _priceText: {fileID: 6418623885875522639}
+  _unavailableText: {fileID: 0}
 --- !u!1 &1951502904624267035
 GameObject:
   m_ObjectHideFlags: 0

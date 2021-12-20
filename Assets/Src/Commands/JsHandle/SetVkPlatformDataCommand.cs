@@ -6,9 +6,19 @@ public struct SetVkPlatformDataCommand
     {
         var playerModelHolder = PlayerModelHolder.Instance;
 
-        playerModelHolder.SetSocialType(SocialType.VK);
         var dataDto = JsonConvert.DeserializeObject<JsVkPlatfomDataCommandDto>(dataStr);
+        playerModelHolder.SetSocialType(GetSocialType(dataDto.data.platform));
         playerModelHolder.SetUid(dataDto.data.viewer_id);
+        playerModelHolder.SetBuyInBankAllowed(dataDto.data.is_ios_direct == false);
+    }
+
+    private SocialType GetSocialType(string platform)
+    {
+        return platform switch
+        {
+            "vk" => SocialType.VK,
+            _ => SocialType.Undefined,
+        };
     }
 }
 
@@ -20,5 +30,7 @@ public struct JsVkPlatfomDataCommandDto
 
 public struct JsVkPlatfomDataCommandDataDto
 {
+    public string platform;
     public string viewer_id;
+    public bool is_ios_direct;
 }

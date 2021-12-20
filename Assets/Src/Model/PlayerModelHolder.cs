@@ -12,6 +12,8 @@ public class PlayerModelHolder
 
     public string Uid { get; private set; }
     public SocialType SocialType { get; private set; }
+    public bool IsBuyInBankAllowed { get; private set; }
+
     public UserModel UserModel { get; private set; }
     public ShopModel ShopModel => UserModel.ShopModel;
     public UniTask SetUidTask => _setUidTcs.Task;
@@ -19,6 +21,11 @@ public class PlayerModelHolder
     public void SetSocialType(SocialType socialType)
     {
         SocialType = socialType;
+    }
+
+    public void SetBuyInBankAllowed(bool isAllowed)
+    {
+        IsBuyInBankAllowed = isAllowed;
     }
 
     public void SetUid(string uid)

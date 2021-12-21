@@ -1,0 +1,240 @@
+{
+	"GameplayAtlasVersion":-1,
+	"InterfaceAtlasVersion":-1,
+    "AudioBundleVersion":1,
+	"AutoPlacePriceGold":1,
+    "RemoveUnwashesRewardExp":5,
+	"QuickDeliverPriceGoldPerMinute":1,
+    "QuickDeliverPriceGoldPerHour":1,
+    "ActionDefaultAmount":10,
+    "ActionDefaultCooldownMinutes":120,
+    "ActionResetCooldownPrice":5,
+    "BillboardUnlockLevel":2,
+    "GoldToCashConversionRate":100,
+    "FriendActionsConfig":{
+        "take":{"action_id":1, "amount":10, "cooldown_minutes":300, "reset_price_gold":15 },
+        "add_unwash":{"action_id":2, "amount":10, "cooldown_minutes":120, "reset_price_gold":6 },
+        "visit_bonus":{"action_id":3, "amount":1, "cooldown_minutes":1200, "is_disabled":false }
+    },
+    "ShelfsConfig":{
+        "s_1":{"price":"7g", "part_volume":1000, "parts_num":2, "unlock_level":5, "build_matrix":[[0,0,0],[0,1,0],[-1,-1,-1]]},
+        "s_2":{"price":"1500", "part_volume":2000, "parts_num":1, "unlock_level":3, "build_matrix":[[0,0,0],[0,1,0],[-1,-1,-1]]},
+        "s_3":{"price":"500", "part_volume":1000, "parts_num":1, "unlock_level":1, "build_matrix":[[0,0,0],[0,1,0],[-1,-1,-1]]},
+        "s_4":{"price":"15g", "part_volume":2000, "parts_num":2, "unlock_level":12, "build_matrix":[[0,0,0],[0,1,0],[-1,-1,-1]]},
+        "s_5":{"price":"8000", "part_volume":3000, "parts_num":1, "unlock_level":8, "build_matrix":[[0,0,0],[0,1,0],[-1,-1,-1]]}            
+    },
+    "ShopObjectsConfig":{
+        "cd_1":{"price":"50g", "two_sides_mode":true, "unlock_level":1, "build_matrix":[[0,0,0,0,0],[-1,-1,-1,-1,-1],[-1,1,1,1,-1],[-1,-1,-1,-1,-1],[0,0,0,0,0]]}
+    },
+    "FloorsConfig": {
+        "f_1":{ "price":"2", "unlock_level":"1"},
+        "f_2":{ "price":"5", "unlock_level":"1"},
+        "f_3":{ "price":"8", "unlock_level":"2"},                
+        "f_4":{ "price":"12", "unlock_level":"3"},               
+        "f_5":{ "price":"25", "unlock_level":"4"}
+    },
+    "WallsConfig": {
+        "w_1":{ "price":"20", "unlock_level":"1"},
+        "w_2":{ "price":"25", "unlock_level":"1"},
+        "w_3":{ "price":"40", "unlock_level":"2"},
+        "w_4":{ "price":"50", "unlock_level":"3"},
+        "w_5":{ "price":"60", "unlock_level":"4"},
+        "w_6":{ "price":"80", "unlock_level":"5"},
+        "w_7":{ "price":"120", "unlock_level":"5"},
+        "w_8":{ "price":"140", "unlock_level":"6"}
+    },
+    "WindowsConfig": {
+        "wnd_1":{ "price":"1000", "unlock_level":"1"},
+        "wnd_2":{ "price":"1g", "unlock_level":"4"}         
+    },
+    "DoorsConfig": {
+        "d_1":{ "price":"800", "unlock_level":"1"},
+        "d_2":{ "price":"1200", "unlock_level":"1"}               
+    },
+    "ProductsConfig":{
+         "p10":{ "key":"Carrots_1",     "unlock_level":1, "price_per_1000v":"10",  "profit_per_1000v":20,   "demand_1000v_per_hour":5,      "deliver":"00:05",   "group":1,  "amount_per_1000v":50 },
+         "p1": { "key":"Water_1",        "unlock_level":1, "price_per_1000v":"2",  "profit_per_1000v":5,   "demand_1000v_per_hour":2,     "deliver":"00:05",   "group":1,  "amount_per_1000v":10 },
+         "p24":{ "key":"MilkBottles",   "unlock_level":1, "price_per_1000v":"12",  "profit_per_1000v":25,   "demand_1000v_per_hour":4,       "deliver":"00:45",  "group":2,  "amount_per_1000v":20  },
+
+         "p4": { "key":"Fanta",          "unlock_level":2, "price_per_1000v":"10",  "profit_per_1000v":35,   "demand_1000v_per_hour":4,     "deliver":"00:10",   "group":1,  "amount_per_1000v":25 },                
+
+         "p2": { "key":"Banana",         "unlock_level":3, "price_per_1000v":"20",  "profit_per_1000v":30,   "demand_1000v_per_hour":4,     "deliver":"01:30",   "group":2,  "amount_per_1000v":35  }, 
+          
+         "p8": { "key":"Cola",           "unlock_level":4, "price_per_1000v":"15",  "profit_per_1000v":40,   "demand_1000v_per_hour":5,       "deliver":"00:30",   "group":1,  "amount_per_1000v":24 }, 
+
+        "p11": { "key":"Cheese_1",       "unlock_level":5, "price_per_1000v":"60",  "profit_per_1000v":120,  "demand_1000v_per_hour":3,    "deliver":"0:20:00", "group":3,  "amount_per_1000v":25  },    
+         "p30":{ "key":"Cake",           "unlock_level":5, "price_per_1000v":"25", "profit_per_1000v":45,    "demand_1000v_per_hour":4,     "deliver":"02:00",   "group":2, "amount_per_1000v":12  },
+
+         "p5": { "key":"Orange",         "unlock_level":6, "price_per_1000v":"35", "profit_per_1000v":50,    "demand_1000v_per_hour":5,     "deliver":"05:00",    "group":2,  "amount_per_1000v":90  },
+ 
+        "p12": { "key":"Cream_1",        "unlock_level":7, "price_per_1000v":"200", "profit_per_1000v":220,  "demand_1000v_per_hour":2,     "deliver":"30:00", "group":3,  "amount_per_1000v":100  },
+           
+        "p17": { "key":"Peppers_1",      "unlock_level":8, "price_per_1000v":"35",  "profit_per_1000v":90,   "demand_1000v_per_hour":4,     "deliver":"01:00", "group":1,  "amount_per_1000v":55  },
+
+        "p19": { "key":"Pizza_1",        "unlock_level":9, "price_per_1000v":"80",  "profit_per_1000v":100,  "demand_1000v_per_hour":4,    "deliver":"05:00",   "group":2,  "amount_per_1000v":12   },
+
+         "p9": { "key":"Beer",           "unlock_level":10, "price_per_1000v":"25", "profit_per_1000v":60,    "demand_1000v_per_hour":5,     "deliver":"03:00",   "group":2,  "amount_per_1000v":42 },
+        "p26": { "key":"Notebook",       "unlock_level":10, "price_per_1000v":"1000", "profit_per_1000v":2000, "demand_1000v_per_hour":0.3,   "deliver":"4:00:00",  "group":4, "amount_per_1000v":6   },
+
+        "p27": { "key":"Hamburger",      "unlock_level":11, "price_per_1000v":"10", "profit_per_1000v":80,    "demand_1000v_per_hour":3,      "deliver":"01:00",   "group":2, "amount_per_1000v":20  },               
+
+        "p28": { "key":"Chips",          "unlock_level":12, "price_per_1000v":"5", "profit_per_1000v":30,     "demand_1000v_per_hour":10,     "deliver":"00:30",  "group":1,  "amount_per_1000v":40 },
+
+        "p29": { "key":"Sushi",          "unlock_level":13, "price_per_1000v":"5", "profit_per_1000v":100,    "demand_1000v_per_hour":4,      "deliver":"0:12:00",  "group":2,  "amount_per_1000v":55 },
+
+         "p6": { "key":"Perfumes_1",     "unlock_level":14, "price_per_1000v":"400",  "profit_per_1000v":800,  "demand_1000v_per_hour":1,     "deliver":"2:00:00",   "group":3,  "amount_per_1000v":20 },
+
+        "p25": { "key":"Bread_1",        "unlock_level":15, "price_per_1000v":"15",  "profit_per_1000v":60,    "demand_1000v_per_hour":6,        "deliver":"00:40",   "group":1,  "amount_per_1000v":25  },
+         "p7": { "key":"Perfume_2",      "unlock_level":15, "price_per_1000v":"1000", "profit_per_1000v":4000, "demand_1000v_per_hour":0.5,    "deliver":"5:00:00",  "group":4,  "amount_per_1000v":20 },
+
+         "p31":{ "key":"TV",             "unlock_level":16, "price_per_1000v":"100", "profit_per_1000v":600,   "demand_1000v_per_hour":1.5,     "deliver":"1:00:00",  "group":3,  "amount_per_1000v":4  },
+
+         "p20":{ "key":"Eggs_1",         "unlock_level":17, "price_per_1000v":"30", "profit_per_1000v":60,   "demand_1000v_per_hour":7,       "deliver":"01:00", "group":1,  "amount_per_1000v":800  },
+
+        "p16": { "key":"Lipsticks_1",    "unlock_level":18, "price_per_1000v":"20",  "profit_per_1000v":150,   "demand_1000v_per_hour":2,      "deliver":"02:00", "group":3,  "amount_per_1000v":200  },
+
+         "p3": { "key":"ToothPaste",     "unlock_level":19, "price_per_1000v":"30",  "profit_per_1000v":50,   "demand_1000v_per_hour":3,    "deliver":"02:00",   "group":2,  "amount_per_1000v":70  },
+
+        "p18": { "key":"ToothBrushes_1", "unlock_level":20, "price_per_1000v":"5",  "profit_per_1000v":100,   "demand_1000v_per_hour":3,     "deliver":"08:00",    "group":2,  "amount_per_1000v":150 },
+        "p13": { "key":"Juice_1",        "unlock_level":20, "price_per_1000v":"10", "profit_per_1000v":50,    "demand_1000v_per_hour":7,    "deliver":"00:10",    "group":1,  "amount_per_1000v":45  },
+
+        "p14": { "key":"Juice_2",        "unlock_level":21, "price_per_1000v":"10",  "profit_per_1000v":80,   "demand_1000v_per_hour":5,    "deliver":"07:00",   "group":2,  "amount_per_1000v":45  },
+
+        "p15": { "key":"LimeOn",         "unlock_level":22, "price_per_1000v":"20", "profit_per_1000v":60,    "demand_1000v_per_hour":5,    "deliver":"01:30",   "group":2,  "amount_per_1000v":90  },
+
+        "p21": { "key":"Candy_1",        "unlock_level":23, "price_per_1000v":"40",  "profit_per_1000v":50,   "demand_1000v_per_hour":8,    "deliver":"00:30",  "group":1, "amount_per_1000v":400 }, 
+
+        "p22": { "key":"Sausage_1",      "unlock_level":24, "price_per_1000v":"10", "profit_per_1000v":60,    "demand_1000v_per_hour":6,    "deliver":"03:00",   "group":1, "amount_per_1000v":60  },
+
+        "p23": { "key":"Sugar_1",        "unlock_level":25, "price_per_1000v":"5",  "profit_per_1000v":30,   "demand_1000v_per_hour":10,     "deliver":"01:00",  "group":1,  "amount_per_1000v":50 }
+     },     
+    "PersonalConfig":{
+        "clean_1": { "key":"icon_personal_2", "price":"2000", "price_per_cell":"20", "unlock_level":3, "work_hours":48 },
+        "sec_1":   { "key":"icon_personal_3", "price":"1500", "price_per_cell":"25", "unlock_level":4, "work_hours":48 },
+        "mer_1":   { "key":"icon_personal_1", "price":"10g",  "price_per_cell":"22", "unlock_level":5, "work_hours":48, "volume_per_hour": 10000 }
+    },
+    "WarehouseVolumeUpgradesConfig": [
+        {"value":500,   "price":"1g", "unlock_level":0, "unlock_friends":0},
+        {"value":1000,  "price":"1g", "unlock_level":0, "unlock_friends":0},
+        {"value":1500,  "price":"2g", "unlock_level":0, "unlock_friends":0},
+        {"value":2000,  "price":"5g", "unlock_level":0, "unlock_friends":0},
+        {"value":2500,  "price":"8g", "unlock_level":0, "unlock_friends":0},
+        {"value":3000,  "price":"10g", "unlock_level":0, "unlock_friends":0},
+        {"value":3500,  "price":"15g", "unlock_level":0, "unlock_friends":0},
+        {"value":4000,  "price":"20g",  "unlock_level":0, "unlock_friends":0},
+        {"value":4500,  "price":"25g", "unlock_level":0, "unlock_friends":0},
+        {"value":5000,  "price":"30g", "unlock_level":0, "unlock_friends":0},
+        {"value":5500,  "price":"40g", "unlock_level":0, "unlock_friends":0},
+        {"value":6000,  "price":"50g", "unlock_level":0, "unlock_friends":0},
+        {"value":6500,  "price":"60g", "unlock_level":0, "unlock_friends":0},
+        {"value":7000,  "price":"70g", "unlock_level":0, "unlock_friends":0},
+        {"value":7500,  "price":"80g", "unlock_level":0, "unlock_friends":0},
+        {"value":8000,  "price":"90g", "unlock_level":0, "unlock_friends":0},
+        {"value":8500,  "price":"100g", "unlock_level":0, "unlock_friends":0},
+        {"value":9000,  "price":"110g", "unlock_level":0, "unlock_friends":0},
+        {"value":9500,  "price":"120g", "unlock_level":0, "unlock_friends":0},
+        {"value":10000, "price":"130g", "unlock_level":0, "unlock_friends":0},
+        {"value":10500, "price":"140g", "unlock_level":0, "unlock_friends":0},
+        {"value":11000, "price":"150g", "unlock_level":0, "unlock_friends":0},        
+        {"value":11500, "price":"160g", "unlock_level":0, "unlock_friends":0},
+        {"value":12000, "price":"170g", "unlock_level":0, "unlock_friends":0},
+        {"value":12500, "price":"180g", "unlock_level":0, "unlock_friends":0},
+        {"value":13000, "price":"190g", "unlock_level":0, "unlock_friends":0},
+        {"value":13500, "price":"200g", "unlock_level":0, "unlock_friends":0},
+        {"value":14000, "price":"250g", "unlock_level":0, "unlock_friends":0},
+        {"value":14500, "price":"300g", "unlock_level":0, "unlock_friends":0},
+        {"value":15000, "price":"350g", "unlock_level":0, "unlock_friends":0}
+    ],
+    "WarehouseSlotsUpgradesConfig":[
+        {"value":5,  "price":"500", "unlock_level":0, "unlock_friends":0},
+        {"value":6,  "price":"1000", "unlock_level":0, "unlock_friends":0},
+        {"value":7,  "price":"1500", "unlock_level":0, "unlock_friends":0},
+        {"value":8,  "price":"2000", "unlock_level":0, "unlock_friends":0},
+        {"value":9,  "price":"2500", "unlock_level":0, "unlock_friends":0},
+        {"value":10, "price":"3000", "unlock_level":0, "unlock_friends":0},
+        {"value":11, "price":"3500", "unlock_level":0, "unlock_friends":0},
+        {"value":12, "price":"4000", "unlock_level":0, "unlock_friends":0},
+        {"value":13, "price":"4500", "unlock_level":0, "unlock_friends":0},
+        {"value":14, "price":"5000", "unlock_level":0, "unlock_friends":0},
+        {"value":15, "price":"6000", "unlock_level":0, "unlock_friends":0},
+        {"value":16, "price":"7000", "unlock_level":0, "unlock_friends":0},
+        {"value":17, "price":"8000", "unlock_level":0, "unlock_friends":0},
+        {"value":18, "price":"9000", "unlock_level":0, "unlock_friends":0},
+        {"value":19, "price":"10000", "unlock_level":0, "unlock_friends":0}, 
+        {"value":20, "price":"15000", "unlock_level":0, "unlock_friends":0}
+    ],  
+    "ExtendShopXUpgradesConfig":[
+        {"value":1,  "price":"100", "unlock_level":0, "unlock_friends":0},
+        {"value":2,  "price":"200", "unlock_level":0, "unlock_friends":0},
+        {"value":3,  "price":"1g", "unlock_level":0, "unlock_friends":0},
+        {"value":4,  "price":"2g", "unlock_level":1, "unlock_friends":0},
+        {"value":5,  "price":"600", "unlock_level":1, "unlock_friends":0},
+        {"value":6,  "price":"700", "unlock_level":1, "unlock_friends":0},
+        {"value":7,  "price":"5g", "unlock_level":3, "unlock_friends":0},
+        {"value":8,  "price":"10g", "unlock_level":3, "unlock_friends":0},
+        {"value":9,  "price":"1000", "unlock_level":3, "unlock_friends":2},
+        {"value":10, "price":"1500", "unlock_level":3, "unlock_friends":2},
+        {"value":11, "price":"25g", "unlock_level":5, "unlock_friends":3},
+        {"value":12, "price":"30g", "unlock_level":5, "unlock_friends":3},
+        {"value":13, "price":"3000", "unlock_level":5, "unlock_friends":4},
+        {"value":14, "price":"3500", "unlock_level":5, "unlock_friends":4},
+        {"value":15, "price":"45g", "unlock_level":8, "unlock_friends":5},
+        {"value":16, "price":"50g", "unlock_level":8, "unlock_friends":5},
+        {"value":17, "price":"5000", "unlock_level":9, "unlock_friends":6},
+        {"value":18, "price":"6000", "unlock_level":9, "unlock_friends":6},
+        {"value":19, "price":"80g", "unlock_level":11, "unlock_friends":7},
+        {"value":20, "price":"90g", "unlock_level":12, "unlock_friends":7},        
+        {"value":21, "price":"9000", "unlock_level":14, "unlock_friends":8},               
+        {"value":22, "price":"10000", "unlock_level":14, "unlock_friends":8},
+        {"value":23, "price":"120g", "unlock_level":15, "unlock_friends":9},
+        {"value":24, "price":"150g", "unlock_level":15, "unlock_friends":9},
+        {"value":25, "price":"25000", "unlock_level":16, "unlock_friends":10}
+    ],
+    "ExtendShopYUpgradesConfig":[
+        { "value":1,  "price":"1g", "unlock_level":0, "unlock_friends":0},
+        { "value":2,  "price":"1g", "unlock_level":0, "unlock_friends":0},
+        { "value":3,  "price":"300", "unlock_level":0, "unlock_friends":0},
+        { "value":4,  "price":"500", "unlock_level":1, "unlock_friends":0},
+        { "value":5,  "price":"3g", "unlock_level":1, "unlock_friends":0},
+        { "value":6,  "price":"4g", "unlock_level":1, "unlock_friends":0},
+        { "value":7,  "price":"800", "unlock_level":2, "unlock_friends":0},
+        { "value":8,  "price":"900", "unlock_level":2, "unlock_friends":0},
+        { "value":9,  "price":"15g", "unlock_level":2, "unlock_friends":2},
+        { "value":10, "price":"20g", "unlock_level":2, "unlock_friends":2},
+        { "value":11, "price":"2000", "unlock_level":4, "unlock_friends":3},
+        { "value":12, "price":"2500", "unlock_level":4, "unlock_friends":3},
+        { "value":13, "price":"35g", "unlock_level":6, "unlock_friends":4},
+        { "value":14, "price":"40g", "unlock_level":6, "unlock_friends":4},
+        { "value":15, "price":"4000", "unlock_level":7, "unlock_friends":5},
+        { "value":16, "price":"4500", "unlock_level":7, "unlock_friends":5},
+        { "value":17, "price":"60g", "unlock_level":10, "unlock_friends":5},
+        { "value":18, "price":"70g", "unlock_level":10, "unlock_friends":5},
+        { "value":19, "price":"7000", "unlock_level":13, "unlock_friends":6},
+        { "value":20, "price":"8000", "unlock_level":13, "unlock_friends":6},        
+        { "value":21, "price":"100g", "unlock_level":14, "unlock_friends":7},              
+        { "value":22, "price":"110g", "unlock_level":14, "unlock_friends":7},                   
+        { "value":23, "price":"15000", "unlock_level":16, "unlock_friends":8},
+        { "value":24, "price":"20000", "unlock_level":16, "unlock_friends":8},
+        { "value":25, "price":"200g", "unlock_level":18, "unlock_friends":9}
+    ],
+    "LevelsConfig":{
+        "lvl_2":30,
+        "lvl_3":100,
+        "lvl_4":250,
+        "lvl_5":500,
+        "lvl_6":1000,
+        "lvl_7":2500,
+        "lvl_8":7000,
+        "lvl_9":20000,
+        "lvl_10":50000,
+        "lvl_11":80000,
+        "lvl_12":150000,
+        "lvl_13":250000,
+        "lvl_14":400000,
+        "lvl_15":600000,
+        "lvl_16":850000,
+        "lvl_17":1000000,
+        "multiplier":1.3
+    },
+    "DailyBonusConfig":["100","200","1g","2g","3g"]
+}

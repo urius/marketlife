@@ -69,6 +69,9 @@ public class PopupsMediator : IMediator
             case PopupType.Billboard:
                 newMediator = new UIBillboardPopupMediator(_contentTransform);
                 break;
+            case PopupType.CashDesk:
+                newMediator = new UICashDeskPopupMediator(_contentTransform);
+                break;
         };
         newMediator.Mediate();
         _popupMediators.Push(newMediator);

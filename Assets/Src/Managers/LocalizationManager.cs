@@ -174,6 +174,8 @@ public class LocalizationKeys
     public static string PopupOfflineReportAddedUnwash = "popup_offline_report_added_unwash";
     public static string PopupOfflineReportX2Profit = "popup_offline_report_x2_profit";
     public static string PopupOfflineReportX2Exp = "popup_offline_report_x2_exp";
+    public static string PopupCashDeskTitle = "popup_cash_desk_title";
+    
 
     public static string PopupLevelUpTitle = "popup_levelup_title";
     public static string PopupLevelUpMessage = "popup_levelup_message";

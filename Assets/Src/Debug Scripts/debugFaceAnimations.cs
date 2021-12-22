@@ -45,9 +45,9 @@ public class debugFaceAnimations : MonoBehaviour
         await new LoadConfigsCommand().ExecuteAsync();
         await new LoadAssetsCommand().ExecuteAsync();
 
-        _hairNumMax = GraphicsManager.Instance.GetAllIncrementiveSprites(SpriteAtlasId.GameplayAtlas, HumanHeadView.HAIR_PREFIX).Length;
-        _glassesNumMax = GraphicsManager.Instance.GetAllIncrementiveSprites(SpriteAtlasId.GameplayAtlas, HumanHeadView.GLASSES_PREFIX).Length;
-        _topClothesNumMax = GraphicsManager.Instance.GetAllIncrementiveSprites(SpriteAtlasId.GameplayAtlas, HumanView.CLOTHES_PREFIX).Length;
+        _hairNumMax = GraphicsManager.Instance.GetAllIncrementiveSprites(SpriteAtlasId.GameplayAtlas, SpritesProvider.HUMAN_HAIR_PREFIX).Length;
+        _glassesNumMax = GraphicsManager.Instance.GetAllIncrementiveSprites(SpriteAtlasId.GameplayAtlas, SpritesProvider.HUMAN_GLASSES_PREFIX).Length;
+        _topClothesNumMax = GraphicsManager.Instance.GetAllIncrementiveSprites(SpriteAtlasId.GameplayAtlas, SpritesProvider.CLOTHES_PREFIX).Length;
         _bottomClothesNumMax = GraphicsManager.Instance.GetAllIncrementiveSprites(SpriteAtlasId.GameplayAtlas, HumanView.FOOT_CLOTHES_PREFIX).Length;
 
         _loadHumanButton.onClick.AddListener(OnLoadHumanClicked);

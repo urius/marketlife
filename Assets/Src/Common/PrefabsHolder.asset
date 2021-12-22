@@ -101,8 +101,6 @@ MonoBehaviour:
     type: 3}
   UIOfflineReportPopupOverallItemPrefab: {fileID: 2115822142520817706, guid: dd1f02389064e4018ae3d7f4675b8af5,
     type: 3}
-  UIOfflineReportPopupEarnedExpItemPrefab: {fileID: 2115822142520817706, guid: 4569737c07f5b4c01a53f8da9379a064,
-    type: 3}
   UILevelUpPopupPrefab: {fileID: 7937386955436489448, guid: 9f958f40f17ab482d8b6972b5d9d5982,
     type: 3}
   UILevelUpPopupCaptionItemPrefab: {fileID: 4175141950551408558, guid: 3277be06040b14015bd49ab3fb65cf1f,
@@ -120,4 +118,6 @@ MonoBehaviour:
   UIOldGameCompensationPopupPrefab: {fileID: 1762940899024778501, guid: c3c2ff8ce59484ccf98b8bc2ac3efe0b,
     type: 3}
   UIBillboardPopupPrefab: {fileID: 2802262165401310153, guid: 5fb6b23b84eb64180bf2f489276bc78c,
+    type: 3}
+  UICashDeskPopupPrefab: {fileID: 5173990274866861764, guid: e938b973d196544c19fe8e7d687e4e32,
     type: 3}

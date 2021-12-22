@@ -76,9 +76,27 @@ public class EventsHandleSystem
         _dispatcher.UIFriendShopBottomPanelUserViewCreated += OnUIFriendShopBottomPanelUserViewCreated;
         _dispatcher.UIDailyBonusDoubleClicked += OnUIDailyBonusDoubleClicked;
         _dispatcher.UIOfflineReportPopupViewAdsClicked += OnUIOfflineReportPopupViewAdsClicked;
+        _dispatcher.UIChangeCashDeskManHairClicked += OnUIChangeCashDeskManHairClicked;
+        _dispatcher.UIChangeCashDeskManGlassesClicked += OnUIChangeCashDeskManGlassesClicked;
+        _dispatcher.UIChangeCashDeskManDressClicked += OnUIChangeCashDeskManDressClicked;
 
         _gameStateModel.ActionStateChanged += OnActionStateChanged;
         _gameStateModel.GameStateChanged += OnGameStateChanged;
+    }
+
+    private void OnUIChangeCashDeskManHairClicked(int hairId)
+    {
+        new UIHandleCashDeskPopupChangeItemClickCommand().Execute(CashDeskCashManItemType.Hair, hairId);
+    }
+
+    private void OnUIChangeCashDeskManGlassesClicked(int glassesId)
+    {
+        new UIHandleCashDeskPopupChangeItemClickCommand().Execute(CashDeskCashManItemType.Glasses, glassesId);
+    }
+
+    private void OnUIChangeCashDeskManDressClicked(int dressId)
+    {
+        new UIHandleCashDeskPopupChangeItemClickCommand().Execute(CashDeskCashManItemType.Dress, dressId);
     }
 
     private void OnUIBankAdsItemClicked(bool isGold)

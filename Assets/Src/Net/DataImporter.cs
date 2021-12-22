@@ -430,7 +430,7 @@ public class DataImporter
         ShopObjectModelBase result = typeId switch
         {
             Constants.ShelfTypeStr => new ShopObjectModelFactory().CreateShelf(numericId, coords, side, ToProducts(objectParamsShort)),
-            Constants.CashDeskTypeStr => new ShopObjectModelFactory().CreateCashDesk(numericId, coords, side),
+            Constants.CashDeskTypeStr => new ShopObjectModelFactory().CreateCashDesk(numericId, coords, side, objectParamsShort),
             _ => throw new System.ArgumentOutOfRangeException(typeId, $"typeId {typeId} is not supported"),
         };
         return result;

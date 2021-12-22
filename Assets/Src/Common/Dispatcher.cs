@@ -74,6 +74,9 @@ public class Dispatcher
     public Action<string> UIBillboardPopupApplyTextClicked = delegate { };
     public Action<int> UIDailyBonusDoubleClicked = delegate { };
     public Action UIOfflineReportPopupViewAdsClicked = delegate { };
+    public Action<int> UIChangeCashDeskManHairClicked = delegate { };
+    public Action<int> UIChangeCashDeskManGlassesClicked = delegate { };
+    public Action<int> UIChangeCashDeskManDressClicked = delegate { };
 
     public Action<CustomerModel> CustomerAnimationEnded = delegate { };
 

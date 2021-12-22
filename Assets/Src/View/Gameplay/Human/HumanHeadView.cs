@@ -2,9 +2,6 @@ using UnityEngine;
 
 public class HumanHeadView : HumanHeadViewBase
 {
-    public const string HAIR_PREFIX = "Hair";
-    public const string GLASSES_PREFIX = "Glasses";
-
     [SerializeField] private Animator _headAnimator;
     [SerializeField] private SpriteRenderer _hatSprite;
     [SerializeField] private SpriteRenderer _hairSprite;
@@ -48,7 +45,7 @@ public class HumanHeadView : HumanHeadViewBase
 
     public override void SetHair(int hairId)
     {
-        _hairSprite.sprite = SpritesProvider.GetHumanSprite($"{HAIR_PREFIX}{hairId}");
+        _hairSprite.sprite = SpritesProvider.GetHumanHairSprite(hairId);
     }
 
     public void SetMouth(int mouthId)
@@ -64,7 +61,7 @@ public class HumanHeadView : HumanHeadViewBase
         }
         else
         {
-            _glassesSprite.sprite = SpritesProvider.GetHumanSprite($"{GLASSES_PREFIX}{glassId}");
+            _glassesSprite.sprite = SpritesProvider.GetHumanGlassesSprite(glassId);
         }
     }
 }

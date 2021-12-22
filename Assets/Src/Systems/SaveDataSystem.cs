@@ -68,6 +68,10 @@ public class SaveDataSystem
             {
                 SubscribeOnShelfModel(kvp.Value as ShelfModel);
             }
+            else if (kvp.Value.Type == ShopObjectType.CashDesk)
+            {
+                SubscribeOnCashDeskModel(kvp.Value as CashDeskModel);
+            }
         }
         _shopModel.ShopObjectsChanged += OnShopObjectsChanged;
         _shopModel.ShopObjectPlaced += OnShopObjectPlaced;
@@ -319,6 +323,10 @@ public class SaveDataSystem
         {
             UnsubscribeFromShelfModel(shopObjectModel as ShelfModel);
         }
+        else if (shopObjectModel.Type == ShopObjectType.CashDesk)
+        {
+            UnsubscribeFromCashDeskModel(shopObjectModel as CashDeskModel);
+        }
     }
 
     private void SubscribeOnShelfModel(ShelfModel shelfModel)
@@ -346,6 +354,21 @@ public class SaveDataSystem
     }
 
     private void OnShelfProductIsSetOnSlot(ShelfModel shelfModel, int slotIndex)
+    {
+        MarkToSaveField(SaveField.ShopObjects);
+    }
+
+    private void SubscribeOnCashDeskModel(CashDeskModel cashDeskModel)
+    {
+        cashDeskModel.DisplayItemChanged += OnCashDeskDisplayItemChanged;
+    }
+
+    private void UnsubscribeFromCashDeskModel(CashDeskModel cashDeskModel)
+    {
+        cashDeskModel.DisplayItemChanged -= OnCashDeskDisplayItemChanged;
+    }
+
+    private void OnCashDeskDisplayItemChanged()
     {
         MarkToSaveField(SaveField.ShopObjects);
     }

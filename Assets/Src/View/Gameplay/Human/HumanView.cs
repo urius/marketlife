@@ -3,7 +3,6 @@ using UnityEngine.Rendering;
 
 public class HumanView : MonoBehaviour
 {
-    public const string CLOTHES_PREFIX = "Clothes";
     public const string FOOT_CLOTHES_PREFIX = "FootClothes";
 
     [SerializeField] private SortingGroup _sortingGroup;
@@ -122,9 +121,9 @@ public class HumanView : MonoBehaviour
 
     public void SetBodyClothes(int id)
     {
-        _bodyFaceSideTorsoSprite.sprite = GetSprite($"{CLOTHES_PREFIX}{id}");
-        _bodyProfileSideTorsoSprite.sprite = GetSprite($"{CLOTHES_PREFIX}{id}_Profile");
-        var spriteName = $"HandClothes{id}";
+        _bodyFaceSideTorsoSprite.sprite = _spritesProvider.GetTopDressSprite(id);
+        _bodyProfileSideTorsoSprite.sprite = GetSprite($"{SpritesProvider.CLOTHES_PREFIX}{id}_Profile");
+        var spriteName = $"{SpritesProvider.HAND_CLOTHES_PREFIX}{id}";
         _bodyFaceSideHand1OuterSprite.sprite = GetSprite(spriteName);
         _bodyFaceSideHand2OuterSprite.sprite = GetSprite(spriteName);
         _bodyProfileSideHand1OuterSprite.sprite = GetSprite(spriteName);

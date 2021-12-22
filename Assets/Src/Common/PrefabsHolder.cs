@@ -40,7 +40,7 @@ public class PrefabsHolder : ScriptableObject
     //GUI
     public GameObject TutorialCellPointerPrefab;
 
-    //Interface
+    //UI
     public GameObject UIRaycastsBlocker;
     public GameObject UIBottomPanelScrollItemPrefab;
     public GameObject UIBottomPanelFriendScrollItemPrefab;
@@ -72,6 +72,7 @@ public class PrefabsHolder : ScriptableObject
     public GameObject UIDailyBonusPopupPrefab;
     public GameObject UIOldGameCompensationPopupPrefab;
     public GameObject UIBillboardPopupPrefab;
+    public GameObject UICashDeskPopupPrefab;
 
     //remote
     private Dictionary<string, GameObject> _remotePrefabs = new Dictionary<string, GameObject>();

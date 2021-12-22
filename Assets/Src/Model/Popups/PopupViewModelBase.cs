@@ -25,4 +25,5 @@ public enum PopupType
     Error,
     DailyBonus,
     Billboard,
+    CashDesk,
 }

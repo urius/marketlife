@@ -22,4 +22,9 @@ public class Constants
 
     public const string LevelsMultiplier = "multiplier";    
     public const int MaxCustomersCount = 15;
+    //public const int MaxCustomerHairId = 8;
+    //public const int MaxCustomerGlassesId = 4;
+    //public const int MaxCustomerTopDressId = 7;
+    //public const int MaxCustomerBottomDressId = 7;
+    
 }

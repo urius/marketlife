@@ -6,9 +6,9 @@ public struct ShopObjectModelFactory
     {
         var config = GameConfigManager.Instance.MainConfig.GetShelfConfigByNumericId(numericId);
         var result = new ShelfModel(numericId, config.ConfigDto, coords, side);
-        if(products != null)
+        if (products != null)
         {
-            for(var i = 0; i< products.Length; i++)
+            for (var i = 0; i < products.Length; i++)
             {
                 result.TrySetProductOn(i, products[i]);
             }
@@ -17,10 +17,24 @@ public struct ShopObjectModelFactory
         return result;
     }
 
-    public CashDeskModel CreateCashDesk(int numericId, Vector2Int coords, int side = 3)
+    public CashDeskModel CreateCashDesk(int numericId, Vector2Int coords, int side, string paramsShort = null)
     {
         var config = GameConfigManager.Instance.MainConfig.GetCashDeskConfigByNumericId(numericId);
-        var result = new CashDeskModel(numericId, config.ConfigDto, coords, side);
+        var hairId = 1;
+        var glassesId = 1;
+        var dressId = 1;
+        if (paramsShort != null)
+        {
+            var splitted = paramsShort.Split(',');
+            if (splitted.Length > 2)
+            {
+                int.TryParse(splitted[0], out hairId);
+                int.TryParse(splitted[1], out glassesId);
+                int.TryParse(splitted[2], out dressId);
+            }
+        }
+
+        var result = new CashDeskModel(numericId, config.ConfigDto, coords, side, hairId, glassesId, dressId);
         return result;
     }
 }

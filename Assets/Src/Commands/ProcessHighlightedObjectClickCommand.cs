@@ -20,6 +20,13 @@ public struct ProcessHighlightedObjectClickCommand
         {
             gameStateModel.ShowPopup(new ShelfContentPopupViewModel(highlightedShelf));
         }
+        else if (highlightState.HighlightedShopObject is CashDeskModel highlightedCashDesk)
+        {
+            if (gameStateModel.ViewingUserModel.Uid == PlayerModelHolder.Instance.Uid)
+            {
+                gameStateModel.ShowPopup(new CashDeskPopupViewModel(highlightedCashDesk));
+            }
+        }
         else if (highlightState.IsHighlightedUnwash)
         {
             ProcessHighlightedUnwash();

@@ -6,11 +6,40 @@ public class SpritesProvider
     public static SpritesProvider Instance => _instance.Value;
     private static Lazy<SpritesProvider> _instance = new Lazy<SpritesProvider>();
 
+    public const string HUMAN_HAIR_PREFIX = "Hair";
+    public const string HUMAN_GLASSES_PREFIX = "Glasses";
+    public const string CLOTHES_PREFIX = "Clothes";
+    public const string HAND_CLOTHES_PREFIX = "HandClothes";
+
     private GraphicsManager _graphicsManager;
+    private int _hairNumMax;
+    private int _glassesNumMax;
+    private int _topClothesNumMax;
+    private int _bottomClothesNumMax;
 
     public Sprite GetHumanSprite(string name)
     {
         return GetSprite(SpriteAtlasId.GameplayAtlas, name);
+    }
+
+    public Sprite GetHumanHairSprite(int hairId)
+    {
+        return GetHumanSprite($"{HUMAN_HAIR_PREFIX}{hairId}");
+    }
+
+    public Sprite GetHumanGlassesSprite(int glassId)
+    {
+        return GetHumanSprite($"{HUMAN_GLASSES_PREFIX}{glassId}");
+    }
+
+    public Sprite GetTopDressSprite(int dressId)
+    {
+        return GetHumanSprite($"{CLOTHES_PREFIX}{dressId}");
+    }
+
+    public Sprite GetHandDressSprite(int dressId)
+    {
+        return GetHumanSprite($"{HAND_CLOTHES_PREFIX}{dressId}");
     }
 
     public Sprite GetFloorSprite(int floorId)
@@ -208,6 +237,42 @@ public class SpritesProvider
     public Sprite GetMoonIcon()
     {
         return GetSprite(SpriteAtlasId.InterfaceAtlas, "Icon_Moon");
+    }
+
+    public int GetMaxHairId()
+    {
+        if (_hairNumMax <= 0)
+        {
+            _hairNumMax = GraphicsManager.Instance.GetAllIncrementiveSprites(SpriteAtlasId.GameplayAtlas, HUMAN_HAIR_PREFIX).Length;
+        }
+        return _hairNumMax;
+    }
+
+    public int GetMaxGlassesId()
+    {
+        if (_glassesNumMax <= 0)
+        {
+            _glassesNumMax = GraphicsManager.Instance.GetAllIncrementiveSprites(SpriteAtlasId.GameplayAtlas, HUMAN_GLASSES_PREFIX).Length;
+        }
+        return _glassesNumMax;
+    }
+
+    public int GetMaxTopDressId()
+    {
+        if (_topClothesNumMax <= 0)
+        {
+            _topClothesNumMax = GraphicsManager.Instance.GetAllIncrementiveSprites(SpriteAtlasId.GameplayAtlas, CLOTHES_PREFIX).Length;
+        }
+        return _topClothesNumMax;
+    }
+
+    public int GetMaxBottomDressId()
+    {
+        if (_bottomClothesNumMax <= 0)
+        {
+            _bottomClothesNumMax = GraphicsManager.Instance.GetAllIncrementiveSprites(SpriteAtlasId.GameplayAtlas, HumanView.FOOT_CLOTHES_PREFIX).Length;
+        }
+        return _bottomClothesNumMax;
     }
 
     private Sprite GetSprite(SpriteAtlasId gameplayAtlas, string name)

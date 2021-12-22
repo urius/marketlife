@@ -176,6 +176,7 @@ public class DataExporter
             case ShopObjectType.CashDesk:
                 var cashDeskModel = shopObjectModel as CashDeskModel;
                 objectIdStr = $"{Constants.CashDeskTypeStr}_{cashDeskModel.NumericId}";
+                objectParametersStr = $"{cashDeskModel.HairId},{cashDeskModel.GlassesId},{cashDeskModel.DressId}";
                 break;
             case ShopObjectType.Shelf:
                 var shelfModel = shopObjectModel as ShelfModel;

@@ -31,6 +31,7 @@ public class UIUpgradesPopupItemView : MonoBehaviour
 
     public void SetupState(bool isUnlocked, bool isCharged)
     {
+        _decsriptionText.gameObject.SetActive(isUnlocked);
         _unlockText.gameObject.SetActive(!isUnlocked);
         _buyButton.gameObject.SetActive(!isCharged && isUnlocked);
         _statusText.gameObject.SetActive(isCharged);

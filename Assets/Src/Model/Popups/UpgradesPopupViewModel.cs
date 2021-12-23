@@ -62,8 +62,8 @@ public class UpgradesPopupViewModel : PopupViewModelBase
 
         _tabs.Add(TabType.WarehouseUpgrades);
         ItemViewModelsByTabKey[TabType.WarehouseUpgrades] = new UpgradesPopupItemViewModelBase[]{
-            GetUpgradeViewModel(UpgradeType.WarehouseSlots, _shopModel.WarehouseModel.Size),
             GetUpgradeViewModel(UpgradeType.WarehouseVolume, _shopModel.WarehouseModel.Volume),
+            GetUpgradeViewModel(UpgradeType.WarehouseSlots, _shopModel.WarehouseModel.Size),
         };
 
         var personalConfigs = _personalConfig.GetPersonalConfigsForLevel(_playerModel.ProgressModel.Level);

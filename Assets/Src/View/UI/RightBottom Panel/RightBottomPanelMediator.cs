@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RightBottomPanelMediator : MonoBehaviour
 {
@@ -6,6 +7,7 @@ public class RightBottomPanelMediator : MonoBehaviour
     [SerializeField] private UIToggleSpriteButtonView _muteAudioButton;
     [SerializeField] private UIToggleSpriteButtonView _scaleInButton;
     [SerializeField] private UIToggleSpriteButtonView _scaleOutButton;
+    [SerializeField] private Image _bgImage;
 
     //
     private GameStateModel _gameStateModel;
@@ -24,6 +26,7 @@ public class RightBottomPanelMediator : MonoBehaviour
 
     private void SetButtonsVisibility(bool isVisible)
     {
+        _bgImage.enabled = isVisible;
         _muteMusicButton.gameObject.SetActive(isVisible);
         _muteAudioButton.gameObject.SetActive(isVisible);
         _scaleInButton.gameObject.SetActive(isVisible);

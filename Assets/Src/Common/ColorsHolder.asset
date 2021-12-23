@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58d2d2af4877e44cba4487b29e708e74, type: 3}
   m_Name: ColorsHolder
   m_EditorClassIdentifier: 
-  BottomPanelFriendsTabAddButtonColor: {r: 1, g: 1, b: 0.6, a: 1}
+  BottomPanelFriendsTabAddButtonColor: {r: 0.5254902, g: 0.7973905, b: 1, a: 1}
   BottomPanelFriendsInactiveFriendButtonColor: {r: 0.83137256, g: 0.83137256, b: 0.83137256,
     a: 1}
   ReportPopupItemRightTextProfitColor: {r: 0.54509807, g: 0.972549, b: 0.50980395,

@@ -69,8 +69,9 @@ public class HandleDebugKeyboardShortcutsSystem
     {
         if (_gameStateModel.GameState == GameStateName.PlayerShopSimulation)
         {
+            var timeToSkip = Input.GetKey(KeyCode.LeftShift) ? 3600 : 24 * 3600;
             var serverTimeBuf = _gameStateModel.ServerTime;
-            _gameStateModel.SetServerTime(_gameStateModel.ServerTime + 3600);
+            _gameStateModel.SetServerTime(_gameStateModel.ServerTime + timeToSkip);
             _gameStateModel.SetGameState(GameStateName.ReadyForStart);
             _gameStateModel.SetServerTime(serverTimeBuf);
         }

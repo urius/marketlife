@@ -87,8 +87,9 @@ public class UIBottomPanelWarehouseTabMediator : UIBottomPanelCommonScrollItemsT
 
     protected override IEnumerable<BottomPanelWarehouseItemViewModel> GetViewModelsToShow()
     {
-        return new BottomPanelWarehouseItemViewModel[] { new BottomPanelWarehouseItemViewModel() }
-        .Concat(_warehouseModel.Slots.Select(s => new BottomPanelWarehouseItemViewModel(s)));
+        return _warehouseModel.Slots
+                .Select(s => new BottomPanelWarehouseItemViewModel(s))
+                .Concat(new BottomPanelWarehouseItemViewModel[] { new BottomPanelWarehouseItemViewModel() });
     }
 
     protected override void HandleClick(BottomPanelWarehouseItemViewModel viewModel)

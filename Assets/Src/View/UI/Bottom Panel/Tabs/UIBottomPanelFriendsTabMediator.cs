@@ -85,10 +85,11 @@ public class UIBottomPanelFriendsTabMediator : UIBottomPanelScrollItemsTabMediat
 
     protected override IEnumerable<BottomPanelFriendTabItemViewModel> GetViewModelsToShow()
     {
-        return _friendsDataHolder.Friends
+        return new BottomPanelFriendTabItemViewModel[] { new BottomPanelFriendTabItemViewModel() }
+            .Concat(
+            _friendsDataHolder.Friends
             .Where(m => m.IsApp)
-            .Select(m => new BottomPanelFriendTabItemViewModel(m))
-            .Concat(new BottomPanelFriendTabItemViewModel[] { new BottomPanelFriendTabItemViewModel() });
+            .Select(m => new BottomPanelFriendTabItemViewModel(m)));
     }
 
     protected override UIBottomPanelFriendItemView GetOrCreateItem()
@@ -117,10 +118,10 @@ public class UIBottomPanelFriendsTabMediator : UIBottomPanelScrollItemsTabMediat
 
     protected override void SetupItem(UIBottomPanelFriendItemView itemView, BottomPanelFriendTabItemViewModel viewModel)
     {
+        itemView.SetTextDefaultColor();
         if (viewModel.HasFriendData)
         {
             var friendData = viewModel.FriendData;
-            itemView.SetTextDefaultColor();
             itemView.SetTopText(friendData.FirstName);
             itemView.SetBgImageDefaultColor();
             itemView.SetBottomButtonEnabled(false);
@@ -154,7 +155,6 @@ public class UIBottomPanelFriendsTabMediator : UIBottomPanelScrollItemsTabMediat
         }
         else
         {
-            itemView.SetTextAltColor();
             itemView.SetBgImageColor(_colorsHolder.BottomPanelFriendsTabAddButtonColor);
             itemView.SetTopText(_loc.GetLocalization(LocalizationKeys.CommonInvite));
             itemView.SetBottomButtonEnabled(false);

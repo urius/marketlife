@@ -16,7 +16,7 @@ public class UITopPanelBarView : MonoBehaviour
     [SerializeField]
     private string _format = "{0:n0}";
 
-    public const float ChangeAmountDuration = 1.2f;
+    public const float ChangeAmountDuration = 0.8f;
 
     private const float AnimationInDurationSec = 0.4f;
     private const float AnimationOutDurationSec = 0.6f;

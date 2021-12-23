@@ -61,6 +61,14 @@ public class HandleDebugKeyboardShortcutsSystem
             if (whSlot.HasProduct)
             {
                 whSlot.Product.DeliverTime = 0;
+
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    var gameStateModel = GameStateModel.Instance;
+                    gameStateModel.SetPlacingProductOnPlayersShop(whSlot.Index);
+                    new AutoPlaceCommand().Execute();
+                    gameStateModel.ResetActionState();
+                }
             }
         }
     }
@@ -72,6 +80,13 @@ public class HandleDebugKeyboardShortcutsSystem
             var timeToSkip = Input.GetKey(KeyCode.LeftShift) ? 3600 : 24 * 3600;
             var serverTimeBuf = _gameStateModel.ServerTime;
             _gameStateModel.SetServerTime(_gameStateModel.ServerTime + timeToSkip);
+
+            var advertModel = AdvertViewStateModel.Instance;
+            advertModel.PrepareTarget(AdvertTargetType.OfflineProfitX2);
+            advertModel.MarkCurrentAsWatched();
+            advertModel.PrepareTarget(AdvertTargetType.OfflineExpX2);
+            advertModel.MarkCurrentAsWatched();
+
             _gameStateModel.SetGameState(GameStateName.ReadyForStart);
             _gameStateModel.SetServerTime(serverTimeBuf);
         }

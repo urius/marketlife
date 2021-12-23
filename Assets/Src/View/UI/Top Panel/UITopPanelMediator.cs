@@ -327,10 +327,12 @@ public class UITopPanelMediator : MonoBehaviour
 
         if (isGold)
         {
+            _crystalsBarView.Amount = _playerProgressModel.Gold;
             await _crystalsBarView.BlinkAmountAsync();
         }
         else
         {
+            _cashBarView.Amount = _playerProgressModel.Cash;
             await _cashBarView.BlinkAmountAsync();
         }
     }

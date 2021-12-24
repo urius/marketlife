@@ -8,8 +8,8 @@ public class URLsHolder : ScriptableObject
 
     [SerializeField] private string _getTimeURL = "https://devman.ru/marketVK/unity/DataProvider.php?command=get_time";
     public string GetTimeURL => _getTimeURL;
-    [SerializeField] private string _mainConfigUrl = "https://devman.ru/marketVK/unity/GameConfigs/MainConfig.json";
-    public string MainConfigUrl => _mainConfigUrl;
+    [SerializeField] private string _mainConfigUrlFormat = "https://devman.ru/marketVK/unity/GameConfigs/MainConfig{0}.json";
+    public string MainConfigUrlFormat => _mainConfigUrlFormat;
     [SerializeField] private string _debugMainConfigUrl = "https://devman.ru/marketVK/unity/GameConfigs/MainConfig_Debug.json";
     public string DebugMainConfigUrl => _debugMainConfigUrl;
     //https://devman.ru/marketVK/dataProvider.php?command=get_data&id={0}

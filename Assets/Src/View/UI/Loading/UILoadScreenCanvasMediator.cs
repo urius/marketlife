@@ -100,10 +100,11 @@ public class UILoadScreenCanvasMediator : MonoBehaviour
         string key = phase switch
         {
             LoadGamePhase.LoadTime => "load_time",
+            LoadGamePhase.LoadShopData => "load_data",
             LoadGamePhase.LoadLocalization => "load_localization",
             LoadGamePhase.LoadConfigs => "load_configs",
             LoadGamePhase.LoadAssets => "load_assets",
-            LoadGamePhase.LoadShopData => "load_data",      
+            LoadGamePhase.CreatePlayerModel => "create_player",
             LoadGamePhase.LoadCompensationData => "load_additional_data",
             _ => "loading",
         };

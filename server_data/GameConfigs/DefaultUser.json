@@ -1,39 +1,33 @@
-{"cash":10000,"level":1,"exp":0,"gold":20,"last_visit_time":0,
-"activity":{},
-    "design":{
-        "size_x":"5",
-        "size_y":"6",
-        "windows":{
-            "x0":"wnd_1"
-        },        
-        "floors":{
-            "std":"Floor1"
-        },
-        "walls":{
-            "std":"Wall1"
-        },        
-        "doors":{
-            "x3":"d_1"
-        }
+{   
+    "progress": {
+       "cash": 5000,
+       "gold": 20,
+       "level": 1
     },
-    "objects":{
-        "x2y2":"cd_1|225|null",
-        "x0y1":"s_3|135|p19x8",
-        "x0y2":"s_3|135|null",
-        "x0y3":"s_3|135|null",
-        "x0y4":"s_3|135|null",
-        "x2y5":"s_3|45|null",
-        "x3y5":"s_3|45|null"
-    },  
+    "design":{
+        "size_x":5,
+        "size_y":6,
+        "windows":["x0|1"],
+        "floors":["std|1"],
+        "walls":["std|1"],
+        "doors":["x3|1"]
+    },
+    "objects":[
+        "x2y2|cd_1|2|null",
+        "x0y1|s_3|2|p24x20",
+        "x0y2|s_3|2|null",
+        "x0y3|s_3|2|null",
+        "x0y4|s_3|2|null",
+        "x2y5|s_3|1|null",
+        "x3y5|s_3|1|null"
+    ],  
     "warehouse":{
         "size":4,
-        "items":"p24x9|p24x9",
-        "volume":1500
+        "volume":2000,
+        "slots":["p24x20"]
     },
-    "config":{
-        "tutorial":"",
-        "mute_music":0,
-        "mute_all":0
+    "ab":{
+        "config_postfix":""
     }
 }   
         

@@ -4,15 +4,24 @@ public struct LoadFriendShopCommand
 {
     public async UniTask<bool> ExecuteAsync(FriendData friendData)
     {
-        if (friendData != null && friendData.IsUserModelLoaded == false)
+        var result = false;
+        if (friendData != null)
         {
-            var loadedFriendModel = await new LoadUserModelCommand().ExecuteAsync(friendData.Uid);
-            if (loadedFriendModel != null)
+            result = friendData.IsUserModelLoaded;
+            if (friendData.IsUserModelLoaded == false)
             {
-                friendData.SetUserModel(loadedFriendModel);
-                return true;
+                var userDataStr = await new LoadUserDataCommand().ExecuteAsync(friendData.Uid);
+                if (userDataStr != null)
+                {
+                    var loadedFriendModel = new CreateUserModelCommand().Execute(userDataStr);
+                    if (loadedFriendModel != null)
+                    {
+                        friendData.SetUserModel(loadedFriendModel);
+                        result = true;
+                    }
+                }
             }
         }
-        return true;
+        return result;
     }
 }

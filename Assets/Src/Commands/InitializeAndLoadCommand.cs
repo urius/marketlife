@@ -12,10 +12,11 @@ public struct InitializeAndLoadCommand
         var phasesData = new (LoadGamePhase Phase, IAsyncGameLoadCommand Command)[]
         {
             (LoadGamePhase.LoadTime, new LoadServerTimeCommand()),
+            (LoadGamePhase.LoadShopData, new LoadPlayerDataCommand()), //process AB here ?
             (LoadGamePhase.LoadLocalization, new LoadLocalizationCommand()),
             (LoadGamePhase.LoadConfigs, new LoadConfigsCommand()),
             (LoadGamePhase.LoadAssets, new LoadAssetsCommand()),
-            (LoadGamePhase.LoadShopData, new LoadPlayerShopCommand()),
+            (LoadGamePhase.CreatePlayerModel, new CreatePlayerModelCommand()),
             (LoadGamePhase.LoadCompensationData, new LoadCompensationDataCommand()),
         };
         loadGameProgressModel.SetupPartsCount(phasesData.Length);

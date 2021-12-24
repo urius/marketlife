@@ -46,6 +46,21 @@ public struct BoolSuccessResponseDto
     public bool success;
 }
 
+public struct GetDataResponseABDto
+{
+    public UserDataABDto data;
+}
+
+public struct UserDataABDto
+{
+    public ABDto ab;
+}
+
+public struct ABDto
+{
+    public string config_postfix;
+}
+
 public struct GetDataResponseDto
 {
     public string uid;

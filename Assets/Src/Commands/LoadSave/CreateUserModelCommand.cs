@@ -1,22 +1,19 @@
-using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
 
-public struct LoadUserModelCommand
+public struct CreateUserModelCommand
 {
-    public async UniTask<UserModel> ExecuteAsync(string uid)
+    public UserModel Execute(string userDataStr)
     {
         UserModel result = null;
-        var url = string.Format(URLsHolder.Instance.GetDataURL, uid);
-        var resultOperation = await new WebRequestsSender().GetAsync(url);
-        if (resultOperation.IsSuccess)
+        if (userDataStr != null)
         {
             var dataImporter = DataImporter.Instance;
-            var responseDto = JsonConvert.DeserializeObject<CommonResponseDto>(resultOperation.Result);
+            var responseDto = JsonConvert.DeserializeObject<CommonResponseDto>(userDataStr);
             switch (responseDto.v)
             {
                 case 0:
-                    var deserializedDataOld = JsonConvert.DeserializeObject<GetDataOldResponseDto>(resultOperation.Result);
+                    var deserializedDataOld = JsonConvert.DeserializeObject<GetDataOldResponseDto>(userDataStr);
                     result = dataImporter.ImportOld(deserializedDataOld);
                     break;
                 case 1:
@@ -27,7 +24,7 @@ public struct LoadUserModelCommand
                     }
                     else
                     {
-                        Debug.Log($"{nameof(LoadUserModelCommand)}: invalid data hash");
+                        Debug.Log($"{nameof(CreateUserModelCommand)}: invalid data hash");
                     }
                     break;
             }

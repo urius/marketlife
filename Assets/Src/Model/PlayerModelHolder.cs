@@ -13,7 +13,7 @@ public class PlayerModelHolder
     public string Uid { get; private set; }
     public SocialType SocialType { get; private set; }
     public bool IsBuyInBankAllowed { get; private set; }
-
+    public string UserDataStr { get; private set; }
     public UserModel UserModel { get; private set; }
     public ShopModel ShopModel => UserModel.ShopModel;
     public UniTask SetUidTask => _setUidTcs.Task;
@@ -38,6 +38,11 @@ public class PlayerModelHolder
     {
         UserModel = userModel;
         UserModelIsSet();
+    }
+
+    public void SetUserDataRaw(string userDataStr)
+    {
+        UserDataStr = userDataStr;
     }
 }
 

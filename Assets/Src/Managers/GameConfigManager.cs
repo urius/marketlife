@@ -19,10 +19,10 @@ public class GameConfigManager
     public IDailyBonusConfig DailyBonusConfig => MainConfig;
     public IFriendActionsConfig FriendActionsConfig => MainConfig;
 
-    public async UniTask<bool> LoadConfigAsync()
+    public async UniTask<bool> LoadMainConfigAsync(string mainConfigABPostfix)
     {
         var urlsHolder = URLsHolder.Instance;
-        var url = urlsHolder.MainConfigUrl;
+        var url = string.Format(urlsHolder.MainConfigUrlFormat, mainConfigABPostfix);
 #if UNITY_EDITOR
         if (DebugDataHolder.Instance.UseTestConfigFile == true) url = urlsHolder.DebugMainConfigUrl;
 #endif

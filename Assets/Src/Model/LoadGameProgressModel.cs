@@ -55,9 +55,10 @@ public enum LoadGamePhase
 {
     Undefined,
     LoadTime,
+    LoadShopData,
     LoadLocalization,
     LoadConfigs,
     LoadAssets,
-    LoadShopData,
+    CreatePlayerModel,
     LoadCompensationData,
 }

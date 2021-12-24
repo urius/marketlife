@@ -293,25 +293,24 @@ public class HumansControlSystem
                 }
                 else
                 {
-                    var anotherCustomer = _viewingSessionDataModel.GetCustomerAt(coords);
-                    if (anotherCustomer.TargetCell == customer.TargetCell)
+                    var customersOnCoords = _viewingSessionDataModel.GetCustomersAt(coords);
+                    var haveCustomersWithSameTargetCoords = false;
+                    foreach (var nearCustomer in customersOnCoords)
                     {
-                        customer.Side = SideHelper.VectorToSide(coords - customer.Coords);
+                        if (nearCustomer.Path.Length > 0
+                            && nearCustomer.Path[nearCustomer.Path.Length - 1] == lastPathCoords)
+                        {
+                            haveCustomersWithSameTargetCoords = true;
+                            break;
+                        }
+                    }
+                    if (haveCustomersWithSameTargetCoords)
+                    {
                         customer.ToIdleState();
                     }
                     else
                     {
-                        var nearWalkableCells = _cellsConsiderHumansProvider.GetWalkableNearCells(customer.Coords).ToArray();
-                        if (nearWalkableCells.Length > 0)
-                        {
-                            var rndCell = nearWalkableCells[Random.Range(0, nearWalkableCells.Length)];
-                            customer.InsertNextStep(rndCell);
-                            customer.MakeStep();
-                        }
-                        else
-                        {
-                            customer.ToIdleState();
-                        }
+                        customer.MakeStep();
                     }
                 }
             }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class UserSessionDataModel
@@ -12,7 +13,7 @@ public class UserSessionDataModel
     public int SpawnCooldown = 0;
 
     private readonly List<CustomerModel> _customers = new List<CustomerModel>(Constants.MaxCustomersCount);
-    private readonly Dictionary<Vector2Int, CustomerModel> _customersByCoords = new Dictionary<Vector2Int, CustomerModel>(Constants.MaxCustomersCount);
+    private readonly Dictionary<Vector2Int, LinkedList<CustomerModel>> _customersByCoords = new Dictionary<Vector2Int, LinkedList<CustomerModel>>(Constants.MaxCustomersCount);
 
     public UserSessionDataModel()
     {
@@ -22,12 +23,12 @@ public class UserSessionDataModel
 
     public bool AddCustomer(CustomerModel model)
     {
-        if (_customersByCoords.ContainsKey(model.Coords))
+        if (HaveCustomerAt(model.Coords))
         {
             return false;
         }
         _customers.Add(model);
-        _customersByCoords[model.Coords] = model;
+        AddCustomerOnCoords(model, model.Coords);
         SubscribeForCustomer(model);
         CustomerAdded(model);
 
@@ -38,7 +39,7 @@ public class UserSessionDataModel
     {
         if (_customers.Remove(model))
         {
-            _customersByCoords.Remove(model.Coords);
+            RemoveCustomerFromCoords(model, model.Coords);
             UnsubscribeFromCustomer(model);
             CustomerRemoved(model);
             return true;
@@ -49,13 +50,39 @@ public class UserSessionDataModel
 
     public bool HaveCustomerAt(Vector2Int coords)
     {
-        return _customersByCoords.ContainsKey(coords);
+        if (_customersByCoords.TryGetValue(coords, out var result))
+        {
+            return result.Any();
+        }
+        return false;
     }
 
-    public CustomerModel GetCustomerAt(Vector2Int coords)
+    public IEnumerable<CustomerModel> GetCustomersAt(Vector2Int coords)
     {
-        _customersByCoords.TryGetValue(coords, out var result);
-        return result;
+        if (_customersByCoords.TryGetValue(coords, out var result))
+        {
+            return result;
+        }
+        return Enumerable.Empty<CustomerModel>();
+    }
+
+    private void AddCustomerOnCoords(CustomerModel model, Vector2Int coords)
+    {
+        if (_customersByCoords.ContainsKey(coords) == false)
+        {
+            _customersByCoords[coords] = new LinkedList<CustomerModel>();
+        }
+
+        _customersByCoords[coords].AddLast(model);
+    }
+
+    private bool RemoveCustomerFromCoords(CustomerModel model, Vector2Int coords)
+    {
+        if (_customersByCoords.ContainsKey(coords))
+        {
+            return _customersByCoords[coords].Remove(model);
+        }
+        return false;
     }
 
     private void SubscribeForCustomer(CustomerModel model)
@@ -68,9 +95,10 @@ public class UserSessionDataModel
         model.CoordsChanged -= OnCustomerCoordsChanged;
     }
 
-    private void OnCustomerCoordsChanged(PositionableObjectModelBase customerModel, Vector2Int previousCoords, Vector2Int currentCoords)
+    private void OnCustomerCoordsChanged(PositionableObjectModelBase model, Vector2Int previousCoords, Vector2Int currentCoords)
     {
-        _customersByCoords.Remove(previousCoords);
-        _customersByCoords[customerModel.Coords] = customerModel as CustomerModel;
+        var customerModel = model as CustomerModel;
+        RemoveCustomerFromCoords(customerModel, previousCoords);
+        AddCustomerOnCoords(customerModel, customerModel.Coords);
     }
 }

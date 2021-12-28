@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 4260766862
+CRC: 1965369460
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 4ae01830c7730df5089d87cd6e8f557a
+    Hash: f49e3bb68c976266f5bbe77742f7d25b
   TypeTreeHash:
     serializedVersion: 2
     Hash: ba23c2e8f8b3f5319028008a25497317
@@ -125,6 +125,7 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/Common/icon_mood.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/button_3_long_crimson.png
 - Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Sugar_1.png
+- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Watermelon.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/Icon_Dlassification.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/sign_windows.png
 - Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/bottom_panel_bg_interior_mode_backup.png

@@ -4603,8 +4603,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2305d6f2e27f140248f718ab79b80e4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _debugUid: test_10
-  _disableSave: 0
+  _debugUid: 48982
+  _disableSave: 1
   _disableTutorial: 1
   _loadDebugConfigVersion: 0
   _assetBundlesLoader: {fileID: 11400000, guid: fbf27b609d1b04c23bbb3665f6bf7a19,
@@ -10486,7 +10486,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: -400}
+  m_AnchoredPosition: {x: 0, y: -400.00003}
   m_SizeDelta: {x: 200, y: -400}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2133180558

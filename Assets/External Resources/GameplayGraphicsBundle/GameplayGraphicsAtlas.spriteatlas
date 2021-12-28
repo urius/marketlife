@@ -44,7 +44,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 5804ef6ef86794aa6ac1d44028fafb7e, type: 3}
-    totalSpriteSurfaceArea: 922374
+    totalSpriteSurfaceArea: 938118
     bindAsDefault: 0
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -64,6 +64,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: c8842bc102e824b428eae527df571dcc, type: 3}
   - {fileID: 21300000, guid: dac1d4d174d5f453a8317442a4fa59ed, type: 3}
   - {fileID: 21300000, guid: c8d84dd1a5d944c96bfe5f548faf5c7f, type: 3}
+  - {fileID: 21300000, guid: 5e6dd302e83b3475485889b42732fa2b, type: 3}
   - {fileID: 21300000, guid: 54673c12e22804941a1b14357d5132fb, type: 3}
   - {fileID: 21300000, guid: dac89d1233e884e5ca6c2eb5021a3bd4, type: 3}
   - {fileID: 21300000, guid: e8cb05227720f4a0684e1be061e56386, type: 3}
@@ -227,6 +228,7 @@ SpriteAtlas:
   - Hair4_Profile
   - Hair8_Profile
   - HandClothes1
+  - Watermelon
   - Brow2Base
   - Pizza_1
   - Clothes6

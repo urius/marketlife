@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 667079245
+CRC: 3058434104
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 973b02feb015e979e02847803e6db35e
+    Hash: 5f0cec8428913fef5ef22dc94256e59d
   TypeTreeHash:
     serializedVersion: 2
     Hash: 3dbb92f992534c06c4e322444b68580f
@@ -123,6 +123,7 @@ Assets:
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Mouth7.png
 - Assets/External Resources/GameplayGraphicsBundle/Products/Juice_2.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Mouth2.png
+- Assets/External Resources/GameplayGraphicsBundle/Products/Watermelon.png
 - Assets/External Resources/GameplayGraphicsBundle/Shop/Common/WhiteCircle.png
 - Assets/External Resources/GameplayGraphicsBundle/Objects/Shelf_5/Shelf_5_back.png
 - Assets/External Resources/GameplayGraphicsBundle/Products/Fanta.png

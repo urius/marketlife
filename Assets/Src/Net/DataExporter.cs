@@ -19,6 +19,28 @@ public class DataExporter
         };
     }
 
+    public string[] ExportDailyMissions(DailyMissionsModel dailyMissionsModel)
+    {
+        var result = new string[dailyMissionsModel.MissionsList.Count];
+        var i = 0;
+        foreach (var mission in dailyMissionsModel.MissionsList)
+        {
+            var isRewardTakenInt = mission.IsRewardTaken ? 1 : 0;
+            var localResultStr = $"{mission.Key},{mission.Value},{mission.TargetValue},{mission.Reward.SerializeToString()},{isRewardTakenInt}";
+            switch (mission.Key)
+            {
+                case MissionKeys.SellProduct:
+                    var sellProductMission = mission as DailyMissionSellProductModel;
+                    var productStr = ExportProduct(sellProductMission.ProductConfig, mission.TargetValue);
+                    localResultStr = $"{localResultStr},{productStr}";
+                    break;
+            }
+            result[i] = localResultStr;
+            i++;
+        }
+        return result;
+    }
+
     public UserBillboardStateDto ExportBillboardState(ShopBillboardModel billboardModel)
     {
         return new UserBillboardStateDto()

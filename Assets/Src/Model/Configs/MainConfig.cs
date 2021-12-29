@@ -13,7 +13,8 @@ public class MainConfig :
     IUpgradesConfig,
     ILevelsConfig,
     IDailyBonusConfig,
-    IFriendActionsConfig
+    IFriendActionsConfig,
+    IMissionsConfig
 {
     public readonly int GameplayAtlasVersion;
     public readonly int InterfaceAtlasVersion;
@@ -41,8 +42,10 @@ public class MainConfig :
     public readonly UpgradeConfig[] ExtendShopXUpgradesConfig;
     public readonly UpgradeConfig[] ExtendShopYUpgradesConfig;
     public readonly DailyBonusConfig[] DailyBonusConfig;
-
+    public readonly MissionConfig[] MissionsConfig;
+    //
     private readonly float[] _levelsConfig;
+    private readonly MainConfigDto dto;
     private readonly FriendActionConfig[] _friendActionConfigs;
 
     public MainConfig(
@@ -61,7 +64,8 @@ public class MainConfig :
         UpgradeConfig[] extendShopXUpgradesConfig,
         UpgradeConfig[] extendShopYUpgradesConfig,
         float[] levelsConfig,
-        DailyBonusConfig[] dailyBonusConfig)
+        DailyBonusConfig[] dailyBonusConfig,
+        MissionConfig[] missionsConfig)
     {
         GameplayAtlasVersion = dto.GameplayAtlasVersion;
         InterfaceAtlasVersion = dto.InterfaceAtlasVersion;
@@ -85,8 +89,10 @@ public class MainConfig :
         ExtendShopXUpgradesConfig = extendShopXUpgradesConfig;
         ExtendShopYUpgradesConfig = extendShopYUpgradesConfig;
         DailyBonusConfig = dailyBonusConfig;
-
+        MissionsConfig = missionsConfig;
+        //
         _levelsConfig = levelsConfig;
+        this.dto = dto;
         _friendActionConfigs = friendActionConfigs;
     }
 
@@ -362,6 +368,16 @@ public class MainConfig :
         }
         return false;
     }
+
+    public IEnumerable<MissionConfig> GetMissionsForLevel(int level)
+    {
+        return MissionsConfig.Where(c => c.UnlockLevel <= level);
+    }
+
+    public MissionConfig GetMissionConfig(string key)
+    {
+        return MissionsConfig.FirstOrDefault(c => c.Key == key);
+    }
 }
 
 public class ItemConfig<TConfigDto> : IUnlockableConfig
@@ -379,6 +395,36 @@ public class ItemConfig<TConfigDto> : IUnlockableConfig
     }
 
     public int UnlockLevel => ConfigDto.unlock_level;
+}
+
+public class MissionConfig
+{
+    public readonly string Key;
+    public readonly int UnlockLevel;
+    public readonly int Frequency;
+    public readonly MissionRewardConfig[] RewardConfigs;
+
+    public MissionConfig(string key, int unlockLevel, int frequency, MissionRewardConfig[] rewardConfigs)
+    {
+        Key = key;
+        UnlockLevel = unlockLevel;
+        Frequency = frequency;
+        RewardConfigs = rewardConfigs;
+    }
+}
+
+public class MissionRewardConfig
+{
+    public readonly Reward MinReward;
+    public readonly Reward MaxReward;
+    public readonly int RewardLevelMultiplier;
+
+    public MissionRewardConfig(Reward minReward, Reward maxReward, int rewardLevelMultiplier)
+    {
+        MinReward = minReward;
+        MaxReward = maxReward;
+        RewardLevelMultiplier = rewardLevelMultiplier;
+    }
 }
 
 public class FriendActionConfig
@@ -673,4 +719,10 @@ public interface IFriendActionsConfig
     int GetDefaultActionCooldownMinutes(FriendShopActionId actionId);
     int GetActionResetCooldownPriceGold(FriendShopActionId actionId);
     bool IsEnabled(FriendShopActionId actionId);
+}
+
+public interface IMissionsConfig
+{
+    IEnumerable<MissionConfig> GetMissionsForLevel(int level);
+    MissionConfig GetMissionConfig(string key);
 }

@@ -25,7 +25,8 @@ public class DataImporter
             new ShopBillboardModel());
 
         return new UserModel(dto.data.uid, shopProgress, shopModel, new UserStatsData(), new UserBonusState(), null,
-            new AllFriendsShopsActionsModel(Enumerable.Empty<FriendShopActionsModel>()), new UserSettingsModel(false, false), new ExternalActionsModel());
+            new AllFriendsShopsActionsModel(Enumerable.Empty<FriendShopActionsModel>()), new UserSettingsModel(false, false),
+            new ExternalActionsModel(), new DailyMissionsModel());
     }
 
     public UserModel Import(GetDataResponseDto deserializedData)
@@ -38,7 +39,55 @@ public class DataImporter
         var bonusState = ToBonusState(dataDto.bonus);
         var settingsModel = ToSettingsModel(dataDto.settings);
         var externalActionsModel = ToExternalActionsModel(deserializedData.external_data);
-        return new UserModel(deserializedData.uid, shopProgress, shopModel, statsData, bonusState, dataDto.tutorial_steps, actionsDataModel, settingsModel, externalActionsModel);
+        var dailyMissionsModel = ToDailyMissionsModel(dataDto.missions);
+
+        return new UserModel(deserializedData.uid, shopProgress, shopModel, statsData, bonusState, dataDto.tutorial_steps, actionsDataModel, settingsModel, externalActionsModel, dailyMissionsModel);
+    }
+
+    private DailyMissionsModel ToDailyMissionsModel(string[] missionsStr)
+    {
+        var result = new DailyMissionsModel();
+
+        if (missionsStr != null)
+        {
+            foreach (var missionStr in missionsStr)
+            {
+                var missionModel = CreateMissionModel(missionStr);
+                var splitted = missionStr.Split(',');
+                var key = splitted[0];
+                var value = int.Parse(splitted[1]);
+                var targetValue = int.Parse(splitted[2]);
+                var reward = Reward.FromString(splitted[3]);
+                var isTakenInt = int.Parse(splitted[4]);
+                result.AddMission(new DailyMissionModel(key, value, targetValue, reward, isTakenInt != 0));
+            }
+        }
+
+        return result;
+    }
+
+    private DailyMissionModel CreateMissionModel(string missionStr)
+    {
+        DailyMissionModel result;
+        var splitted = missionStr.Split(',');
+        var key = splitted[0];
+        var value = int.Parse(splitted[1]);
+        var targetValue = int.Parse(splitted[2]);
+        var reward = Reward.FromString(splitted[3]);
+        var isTaken = int.Parse(splitted[4]) != 0;
+
+        switch (key)
+        {
+            case MissionKeys.SellProduct:
+                var product = ToProductModel(splitted[5]);
+                result = new DailyMissionSellProductModel(key, value, targetValue, reward, isTaken, product.Config);
+                break;
+            default:
+                result = new DailyMissionModel(key, value, targetValue, reward, isTaken);
+                break;
+        }
+
+        return result;
     }
 
     private UserSettingsModel ToSettingsModel(UserGameSettingsDto settings)

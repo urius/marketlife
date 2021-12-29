@@ -18,6 +18,7 @@ public class UserModel
     public readonly List<int> TutorialSteps;
     public readonly UserSettingsModel UserSettingsModel;
     public readonly ExternalActionsModel ExternalActionsModel;
+    public readonly DailyMissionsModel DailyMissionsModel;
     public readonly int RandomSeed;
 
     public UserModel(
@@ -29,7 +30,8 @@ public class UserModel
         int[] tutorialSteps,
         AllFriendsShopsActionsModel friendsActionsDataModel,
         UserSettingsModel userSettingsModel,
-        ExternalActionsModel externalActionsModel)
+        ExternalActionsModel externalActionsModel,
+        DailyMissionsModel dailyMissionsModel)
     {
         Uid = uid;
         ProgressModel = progressModel;
@@ -42,6 +44,7 @@ public class UserModel
         TutorialSteps = new List<int>(tutorialSteps ?? Enumerable.Empty<int>());
         UserSettingsModel = userSettingsModel;
         ExternalActionsModel = externalActionsModel;
+        DailyMissionsModel = dailyMissionsModel;
 
         if (int.TryParse(uid, out var uidInt))
         {

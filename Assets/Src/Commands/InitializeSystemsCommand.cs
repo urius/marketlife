@@ -9,5 +9,6 @@ public struct InitializeSystemsCommand
         new TutorialSystem().Start();
         new MusicControlSystem().Start();
         new NotificationsSystem().Start();
+        new MissionsSystem().Start();
     }
 }

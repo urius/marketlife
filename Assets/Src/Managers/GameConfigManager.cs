@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 
@@ -18,6 +19,7 @@ public class GameConfigManager
     public ILevelsConfig LevelsConfig => MainConfig;
     public IDailyBonusConfig DailyBonusConfig => MainConfig;
     public IFriendActionsConfig FriendActionsConfig => MainConfig;
+    public IMissionsConfig DailyMissionsConfig => MainConfig;
 
     public async UniTask<bool> LoadMainConfigAsync(string mainConfigABPostfix)
     {
@@ -49,6 +51,7 @@ public class GameConfigManager
         var levelsConfig = ToLevelsConfig(mainConfigDto.LevelsConfig);
         var dailyBonusConfig = ToDailyBonusConfig(mainConfigDto.DailyBonusConfig);
         var friendActionsConfig = ToFriendActionsConfig(mainConfigDto.FriendActionsConfig);
+        var missionsConfig = ToMissionsConfig(mainConfigDto.MissionsConfig);
 
         return new MainConfig(
             mainConfigDto,
@@ -66,7 +69,49 @@ public class GameConfigManager
             ToUpgradeConfigs(UpgradeType.ExpandX, mainConfigDto.ExtendShopXUpgradesConfig),
             ToUpgradeConfigs(UpgradeType.ExpandY, mainConfigDto.ExtendShopYUpgradesConfig),
             levelsConfig,
-            dailyBonusConfig);
+            dailyBonusConfig,
+            missionsConfig);
+    }
+
+    private MissionConfig[] ToMissionsConfig(List<MissionConfigDto> missionsConfigRaw)
+    {
+        var result = new MissionConfig[missionsConfigRaw.Count];
+        var i = 0;
+        foreach (var configDto in missionsConfigRaw)
+        {
+            var rewardConfigs = ToMissionRewardConfigs(configDto.reward);
+            var missionConfig = new MissionConfig(configDto.key, configDto.unlock_level, configDto.frequency, rewardConfigs);
+            result[i] = missionConfig;
+            i++;
+        }
+
+        return result;
+    }
+
+    private MissionRewardConfig[] ToMissionRewardConfigs(string rewardConfigRaw)
+    {
+        var splittedRewardsRaw = rewardConfigRaw.Split(',');
+
+        var result = new MissionRewardConfig[splittedRewardsRaw.Length];
+        var i = 0;
+        foreach (var rewardConfigStr in splittedRewardsRaw)
+        {
+            var splitted1 = rewardConfigStr.Split('*');
+            var levelMultiplier = 0;
+            if (splitted1.Length > 1)
+            {
+                if (splitted1[1].IndexOf("lvl") >= 0)
+                {
+                    levelMultiplier = 1;
+                }
+            }
+            var splittedMinMax = splitted1[0].Split('-');
+            var minReward = Reward.FromString(splittedMinMax[0]);
+            var maxReward = splittedMinMax.Length > 1 ? Reward.FromString(splittedMinMax[0]) : minReward;
+            result[i] = new MissionRewardConfig(minReward, maxReward, levelMultiplier);
+            i++;
+        }
+        return result;
     }
 
     private FriendActionConfig[] ToFriendActionsConfig(Dictionary<string, FriendActionConfigDto> friendActionsConfig)

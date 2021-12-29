@@ -27,7 +27,10 @@ public class MainConfigDto
     public UpgradeConfigDto[] ExtendShopXUpgradesConfig;
     public UpgradeConfigDto[] ExtendShopYUpgradesConfig;
     public List<string> DailyBonusConfig;
+    public List<MissionConfigDto> MissionsConfig;
 }
+
+
 
 public class FriendActionConfigDto
 {
@@ -87,4 +90,12 @@ public struct UpgradeConfigDto
     public string price;
     public int unlock_level;
     public int unlock_friends;
+}
+
+public struct MissionConfigDto
+{
+    public string key;
+    public int unlock_level;
+    public int frequency;
+    public string reward;
 }

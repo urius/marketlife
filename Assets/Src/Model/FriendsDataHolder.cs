@@ -17,7 +17,7 @@ public class FriendsDataHolder
     {
     }
 
-    public int InGameFriendsCount => _friends?.Length ?? 0;
+    public int InGameFriendsCount => _friends != null ? _friends.Where(f => f.IsApp).Count() : 0;
     public IReadOnlyList<FriendData> Friends => _friends ?? Array.Empty<FriendData>();
     public bool FriendsDataIsSet => _friends != null;
     public UniTask FriendsDataSetupTask => _friendsDataSetupTcs.Task;
@@ -85,5 +85,9 @@ public static class FriendDataExtensions
         var startPlayTime = GameStateModel.Instance.StartGameServerTime;
         var hoursSinceFriendsLastVisit = Math.Max(0, startPlayTime - friendData.LastVisitTime) / 3600f;
         return hoursSinceFriendsLastVisit > thresholdHours;
+    }
+    public static bool IsActive(this FriendData friendData)
+    {
+        return !friendData.IsInactive();
     }
 }

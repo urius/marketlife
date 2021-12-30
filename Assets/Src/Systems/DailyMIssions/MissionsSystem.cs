@@ -13,6 +13,7 @@ public class MissionsSystem
     private readonly Dictionary<string, DailyMissionFactoryBase> _missionFactories = new Dictionary<string, DailyMissionFactoryBase>()
     {
         { MissionKeys.AddFriends, new DailyMissionAddFriendsFactory() },
+        { MissionKeys.AddShelfs, new DailyMissionAddShelfsFactory() },
     };
 
     public MissionsSystem()
@@ -65,7 +66,7 @@ public class MissionsSystem
     {
         foreach (var kvp in _missionProcessors)
         {
-            kvp.Value.Deactivate();
+            kvp.Value.Stop();
         }
         _missionProcessors.Clear();
 
@@ -73,7 +74,7 @@ public class MissionsSystem
         {
             var processor = _missionFactories[mission.Key].CreateProcessor(mission);
             _missionProcessors[mission] = processor;
-            processor.Activate();
+            processor.Start();
         }
     }
 
@@ -126,8 +127,6 @@ public class MissionsSystem
         /*
         switch (missionConfig.Key)
         {
-            case MissionKeys.AddShelfs:
-                return true;
             case MissionKeys.BuyGold:
                 return dailyMissionsModel.MissionsList.Any(m => m.Key == MissionKeys.BuyMoney) == false;
             case MissionKeys.BuyMoney:

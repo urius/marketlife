@@ -26,13 +26,18 @@ public class DataExporter
         foreach (var mission in dailyMissionsModel.MissionsList)
         {
             var isRewardTakenInt = mission.IsRewardTaken ? 1 : 0;
-            var localResultStr = $"{mission.Key},{mission.Value},{mission.TargetValue},{mission.Reward.SerializeToString()},{isRewardTakenInt}";
+            var localResultStr = $"{mission.Key},{mission.StartValue},{mission.TargetValue},{mission.Value},{mission.Reward.SerializeToString()},{isRewardTakenInt}";
             switch (mission.Key)
             {
                 case MissionKeys.SellProduct:
                     var sellProductMission = mission as DailyMissionSellProductModel;
                     var productStr = ExportProduct(sellProductMission.ProductConfig, mission.TargetValue);
                     localResultStr = $"{localResultStr},{productStr}";
+                    break;
+                case MissionKeys.AddShelfs:
+                    var addShelfsMission = mission as DailyMissionAddShelfsModel;
+                    var shelfStr = $"s{addShelfsMission.ShelfNumericId}";
+                    localResultStr = $"{localResultStr},{shelfStr}";
                     break;
             }
             result[i] = localResultStr;

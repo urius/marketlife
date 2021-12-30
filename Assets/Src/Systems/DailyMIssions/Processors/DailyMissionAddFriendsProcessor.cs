@@ -1,3 +1,5 @@
+using System;
+
 public class DailyMissionAddFriendsProcessor : DailyMissionProcessorBase
 {
     private readonly GameStateModel _gameStateModel;
@@ -10,17 +12,24 @@ public class DailyMissionAddFriendsProcessor : DailyMissionProcessorBase
         _friendsDataHolder = FriendsDataHolder.Instance;
     }
 
-    public override void Activate()
+    public override async void Start()
     {
+        await _friendsDataHolder.FriendsDataSetupTask;
         _gameStateModel.GameStateChanged += OnGameStateChanged;
+        Update();
     }
 
-    public override void Deactivate()
+    public override void Stop()
     {
         _gameStateModel.GameStateChanged -= OnGameStateChanged;
     }
 
     private void OnGameStateChanged(GameStateName prevState, GameStateName currentState)
+    {
+        Update();
+    }
+
+    private void Update()
     {
         if (_gameStateModel.IsPlayingState
             && _friendsDataHolder.FriendsDataIsSet)

@@ -7,25 +7,34 @@ public class DailyMissionModel
 
     public readonly string Key;
     public readonly Reward Reward;
+    public readonly int StartValue;
     public readonly int TargetValue;
 
-    public DailyMissionModel(string key, int value, int targetValue, Reward reward, bool isRewardTaken = false)
+    public DailyMissionModel(
+        string key,
+        int startValue,
+        int targetValue,
+        int currentValue,
+        Reward reward,
+        bool isRewardTaken = false)
     {
         Key = key;
-        Value = value;
+        StartValue = startValue;
         TargetValue = targetValue;
+        Value = currentValue;
         Reward = reward;
         IsRewardTaken = isRewardTaken;
     }
 
-    public int Value { get; private set; }
     public bool IsRewardTaken { get; private set; }
+    public int Value { get; private set; }
+    public int ValueRelative => Value - StartValue;
+    public float Progress => Math.Min(1, Math.Max(0f, ValueRelative) / (TargetValue - StartValue));
 
-    public void SetValue(int value)
+    public void SetValue(int newValue)
     {
         if (IsRewardTaken) return;
 
-        var newValue = Math.Min(value, TargetValue);
         if (newValue != Value)
         {
             Value = newValue;

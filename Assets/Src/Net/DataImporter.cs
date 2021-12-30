@@ -53,13 +53,7 @@ public class DataImporter
             foreach (var missionStr in missionsStr)
             {
                 var missionModel = CreateMissionModel(missionStr);
-                var splitted = missionStr.Split(',');
-                var key = splitted[0];
-                var value = int.Parse(splitted[1]);
-                var targetValue = int.Parse(splitted[2]);
-                var reward = Reward.FromString(splitted[3]);
-                var isTakenInt = int.Parse(splitted[4]);
-                result.AddMission(new DailyMissionModel(key, value, targetValue, reward, isTakenInt != 0));
+                result.AddMission(missionModel);
             }
         }
 
@@ -71,19 +65,24 @@ public class DataImporter
         DailyMissionModel result;
         var splitted = missionStr.Split(',');
         var key = splitted[0];
-        var value = int.Parse(splitted[1]);
+        var startValue = int.Parse(splitted[1]);
         var targetValue = int.Parse(splitted[2]);
-        var reward = Reward.FromString(splitted[3]);
-        var isTaken = int.Parse(splitted[4]) != 0;
+        var currentValue = int.Parse(splitted[3]);
+        var reward = Reward.FromString(splitted[4]);
+        var isTaken = int.Parse(splitted[5]) != 0;
 
         switch (key)
         {
             case MissionKeys.SellProduct:
-                var product = ToProductModel(splitted[5]);
-                result = new DailyMissionSellProductModel(key, value, targetValue, reward, isTaken, product.Config);
+                var product = ToProductModel(splitted[6]);
+                result = new DailyMissionSellProductModel(key, startValue, targetValue, currentValue, reward, isTaken, product.Config);
+                break;
+            case MissionKeys.AddShelfs:
+                var shelfNumericId = int.Parse(splitted[6].Split('s')[1]);
+                result = new DailyMissionAddShelfsModel(key, startValue, targetValue, currentValue, reward, isTaken, shelfNumericId);
                 break;
             default:
-                result = new DailyMissionModel(key, value, targetValue, reward, isTaken);
+                result = new DailyMissionModel(key, startValue, targetValue, currentValue, reward, isTaken);
                 break;
         }
 

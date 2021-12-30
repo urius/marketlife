@@ -20,18 +20,24 @@ public abstract class DailyMissionFactoryBase
 
     protected abstract string Key { get; }
     protected MissionConfig MissionConfig => _configManager.DailyMissionsConfig.GetMissionConfig(Key);
+    protected System.Random Random => _random;
 
     public virtual bool CanAdd()
     {
-        var dailyMissionsModel = _playerModelHolder.UserModel.DailyMissionsModel;
-        return dailyMissionsModel.MissionsList.Any(m => m.Key == Key) == false;
+        return MissionConfig.UnlockLevel <= _playerModelHolder.UserModel.ProgressModel.Level;
     }
 
-    protected Reward ChooseReward(MissionRewardConfig[] rewardConfigs, float complexityMultiplier)
+    protected Reward ChooseReward(float complexityMultiplier)
     {
+        var rewardConfigs = MissionConfig.RewardConfigs;
         var rewardConfig = rewardConfigs[_random.Next(0, rewardConfigs.Length)];
         var amount = Math.Max(rewardConfig.MinReward.Amount, (int)Mathf.Lerp(rewardConfig.MinReward.Amount, rewardConfig.MaxReward.Amount, complexityMultiplier));
         amount += amount * rewardConfig.RewardLevelMultiplier * _playerModelHolder.UserModel.ProgressModel.Level;
         return new Reward(amount, rewardConfig.MinReward.Type);
+    }
+
+    protected bool IsNewKeyInList()
+    {
+        return _playerModelHolder.UserModel.DailyMissionsModel.MissionsList.Any(m => m.Key == Key) == false;
     }
 }

@@ -7,6 +7,6 @@ public abstract class DailyMissionProcessorBase
         MissionModel = missionModel;
     }
 
-    public abstract void Activate();
-    public abstract void Deactivate();
+    public abstract void Start();
+    public abstract void Stop();
 }

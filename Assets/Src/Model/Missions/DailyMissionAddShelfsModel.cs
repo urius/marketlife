@@ -1,17 +1,17 @@
-public class DailyMissionSellProductModel : DailyMissionModel
+public class DailyMissionAddShelfsModel : DailyMissionModel
 {
-    public readonly ProductConfig ProductConfig;
+    public readonly int ShelfNumericId;
 
-    public DailyMissionSellProductModel(
+    public DailyMissionAddShelfsModel(
         string key,
         int startValue,
         int targetValue,
         int currentValue,
         Reward reward,
         bool isRewardTaken,
-        ProductConfig productModel)
+        int shelfNumericId)
         : base(key, startValue, targetValue, currentValue, reward, isRewardTaken)
     {
-        ProductConfig = productModel;
+        ShelfNumericId = shelfNumericId;
     }
 }

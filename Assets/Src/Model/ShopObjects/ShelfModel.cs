@@ -10,6 +10,7 @@ public class ShelfModel : ShopObjectModelBase
 
     public readonly int PartVolume;
     public readonly int PartsCount;
+    public readonly int TotalVolume;
     public readonly ProductSlotModel[] Slots;
 
     public ShelfModel(int numericId, ShelfConfigDto shelfConfig, Vector2Int coords, int side = 3)
@@ -17,6 +18,7 @@ public class ShelfModel : ShopObjectModelBase
     {
         PartVolume = shelfConfig.part_volume;
         PartsCount = shelfConfig.parts_num;
+        TotalVolume = PartVolume * PartsCount;
 
         Slots = new ProductSlotModel[PartsCount];
 

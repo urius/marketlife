@@ -14,6 +14,8 @@ public class MissionsSystem
     {
         { MissionKeys.AddFriends, new DailyMissionAddFriendsFactory() },
         { MissionKeys.AddShelfs, new DailyMissionAddShelfsFactory() },
+        { MissionKeys.AddGold, new DailyMissionAddGoldFactory() },
+        { MissionKeys.AddCash, new DailyMissionAddCashFactory() },
     };
 
     public MissionsSystem()
@@ -45,6 +47,7 @@ public class MissionsSystem
             if (IsNewDay())
             {
                 dailyMissionsModel.Clear();
+                CreateMissionModels();
             }
             else
             {
@@ -56,7 +59,6 @@ public class MissionsSystem
         {
             if (IsNewDay())
             {
-                CreateMissionModels();
                 CreateMissionProcessors();
             }
         }

@@ -42,6 +42,11 @@ public class DailyMissionModel
         }
     }
 
+    public void AddValue(int delta)
+    {
+        SetValue(Value + delta);
+    }
+
     public void SetRewardTaken()
     {
         IsRewardTaken = true;

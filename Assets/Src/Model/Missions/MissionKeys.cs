@@ -2,8 +2,8 @@ public static class MissionKeys
 {
     public const string AddFriends = "add_friends";
     public const string AddShelfs = "add_shelfs";
-    public const string BuyGold = "buy_gold";
-    public const string BuyMoney = "buy_money";
+    public const string AddGold = "add_gold";
+    public const string AddCash = "add_cash";
     public const string ChangeBillboard = "change_billboard";
     public const string ChangeCashman = "change_cashman";
     public const string GiftToFriend = "gift_to_friend";

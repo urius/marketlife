@@ -980,8 +980,11 @@ public class ShopBillboardModel
 
     public void SetText(string text)
     {
-        Text = text;
-        TextChanged();
+        if (Text.Equals(text) == false)
+        {
+            Text = text;
+            TextChanged();
+        }
     }
 }
 

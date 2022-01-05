@@ -77,7 +77,7 @@ public class PopupsMediator : IMediator
         _popupMediators.Push(newMediator);
     }
 
-    private void OnPopupRemoved()
+    private void OnPopupRemoved(PopupViewModelBase popupViewModel)
     {
         if (_popupMediators.Count > 0)
         {

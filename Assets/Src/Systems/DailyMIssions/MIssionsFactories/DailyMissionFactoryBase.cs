@@ -2,7 +2,8 @@ using System;
 using System.Linq;
 using UnityEngine;
 
-public abstract class DailyMissionFactoryBase
+public abstract class DailyMissionFactoryBase<TProcessor> : IDailyMissionFactory
+    where TProcessor : DailyMissionProcessorBase, new()
 {
     private readonly GameConfigManager _configManager;
     private readonly PlayerModelHolder _playerModelHolder;
@@ -16,7 +17,6 @@ public abstract class DailyMissionFactoryBase
     }
 
     public abstract DailyMissionModel CreateModel(float complexityMultiplier);
-    public abstract DailyMissionProcessorBase CreateProcessor(DailyMissionModel mission);
 
     protected abstract string Key { get; }
     protected MissionConfig MissionConfig => _configManager.DailyMissionsConfig.GetMissionConfig(Key);
@@ -25,6 +25,13 @@ public abstract class DailyMissionFactoryBase
     public virtual bool CanAdd()
     {
         return MissionConfig.UnlockLevel <= _playerModelHolder.UserModel.ProgressModel.Level;
+    }
+
+    public DailyMissionProcessorBase CreateProcessor(DailyMissionModel mission)
+    {
+        var result = new TProcessor();
+        result.SetupMissionModel(mission);
+        return result;
     }
 
     protected Reward ChooseReward(float complexityMultiplier)
@@ -40,4 +47,11 @@ public abstract class DailyMissionFactoryBase
     {
         return _playerModelHolder.UserModel.DailyMissionsModel.MissionsList.Any(m => m.Key == Key) == false;
     }
+}
+
+public interface IDailyMissionFactory
+{
+    bool CanAdd();
+    DailyMissionModel CreateModel(float complexityMultiplier);
+    DailyMissionProcessorBase CreateProcessor(DailyMissionModel mission);
 }

@@ -46,7 +46,7 @@ public class TutorialOrderProductStepMediator : TutorialStepMediatorBase
         _gameStateModel.PopupRemoved -= OnPopupRemoved;
     }
 
-    private void OnPopupRemoved()
+    private void OnPopupRemoved(PopupViewModelBase popupViewModel)
     {
         DispatchTutorialActionPerformed();
     }

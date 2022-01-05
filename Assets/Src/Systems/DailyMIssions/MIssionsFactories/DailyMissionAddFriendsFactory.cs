@@ -1,15 +1,8 @@
 using System;
 using UnityEngine;
 
-public class DailyMissionAddFriendsFactory : DailyMissionFactoryBase
+public class DailyMissionAddFriendsFactory : DailyMissionFactoryBase<DailyMissionAddFriendsProcessor>
 {
-    private readonly FriendsDataHolder _friendsDataHolder;
-
-    public DailyMissionAddFriendsFactory()
-    {
-        _friendsDataHolder = FriendsDataHolder.Instance;
-    }
-
     protected override string Key => MissionKeys.AddFriends;
 
     public override bool CanAdd()
@@ -20,8 +13,9 @@ public class DailyMissionAddFriendsFactory : DailyMissionFactoryBase
 
     public override DailyMissionModel CreateModel(float complexityMultiplier)
     {
+        var friendsDataHolder = FriendsDataHolder.Instance; ;
         var additionalFriendsCount = Math.Max(1, (int)Mathf.Lerp(1, 5, complexityMultiplier));
-        var totalFriendsCount = _friendsDataHolder.InGameFriendsCount;
+        var totalFriendsCount = friendsDataHolder.InGameFriendsCount;
         var targetFriendsCount = totalFriendsCount + additionalFriendsCount;
         var reward = ChooseReward(complexityMultiplier);
         return new DailyMissionModel(
@@ -30,10 +24,5 @@ public class DailyMissionAddFriendsFactory : DailyMissionFactoryBase
             targetFriendsCount,
             totalFriendsCount,
             reward);
-    }
-
-    public override DailyMissionProcessorBase CreateProcessor(DailyMissionModel model)
-    {
-        return new DailyMissionAddFriendsProcessor(model);
     }
 }

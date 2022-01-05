@@ -2,15 +2,19 @@ using System.Linq;
 
 public class DailyMissionAddShelfsProcessor : DailyMissionProcessorBase
 {
-    private readonly DailyMissionAddShelfsModel _missionModel;
     private readonly PlayerModelHolder _playerModelHolder;
 
-    public DailyMissionAddShelfsProcessor(DailyMissionAddShelfsModel missionModel)
-        : base(missionModel)
-    {
-        _missionModel = missionModel;
+    private DailyMissionAddShelfsModel _missionModel;
 
+    public DailyMissionAddShelfsProcessor()
+    {
         _playerModelHolder = PlayerModelHolder.Instance;
+    }
+
+    public override void SetupMissionModel(DailyMissionModel missionModel)
+    {
+        base.SetupMissionModel(missionModel);
+        _missionModel = missionModel as DailyMissionAddShelfsModel;
     }
 
     public override void Start()

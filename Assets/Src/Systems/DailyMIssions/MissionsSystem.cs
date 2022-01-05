@@ -10,12 +10,15 @@ public class MissionsSystem
     private readonly GameConfigManager _configManager;
     private readonly System.Random _random;
     private readonly Dictionary<DailyMissionModel, DailyMissionProcessorBase> _missionProcessors = new Dictionary<DailyMissionModel, DailyMissionProcessorBase>();
-    private readonly Dictionary<string, DailyMissionFactoryBase> _missionFactories = new Dictionary<string, DailyMissionFactoryBase>()
+    private readonly Dictionary<string, IDailyMissionFactory> _missionFactories = new Dictionary<string, IDailyMissionFactory>()
     {
         { MissionKeys.AddFriends, new DailyMissionAddFriendsFactory() },
         { MissionKeys.AddShelfs, new DailyMissionAddShelfsFactory() },
         { MissionKeys.AddGold, new DailyMissionAddGoldFactory() },
         { MissionKeys.AddCash, new DailyMissionAddCashFactory() },
+        { MissionKeys.ChangeBillboard, new DailyMissionChangeBillboardFactory() },
+        { MissionKeys.ChangeCashman, new DailyMissionChangeCashmanFactory() },
+        { MissionKeys.GiftToFriend, new DailyMissionGiftToFriendFactory() },
     };
 
     public MissionsSystem()

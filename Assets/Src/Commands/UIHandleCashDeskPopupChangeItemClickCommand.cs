@@ -21,7 +21,6 @@ public class UIHandleCashDeskPopupChangeItemClickCommand
                 currentCashDeskModel.SetDressId(itemId);
                 break;
         }
-
     }
 
     private int ProcessBounds(int itemId, int maxId, int minId = 1)

@@ -2,7 +2,7 @@ public class DailyMissionAddCashProcessor : DailyMissionProcessorBase
 {
     private readonly PlayerModelHolder _playerModelHolder;
 
-    public DailyMissionAddCashProcessor(DailyMissionModel missionModel) : base(missionModel)
+    public DailyMissionAddCashProcessor()
     {
         _playerModelHolder = PlayerModelHolder.Instance;
     }

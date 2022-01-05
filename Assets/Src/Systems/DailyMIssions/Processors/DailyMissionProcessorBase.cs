@@ -1,8 +1,8 @@
 public abstract class DailyMissionProcessorBase
 {
-    public readonly DailyMissionModel MissionModel;
+    public DailyMissionModel MissionModel { get; private set; }
 
-    public DailyMissionProcessorBase(DailyMissionModel missionModel)
+    public virtual void SetupMissionModel(DailyMissionModel missionModel)
     {
         MissionModel = missionModel;
     }

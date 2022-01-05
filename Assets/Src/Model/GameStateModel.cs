@@ -14,7 +14,7 @@ public class GameStateModel
     public event Action<UserModel> ViewingUserModelChanged = delegate { };
     public event Action HighlightStateChanged = delegate { };
     public event Action PopupShown = delegate { };
-    public event Action PopupRemoved = delegate { };
+    public event Action<PopupViewModelBase> PopupRemoved = delegate { };
     public event Action TutorialStepShown = delegate { };
     public event Action TutorialStepRemoved = delegate { };
 
@@ -129,9 +129,9 @@ public class GameStateModel
         if (ShowingPopupModel != null)
         {
             ShowingPopupModel.Dispose();
-            _showingPopupModelsStack.Pop();
+            var removedPopupModel = _showingPopupModelsStack.Pop();
             UpdatePausedState();
-            PopupRemoved();
+            PopupRemoved(removedPopupModel);
         }
     }
 

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class DailyMissionAddCashFactory : DailyMissionFactoryBase
+public class DailyMissionAddCashFactory : DailyMissionFactoryBase<DailyMissionAddCashProcessor>
 {
     protected override string Key => MissionKeys.AddCash;
 
@@ -55,10 +55,5 @@ public class DailyMissionAddCashFactory : DailyMissionFactoryBase
         }
 
         return result;
-    }
-
-    public override DailyMissionProcessorBase CreateProcessor(DailyMissionModel mission)
-    {
-        return new DailyMissionAddCashProcessor(mission);
     }
 }

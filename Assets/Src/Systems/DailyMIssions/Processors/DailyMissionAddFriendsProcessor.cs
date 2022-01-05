@@ -5,8 +5,7 @@ public class DailyMissionAddFriendsProcessor : DailyMissionProcessorBase
     private readonly GameStateModel _gameStateModel;
     private readonly FriendsDataHolder _friendsDataHolder;
 
-    public DailyMissionAddFriendsProcessor(DailyMissionModel missionModel)
-        : base(missionModel)
+    public DailyMissionAddFriendsProcessor()
     {
         _gameStateModel = GameStateModel.Instance;
         _friendsDataHolder = FriendsDataHolder.Instance;

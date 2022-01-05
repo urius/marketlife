@@ -201,7 +201,7 @@ public class TutorialSystem
         ShowTutorialIfNeeded();
     }
 
-    private void OnPopupRemoved()
+    private void OnPopupRemoved(PopupViewModelBase popupViewModel)
     {
         ShowTutorialIfNeeded();
     }

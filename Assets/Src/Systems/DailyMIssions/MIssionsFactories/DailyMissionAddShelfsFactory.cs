@@ -2,17 +2,8 @@ using System;
 using System.Linq;
 using UnityEngine;
 
-public class DailyMissionAddShelfsFactory : DailyMissionFactoryBase
+public class DailyMissionAddShelfsFactory : DailyMissionFactoryBase<DailyMissionAddShelfsProcessor>
 {
-    private readonly PlayerModelHolder _playerModelHolder;
-    private readonly GameConfigManager _configManager;
-
-    public DailyMissionAddShelfsFactory()
-    {
-        _playerModelHolder = PlayerModelHolder.Instance;
-        _configManager = GameConfigManager.Instance;
-    }
-
     protected override string Key => MissionKeys.AddShelfs;
 
     public override bool CanAdd()
@@ -24,8 +15,8 @@ public class DailyMissionAddShelfsFactory : DailyMissionFactoryBase
     public override DailyMissionModel CreateModel(float complexityMultiplier)
     {
         DailyMissionModel result = null;
-        var playerModel = _playerModelHolder.UserModel;
-        var shelfConfigsForLevel = _configManager.ShelfsConfig.GetShelfConfigsForLevel(playerModel.ProgressModel.Level);
+        var playerModel = PlayerModelHolder.Instance.UserModel;
+        var shelfConfigsForLevel = GameConfigManager.Instance.ShelfsConfig.GetShelfConfigsForLevel(playerModel.ProgressModel.Level);
         var currentMissionsList = playerModel.DailyMissionsModel.MissionsList;
         var availableShelfsConfigsForMission = shelfConfigsForLevel.Where(
             c => false == currentMissionsList.Any(m => (m as DailyMissionAddShelfsModel).ShelfNumericId == c.NumericId))
@@ -59,18 +50,15 @@ public class DailyMissionAddShelfsFactory : DailyMissionFactoryBase
         return result;
     }
 
-    public override DailyMissionProcessorBase CreateProcessor(DailyMissionModel mission)
-    {
-        return new DailyMissionAddShelfsProcessor(mission as DailyMissionAddShelfsModel);
-    }
-
     private bool CanAddConsiderSame()
     {
-        var sameMissionsCount = _playerModelHolder.UserModel.DailyMissionsModel.MissionsList
+        var playerModelHolder = PlayerModelHolder.Instance;
+        var configManager = GameConfigManager.Instance;
+        var sameMissionsCount = playerModelHolder.UserModel.DailyMissionsModel.MissionsList
             .Count(m => m.Key == Key);
         if (sameMissionsCount > 0)
         {
-            var availableShelfConfigs = _configManager.ShelfsConfig.GetShelfConfigsForLevel(_playerModelHolder.UserModel.ProgressModel.Level);
+            var availableShelfConfigs = configManager.ShelfsConfig.GetShelfConfigsForLevel(playerModelHolder.UserModel.ProgressModel.Level);
             return availableShelfConfigs.Count() > sameMissionsCount;
         }
         else

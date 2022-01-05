@@ -248,7 +248,7 @@ public class SaveDataSystem
         MarkToSaveField(SaveField.Unwashes);
     }
 
-    private void OnPopupRemoved()
+    private void OnPopupRemoved(PopupViewModelBase popupViewModel)
     {
         TriggerSave();
     }

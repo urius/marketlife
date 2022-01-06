@@ -5,12 +5,6 @@ public class DailyMissionAddFriendsFactory : DailyMissionFactoryBase<DailyMissio
 {
     protected override string Key => MissionKeys.AddFriends;
 
-    public override bool CanAdd()
-    {
-        return base.CanAdd()
-            && IsNewKeyInList();
-    }
-
     public override DailyMissionModel CreateModel(float complexityMultiplier)
     {
         var friendsDataHolder = FriendsDataHolder.Instance; ;

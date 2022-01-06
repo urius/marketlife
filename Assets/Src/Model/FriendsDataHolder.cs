@@ -18,6 +18,7 @@ public class FriendsDataHolder
     }
 
     public int InGameFriendsCount => _friends != null ? _friends.Where(f => f.IsApp).Count() : 0;
+    public int InGameActiveFriendsCount => _friends != null ? _friends.Where(f => f.IsApp && f.IsActive()).Count() : 0;
     public IReadOnlyList<FriendData> Friends => _friends ?? Array.Empty<FriendData>();
     public bool FriendsDataIsSet => _friends != null;
     public UniTask FriendsDataSetupTask => _friendsDataSetupTcs.Task;

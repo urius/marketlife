@@ -255,6 +255,8 @@ public class HumansControlSystem
                 _dispatcher.UIRequestFlyingProduct(screenPoint, productToPay.Config.Key, -productToPay.Amount);
                 screenPoint = _screenCalculator.CellToScreenPoint(customer.TargetCell);
                 _dispatcher.UIRequestFlyingPrice(screenPoint, false, sellPrice);
+
+                _dispatcher.CustomerBuyProduct(productToPay);
             }
             else
             {

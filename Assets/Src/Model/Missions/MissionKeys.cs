@@ -7,8 +7,8 @@ public static class MissionKeys
     public const string ChangeBillboard = "change_billboard";
     public const string ChangeCashman = "change_cashman";
     public const string GiftToFriend = "gift_to_friend";
-    public const string RepaintAllFloors = "repaint_all_floors";
-    public const string RepaintAllWalls = "repaint_all_walls";
+    public const string RepaintFloors = "repaint_floors";
+    public const string RepaintWalls = "repaint_walls";
     public const string SellProduct = "sell_product";
     public const string TakeProfit = "take_profit";
     public const string VisitAllFriends = "visit_all_friends";

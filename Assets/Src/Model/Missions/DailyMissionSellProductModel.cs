@@ -9,9 +9,9 @@ public class DailyMissionSellProductModel : DailyMissionModel
         int currentValue,
         Reward reward,
         bool isRewardTaken,
-        ProductConfig productModel)
+        ProductConfig productConfig)
         : base(key, startValue, targetValue, currentValue, reward, isRewardTaken)
     {
-        ProductConfig = productModel;
+        ProductConfig = productConfig;
     }
 }

@@ -17,6 +17,7 @@ public abstract class DailyMissionFactoryBase<TProcessor> : IDailyMissionFactory
     }
 
     public abstract DailyMissionModel CreateModel(float complexityMultiplier);
+    public virtual bool IsMultipleAllowed => false;
 
     protected abstract string Key { get; }
     protected MissionConfig MissionConfig => _configManager.DailyMissionsConfig.GetMissionConfig(Key);
@@ -42,15 +43,12 @@ public abstract class DailyMissionFactoryBase<TProcessor> : IDailyMissionFactory
         amount += amount * rewardConfig.RewardLevelMultiplier * _playerModelHolder.UserModel.ProgressModel.Level;
         return new Reward(amount, rewardConfig.MinReward.Type);
     }
-
-    protected bool IsNewKeyInList()
-    {
-        return _playerModelHolder.UserModel.DailyMissionsModel.MissionsList.Any(m => m.Key == Key) == false;
-    }
 }
 
 public interface IDailyMissionFactory
 {
+    bool IsMultipleAllowed { get; }
+
     bool CanAdd();
     DailyMissionModel CreateModel(float complexityMultiplier);
     DailyMissionProcessorBase CreateProcessor(DailyMissionModel mission);

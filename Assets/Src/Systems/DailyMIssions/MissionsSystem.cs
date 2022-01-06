@@ -19,6 +19,9 @@ public class MissionsSystem
         { MissionKeys.ChangeBillboard, new DailyMissionChangeBillboardFactory() },
         { MissionKeys.ChangeCashman, new DailyMissionChangeCashmanFactory() },
         { MissionKeys.GiftToFriend, new DailyMissionGiftToFriendFactory() },
+        { MissionKeys.RepaintFloors, new DailyMissionRepaintFloorsFactory() },
+        { MissionKeys.RepaintWalls, new DailyMissionRepaintWallsFactory() },
+        { MissionKeys.SellProduct, new DailyMissionSellProductFactory() },
     };
 
     public MissionsSystem()
@@ -100,15 +103,18 @@ public class MissionsSystem
             safetyCounter--;
             var maxFrequency = availableMissionsConfigs.Max(m => m.Frequency);
             var currentFrequencyThreshold = _random.Next(1, maxFrequency + 1);
-            var randomIndex = _random.Next(0, availableMissionsConfigs.Count);
-            var chosenMissionConfig = availableMissionsConfigs[randomIndex];
+            var missionConfigIndex = _random.Next(0, availableMissionsConfigs.Count);
+            var chosenMissionConfig = availableMissionsConfigs[missionConfigIndex];
             if (chosenMissionConfig.Frequency >= currentFrequencyThreshold)
             {
                 var mission = CreateMission(chosenMissionConfig);
                 if (mission != null)
                 {
                     newMissions.Add(mission);
-                    availableMissionsConfigs.RemoveAt(randomIndex);
+                    if (_missionFactories[chosenMissionConfig.Key].IsMultipleAllowed == false)
+                    {
+                        availableMissionsConfigs.RemoveAt(missionConfigIndex);
+                    }
                 }
             }
         }

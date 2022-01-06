@@ -6,19 +6,17 @@ public class DailyMissionGiftToFriendFactory : DailyMissionFactoryBase<DailyMiss
 
     public override bool CanAdd()
     {
-        var friendsDataHolder = FriendsDataHolder.Instance;
-        var inGameFriendsCount = friendsDataHolder.InGameFriendsCount;
         return base.CanAdd()
-            && inGameFriendsCount > 0;
+            && ExtraCanAddCondition();
     }
 
     public override DailyMissionModel CreateModel(float complexityMultiplier)
     {
         var friendsDataHolder = FriendsDataHolder.Instance;
-        var inGameFriendsCount = friendsDataHolder.InGameFriendsCount;
-        if (inGameFriendsCount > 0)
+        var activeFriendsCount = friendsDataHolder.InGameActiveFriendsCount;
+        if (activeFriendsCount > 0)
         {
-            var targetFriendsCount = (int)Mathf.Max(1, Mathf.Lerp(1, inGameFriendsCount, complexityMultiplier));
+            var targetFriendsCount = (int)Mathf.Max(1, Mathf.Lerp(1, activeFriendsCount, complexityMultiplier));
             var reward = ChooseReward(complexityMultiplier);
             return new DailyMissionModel(Key, 0, targetFriendsCount, 0, reward);
         }
@@ -26,5 +24,12 @@ public class DailyMissionGiftToFriendFactory : DailyMissionFactoryBase<DailyMiss
         {
             return null;
         }
+    }
+
+    private bool ExtraCanAddCondition()
+    {
+        var friendsDataHolder = FriendsDataHolder.Instance;
+        var activeFriendsCount = friendsDataHolder.InGameActiveFriendsCount;
+        return activeFriendsCount > 0;
     }
 }

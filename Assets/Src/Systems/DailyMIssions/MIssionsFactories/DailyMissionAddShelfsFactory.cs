@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class DailyMissionAddShelfsFactory : DailyMissionFactoryBase<DailyMissionAddShelfsProcessor>
 {
+    public override bool IsMultipleAllowed => true;
+
     protected override string Key => MissionKeys.AddShelfs;
 
     public override bool CanAdd()

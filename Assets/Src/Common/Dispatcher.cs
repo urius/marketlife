@@ -107,7 +107,9 @@ public class Dispatcher
 
     public Action<string> JsIncomingMessage = delegate { };
     public Action<bool> SaveCompleted = delegate { };
-    public Action<bool> SaveExternalDataCompleted = delegate { };    
+    public Action<bool> SaveExternalDataCompleted = delegate { };
+
+    public Action<ProductModel> CustomerBuyProduct = delegate { };    
 
     private static Lazy<Dispatcher> _instance = new Lazy<Dispatcher>();
     public static Dispatcher Instance => _instance.Value;

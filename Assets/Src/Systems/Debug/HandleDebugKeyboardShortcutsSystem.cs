@@ -46,7 +46,7 @@ public class HandleDebugKeyboardShortcutsSystem
 
     private void HandleAddCash()
     {
-        _playerModelHolder.UserModel.AddCash(500);
+        _playerModelHolder.UserModel.AddCash(Input.GetKey(KeyCode.LeftShift) ? 10000 : 1000);
     }
 
     private void HandleAddGold()

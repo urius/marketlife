@@ -30,6 +30,7 @@ public class DailyMissionModel
     public int Value { get; private set; }
     public int ValueRelative => Value - StartValue;
     public float Progress => Math.Min(1, Math.Max(0f, ValueRelative) / (TargetValue - StartValue));
+    public bool IsCompleted => Value >= TargetValue;
 
     public void SetValue(int newValue)
     {

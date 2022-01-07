@@ -108,7 +108,7 @@ public class MainConfig :
         return GetNextUpgradeForValueInternal(GetUpgradesFor(upgradeType), value);
     }
 
-    public IEnumerable<UpgradeConfig> GetAllUpgradesBytype(UpgradeType upgradeType)
+    public IEnumerable<UpgradeConfig> GetAllUpgradesByType(UpgradeType upgradeType)
     {
         switch (upgradeType)
         {
@@ -694,7 +694,7 @@ public interface IUpgradesConfig
 {
     UpgradeConfig GetCurrentUpgradeForValue(UpgradeType upgradeType, int value);
     UpgradeConfig GetNextUpgradeForValue(UpgradeType upgradeType, int value);
-    IEnumerable<UpgradeConfig> GetAllUpgradesBytype(UpgradeType upgradeType);
+    IEnumerable<UpgradeConfig> GetAllUpgradesByType(UpgradeType upgradeType);
 }
 
 public interface IDailyBonusConfig

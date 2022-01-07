@@ -80,10 +80,10 @@ public struct ProcessLevelUpCommand
     private IReadOnlyList<UpgradeConfig> GetNewUpgradesConfigs(int previousLevel, int currentLevel)
     {
         var configs = GameConfigManager.Instance.UpgradesConfig;
-        var expandXUpgrades = GetMaxLevelUPgradeConfigForLEvels(configs.GetAllUpgradesBytype(UpgradeType.ExpandX), previousLevel, currentLevel);
-        var expandYUpgrades = GetMaxLevelUPgradeConfigForLEvels(configs.GetAllUpgradesBytype(UpgradeType.ExpandY), previousLevel, currentLevel);
-        var warehouseSlotsUpgrades = GetMaxLevelUPgradeConfigForLEvels(configs.GetAllUpgradesBytype(UpgradeType.WarehouseSlots), previousLevel, currentLevel);
-        var warehouseVolumeUpgrades = GetMaxLevelUPgradeConfigForLEvels(configs.GetAllUpgradesBytype(UpgradeType.WarehouseVolume), previousLevel, currentLevel);
+        var expandXUpgrades = GetMaxLevelUPgradeConfigForLEvels(configs.GetAllUpgradesByType(UpgradeType.ExpandX), previousLevel, currentLevel);
+        var expandYUpgrades = GetMaxLevelUPgradeConfigForLEvels(configs.GetAllUpgradesByType(UpgradeType.ExpandY), previousLevel, currentLevel);
+        var warehouseSlotsUpgrades = GetMaxLevelUPgradeConfigForLEvels(configs.GetAllUpgradesByType(UpgradeType.WarehouseSlots), previousLevel, currentLevel);
+        var warehouseVolumeUpgrades = GetMaxLevelUPgradeConfigForLEvels(configs.GetAllUpgradesByType(UpgradeType.WarehouseVolume), previousLevel, currentLevel);
 
         var result = new List<UpgradeConfig>(4);
         if (expandXUpgrades != null)

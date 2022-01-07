@@ -22,6 +22,11 @@ public class MissionsSystem
         { MissionKeys.RepaintFloors, new DailyMissionRepaintFloorsFactory() },
         { MissionKeys.RepaintWalls, new DailyMissionRepaintWallsFactory() },
         { MissionKeys.SellProduct, new DailyMissionSellProductFactory() },
+        { MissionKeys.CleanUnwashes, new DailyMissionCleanUnwashesFactory() },
+        { MissionKeys.VisitFriends, new DailyMissionVisitFriendsFactory() },
+        { MissionKeys.ExpandShop, new DailyMissionExpandShopFactory() },
+        { MissionKeys.UpgradeWarehouseVolume, new DailyMissionUpgradeWarehouseVolumeFactory() },
+        { MissionKeys.AddWarehouseCells, new DailyMissionAddWarehouseCellsFactory() },
     };
 
     public MissionsSystem()
@@ -34,15 +39,7 @@ public class MissionsSystem
 
     public void Start()
     {
-#if UNITY_EDITOR
-        DebucCheckAllMissionProcessorsExists();
-#endif
         _gameStateModel.GameStateChanged += OnGameStateChanged;
-    }
-
-    private void DebucCheckAllMissionProcessorsExists()
-    {
-        //todo implement
     }
 
     private void OnGameStateChanged(GameStateName prevState, GameStateName currentState)
@@ -119,7 +116,38 @@ public class MissionsSystem
             }
         }
 
-        newMissions.ForEach(playerModel.DailyMissionsModel.AddMission);
+        newMissions.ForEach(AddMission);
+    }
+
+    private void AddMission(DailyMissionModel mission)
+    {
+        _playerModelHolder.UserModel.DailyMissionsModel.AddMission(mission);
+        ActivateMission(mission);
+    }
+
+    private void ActivateMission(DailyMissionModel mission)
+    {
+        mission.ValueChanged += OnMissionValueChanged;
+    }
+
+    private void OnMissionValueChanged()
+    {
+        CheckCompletedProcessors();
+    }
+
+    private void CheckCompletedProcessors()
+    {
+        var completedMissions = _missionProcessors
+            .Where(kvp => kvp.Key.IsCompleted)
+            .Select(kvp => kvp.Key);
+        foreach (var completedMission in completedMissions)
+        {
+            if (_missionProcessors.ContainsKey(completedMission))
+            {
+                _missionProcessors[completedMission].Stop();
+                _missionProcessors.Remove(completedMission);
+            }
+        }
     }
 
     private DailyMissionModel CreateMission(MissionConfig missionConfig)
@@ -134,35 +162,6 @@ public class MissionsSystem
         if (_missionFactories.ContainsKey(missionConfig.Key) == false) return false;
         var factory = _missionFactories[missionConfig.Key];
         return factory.CanAdd();
-
-        /*
-        switch (missionConfig.Key)
-        {
-            case MissionKeys.BuyGold:
-                return dailyMissionsModel.MissionsList.Any(m => m.Key == MissionKeys.BuyMoney) == false;
-            case MissionKeys.BuyMoney:
-                return dailyMissionsModel.MissionsList.Any(m => m.Key == MissionKeys.BuyGold) == false;
-            case MissionKeys.ChangeBillboard:
-                return playerModel.ShopModel.BillboardModel.IsAvailable;
-            case MissionKeys.ChangeCashman:
-                return true;
-            case MissionKeys.GiftToFriend:
-            case MissionKeys.VisitAllFriends:
-                return _friendsDataHolder.Friends.Any(f => f.IsApp && f.IsActive());
-            case MissionKeys.RepaintAllFloors:
-            case MissionKeys.RepaintAllWalls:
-            case MissionKeys.SellProduct:
-            case MissionKeys.TakeProfit:
-                return true;
-            case MissionKeys.ExpandShop:
-                return _configManager.UpgradesConfig.GetNextUpgradeForValue(UpgradeType.ExpandX, playerModel.ShopModel.ShopDesign.SizeX) != null
-                    || _configManager.UpgradesConfig.GetNextUpgradeForValue(UpgradeType.ExpandY, playerModel.ShopModel.ShopDesign.SizeY) != null;
-            case MissionKeys.UpgradeWarehouse:
-                return _configManager.UpgradesConfig.GetNextUpgradeForValue(UpgradeType.WarehouseSlots, playerModel.ShopModel.WarehouseModel.Size) != null
-                    || _configManager.UpgradesConfig.GetNextUpgradeForValue(UpgradeType.WarehouseVolume, playerModel.ShopModel.WarehouseModel.Volume) != null;
-            default:
-                return true;
-        }*/
     }
 
     private bool IsNewDay()

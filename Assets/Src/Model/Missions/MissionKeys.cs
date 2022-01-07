@@ -10,8 +10,9 @@ public static class MissionKeys
     public const string RepaintFloors = "repaint_floors";
     public const string RepaintWalls = "repaint_walls";
     public const string SellProduct = "sell_product";
-    public const string TakeProfit = "take_profit";
-    public const string VisitAllFriends = "visit_all_friends";
+    public const string CleanUnwashes = "clean_unwashes";
+    public const string VisitFriends = "visit_friends";
     public const string ExpandShop = "expand_shop";
-    public const string UpgradeWarehouse = "upgrade_wh";
+    public const string UpgradeWarehouseVolume = "upgrade_wh_volume";
+    public const string AddWarehouseCells = "add_wh_cells";
 }

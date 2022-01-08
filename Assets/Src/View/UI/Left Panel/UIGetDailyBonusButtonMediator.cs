@@ -55,8 +55,8 @@ public class UIGetDailyBonusButtonMediator : IMediator
         }
         else
         {
-            var bonusDateTime = DateTimeHelper.GetDateTimeByUnitTimestamp(bonusState.LastBonusTakeTimestamp);
-            var serverDateTime = DateTimeHelper.GetDateTimeByUnitTimestamp(_gameStateModel.ServerTime);
+            var bonusDateTime = DateTimeHelper.GetDateTimeByUnixTimestamp(bonusState.LastBonusTakeTimestamp);
+            var serverDateTime = DateTimeHelper.GetDateTimeByUnixTimestamp(_gameStateModel.ServerTime);
             if (DateTimeHelper.IsSameDays(bonusDateTime, serverDateTime))
             {
                 _buttonView.SetVisibility(false);

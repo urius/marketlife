@@ -2,7 +2,7 @@ using System;
 
 public class DateTimeHelper
 {
-    public static DateTime GetDateTimeByUnitTimestamp(int unixTimestamp)
+    public static DateTime GetDateTimeByUnixTimestamp(int unixTimestamp)
     {
         return new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime().AddSeconds(unixTimestamp);
     }
@@ -25,13 +25,13 @@ public class DateTimeHelper
 
     public static bool IsNextDay(int prevTimestamp, int targetTimestamp)
     {
-        return IsNextDay(GetDateTimeByUnitTimestamp(prevTimestamp), GetDateTimeByUnitTimestamp(targetTimestamp));
+        return IsNextDay(GetDateTimeByUnixTimestamp(prevTimestamp), GetDateTimeByUnixTimestamp(targetTimestamp));
     }
 
     public static bool IsSameDays(int unixTimestamp1, int unixTimestamp2)
     {
-        var date1 = GetDateTimeByUnitTimestamp(unixTimestamp1);
-        var date2 = GetDateTimeByUnitTimestamp(unixTimestamp2);
+        var date1 = GetDateTimeByUnixTimestamp(unixTimestamp1);
+        var date2 = GetDateTimeByUnixTimestamp(unixTimestamp2);
         return IsSameDays(date1, date2);
     }
 

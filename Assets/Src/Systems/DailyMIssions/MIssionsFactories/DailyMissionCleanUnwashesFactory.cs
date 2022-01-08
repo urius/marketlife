@@ -7,7 +7,7 @@ public class DailyMissionCleanUnwashesFactory : DailyMissionFactoryBase<DailyMis
 
     public override bool CanAdd()
     {
-        var currentHour = new DateTime().Hour;
+        var currentHour = DateTimeHelper.GetDateTimeByUnixTimestamp(GameStateModel.Instance.ServerTime).Hour;
         return base.CanAdd()
             && currentHour < 24;
     }

@@ -106,8 +106,21 @@ public class GameConfigManager
                 }
             }
             var splittedMinMax = splitted1[0].Split('-');
-            var minReward = Reward.FromString(splittedMinMax[0]);
-            var maxReward = splittedMinMax.Length > 1 ? Reward.FromString(splittedMinMax[0]) : minReward;
+            Reward minReward;
+            Reward maxReward;
+            if (splittedMinMax.Length > 1)
+            {
+                maxReward = Reward.FromString(splittedMinMax[1]);
+                minReward = new Reward()
+                {
+                    Type = maxReward.Type,
+                    Amount = Reward.FromString(splittedMinMax[0]).Amount,
+                };
+            }
+            else
+            {
+                minReward = maxReward = Reward.FromString(splittedMinMax[0]);
+            }
             result[i] = new MissionRewardConfig(minReward, maxReward, levelMultiplier);
             i++;
         }

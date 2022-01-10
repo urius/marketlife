@@ -121,3 +121,5 @@ MonoBehaviour:
     type: 3}
   UICashDeskPopupPrefab: {fileID: 5173990274866861764, guid: e938b973d196544c19fe8e7d687e4e32,
     type: 3}
+  UIDailyMissionsPopupItemPrefab: {fileID: 4432199906071516380, guid: 0796b9a06ee2d49faacad49e27321dac,
+    type: 3}

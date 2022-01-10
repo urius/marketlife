@@ -19,6 +19,7 @@ public class Constants
     public const string FieldSettings = "settings";
     public const string FieldBillboard = "billboard";
     public const string FieldExternalActions = "actions";
+    public const string DailyMissions = "daily_missions";    
 
     public const string LevelsMultiplier = "multiplier";    
     public const int MaxCustomersCount = 15;

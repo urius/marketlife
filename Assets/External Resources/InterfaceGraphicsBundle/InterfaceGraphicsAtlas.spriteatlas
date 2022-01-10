@@ -32,7 +32,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 46b41057a82fe4010b5245cd9e8b4afa, type: 3}
-    totalSpriteSurfaceArea: 1482974
+    totalSpriteSurfaceArea: 1511342
     bindAsDefault: 0
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -73,6 +73,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 9f7992d3c4f8a492dabf7fd6ab5716cb, type: 3}
   - {fileID: 21300000, guid: ed209af3c3a7c4df7a339501538238f7, type: 3}
   - {fileID: 21300000, guid: db0478048338c44d49168225e7e11016, type: 3}
+  - {fileID: 21300000, guid: db9e6f14c49fb4961b7f56e02e1d0f40, type: 3}
   - {fileID: 21300000, guid: f08fe8244d07d4639bbe4028759b945c, type: 3}
   - {fileID: 21300000, guid: 48dabf54da5ad464b81880ebbdafcc97, type: 3}
   - {fileID: 21300000, guid: 873fb87419f414aba878b2a83ca87eca, type: 3}
@@ -222,6 +223,7 @@ SpriteAtlas:
   - ICON_Enlarge
   - sign_upgrade_wh_volume
   - sign_expand_shop_x
+  - icon_Checklist
   - item_skin_1
   - Door1
   - content_skin_2

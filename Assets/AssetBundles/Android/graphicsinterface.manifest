@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2496759722
+CRC: 1316733717
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 8512e0efecdc1f0cb480a03375896a5b
+    Hash: 5a08a47f26ad9f3911b6a03235b51d9d
   TypeTreeHash:
     serializedVersion: 2
     Hash: ba23c2e8f8b3f5319028008a25497317
@@ -55,6 +55,7 @@ Assets:
 - Assets/External Resources/InterfaceGraphicsBundle/Common/icon_giftbox_yellow.png
 - Assets/External Resources/InterfaceGraphicsBundle/Popups/popup_content_inner.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_long_orange.png
+- Assets/External Resources/InterfaceGraphicsBundle/Common/icon_Checklist.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/sign_cross.png
 - Assets/External Resources/InterfaceGraphicsBundle/Common/icon_star_05.png
 - Assets/External Resources/InterfaceGraphicsBundle/TopPanel/skin_add_money_button.png

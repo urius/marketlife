@@ -84,7 +84,7 @@ public class UserDataDto
     public BonusStateDto bonus;
     public UserGameSettingsDto settings;
     public UserBillboardStateDto billboard; 
-    public string[] missions;
+    public string[] daily_missions;
 }
 
 public class ExternalDataDto

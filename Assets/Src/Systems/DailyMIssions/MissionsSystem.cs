@@ -1,14 +1,17 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public class MissionsSystem
 {
-    private const int MissionsCount = 3;
+    private const int MissionsCount = 4;
 
     private readonly GameStateModel _gameStateModel;
     private readonly PlayerModelHolder _playerModelHolder;
     private readonly GameConfigManager _configManager;
     private readonly System.Random _random;
+    private readonly Dispatcher _dispatcher;
+    private readonly ScreenCalculator _screenCalculator;
     private readonly Dictionary<DailyMissionModel, DailyMissionProcessorBase> _missionProcessors = new Dictionary<DailyMissionModel, DailyMissionProcessorBase>();
     private readonly Dictionary<string, IDailyMissionFactory> _missionFactories = new Dictionary<string, IDailyMissionFactory>()
     {
@@ -35,11 +38,41 @@ public class MissionsSystem
         _playerModelHolder = PlayerModelHolder.Instance;
         _configManager = GameConfigManager.Instance;
         _random = new System.Random();
+        _dispatcher = Dispatcher.Instance;
+        _screenCalculator = ScreenCalculator.Instance;
     }
 
     public void Start()
     {
         _gameStateModel.GameStateChanged += OnGameStateChanged;
+        _dispatcher.UITakeDailyMissionRewardClicked += OnUITakeDailyMissionRewardClicked;
+    }
+
+    private void OnUITakeDailyMissionRewardClicked(DailyMissionModel missionModel, Vector3 rewardIconWorldPosition)
+    {
+        if (missionModel.IsCompleted
+            && missionModel.IsRewardTaken == false)
+        {
+            var screenPoint = _screenCalculator.WorldToScreenPoint(rewardIconWorldPosition);
+            var missionReward = missionModel.Reward;
+            switch (missionReward.Type)
+            {
+                case RewardType.Cash:
+                    _dispatcher.UIRequestAddCashFlyAnimation(screenPoint, Mathf.Clamp((int)(missionReward.Amount * 0.001), 1, 5));
+                    _playerModelHolder.UserModel.AddCash(missionReward.Amount);
+                    break;
+                case RewardType.Gold:
+                    _dispatcher.UIRequestAddGoldFlyAnimation(screenPoint, Mathf.Clamp((int)(missionReward.Amount * 0.01), 1, 5));
+                    _playerModelHolder.UserModel.AddGold(missionReward.Amount);
+                    break;
+                case RewardType.Exp:
+                    _dispatcher.UIRequestAddExpFlyAnimation(screenPoint, Mathf.Clamp((int)(missionReward.Amount * 0.001), 1, 5));
+                    _playerModelHolder.UserModel.AddExp(missionReward.Amount);
+                    break;
+            }
+
+            missionModel.SetRewardTaken();
+        }
     }
 
     private void OnGameStateChanged(GameStateName prevState, GameStateName currentState)
@@ -47,7 +80,7 @@ public class MissionsSystem
         if (currentState == GameStateName.ReadyForStart)
         {
             var dailyMissionsModel = _playerModelHolder.UserModel.DailyMissionsModel;
-            if (IsNewDay())
+            if (IsNewDay() || dailyMissionsModel.MissionsList.Count <= 0)
             {
                 dailyMissionsModel.Clear();
                 CreateMissionModels();
@@ -86,14 +119,13 @@ public class MissionsSystem
     private void CreateMissionModels()
     {
         var playerModel = _playerModelHolder.UserModel;
+        var missionsModel = playerModel.DailyMissionsModel;
         var availableMissionsConfigs = _configManager.DailyMissionsConfig.GetMissionsForLevel(playerModel.ProgressModel.Level)
-            .Where(CanAddMission)
             .ToList();
-        var newMissions = new List<DailyMissionModel>(MissionsCount);
 
         var safetyCounter = 1000;
         while (
-            newMissions.Count < MissionsCount
+            missionsModel.MissionsList.Count < MissionsCount
             && availableMissionsConfigs.Count > 0
             && safetyCounter > 0)
         {
@@ -104,19 +136,30 @@ public class MissionsSystem
             var chosenMissionConfig = availableMissionsConfigs[missionConfigIndex];
             if (chosenMissionConfig.Frequency >= currentFrequencyThreshold)
             {
-                var mission = CreateMission(chosenMissionConfig);
-                if (mission != null)
+                var needToRemoveMissionConfig = false;
+                if (CanAddMission(chosenMissionConfig))
                 {
-                    newMissions.Add(mission);
-                    if (_missionFactories[chosenMissionConfig.Key].IsMultipleAllowed == false)
+                    var mission = CreateMission(chosenMissionConfig);
+                    if (mission != null)
                     {
-                        availableMissionsConfigs.RemoveAt(missionConfigIndex);
+                        AddMission(mission);
                     }
+                    else
+                    {
+                        needToRemoveMissionConfig = true;
+                    }
+                }
+                else
+                {
+                    needToRemoveMissionConfig = true;
+                }
+
+                if (needToRemoveMissionConfig)
+                {
+                    availableMissionsConfigs.RemoveAt(missionConfigIndex);
                 }
             }
         }
-
-        newMissions.ForEach(AddMission);
     }
 
     private void AddMission(DailyMissionModel mission)
@@ -139,7 +182,8 @@ public class MissionsSystem
     {
         var completedMissions = _missionProcessors
             .Where(kvp => kvp.Key.IsCompleted)
-            .Select(kvp => kvp.Key);
+            .Select(kvp => kvp.Key)
+            .ToArray();
         foreach (var completedMission in completedMissions)
         {
             if (_missionProcessors.ContainsKey(completedMission))

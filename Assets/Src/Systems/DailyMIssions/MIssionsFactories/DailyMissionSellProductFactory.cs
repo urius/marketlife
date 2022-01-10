@@ -3,8 +3,7 @@ using UnityEngine;
 
 public class DailyMissionSellProductFactory : DailyMissionFactoryBase<DailyMissionSellProductProcessor>
 {
-    public override bool IsMultipleAllowed => true;
-
+    protected override bool IsMultipleAllowed => true;
     protected override string Key => MissionKeys.SellProduct;
 
     public override bool CanAdd()
@@ -24,7 +23,7 @@ public class DailyMissionSellProductFactory : DailyMissionFactoryBase<DailyMissi
         {
             var chosenProductConfig = productConfigs[Random.Next(0, productConfigs.Length)];
             var sellAmountPerHour = chosenProductConfig.Demand;
-            var targetValue = (int)Mathf.Max(1, Mathf.Lerp(sellAmountPerHour, 24 * sellAmountPerHour, complexityMultiplier));
+            var targetValue = (int)Mathf.Max(1, Mathf.Lerp(sellAmountPerHour, 12 * sellAmountPerHour, complexityMultiplier));
             var reward = ChooseReward(complexityMultiplier);
             return new DailyMissionSellProductModel(Key, 0, targetValue, 0, reward, isRewardTaken: false, chosenProductConfig);
         }

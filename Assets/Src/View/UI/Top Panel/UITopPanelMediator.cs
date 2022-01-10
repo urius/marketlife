@@ -25,6 +25,7 @@ public class UITopPanelMediator : MonoBehaviour
     private bool _isLevelUpInProgress;
     private int _updateGoldAnimationDelayMs = 0;
     private int _updateCashAnimationDelayMs = 0;
+    private int _updateExpAnimationDelayMs = 0;
 
     public void Awake()
     {
@@ -99,15 +100,20 @@ public class UITopPanelMediator : MonoBehaviour
         _moodBarView.HintableView.DisplayText = string.Format(_loc.GetLocalization(LocalizationKeys.HintTopPanelMoodFormat), _playerShopModel.SlotsFullnessPercent, _playerShopModel.ClarityPercent);
     }
 
-    private void UpdateExp(bool animated = false)
+    private async void UpdateExp(bool animated = false)
     {
         UpdateExpHint();
         var expAmount = _playerProgressModel.ExpAmount;
         var levelProgress = _playerProgressModel.LevelProgress;
         if (animated)
         {
-            _expBarView.SetAmountAnimatedAsync(expAmount);
+            if (_updateExpAnimationDelayMs > 0)
+            {
+                await UniTask.Delay(_updateExpAnimationDelayMs);
+                _updateExpAnimationDelayMs = 0;
+            }
             _expBarView.SetProgressAnimated(levelProgress);
+            await _expBarView.SetAmountAnimatedAsync(expAmount);
         }
         else
         {
@@ -143,6 +149,7 @@ public class UITopPanelMediator : MonoBehaviour
         _cashBarView.ButtonClicked += OnAddCashClicked;
         _dispatcher.UIRequestAddGoldFlyAnimation += OnUIRequestAddGoldFlyAnimation;
         _dispatcher.UIRequestAddCashFlyAnimation += OnUIRequestAddCashFlyAnimation;
+        _dispatcher.UIRequestAddExpFlyAnimation += OnUIRequestAddExpFlyAnimation;
     }
 
     private void OnUIRequestAddGoldFlyAnimation(Vector2 screenCoords, int amount)
@@ -170,6 +177,15 @@ public class UITopPanelMediator : MonoBehaviour
         }
     }
 
+    private void OnUIRequestAddExpFlyAnimation(Vector2 screenCoords, int amount)
+    {
+        _updateExpAnimationDelayMs = 500;
+        for (var i = 0; i < amount; i++)
+        {
+            AnimateFlyingExp(Random.insideUnitCircle * 100 + screenCoords);
+        }
+    }
+
     private void AnimateFlyingGold(Vector2 screenPos)
     {
         var image = CreateSpriteImage(_spritesProvider.GetGoldIcon(), screenPos);
@@ -181,6 +197,13 @@ public class UITopPanelMediator : MonoBehaviour
     {
         var image = CreateSpriteImage(_spritesProvider.GetCashIcon(), screenPos);
         var targetLocalPos = _animationsContainer.InverseTransformPoint(_cashBarView.transform.position);
+        AnimateFlying(image, targetLocalPos);
+    }
+
+    private void AnimateFlyingExp(Vector2 screenPos)
+    {
+        var image = CreateSpriteImage(_spritesProvider.GetStarIcon(isBig: false), screenPos);
+        var targetLocalPos = _animationsContainer.InverseTransformPoint(_expBarView.transform.position);
         AnimateFlying(image, targetLocalPos);
     }
 

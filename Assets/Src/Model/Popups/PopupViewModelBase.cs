@@ -26,4 +26,5 @@ public enum PopupType
     DailyBonus,
     Billboard,
     CashDesk,
+    DailyMissions,
 }

@@ -65,6 +65,7 @@ public class EventsHandleSystem
         _dispatcher.UIBottomPanelBuyFriendShopActionClicked += OnUIBottomPanelBuyFriendShopActionClicked;
         _dispatcher.UITopPanelAddMoneyClicked += OnUITopPanelAddMoneyClicked;
         _dispatcher.UIGetBonusButtonClicked += OnUIGetBonusButtonClicked;
+        _dispatcher.UIDailyMissionsButtonClicked += OnUIDailyMissionsButtonClicked;
         _dispatcher.UICompensationPopupTakeClicked += OnUICompensationPopupTakeClicked;
         _dispatcher.UIDailyBonusTakeClicked += OnUIDailyBonusTakeClicked;
         _dispatcher.UIMuteAudioClicked += OnUIMuteAudioClicked;
@@ -157,6 +158,11 @@ public class EventsHandleSystem
     private void OnUIGetBonusButtonClicked()
     {
         new ProcessBonusClickCommand().Execute();
+    }
+
+    private void OnUIDailyMissionsButtonClicked()
+    {
+        new ProcessDailyMissionsButtonClickCommand().Execute();
     }
 
     private void OnUIBottomPanelFriendClicked(FriendData friendData)

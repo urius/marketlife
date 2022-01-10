@@ -12,6 +12,9 @@ public class ColorsHolder : ScriptableObject
     public Color ReportPopupItemRightTextProfitColor;
     public Color ReportPopupItemPositiveActionColor;
     public Color ReportPopupItemNegativeActionColor;
+    [Space(10)]
+    public Color DailyMissionNewMissionsNotificationColor;
+    public Color DailyMissionCompletedMissionsNotificationColor;
 
     private void OnEnable()
     {

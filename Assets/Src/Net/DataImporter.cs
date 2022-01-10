@@ -39,7 +39,7 @@ public class DataImporter
         var bonusState = ToBonusState(dataDto.bonus);
         var settingsModel = ToSettingsModel(dataDto.settings);
         var externalActionsModel = ToExternalActionsModel(deserializedData.external_data);
-        var dailyMissionsModel = ToDailyMissionsModel(dataDto.missions);
+        var dailyMissionsModel = ToDailyMissionsModel(dataDto.daily_missions);
 
         return new UserModel(deserializedData.uid, shopProgress, shopModel, statsData, bonusState, dataDto.tutorial_steps, actionsDataModel, settingsModel, externalActionsModel, dailyMissionsModel);
     }

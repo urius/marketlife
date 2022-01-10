@@ -239,6 +239,16 @@ public class SpritesProvider
         return GetSprite(SpriteAtlasId.InterfaceAtlas, "Icon_Moon");
     }
 
+    public Sprite GetMissionsIcon()
+    {
+        return GetSprite(SpriteAtlasId.InterfaceAtlas, "icon_Checklist");
+    }
+
+    public Sprite GetGiftboxBlueIcon()
+    {
+        return GetSprite(SpriteAtlasId.InterfaceAtlas, "icon_giftbox_blue");
+    }
+
     public int GetMaxHairId()
     {
         if (_hairNumMax <= 0)

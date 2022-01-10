@@ -175,7 +175,7 @@ public class LocalizationKeys
     public static string PopupOfflineReportX2Profit = "popup_offline_report_x2_profit";
     public static string PopupOfflineReportX2Exp = "popup_offline_report_x2_exp";
     public static string PopupCashDeskTitle = "popup_cash_desk_title";
-    
+    public static string MissionDescriptionFormat = "mission_description_";
 
     public static string PopupLevelUpTitle = "popup_levelup_title";
     public static string PopupLevelUpMessage = "popup_levelup_message";
@@ -204,6 +204,9 @@ public class LocalizationKeys
     public static string PopupBillboardMessage = "popup_billboard_message";
     public static string PopupNotifyInactiveFriendTitle = "popup_notify_inactive_friend_title";
     public static string PopupNotifyInactiveFriendMessage = "popup_notify_inactive_friend_message";    
+    public static string PopupDailyMissionsTitle = "popup_daily_missions_title";
+    public static string PopupDailyMissionsRetreiveReward = "popup_daily_missions_retreive_reward";
+    public static string PopupDailyMissionsMissionCompleted = "popup_daily_missions_mission_completed";       
 
     public static string TutorialTitleDefault = "tutorial_title_default";
     public static string TutorialMessagePrefix = "tutorial_message_";

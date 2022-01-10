@@ -90,6 +90,11 @@ public struct SaveDataCommand
             result[Constants.FieldBillboard] = dataExporter.ExportBillboardState(shopModel.BillboardModel);
         }
 
+        if (CheckSaveField(saveFields, SaveField.DailyMissions))
+        {
+            result[Constants.DailyMissions] = dataExporter.ExportDailyMissions(userModel.DailyMissionsModel);
+        }
+
         return result;
     }
 

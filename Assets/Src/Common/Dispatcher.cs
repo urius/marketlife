@@ -19,9 +19,10 @@ public class Dispatcher
     public Action<bool> UITopPanelAddMoneyClicked = delegate { };
     public Action<Vector2, int> UIRequestAddCashFlyAnimation = delegate { };
     public Action<Vector2, int> UIRequestAddGoldFlyAnimation = delegate { };
+    public Action<Vector2, int> UIRequestAddExpFlyAnimation = delegate { };    
     public Action UIDispatchBillboardClick = delegate { };
     public Action<Vector3, float> UIRequestMoveCamera = delegate { };
-    public Action<SaveField> RequestMarkToSaveField = delegate { };    
+    public Action<SaveField> RequestMarkToSaveField = delegate { };
 
     public Action<int> UIBottomPanelPlaceShelfClicked = delegate { };
     public Action<int> UIBottomPanelPlaceFloorClicked = delegate { };
@@ -29,19 +30,19 @@ public class Dispatcher
     public Action<int> UIBottomPanelPlaceWindowClicked = delegate { };
     public Action<int> UIBottomPanelPlaceDoorClicked = delegate { };
     public Action<int> UIBottomPanelWarehouseSlotClicked = delegate { };
-    public Action UIBottomPanelExpandWarehouseClicked = delegate { };    
+    public Action UIBottomPanelExpandWarehouseClicked = delegate { };
     public Action<int> UIBottomPanelWarehouseQuickDeliverClicked = delegate { };
     public Action<int> UIBottomPanelWarehouseRemoveProductClicked = delegate { };
     public Action<FriendData> UIBottomPanelFriendClicked = delegate { };
-    public Action UIBottomPanelInviteFriendsClicked = delegate { };    
+    public Action UIBottomPanelInviteFriendsClicked = delegate { };
     public Action UIBottomPanelAutoPlaceClicked = delegate { };
     public Action<FriendShopActionId> UIBottomPanelFriendShopActionClicked = delegate { };
     public Action<FriendShopActionId> UIBottomPanelBuyFriendShopActionClicked = delegate { };
-    public Action<Vector3> UIFriendShopBottomPanelUserViewCreated = delegate { };    
+    public Action<Vector3> UIFriendShopBottomPanelUserViewCreated = delegate { };
     public Action UIMuteAudioClicked = delegate { };
     public Action UIMuteMusicClicked = delegate { };
     public Action UIScaleInClicked = delegate { };
-    public Action UIScaleOutClicked = delegate { };    
+    public Action UIScaleOutClicked = delegate { };
 
     public Action UIActionsRotateRightClicked = delegate { };
     public Action UIActionsRotateLeftClicked = delegate { };
@@ -64,8 +65,10 @@ public class Dispatcher
     public Action<UpgradesPopupItemViewModelBase> UIUpgradePopupBuyClicked = delegate { };
     public Action TutorialActionPerformed = delegate { };
     public Action<BankConfigItem> UIBankItemClicked = delegate { };
-    public Action<bool> UIBankAdsItemClicked = delegate { };    
+    public Action<bool> UIBankAdsItemClicked = delegate { };
     public Action UIGetBonusButtonClicked = delegate { };
+    public Action UIDailyMissionsButtonClicked = delegate { };
+    public Action<DailyMissionModel, Vector3> UITakeDailyMissionRewardClicked = delegate { };
     public Action<Vector3> UICompensationPopupTakeClicked = delegate { };
     public Action<Vector3[]> UIDailyBonusTakeClicked = delegate { };
     public Action<Vector3> UILevelUpShareClicked = delegate { };
@@ -100,7 +103,7 @@ public class Dispatcher
     public Action NotifyNotEnoughtMoney = delegate { };
 
     public Action RequestShowAdvert = delegate { };
-    public Action<string> RequestNotifyInactiveFriend = delegate { };    
+    public Action<string> RequestNotifyInactiveFriend = delegate { };
 
     public Action<bool> SaveStateChanged = delegate { };
     public Action<bool> TutorialSaveStateChanged = delegate { };
@@ -109,7 +112,7 @@ public class Dispatcher
     public Action<bool> SaveCompleted = delegate { };
     public Action<bool> SaveExternalDataCompleted = delegate { };
 
-    public Action<ProductModel> CustomerBuyProduct = delegate { };    
+    public Action<ProductModel> CustomerBuyProduct = delegate { };
 
     private static Lazy<Dispatcher> _instance = new Lazy<Dispatcher>();
     public static Dispatcher Instance => _instance.Value;

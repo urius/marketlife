@@ -61,6 +61,7 @@ public class SaveDataSystem
         var warehouseModel = _shopModel.WarehouseModel;
         var personalModel = _shopModel.PersonalModel;
         var playerExternalActionsModel = _playerModel.ExternalActionsModel;
+        var playerDailyMissionsModel = _playerModel.DailyMissionsModel;
 
         foreach (var kvp in _shopModel.ShopObjects)
         {
@@ -104,6 +105,8 @@ public class SaveDataSystem
         warehouseModel.SlotProductAmountChanged += OnWarehouseSlotProductAmountChanged;
         warehouseModel.SlotProductRemoved += OnWarehouseSlotProductRemoved;
         personalModel.PersonalWorkingTimeUpdated += OnPersonalWorkingTimeUpdated;
+        playerDailyMissionsModel.MissionAdded += OnMissionAdded;
+        playerDailyMissionsModel.MissionRemoved += OnMissionRemoved;
 
         _gameStateModel.GameStateChanged += OnGameStateChanged;
         _gameStateModel.ActionStateChanged += OnActionStateChanged;
@@ -113,6 +116,36 @@ public class SaveDataSystem
         _dispatcher.RequestMarkToSaveField += OnRequestMarkToSaveField;
 
         _updatesProvider.RealtimeSecondUpdate += OnRealtimeSecondUpdate;
+    }
+
+    private void OnMissionAdded(DailyMissionModel mission)
+    {
+        SubscribeOnMission(mission);
+        MarkToSaveField(SaveField.DailyMissions);
+    }
+
+    private void OnMissionRemoved(DailyMissionModel mission)
+    {
+        UnsubscribeFromMission(mission);
+        MarkToSaveField(SaveField.DailyMissions);
+    }
+
+    private void SubscribeOnMission(DailyMissionModel mission)
+    {
+        UnsubscribeFromMission(mission);
+        mission.RewardTaken += OnMissionStateChanged;
+        mission.ValueChanged += OnMissionStateChanged;
+    }
+
+    private void UnsubscribeFromMission(DailyMissionModel mission)
+    {
+        mission.RewardTaken -= OnMissionStateChanged;
+        mission.ValueChanged -= OnMissionStateChanged;
+    }
+
+    private void OnMissionStateChanged()
+    {
+        MarkToSaveField(SaveField.DailyMissions);
     }
 
     private void OnRequestMarkToSaveField(SaveField saveField)
@@ -460,5 +493,6 @@ public enum SaveField
     Bonus = 1 << 8,
     Settings = 1 << 9,
     Billboard = 1 << 10,
-    All = Progress | Personal | Warehouse | Design | ShopObjects | Unwashes | TutorialSteps | FriendsActionsData | Bonus | Settings | Billboard,
+    DailyMissions = 1 << 11,
+    All = Progress | Personal | Warehouse | Design | ShopObjects | Unwashes | TutorialSteps | FriendsActionsData | Bonus | Settings | Billboard | DailyMissions,
 }

@@ -39,7 +39,7 @@ public class DailyMissionChangeCashmanProcessor : DailyMissionProcessorBase
             var cashDeskModel = (popupViewModel as CashDeskPopupViewModel).CashDeskModel;
             var cashmanDressDataNew = GetCashmanDressData(cashDeskModel);
 
-            if (_cashmanDressData.Equals(cashmanDressDataNew))
+            if (_cashmanDressData.Equals(cashmanDressDataNew) == false)
             {
                 MissionModel.AddValue(1);
             }

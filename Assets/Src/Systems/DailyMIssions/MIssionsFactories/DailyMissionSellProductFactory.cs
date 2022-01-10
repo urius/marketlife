@@ -23,7 +23,7 @@ public class DailyMissionSellProductFactory : DailyMissionFactoryBase<DailyMissi
         {
             var chosenProductConfig = productConfigs[Random.Next(0, productConfigs.Length)];
             var sellAmountPerHour = chosenProductConfig.Demand;
-            var targetValue = (int)Mathf.Max(1, Mathf.Lerp(sellAmountPerHour, 12 * sellAmountPerHour, complexityMultiplier));
+            var targetValue = (int)Mathf.Max(1, Mathf.Lerp(sellAmountPerHour, 6 * sellAmountPerHour, complexityMultiplier));
             var reward = ChooseReward(complexityMultiplier);
             return new DailyMissionSellProductModel(Key, 0, targetValue, 0, reward, isRewardTaken: false, chosenProductConfig);
         }

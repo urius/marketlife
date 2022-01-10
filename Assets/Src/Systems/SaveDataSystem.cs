@@ -107,6 +107,10 @@ public class SaveDataSystem
         personalModel.PersonalWorkingTimeUpdated += OnPersonalWorkingTimeUpdated;
         playerDailyMissionsModel.MissionAdded += OnMissionAdded;
         playerDailyMissionsModel.MissionRemoved += OnMissionRemoved;
+        foreach (var mission in playerDailyMissionsModel.MissionsList)
+        {
+            SubscribeOnMission(mission);
+        }
 
         _gameStateModel.GameStateChanged += OnGameStateChanged;
         _gameStateModel.ActionStateChanged += OnActionStateChanged;

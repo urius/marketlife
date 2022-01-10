@@ -19,6 +19,7 @@ MonoBehaviour:
     a: 1}
   ReportPopupItemPositiveActionColor: {r: 0.44313726, g: 1, b: 0.34509805, a: 1}
   ReportPopupItemNegativeActionColor: {r: 1, g: 0.3160377, b: 0.3160377, a: 1}
-  DailyMissionNewMissionsNotificationColor: {r: 1, g: 0.94509804, b: 0, a: 1}
+  DailyMissionNewMissionsNotificationColor: {r: 0.003921569, g: 0.9137255, b: 0.9529412,
+    a: 1}
   DailyMissionCompletedMissionsNotificationColor: {r: 0.021137413, g: 0.8962264, b: 0.045159515,
     a: 1}

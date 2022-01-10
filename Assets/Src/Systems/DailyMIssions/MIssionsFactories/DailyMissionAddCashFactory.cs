@@ -29,7 +29,7 @@ public class DailyMissionAddCashFactory : DailyMissionFactoryBase<DailyMissionAd
         var targetProfitPerHour = productConfigsToUse.Sum(p => p.ProfitPer1000v);
         if (targetProfitPerHour > 0)
         {
-            var targetValue = targetProfitPerHour * (int)Mathf.Max(1, Mathf.Lerp(1, 24, complexityMultiplier));
+            var targetValue = targetProfitPerHour * (int)Mathf.Max(1, Mathf.Lerp(1, 6, complexityMultiplier));
             var reward = ChooseReward(complexityMultiplier);
             return new DailyMissionModel(Key, 0, targetValue, 0, reward);
         }

@@ -29,7 +29,7 @@ public class DailyMissionAddShelfsFactory : DailyMissionFactoryBase<DailyMission
             var chosenShelfNumericId = chosenShelfConfig.NumericId;
             var currentShelfCount = playerModel.ShopModel.ShopObjects
                 .Count(s => s.Value.Type == ShopObjectType.Shelf && s.Value.NumericId == chosenShelfNumericId);
-            var additionalShelfsCount = Math.Max(1, (int)Mathf.Lerp(1, 2 * playerModel.ProgressModel.Level, complexityMultiplier));
+            var additionalShelfsCount = Math.Max(1, (int)Mathf.Lerp(1, 2 + playerModel.ProgressModel.Level, complexityMultiplier));
             var targetShelfCount = currentShelfCount + additionalShelfsCount;
             var reward = ChooseReward(complexityMultiplier);
             result = new DailyMissionAddShelfsModel(

@@ -38,10 +38,12 @@ public class UIDailyMissionsButtonMediator : IMediator
     {
         _buttonView.gameObject.SetActive(_playerMissionsModel.MissionsList.Count > 0);
 
+        _buttonView.SetNotificationCheckVisibility(false);
         if (HaveCompletedMissions())
         {
             _buttonView.SetNotificationColor(_colorsHolder.DailyMissionCompletedMissionsNotificationColor);
             _buttonView.SetNotificationVisibility(true);
+            _buttonView.SetNotificationCheckVisibility(true);
         }
         else if (_newMissionsNotificationFlag == true)
         {

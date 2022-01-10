@@ -8,6 +8,7 @@ public class UIDailyMIssionsButtonView : MonoBehaviour
 
     [SerializeField] private Button _button;
     [SerializeField] private Image _notificationPointImage;
+    [SerializeField] private Image _notificationCheckImage;
 
     public void SetNotificationVisibility(bool isVisible)
     {
@@ -19,9 +20,15 @@ public class UIDailyMIssionsButtonView : MonoBehaviour
         _notificationPointImage.color = color;
     }
 
+    public void SetNotificationCheckVisibility(bool isVisible)
+    {
+        _notificationCheckImage.gameObject.SetActive(isVisible);
+    }
+
     private void Awake()
     {
         SetNotificationVisibility(false);
+        SetNotificationCheckVisibility(false);
         _button.AddOnClickListener(OnButtonClicked);
     }
 

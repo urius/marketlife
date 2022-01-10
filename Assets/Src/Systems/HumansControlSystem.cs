@@ -339,7 +339,7 @@ public class HumansControlSystem
                     var productBuyInfo = GetProductInfoForBuying(slot.Product);
                     var moodMultiplier = _viewingUserModel.ShopModel.MoodMultiplier;
                     if (productBuyInfo.TakenAmount < productBuyInfo.CanTakeMaxAmount
-                        || (moodMultiplier >= 0.5
+                        || (customer.Products.Count <= 0
                             && Random.Range(0, 2) <= moodMultiplier))
                     {
                         var product = slot.Product;
@@ -368,7 +368,7 @@ public class HumansControlSystem
     private void StartBehaviourAfterShelfVisit(CustomerModel customer)
     {
         customer.ToIdleState();
-        if (customer.ShelfsVisited > _viewingShopModel.MoodMultiplier * 5)
+        if (customer.ShelfsVisited > Random.Range(0, _viewingShopModel.MoodMultiplier * 5))
         {
             if (customer.Products.Count > 0)
             {

@@ -118,8 +118,14 @@ public class SaveDataSystem
         _gameStateModel.ViewingUserModelChanged += OnViewingUserModelChanged;
 
         _dispatcher.RequestMarkToSaveField += OnRequestMarkToSaveField;
+        _dispatcher.RequestTriggerSave += OnRequestTriggerSave;
 
         _updatesProvider.RealtimeSecondUpdate += OnRealtimeSecondUpdate;
+    }
+
+    private void OnRequestTriggerSave()
+    {
+        TriggerSave();
     }
 
     private void OnMissionAdded(DailyMissionModel mission)

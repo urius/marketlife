@@ -58,15 +58,15 @@ public class MissionsSystem
             switch (missionReward.Type)
             {
                 case RewardType.Cash:
-                    _dispatcher.UIRequestAddCashFlyAnimation(screenPoint, Mathf.Clamp((int)(missionReward.Amount * 0.001), 1, 5));
+                    _dispatcher.UIRequestAddCashFlyAnimation(screenPoint, Mathf.Clamp((int)(missionReward.Amount * 0.002), 1, 10));
                     _playerModelHolder.UserModel.AddCash(missionReward.Amount);
                     break;
                 case RewardType.Gold:
-                    _dispatcher.UIRequestAddGoldFlyAnimation(screenPoint, Mathf.Clamp((int)(missionReward.Amount * 0.01), 1, 5));
+                    _dispatcher.UIRequestAddGoldFlyAnimation(screenPoint, Mathf.Clamp((int)(missionReward.Amount * 1), 1, 10));
                     _playerModelHolder.UserModel.AddGold(missionReward.Amount);
                     break;
                 case RewardType.Exp:
-                    _dispatcher.UIRequestAddExpFlyAnimation(screenPoint, Mathf.Clamp((int)(missionReward.Amount * 0.001), 1, 5));
+                    _dispatcher.UIRequestAddExpFlyAnimation(screenPoint, Mathf.Clamp((int)(missionReward.Amount * 0.02), 1, 10));
                     _playerModelHolder.UserModel.AddExp(missionReward.Amount);
                     break;
             }
@@ -79,15 +79,17 @@ public class MissionsSystem
     {
         if (currentState == GameStateName.ReadyForStart)
         {
+            var isNewDay = IsNewDay();
             var dailyMissionsModel = _playerModelHolder.UserModel.DailyMissionsModel;
-            if (IsNewDay() || dailyMissionsModel.MissionsList.Count <= 0)
+            if (isNewDay || dailyMissionsModel.MissionsList.Count <= 0)
             {
                 dailyMissionsModel.Clear();
                 CreateMissionModels();
             }
-            else
+            CreateMissionProcessors();
+            if (isNewDay == false)
             {
-                CreateMissionProcessors();
+                StartCreatedProcessors();
             }
         }
         else if (prevState == GameStateName.ReadyForStart
@@ -95,7 +97,7 @@ public class MissionsSystem
         {
             if (IsNewDay())
             {
-                CreateMissionProcessors();
+                StartCreatedProcessors();
             }
         }
     }
@@ -110,9 +112,19 @@ public class MissionsSystem
 
         foreach (var mission in _playerModelHolder.UserModel.DailyMissionsModel.MissionsList)
         {
-            var processor = _missionFactories[mission.Key].CreateProcessor(mission);
-            _missionProcessors[mission] = processor;
-            processor.Start();
+            if (mission.IsCompleted == false)
+            {
+                var processor = _missionFactories[mission.Key].CreateProcessor(mission);
+                _missionProcessors[mission] = processor;
+            }
+        }
+    }
+
+    private void StartCreatedProcessors()
+    {
+        foreach (var kvp in _missionProcessors)
+        {
+            kvp.Value.Start();
         }
     }
 

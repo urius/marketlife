@@ -98,4 +98,5 @@ public struct MissionConfigDto
     public int unlock_level;
     public int frequency;
     public string reward;
+    public int max_complexity_factor;
 }

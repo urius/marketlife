@@ -23,6 +23,7 @@ public class Dispatcher
     public Action UIDispatchBillboardClick = delegate { };
     public Action<Vector3, float> UIRequestMoveCamera = delegate { };
     public Action<SaveField> RequestMarkToSaveField = delegate { };
+    public Action RequestTriggerSave = delegate { };    
 
     public Action<int> UIBottomPanelPlaceShelfClicked = delegate { };
     public Action<int> UIBottomPanelPlaceFloorClicked = delegate { };

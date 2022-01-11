@@ -18,12 +18,12 @@ public class DailyMissionSellProductFactory : DailyMissionFactoryBase<DailyMissi
         var playerModel = PlayerModelHolder.Instance.UserModel;
         var productConfigs = productsConfig.GetProductConfigsForLevel(playerModel.ProgressModel.Level)
             .Where(HaveNoSameMissionWithProduct)
-            .ToArray();
+            .ToArray();        
         if (productConfigs.Length > 0)
         {
             var chosenProductConfig = productConfigs[Random.Next(0, productConfigs.Length)];
             var sellAmountPerHour = chosenProductConfig.Demand;
-            var targetValue = (int)Mathf.Max(1, Mathf.Lerp(sellAmountPerHour, 6 * sellAmountPerHour, complexityMultiplier));
+            var targetValue = (int)Mathf.Max(1, Mathf.Lerp(sellAmountPerHour, MissionConfig.MaxComplexityFactor * sellAmountPerHour, complexityMultiplier));
             var reward = ChooseReward(complexityMultiplier);
             return new DailyMissionSellProductModel(Key, 0, targetValue, 0, reward, isRewardTaken: false, chosenProductConfig);
         }

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class HandleDebugKeyboardShortcutsSystem
@@ -6,12 +5,14 @@ public class HandleDebugKeyboardShortcutsSystem
     private UpdatesProvider _updatesProvider;
     private GameStateModel _gameStateModel;
     private PlayerModelHolder _playerModelHolder;
+    private Dispatcher _dispatcher;
 
     public void Start()
     {
         _updatesProvider = UpdatesProvider.Instance;
         _gameStateModel = GameStateModel.Instance;
         _playerModelHolder = PlayerModelHolder.Instance;
+        _dispatcher = Dispatcher.Instance;
 
         Activate();
     }
@@ -42,6 +43,17 @@ public class HandleDebugKeyboardShortcutsSystem
         {
             HandleAddCash();
         }
+
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            ResetMissions();
+        }
+    }
+
+    private void ResetMissions()
+    {
+        _playerModelHolder.UserModel.DailyMissionsModel.Clear();
+        _dispatcher.RequestTriggerSave();
     }
 
     private void HandleAddCash()

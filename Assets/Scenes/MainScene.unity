@@ -4681,7 +4681,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _debugUid: 48982
-  _disableSave: 0
+  _disableSave: 1
   _disableTutorial: 1
   _loadDebugConfigVersion: 0
   _assetBundlesLoader: {fileID: 11400000, guid: fbf27b609d1b04c23bbb3665f6bf7a19,

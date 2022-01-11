@@ -403,13 +403,15 @@ public class MissionConfig
     public readonly int UnlockLevel;
     public readonly int Frequency;
     public readonly MissionRewardConfig[] RewardConfigs;
+    public readonly int MaxComplexityFactor;
 
-    public MissionConfig(string key, int unlockLevel, int frequency, MissionRewardConfig[] rewardConfigs)
+    public MissionConfig(string key, int unlockLevel, int frequency, MissionRewardConfig[] rewardConfigs, int maxComplexityFactor)
     {
         Key = key;
         UnlockLevel = unlockLevel;
         Frequency = frequency;
         RewardConfigs = rewardConfigs;
+        MaxComplexityFactor = maxComplexityFactor;
     }
 }
 

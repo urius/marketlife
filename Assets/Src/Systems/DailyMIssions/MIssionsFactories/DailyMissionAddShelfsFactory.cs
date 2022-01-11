@@ -20,7 +20,9 @@ public class DailyMissionAddShelfsFactory : DailyMissionFactoryBase<DailyMission
         var shelfConfigsForLevel = GameConfigManager.Instance.ShelfsConfig.GetShelfConfigsForLevel(playerModel.ProgressModel.Level);
         var currentMissionsList = playerModel.DailyMissionsModel.MissionsList;
         var availableShelfsConfigsForMission = shelfConfigsForLevel.Where(
-            c => false == currentMissionsList.Any(m => (m as DailyMissionAddShelfsModel).ShelfNumericId == c.NumericId))
+            c => false == currentMissionsList.Any(
+                m => m.Key == MissionKeys.AddShelfs
+                && (m as DailyMissionAddShelfsModel).ShelfNumericId == c.NumericId))
             .ToArray();
         if (availableShelfsConfigsForMission.Length > 0)
         {

@@ -80,7 +80,8 @@ public class GameConfigManager
         foreach (var configDto in missionsConfigRaw)
         {
             var rewardConfigs = ToMissionRewardConfigs(configDto.reward);
-            var missionConfig = new MissionConfig(configDto.key, configDto.unlock_level, configDto.frequency, rewardConfigs);
+            var maxComplexityFactor = configDto.max_complexity_factor <= 0 ? 1 : configDto.max_complexity_factor;
+            var missionConfig = new MissionConfig(configDto.key, configDto.unlock_level, configDto.frequency, rewardConfigs, maxComplexityFactor);
             result[i] = missionConfig;
             i++;
         }

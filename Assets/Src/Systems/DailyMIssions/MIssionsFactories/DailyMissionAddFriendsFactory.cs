@@ -8,7 +8,7 @@ public class DailyMissionAddFriendsFactory : DailyMissionFactoryBase<DailyMissio
     public override DailyMissionModel CreateModel(float complexityMultiplier)
     {
         var friendsDataHolder = FriendsDataHolder.Instance; ;
-        var additionalFriendsCount = Math.Max(1, (int)Mathf.Lerp(1, 5, complexityMultiplier));
+        var additionalFriendsCount = Math.Max(1, (int)Mathf.Lerp(1, MissionConfig.MaxComplexityFactor, complexityMultiplier));
         var totalFriendsCount = friendsDataHolder.InGameFriendsCount;
         var targetFriendsCount = totalFriendsCount + additionalFriendsCount;
         var reward = ChooseReward(complexityMultiplier);

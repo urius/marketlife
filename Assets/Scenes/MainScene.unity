@@ -7616,6 +7616,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _button: {fileID: 1512013715}
+  _iconImage: {fileID: 1512013716}
   _notificationPointImage: {fileID: 910083102}
   _notificationCheckImage: {fileID: 2121928354}
 --- !u!1 &1518942245

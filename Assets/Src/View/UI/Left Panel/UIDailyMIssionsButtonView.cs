@@ -7,8 +7,14 @@ public class UIDailyMIssionsButtonView : MonoBehaviour
     public event Action OnClick = delegate { };
 
     [SerializeField] private Button _button;
+    [SerializeField] private Image _iconImage;
     [SerializeField] private Image _notificationPointImage;
     [SerializeField] private Image _notificationCheckImage;
+
+    public void SetIconImageAlpha(float alpha)
+    {
+        _iconImage.color = _iconImage.color.SetAlpha(alpha);
+    }
 
     public void SetNotificationVisibility(bool isVisible)
     {

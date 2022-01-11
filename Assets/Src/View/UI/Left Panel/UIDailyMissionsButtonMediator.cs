@@ -37,7 +37,8 @@ public class UIDailyMissionsButtonMediator : IMediator
     private void UpdateButtonView()
     {
         _buttonView.gameObject.SetActive(_playerMissionsModel.MissionsList.Count > 0);
-
+        var allRewardsTaken = _playerMissionsModel.MissionsList.All(m => m.IsRewardTaken);
+        _buttonView.SetIconImageAlpha(allRewardsTaken ? 0.5f : 1f);
         _buttonView.SetNotificationCheckVisibility(false);
         if (HaveCompletedMissions())
         {

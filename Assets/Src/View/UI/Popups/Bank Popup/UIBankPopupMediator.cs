@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,11 +10,11 @@ public class UIBankPopupMediator : UIContentPopupMediator
     private readonly SpritesProvider _spritesProvider;
     private readonly Dispatcher _dispatcher;
     private readonly GameStateModel _gameStateModel;
-    private readonly Dictionary<UIBankPopupItemView, BankItemViewModel> _modelByViewDict = new Dictionary<UIBankPopupItemView, BankItemViewModel>();
+    private readonly Dictionary<UIBankPopupItemView, IBankItemViewModel> _modelByViewDict = new Dictionary<UIBankPopupItemView, IBankItemViewModel>();
 
     private UITabbedContentPopupView _popupView;
     private int _currentTabIndex;
-    private IEnumerable<BankItemViewModel> _viewModelsToDisplay;
+    private IEnumerable<IBankItemViewModel> _viewModelsToDisplay;
     private BankPopupViewModel _viewModel;
 
     public UIBankPopupMediator(RectTransform parentTransform)
@@ -109,38 +110,45 @@ public class UIBankPopupMediator : UIContentPopupMediator
         }
     }
 
-    private void PutItem(BankItemViewModel viewModel)
+    private void PutItem(IBankItemViewModel viewModel)
     {
-        var rectTransform = GetOrCreateItemToDisplay(viewModel.IsAds ? _prefabsHolder.UIBankPopupAdsItemPrefab : _prefabsHolder.UIBankPopupItemPrefab);
+        var isAdvertItem = viewModel.RetrieveMethodType == BankItemRetrieveMethodType.Advert;
+        var rectTransform = GetOrCreateItemToDisplay(isAdvertItem ? _prefabsHolder.UIBankPopupAdsItemPrefab : _prefabsHolder.UIBankPopupItemPrefab);
         var itemView = rectTransform.GetComponent<UIBankPopupItemView>();
         SetupItemView(itemView, viewModel);
         ActivateItemView(itemView);
         _modelByViewDict[itemView] = viewModel;
     }
 
-    private void SetupItemView(UIBankPopupItemView itemView, BankItemViewModel viewModel)
+    private void SetupItemView(UIBankPopupItemView itemView, IBankItemViewModel viewModel)
     {
-        itemView.SetAvailable(viewModel.IsAvailable);
-
         itemView.SetIconSprite(viewModel.IsGold ? _spritesProvider.GetGoldIcon() : _spritesProvider.GetCashIcon());
         itemView.SetAmountText(FormattingHelper.ToCommaSeparatedNumber(viewModel.Value));
-        if (viewModel.IsAds == true)
+        itemView.SetExtraPercentText(string.Empty);
+        if (viewModel.RetrieveMethodType == BankItemRetrieveMethodType.Advert)
         {
-            itemView.SetPriceText(_loc.GetLocalization(LocalizationKeys.PopupBankAdsItemText));
+            SetupAdvertItem(itemView, viewModel as BankAdvertItemViewModel);
         }
-        else
+        else if (viewModel.RetrieveMethodType == BankItemRetrieveMethodType.RealBuy)
         {
-            itemView.SetPriceText(FormattingHelper.ToCommaSeparatedNumber(viewModel.Price) + $" {_loc.GetLocalization($"{LocalizationKeys.CommonPayCurrencyNamePlural}{PluralsHelper.GetPlural(viewModel.Price)}")}");
+            SetupBuyableItem(itemView, viewModel as BankBuyableItemViewModel);
         }
+    }
+
+    private void SetupBuyableItem(UIBankPopupItemView itemView, BankBuyableItemViewModel viewModel)
+    {
+        itemView.SetAvailable(viewModel.IsAvailable);
+        itemView.SetPriceText(FormattingHelper.ToCommaSeparatedNumber(viewModel.Price) + $" {_loc.GetLocalization($"{LocalizationKeys.CommonPayCurrencyNamePlural}{PluralsHelper.GetPlural(viewModel.Price)}")}");
 
         if (viewModel.ExtraPercent > 0)
         {
             itemView.SetExtraPercentText($"(+{viewModel.ExtraPercent}%)");
         }
-        else
-        {
-            itemView.SetExtraPercentText(string.Empty);
-        }
+    }
+
+    private void SetupAdvertItem(UIBankPopupItemView itemView, BankAdvertItemViewModel bankAdvertItemViewModel)
+    {
+        itemView.SetPriceText(_loc.GetLocalization(LocalizationKeys.PopupBankAdsItemText));
     }
 
     private void ActivateItemView(UIBankPopupItemView view)
@@ -156,13 +164,13 @@ public class UIBankPopupMediator : UIContentPopupMediator
     private void OnViewClicked(UIBankPopupItemView view)
     {
         var viewModel = _modelByViewDict[view];
-        if (viewModel.IsAds == true)
+        if (viewModel.RetrieveMethodType == BankItemRetrieveMethodType.Advert)
         {
             _dispatcher.UIBankAdsItemClicked(viewModel.IsGold);
         }
         else
         {
-            _dispatcher.UIBankItemClicked(viewModel.GetBankconfigItem());
+            _dispatcher.UIBankItemClicked((viewModel as BankBuyableItemViewModel).GetBankconfigItem());
         }
     }
 }

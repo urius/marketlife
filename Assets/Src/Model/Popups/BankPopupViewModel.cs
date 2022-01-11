@@ -23,8 +23,8 @@ public class BankPopupViewModel : PopupViewModelBase
         _bankConfig.ItemsUpdated += OnConfigItemsUpdated;
     }
 
-    public BankItemViewModel[] GoldItems { get; private set; }
-    public BankItemViewModel[] CashItems { get; private set; }
+    public IBankItemViewModel[] GoldItems { get; private set; }
+    public IBankItemViewModel[] CashItems { get; private set; }
 
     public override PopupType PopupType => PopupType.Bank;
 
@@ -41,50 +41,69 @@ public class BankPopupViewModel : PopupViewModelBase
 
     private void UpdateItems()
     {
-        GoldItems = new[] { new BankItemViewModel(isGold: true, goldReward: _mainConfig.BankAdvertRewardGold) }
+        GoldItems = new IBankItemViewModel[] { new BankAdvertItemViewModel(isGold: true, value: _mainConfig.BankAdvertRewardGold) }
             .Concat(_bankConfig.GoldItems
-            .Select(c => new BankItemViewModel(c, _isBuyInBankAllowed)))
+            .Select(c => new BankBuyableItemViewModel(c, _isBuyInBankAllowed)))
             .ToArray();
-        CashItems = new[] { new BankItemViewModel(isGold: false, goldReward: _mainConfig.BankAdvertRewardGold) }
+        CashItems = new IBankItemViewModel[] { new BankAdvertItemViewModel(isGold: false, value: _mainConfig.BankAdvertRewardGold * CalculationHelper.GetGoldToCashConversionRate()) }
             .Concat(_bankConfig.CashItems
-            .Select(c => new BankItemViewModel(c, _isBuyInBankAllowed)))
+            .Select(c => new BankBuyableItemViewModel(c, _isBuyInBankAllowed)))
             .ToArray();
 
         ItemsUpdated();
     }
 }
 
-public class BankItemViewModel
+public enum BankItemRetrieveMethodType
 {
-    public readonly bool IsAds;
-    public readonly bool IsGold;
-    public readonly int Value;
+    None,
+    Advert,
+    RealBuy,
+}
+
+public interface IBankItemViewModel
+{
+    BankItemRetrieveMethodType RetrieveMethodType { get; }
+    bool IsGold { get; }
+    int Value { get; }
+}
+
+public class BankAdvertItemViewModel : IBankItemViewModel
+{
+    private bool _isGold;
+    private int _value;
+
+    public BankAdvertItemViewModel(bool isGold, int value)
+    {
+        _isGold = isGold;
+        _value = value;
+    }
+
+    public BankItemRetrieveMethodType RetrieveMethodType => BankItemRetrieveMethodType.Advert;
+    public bool IsGold => _isGold;
+    public int Value => _value;
+}
+
+public class BankBuyableItemViewModel : IBankItemViewModel
+{
     public readonly int Price;
     public readonly int ExtraPercent;
     public readonly bool IsAvailable = true;
 
     private readonly BankConfigItem _bankConfigItem;
 
-    public BankItemViewModel(bool isGold, int goldReward)
+    public BankBuyableItemViewModel(BankConfigItem bankConfigItem, bool isAvailable)
     {
-        IsAds = true;
-        IsGold = isGold;
-        Value = isGold ? goldReward : goldReward * CalculationHelper.GetGoldToCashConversionRate();
-        Price = 0;
-        ExtraPercent = 0;
-    }
+        _bankConfigItem = bankConfigItem;
 
-    public BankItemViewModel(BankConfigItem bankConfigItem, bool isAvailable)
-    {
-        IsAds = false;
-        IsGold = bankConfigItem.IsGold;
-        Value = bankConfigItem.Value;
         Price = bankConfigItem.Price;
         ExtraPercent = bankConfigItem.ExtraPercent;
         IsAvailable = isAvailable;
-
-        _bankConfigItem = bankConfigItem;
     }
+
+    public BankItemRetrieveMethodType RetrieveMethodType => BankItemRetrieveMethodType.RealBuy;
+    bool IBankItemViewModel.IsGold => _bankConfigItem.IsGold;
+    int IBankItemViewModel.Value => _bankConfigItem.Value;
 
     public BankConfigItem GetBankconfigItem()
     {

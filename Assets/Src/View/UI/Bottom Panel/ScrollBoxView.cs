@@ -82,25 +82,25 @@ public class ScrollBoxView : MonoBehaviour
     private void OnScrollRigthClick()
     {
         AnimateScrollButton(_scrollRight, 15);
-        var _ = ProcessScrollAsync(1);
+        var _ = ProcessScrollAsync(6);
     }
 
     private void OnRewindRigthClick()
     {
         AnimateScrollButton(_rewindRight, 15);
-        var _ = ProcessScrollAsync(3);
+        var _ = ProcessScrollAsync(9999);
     }
 
     private void OnScrollLeftClick()
     {
         AnimateScrollButton(_scrollLeft, -15);
-        var _ = ProcessScrollAsync(-1);
+        var _ = ProcessScrollAsync(-6);
     }
 
     private void OnRewindLeftClick()
     {
         AnimateScrollButton(_rewindLeft, -15);
-        var _ = ProcessScrollAsync(-3);
+        var _ = ProcessScrollAsync(-9999);
     }
 
     private async UniTaskVoid ProcessScrollAsync(int delta)

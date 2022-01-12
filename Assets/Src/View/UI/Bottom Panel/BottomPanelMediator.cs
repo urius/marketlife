@@ -12,7 +12,8 @@ public class BottomPanelMediator : UINotMonoMediatorBase
     private readonly GameConfigManager _configManager;
     private readonly AudioManager _audioManager;
     private readonly TutorialUIElementsProvider _tutorialUIElementsProvider;
-    private readonly Dictionary<GameStateName, IMediator> _lastTabMediatorForState = new Dictionary<GameStateName, IMediator>();
+    private readonly Dictionary<BottomPanelSimulationModeTab, IMediator> _simulationModeMediators = new Dictionary<BottomPanelSimulationModeTab, IMediator>();
+    private readonly Dictionary<BottomPanelInteriorModeTab, IMediator> _interiorModeMediators = new Dictionary<BottomPanelInteriorModeTab, IMediator>();
 
     private IMediator _currentTabMediator;
 
@@ -61,25 +62,39 @@ public class BottomPanelMediator : UINotMonoMediatorBase
 
     private IMediator GetSimulationModeTabMediator()
     {
-        return _viewModel.SimulationModeTab switch
+        var tab = _viewModel.SimulationModeTab;
+        if (_simulationModeMediators.TryGetValue(tab, out IMediator result) == false)
         {
-            BottomPanelSimulationModeTab.Friends => new UIBottomPanelFriendsTabMediator(_view),
-            BottomPanelSimulationModeTab.Warehouse => new UIBottomPanelWarehouseTabMediator(_view),
-            _ => throw new InvalidOperationException($"{nameof(GetSimulationModeTabMediator)}i: interior tab {_viewModel.InteriorModeTab} is not supported"),
-        };
+            result = _viewModel.SimulationModeTab switch
+            {
+
+                BottomPanelSimulationModeTab.Friends => new UIBottomPanelFriendsTabMediator(_view),
+                BottomPanelSimulationModeTab.Warehouse => new UIBottomPanelWarehouseTabMediator(_view),
+                _ => throw new InvalidOperationException($"{nameof(GetSimulationModeTabMediator)}i: interior tab {_viewModel.InteriorModeTab} is not supported"),
+            };
+            _simulationModeMediators[tab] = result;
+        }
+
+        return result;
     }
 
     private IMediator GetInteriorModeTabMediator()
     {
-        return _viewModel.InteriorModeTab switch
+        var tab = _viewModel.InteriorModeTab;
+        if (_interiorModeMediators.TryGetValue(tab, out IMediator result) == false)
         {
-            BottomPanelInteriorModeTab.Shelfs => new UIBottomPanelShelfsTabMediator(_view),
-            BottomPanelInteriorModeTab.Floors => new UIBottomPanelFloorsTabMediator(_view),
-            BottomPanelInteriorModeTab.Walls => new UIBottomPanelWallsTabMediator(_view),
-            BottomPanelInteriorModeTab.Windows => new UIBottomPanelWindowsTabMediator(_view),
-            BottomPanelInteriorModeTab.Doors => new UIBottomPanelDoorsTabMediator(_view),
-            _ => throw new InvalidOperationException($"{nameof(GetInteriorModeTabMediator)}: interior tab {_viewModel.InteriorModeTab} is not supported"),
-        };
+            result = _viewModel.InteriorModeTab switch
+            {
+                BottomPanelInteriorModeTab.Shelfs => new UIBottomPanelShelfsTabMediator(_view),
+                BottomPanelInteriorModeTab.Floors => new UIBottomPanelFloorsTabMediator(_view),
+                BottomPanelInteriorModeTab.Walls => new UIBottomPanelWallsTabMediator(_view),
+                BottomPanelInteriorModeTab.Windows => new UIBottomPanelWindowsTabMediator(_view),
+                BottomPanelInteriorModeTab.Doors => new UIBottomPanelDoorsTabMediator(_view),
+                _ => throw new InvalidOperationException($"{nameof(GetInteriorModeTabMediator)}: interior tab {_viewModel.InteriorModeTab} is not supported"),
+            };
+            _interiorModeMediators[tab] = result;
+        }
+        return result;
     }
 
     private void Activate()
@@ -242,7 +257,6 @@ public class BottomPanelMediator : UINotMonoMediatorBase
     {
         _currentTabMediator.Unmediate();
         _currentTabMediator = tabMediator;
-        _lastTabMediatorForState[_gameStateModel.GameState] = _currentTabMediator;
         _currentTabMediator.Mediate();
     }
 

@@ -1,14 +1,57 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
-public class AdvertViewStateModel
+public class AdvertViewStateModel : IBankAdvertWatchStateProvider
 {
     public static readonly AdvertViewStateModel Instance = new AdvertViewStateModel();
 
     public event Action<AdvertTargetType> WatchStateChanged = delegate { };
+    public event Action BankAdvertWatchesCountChanged = delegate { };
+    public event Action BankAdvertWatchTimeChanged = delegate { };
+
+    private const string BankAdvertWatchesCountKey = "bank_advert_watches_count";
+    private const string BankAdvertWatchTimeKey = "bank_advert_watch_time";
 
     private Dictionary<AdvertTargetType, AdvertWatchState> _advertStates = new Dictionary<AdvertTargetType, AdvertWatchState>();
     private AdvertTargetType _lastPreparedTarget;
+    private int _bankAdvertWatchesCount = -1;
+    private int _bankAdvertWatchTime = -1;
+
+    public int BankAdvertWatchesCount
+    {
+        get
+        {
+            if (_bankAdvertWatchesCount < 0)
+            {
+                _bankAdvertWatchesCount = PlayerPrefs.GetInt(BankAdvertWatchesCountKey, 0);
+            }
+            return _bankAdvertWatchesCount;
+        }
+        set
+        {
+            _bankAdvertWatchesCount = value;
+            PlayerPrefs.SetInt(BankAdvertWatchesCountKey, _bankAdvertWatchesCount);
+            BankAdvertWatchesCountChanged();
+        }
+    }
+    public int BankAdvertWatchTime
+    {
+        get
+        {
+            if (_bankAdvertWatchTime < 0)
+            {
+                _bankAdvertWatchTime = PlayerPrefs.GetInt(BankAdvertWatchTimeKey, 0);
+            }
+            return _bankAdvertWatchTime;
+        }
+        set
+        {
+            _bankAdvertWatchTime = value;
+            PlayerPrefs.SetInt(BankAdvertWatchTimeKey, _bankAdvertWatchTime);
+            BankAdvertWatchTimeChanged();
+        }
+    }
 
     public void PrepareTarget(AdvertTargetType target)
     {
@@ -62,6 +105,15 @@ public class AdvertViewStateModel
             _ => AdvertTargetType.None,
         };
     }
+}
+
+public interface IBankAdvertWatchStateProvider
+{
+    event Action BankAdvertWatchesCountChanged;
+    event Action BankAdvertWatchTimeChanged;
+
+    int BankAdvertWatchesCount { get; }
+    int BankAdvertWatchTime { get; }
 }
 
 public enum AdvertTargetType

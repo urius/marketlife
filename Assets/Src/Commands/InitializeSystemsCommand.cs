@@ -10,5 +10,6 @@ public struct InitializeSystemsCommand
         new MusicControlSystem().Start();
         new NotificationsSystem().Start();
         new MissionsSystem().Start();
+        new AdvertProcessCooldownSystem().Start();
     }
 }

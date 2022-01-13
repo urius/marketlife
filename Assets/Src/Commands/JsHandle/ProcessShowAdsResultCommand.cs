@@ -29,7 +29,10 @@ public struct ProcessShowAdsResultCommand
                             playerModel.AddCash(mainConfig.BankAdvertRewardGold * CalculationHelper.GetGoldToCashConversionRate());
                             advertViewStateModel.ResetTarget(AdvertTargetType.BankCash);
                         }
-                        gameStateModel.RemoveCurrentPopupIfNeeded();
+
+                        advertViewStateModel.BankAdvertWatchTime = gameStateModel.ServerTime;
+                        advertViewStateModel.BankAdvertWatchesCount++;
+                        //gameStateModel.RemoveCurrentPopupIfNeeded();
                         break;
                 }
             }

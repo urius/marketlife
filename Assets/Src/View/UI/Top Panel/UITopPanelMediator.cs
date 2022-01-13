@@ -11,6 +11,8 @@ public class UITopPanelMediator : MonoBehaviour
     [SerializeField] private TMP_Text _levelText;
     [SerializeField] private UITopPanelBarWithProgressView _moodBarView;
     [SerializeField] private RectTransform _animationsContainer;
+    [SerializeField] private UINotificationCounterView _notificationsCounterGold;
+    [SerializeField] private UINotificationCounterView _notificationsCounterCash;
 
     private GameStateModel _gameStateModel;
     private Dispatcher _dispatcher;
@@ -20,6 +22,8 @@ public class UITopPanelMediator : MonoBehaviour
     private AudioManager _audioManager;
     private TutorialUIElementsProvider _tutorialUIElementsProvider;
     private Camera _camera;
+    private IBankAdvertWatchStateProvider _bankAdvertViewStateProvider;
+    private IAdvertConfig _advertConfig;
     private UserProgressModel _playerProgressModel;
     private ShopModel _playerShopModel;
     private bool _isLevelUpInProgress;
@@ -37,12 +41,17 @@ public class UITopPanelMediator : MonoBehaviour
         _audioManager = AudioManager.Instance;
         _tutorialUIElementsProvider = TutorialUIElementsProvider.Instance;
         _camera = Camera.main;
+        _bankAdvertViewStateProvider = AdvertViewStateModel.Instance;
+
+        _notificationsCounterGold.gameObject.SetActive(false);
+        _notificationsCounterCash.gameObject.SetActive(false);
     }
 
     public async void Start()
     {
         await _gameStateModel.GameDataLoadedTask;
 
+        _advertConfig = GameConfigManager.Instance.AdvertConfig;
         _playerProgressModel = _playerModelHolder.UserModel.ProgressModel;
         _playerShopModel = _playerModelHolder.UserModel.ShopModel;
         _tutorialUIElementsProvider.SetElement(TutorialUIElement.TopPanelMoodBar, _moodBarView.AmountText.transform);
@@ -62,8 +71,23 @@ public class UITopPanelMediator : MonoBehaviour
     {
         _crystalsBarView.Amount = _playerProgressModel.Gold;
         _cashBarView.Amount = _playerProgressModel.Cash;
+        UpdateCounters();
         UpdateExp();
         UpdateMood();
+    }
+
+    private void UpdateCounters()
+    {
+        var restWatchesCount = _advertConfig.AdvertDefaultWatchesCount - _bankAdvertViewStateProvider.BankAdvertWatchesCount;
+        var countersAreVisible = restWatchesCount > 0;
+        _notificationsCounterGold.gameObject.SetActive(countersAreVisible);
+        _notificationsCounterCash.gameObject.SetActive(countersAreVisible);
+        if (countersAreVisible)
+        {
+            var countStr = restWatchesCount.ToString();
+            _notificationsCounterGold.SetCounterText(countStr);
+            _notificationsCounterCash.SetCounterText(countStr);
+        }
     }
 
     private void UpdateMood(bool animated = false)
@@ -150,6 +174,12 @@ public class UITopPanelMediator : MonoBehaviour
         _dispatcher.UIRequestAddGoldFlyAnimation += OnUIRequestAddGoldFlyAnimation;
         _dispatcher.UIRequestAddCashFlyAnimation += OnUIRequestAddCashFlyAnimation;
         _dispatcher.UIRequestAddExpFlyAnimation += OnUIRequestAddExpFlyAnimation;
+        _bankAdvertViewStateProvider.BankAdvertWatchesCountChanged += OnBankAdvertWatchesCountChanged;
+    }
+
+    private void OnBankAdvertWatchesCountChanged()
+    {
+        UpdateCounters();
     }
 
     private void OnUIRequestAddGoldFlyAnimation(Vector2 screenCoords, int amount)

@@ -14,7 +14,8 @@ public class MainConfig :
     ILevelsConfig,
     IDailyBonusConfig,
     IFriendActionsConfig,
-    IMissionsConfig
+    IMissionsConfig,
+    IAdvertConfig
 {
     public readonly int GameplayAtlasVersion;
     public readonly int InterfaceAtlasVersion;
@@ -90,6 +91,8 @@ public class MainConfig :
         ExtendShopYUpgradesConfig = extendShopYUpgradesConfig;
         DailyBonusConfig = dailyBonusConfig;
         MissionsConfig = missionsConfig;
+        AdvertDefaultWatchesCount = dto.AdvertDefaultWatchesCount;
+        AdvertWatchCooldownMinutes = dto.AdvertWatchCooldownMinutes;
         //
         _levelsConfig = levelsConfig;
         this.dto = dto;
@@ -97,6 +100,8 @@ public class MainConfig :
     }
 
     DailyBonusConfig[] IDailyBonusConfig.DailyBonusConfig => DailyBonusConfig;
+    public int AdvertDefaultWatchesCount { get; private set; }
+    public int AdvertWatchCooldownMinutes { get; private set; }
 
     public UpgradeConfig GetCurrentUpgradeForValue(UpgradeType upgradeType, int value)
     {
@@ -727,4 +732,10 @@ public interface IMissionsConfig
 {
     IEnumerable<MissionConfig> GetMissionsForLevel(int level);
     MissionConfig GetMissionConfig(string key);
+}
+
+public interface IAdvertConfig
+{
+    int AdvertDefaultWatchesCount { get; }
+    int AdvertWatchCooldownMinutes { get; }
 }

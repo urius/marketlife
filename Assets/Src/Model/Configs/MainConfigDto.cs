@@ -11,6 +11,8 @@ public class MainConfigDto
     public int ActionDefaultCooldownMinutes;
     public int BillboardUnlockLevel;
     public int GoldToCashConversionRate;
+    public int AdvertDefaultWatchesCount;
+    public int AdvertWatchCooldownMinutes;
 
     public Dictionary<string, FriendActionConfigDto> FriendActionsConfig;
     public Dictionary<string, ShelfConfigDto> ShelfsConfig;

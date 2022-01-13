@@ -193,6 +193,7 @@ public class LocalizationKeys
     public static string PopupBankCashTab = "popup_bank_cash_tab";
     public static string PopupBankTitle = "popup_bank_title";
     public static string PopupBankAdsItemText = "popup_bank_ads_item_text";
+    public static string PopupBankAdvertAvailableAfterFormat = "popup_bank_advert_available_after";    
     public static string PopupErrorTitle = "popup_error_title";
     public static string PopupErrorOk = "popup_error_ok";
     public static string PopupErrorLoadDataCommon = "popup_error_load_data_common";

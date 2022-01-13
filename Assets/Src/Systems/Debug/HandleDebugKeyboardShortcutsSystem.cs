@@ -48,6 +48,16 @@ public class HandleDebugKeyboardShortcutsSystem
         {
             ResetMissions();
         }
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            SimulateAdvertWatchResult();
+        }
+    }
+
+    private void SimulateAdvertWatchResult()
+    {
+        new ProcessShowAdsResultCommand().Execute("{\"data\":{\"is_success\":true}}");
     }
 
     private void ResetMissions()

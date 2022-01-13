@@ -20,6 +20,7 @@ public class GameConfigManager
     public IDailyBonusConfig DailyBonusConfig => MainConfig;
     public IFriendActionsConfig FriendActionsConfig => MainConfig;
     public IMissionsConfig DailyMissionsConfig => MainConfig;
+    public IAdvertConfig AdvertConfig => MainConfig;
 
     public async UniTask<bool> LoadMainConfigAsync(string mainConfigABPostfix)
     {

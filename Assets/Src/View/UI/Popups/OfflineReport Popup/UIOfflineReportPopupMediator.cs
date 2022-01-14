@@ -19,6 +19,7 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
     private UIOfflineReportPopupView _popupView;
     private OfflineReportPopupViewModel _viewModel;
     private int _currentTabIndex;
+    private bool _shareSuccessReceived = false;
 
     protected override UIContentPopupView PopupView => _popupView;
 
@@ -96,6 +97,7 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
 
     private void OnUIShareSuccessCallback()
     {
+        _shareSuccessReceived = true;
         _popupView.SetShareButtonInteractable(false);
     }
 
@@ -155,6 +157,12 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
         {
             _popupView.SetAdsButtonText(_loc.GetLocalization(LocalizationKeys.PopupOfflineReportX2Exp));
             _popupView.SetAdsButtonSkinSprite(_spritesProvider.GetOrangeButtonSprite());
+        }
+        else
+        {
+            _popupView.SetAdsButtonVisibility(false);
+            _popupView.SetShareButtonVisiblity(true);
+            _popupView.SetShareButtonInteractable(_shareSuccessReceived == false);
         }
     }
 

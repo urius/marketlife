@@ -35,6 +35,11 @@ public class UIOfflineReportPopupView : UITabbedContentPopupView
         _shareRevenueAmountText.text = text;
     }
 
+    public void SetShareButtonVisiblity(bool isVisible)
+    {
+        _shareButton.gameObject.SetActive(isVisible);
+    }
+
     public void SetShareButtonInteractable(bool interactable)
     {
         _shareButton.interactable = interactable;

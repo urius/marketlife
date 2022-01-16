@@ -9,7 +9,7 @@ public class AnalyticsManager
     public static string NumFriendsParamName = "friends_count";
     public static string NumAppFriendsParamName = "app_friends_count";
 
-    public static string EventNameOrderProduct = "order_product";
+    //public static string EventNameOrderProduct = "order_product";
     public static string EventNameOfflineProfit = "offline_profit";
     public static string EventNameVisitFriendClicked = "friend_visit_click";
     public static string EventNameVisitFriendFailed = "friend_visit_failed";
@@ -25,6 +25,7 @@ public class AnalyticsManager
     public static string EventNameManageClick = "expand_manage_click";
     public static string EventAutoPlaceClick = "auto_place_click";
     public static string EventAdsViewClick = "ads_click";
+    public static string EventShareClick = "share_click";
     public static string EventBankAdsViewClick = "bank_ads_click";
     public static string EventNotifyInactiveFriendRequest = "notify_inactive_friend_click";
     

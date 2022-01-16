@@ -128,7 +128,7 @@ public class VKLogicModule : PlatformSpecificLogicModuleBase
     {
         var popupType = _gameStateModel.ShowingPopupModel?.PopupType ?? PopupType.Unknown;
         AnalyticsManager.Instance.SendCustom(AnalyticsManager.EventAdsViewClick, ("popup_type", popupType.ToString()));
-        
+
         _jsBridge.SendCommandToJs("ShowAds", null);
 
         _dispatcher.UIRequestBlockRaycasts();

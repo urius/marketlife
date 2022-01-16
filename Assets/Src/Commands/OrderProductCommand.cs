@@ -25,7 +25,7 @@ public struct OrderProductCommand
                 gameStateModel.RemoveCurrentPopupIfNeeded();
             }
 
-            AnalyticsManager.Instance.SendCustom(AnalyticsManager.EventNameOrderProduct, ("product", productConfig.NumericId));
+            //AnalyticsManager.Instance.SendCustom(AnalyticsManager.EventNameOrderProduct, ("product", productConfig.NumericId));
         }
         else
         {

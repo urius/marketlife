@@ -80,9 +80,16 @@ public class EventsHandleSystem
         _dispatcher.UIChangeCashDeskManHairClicked += OnUIChangeCashDeskManHairClicked;
         _dispatcher.UIChangeCashDeskManGlassesClicked += OnUIChangeCashDeskManGlassesClicked;
         _dispatcher.UIChangeCashDeskManDressClicked += OnUIChangeCashDeskManDressClicked;
+        _dispatcher.UIShareSuccessCallback += OnUIShareSuccessCallback;
 
         _gameStateModel.ActionStateChanged += OnActionStateChanged;
         _gameStateModel.GameStateChanged += OnGameStateChanged;
+    }
+
+    private void OnUIShareSuccessCallback()
+    {
+        var popupType = _gameStateModel.ShowingPopupModel?.PopupType ?? PopupType.Unknown;
+        AnalyticsManager.Instance.SendCustom(AnalyticsManager.EventShareClick, ("popup_type", popupType.ToString()));
     }
 
     private void OnUIChangeCashDeskManHairClicked(int hairId)

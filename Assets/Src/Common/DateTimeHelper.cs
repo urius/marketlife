@@ -7,6 +7,13 @@ public class DateTimeHelper
         return new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime().AddSeconds(unixTimestamp);
     }
 
+    public static int GetSecondsLeftForTheEndOfTheDay(DateTime dateTime)
+    {
+        var startNextDayDate = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 23, 59, 59).AddSeconds(1);
+        var restTime = startNextDayDate - dateTime;
+        return (int)restTime.TotalSeconds;
+    }
+
     public static bool IsNextDay(DateTime previousDate, DateTime targetDate)
     {
         if (targetDate.DayOfYear == previousDate.DayOfYear + 1

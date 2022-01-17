@@ -206,6 +206,7 @@ public class LocalizationKeys
     public static string PopupNotifyInactiveFriendTitle = "popup_notify_inactive_friend_title";
     public static string PopupNotifyInactiveFriendMessage = "popup_notify_inactive_friend_message";    
     public static string PopupDailyMissionsTitle = "popup_daily_missions_title";
+    public static string PopupDailyMissionsStatusFormat = "popup_daily_missions_status_format";    
     public static string PopupDailyMissionsRetreiveReward = "popup_daily_missions_retreive_reward";
     public static string PopupDailyMissionsMissionCompleted = "popup_daily_missions_mission_completed";       
 

@@ -73,6 +73,7 @@ public class PrefabsHolder : ScriptableObject
     public GameObject UIOldGameCompensationPopupPrefab;
     public GameObject UIBillboardPopupPrefab;
     public GameObject UICashDeskPopupPrefab;
+    public GameObject UIDailyMissionsPopupPrefab;
     public GameObject UIDailyMissionsPopupItemPrefab;
 
     //remote

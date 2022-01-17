@@ -260,7 +260,7 @@ public class UIDailyMissionsPopupMediator : IMediator
             case MissionKeys.RepaintFloors:
                 return _spritesProvider.GetFloorIcon(5);
             case MissionKeys.RepaintWalls:
-                return _spritesProvider.GetWallIcon(4);
+                return _spritesProvider.GetWallSprite(4);
             case MissionKeys.SellProduct:
                 var productKey = (missionModel as DailyMissionSellProductModel).ProductConfig.Key;
                 return _spritesProvider.GetProductIcon(productKey);

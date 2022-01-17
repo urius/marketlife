@@ -36,7 +36,7 @@ public class UIBottomPanelWallsTabMediator : UIBottomPanelInteriorModeScrollItem
     protected override void SetupItem(UIBottomPanelScrollItemView itemView, ItemConfig<ShopDecorationConfigDto> viewModel)
     {
         itemView.SetupIconSize(110);
-        itemView.SetImage(_spritesProvider.GetWallIcon(viewModel.NumericId));
+        itemView.SetImage(_spritesProvider.GetWallSprite(viewModel.NumericId));
         itemView.SetPrice(viewModel.Price);
     }
 

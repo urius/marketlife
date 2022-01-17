@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3565301050
+CRC: 3680741262
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 164bff13106df3fe2682c6783acea669
+    Hash: dfcf9abfeba095ac981b3cf40258bc6d
   TypeTreeHash:
     serializedVersion: 2
     Hash: 3dbb92f992534c06c4e322444b68580f
@@ -87,6 +87,7 @@ Assets:
 - Assets/External Resources/GameplayGraphicsBundle/Products/Cheese_1.png
 - Assets/External Resources/GameplayGraphicsBundle/Products/Lipsticks_1.png
 - Assets/External Resources/GameplayGraphicsBundle/Products/LimeOn.png
+- Assets/External Resources/GameplayGraphicsBundle/Shop/Walls/Wall9.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/HandClothes2.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/Clothes1.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Clothes/FootClothes3_Profile.png
@@ -97,6 +98,7 @@ Assets:
 - Assets/External Resources/GameplayGraphicsBundle/Products/Juice_1.png
 - Assets/External Resources/GameplayGraphicsBundle/Objects/Shelf_1/Shelf_1_back.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Hair4.png
+- Assets/External Resources/GameplayGraphicsBundle/Shop/Walls/Wall10.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Hair3_Profile.png
 - Assets/External Resources/GameplayGraphicsBundle/Shop/Walls/Wall1.png
 - Assets/External Resources/GameplayGraphicsBundle/People/Head/Hair4_Profile.png

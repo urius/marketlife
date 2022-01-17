@@ -117,10 +117,10 @@ public class SpritesProvider
         return GetSprite(SpriteAtlasId.InterfaceAtlas, $"Floor{numericId}");
     }
 
-    public Sprite GetWallIcon(int numericId)
-    {
-        return GetSprite(SpriteAtlasId.InterfaceAtlas, $"Wall{numericId}");
-    }
+    //public Sprite GetWallIcon(int numericId)
+    //{
+    //    return GetSprite(SpriteAtlasId.InterfaceAtlas, $"Wall{numericId}");
+    //}
 
     public Sprite GetWindowIcon(int numericId)
     {

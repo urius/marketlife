@@ -155,7 +155,7 @@ public class UILevelUpPopupMediator : UIContentPopupMediator
 
             foreach (var wall in _viewModel.NewWalls)
             {
-                var item = PutItem(_spritesProvider.GetWallIcon(wall.NumericId), string.Format(_loc.GetLocalization(LocalizationKeys.PopupLevelUpWallFormat), wall.NumericId));
+                var item = PutItem(_spritesProvider.GetWallSprite(wall.NumericId), string.Format(_loc.GetLocalization(LocalizationKeys.PopupLevelUpWallFormat), wall.NumericId));
                 item.SetTextColor(item.BlueColor);
             }
 

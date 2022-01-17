@@ -44,7 +44,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 5804ef6ef86794aa6ac1d44028fafb7e, type: 3}
-    totalSpriteSurfaceArea: 938118
+    totalSpriteSurfaceArea: 948518
     bindAsDefault: 0
     isAtlasV2: 0
     cachedData: {fileID: 0}
@@ -198,6 +198,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 2430beae46f2e4c7085fb441982c3f9d, type: 3}
   - {fileID: 21300000, guid: 7a5c30bef88ee4445857bb929fe2af22, type: 3}
   - {fileID: 21300000, guid: c68732de4faa2476bb1f5b5733c0a3f5, type: 3}
+  - {fileID: 21300000, guid: e5d3e4de3a0dd42d9bbac30ed4652538, type: 3}
   - {fileID: 21300000, guid: c029cfde88ab84549935d0dd9737ce24, type: 3}
   - {fileID: 21300000, guid: 10306aee134fc470fa2c422e4e58f26a, type: 3}
   - {fileID: 21300000, guid: cf38bb1fd181e4fe9affe793e307148b, type: 3}
@@ -205,6 +206,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: f9bb6c4f3c9bb491eaf933fa38d1fc17, type: 3}
   - {fileID: 21300000, guid: 8a27377fb59604de2996a3a02cc2d903, type: 3}
   - {fileID: 21300000, guid: 787b568f235fa46aa8190fed362e9881, type: 3}
+  - {fileID: 21300000, guid: c6a44f9fe13504f6aa82a62bb95b90f4, type: 3}
   - {fileID: 21300000, guid: 0f4a73aff517a48979a94bd6a708617a, type: 3}
   - {fileID: 21300000, guid: 2f8cafaf516e446d5ab5538d97be7f98, type: 3}
   - {fileID: 21300000, guid: 5286bfaf4394d48618551a1bd2b51356, type: 3}
@@ -362,6 +364,7 @@ SpriteAtlas:
   - Sushi
   - Wall7
   - Hair6
+  - Wall10
   - Hair5_Profile
   - Cheese_1
   - Clothes7_Profile
@@ -369,6 +372,7 @@ SpriteAtlas:
   - FootClothes7_Profile
   - HandClothes6
   - BillboardBaseSquare
+  - Wall9
   - Banana
   - Clothes5_Profile
   - Cake

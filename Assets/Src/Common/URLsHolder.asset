@@ -12,14 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 235d358022b6a4aa287489b646d0323c, type: 3}
   m_Name: URLsHolder
   m_EditorClassIdentifier: 
-  _getTimeURL: https://devman.ru/marketVK/unity/DataProvider.php?command=get_time
-  _mainConfigUrl: https://devman.ru/marketVK/unity/GameConfigs/MainConfig.json
-  _debugMainConfigUrl: https://devman.ru/marketVK/unity/GameConfigs/MainConfig_Debug.json
-  _getDataURL: https://devman.ru/marketVK/unity/DataProvider.php?command=get_data&id={0}
-  _getVisitTimesURL: https://devman.ru/marketVK/unity/DataProvider.php?command=get_users_last_visit&ids={0}
+  _basePath: https://devman.ru/marketVK/unity/
+  _getTimePostfix: DataProvider.php?command=get_time
+  _mainConfigPostfixFormat: GameConfigs/MainConfig{0}.json
+  _getDataPostfix: DataProvider.php?command=get_data&id={0}
+  _getVisitTimesPostfix: DataProvider.php?command=get_users_last_visit&ids={0}
   _getFriendDataOldURL: https://devman.ru/marketVK/dataProvider.php?command=get_friend_data&id={0}
-  _saveDataURL: https://devman.ru/marketVK/unity/DataProvider.php?command=save_data&id={0}
-  _saveExternalDataURL: https://devman.ru/marketVK/unity/DataProvider.php?command=save_external_data&id={0}
-  _resetNotificationsURL: https://devman.ru/marketVK/unity/vk/VKNotificationsProcessor.php?command=reset&id={0}
-  _addNotificationsURL: https://devman.ru/marketVK/unity/vk/VKNotificationsProcessor.php?command=add&ids={0}&type={1}
-  _vkBankDataURL: https://devman.ru/marketVK/unity/vk/VKBank.json
+  _saveDataPostfix: DataProvider.php?command=save_data&id={0}
+  _saveExternalDataPostfix: DataProvider.php?command=save_external_data&id={0}
+  _saveLeaderboardDataPostfix: DataProvider.php?command=save_leaderboard_data&id={0}
+  _resetNotificationsPostfix: vk/VKNotificationsProcessor.php?command=reset&id={0}
+  _addNotificationsPostfix: vk/VKNotificationsProcessor.php?command=add&ids={0}&type={1}
+  _vkBankDataPostfix: vk/VKBank.json
+  _debugMainConfigUrl: https://devman.ru/marketVK/unity/GameConfigs/MainConfig_Debug.json

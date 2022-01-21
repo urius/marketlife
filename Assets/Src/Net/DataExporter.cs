@@ -97,6 +97,19 @@ public class DataExporter
         return result.ToArray();
     }
 
+    public LeaderboardSaveItemDto ExportLeaderboardPlayerData(UserProgressModel playerProgress, int friendsCount)
+    {
+        var result = new LeaderboardSaveItemDto
+        {
+            cash = playerProgress.Cash,
+            gold = playerProgress.Gold,
+            exp = playerProgress.ExpAmount,
+            friends = friendsCount,
+        };
+
+        return result;
+    }
+
     public string[] ExportPersonal(ShopModel shopModel)
     {
         var result = new List<string>();

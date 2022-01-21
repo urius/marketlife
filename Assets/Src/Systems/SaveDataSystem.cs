@@ -304,6 +304,10 @@ public class SaveDataSystem
     private void OnGameStateChanged(GameStateName previousState, GameStateName currentState)
     {
         TriggerSave();
+        if (_gameStateModel.IsPlayingState && _gameStateModel.CheckIsPlayingState(previousState) == false)
+        {
+            new SaveLeaderboardDataCommand().Execute();
+        }
     }
 
     private bool CheckStartSaveConditions()

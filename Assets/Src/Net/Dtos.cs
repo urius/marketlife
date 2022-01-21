@@ -83,7 +83,7 @@ public class UserDataDto
     public string[] actions_data;
     public BonusStateDto bonus;
     public UserGameSettingsDto settings;
-    public UserBillboardStateDto billboard; 
+    public UserBillboardStateDto billboard;
     public string[] daily_missions;
 }
 
@@ -165,4 +165,12 @@ public struct UserBillboardStateDto
 {
     public bool is_available;
     public string text_64;
+}
+
+public struct LeaderboardSaveItemDto
+{
+    public int cash;
+    public int gold;
+    public int exp;
+    public int friends;
 }

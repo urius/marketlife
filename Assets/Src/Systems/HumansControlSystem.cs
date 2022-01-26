@@ -125,9 +125,9 @@ public class HumansControlSystem
     {
         if (_viewingSessionDataModel.HaveCustomerAt(coords) == false)
         {
-            var hairId = Random.Range(1, _spritesProvider.GetMaxHairId());
-            var topClothesId = Random.Range(1, _spritesProvider.GetMaxTopDressId());
-            var bottomClothesId = Random.Range(1, _spritesProvider.GetMaxBottomDressId());
+            var hairId = Random.Range(1, _spritesProvider.GetMaxHairId() + 1);
+            var topClothesId = Random.Range(1, _spritesProvider.GetMaxTopDressId() + 1);
+            var bottomClothesId = Random.Range(1, _spritesProvider.GetMaxBottomDressId() + 1);
             var glassesId = Random.Range(-5, _spritesProvider.GetMaxGlassesId());
             if (glassesId < 0) glassesId = 0;
             var customer = new CustomerModel(hairId, topClothesId, bottomClothesId, glassesId, GetCostumerMood(), coords, 3);

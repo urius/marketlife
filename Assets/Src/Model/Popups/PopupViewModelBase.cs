@@ -27,4 +27,5 @@ public enum PopupType
     Billboard,
     CashDesk,
     DailyMissions,
+    Leaderboards,
 }

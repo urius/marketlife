@@ -5,8 +5,8 @@ public struct SetVkFriendsDataCommand
 {
     public void Execute(string friendsDataStr)
     {
-        var deserialisedData = JsonConvert.DeserializeObject<VkFriendsDataDto>(friendsDataStr);
-        var friendDatas = ToFriendsData(deserialisedData.data);
+        var deserializedData = JsonConvert.DeserializeObject<VkFriendsDataDto>(friendsDataStr);
+        var friendDatas = ToFriendsData(deserializedData.data);
 
         new SetupFriendsDataCommand().Execute(friendDatas);
     }

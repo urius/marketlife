@@ -28,6 +28,8 @@ public class URLsHolder : ScriptableObject
     [SerializeField] private string _addNotificationsPostfix = "vk/VKNotificationsProcessor.php?command=add&ids={0}&type={1}";
     public string AddNotificationsURL => _basePath + _addNotificationsPostfix;
     [SerializeField] private string _vkBankDataPostfix = "vk/VKBank.json";
+    [SerializeField] private string _getLeaderboardsPostfix = "DataProvider.php?command=get_leaderboards&id={0}";
+    public string GetLeaderboardsURL => _basePath + _getLeaderboardsPostfix;
 
     [Space]
     [SerializeField] private string _debugMainConfigUrl = "https://devman.ru/marketVK/unity/GameConfigs/MainConfig_Debug.json";

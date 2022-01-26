@@ -15,6 +15,8 @@ public class ColorsHolder : ScriptableObject
     [Space(10)]
     public Color DailyMissionNewMissionsNotificationColor;
     public Color DailyMissionCompletedMissionsNotificationColor;
+    [Space(10)]
+    public Color LeaderboardUserItemBgColor;
 
     private void OnEnable()
     {

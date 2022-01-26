@@ -175,6 +175,11 @@ public class LocalizationKeys
     public static string PopupOfflineReportX2Profit = "popup_offline_report_x2_profit";
     public static string PopupOfflineReportX2Exp = "popup_offline_report_x2_exp";
     public static string PopupCashDeskTitle = "popup_cash_desk_title";
+    public static string PopupLeaderboardsTitle = "popup_leaderboards_title";
+    public static string PopupLeaderboardsExpTab = "popup_leaderboards_exp_tab";
+    public static string PopupLeaderboardsFriendsTab = "popup_leaderboards_friends_tab";
+    public static string PopupLeaderboardsCashTab = "popup_leaderboards_cash_tab";
+    public static string PopupLeaderboardsGoldTab = "popup_leaderboards_gold_tab";    
     public static string MissionDescriptionFormat = "mission_description_";
 
     public static string PopupLevelUpTitle = "popup_levelup_title";

@@ -17,7 +17,7 @@ public struct CreateUserModelCommand
                     result = dataImporter.ImportOld(deserializedDataOld);
                     break;
                 case 1:
-                    if (ValidateHash(responseDto.response, responseDto.hash))
+                    if (ResponseValidator.Validate(responseDto))
                     {
                         var deserializedData = JsonConvert.DeserializeObject<GetDataResponseDto>(responseDto.response);
                         result = dataImporter.Import(deserializedData);
@@ -31,10 +31,5 @@ public struct CreateUserModelCommand
         }
 
         return result;
-    }
-
-    private bool ValidateHash(string response, string hash)
-    {
-        return hash == MD5Helper.MD5Hash(response);
     }
 }

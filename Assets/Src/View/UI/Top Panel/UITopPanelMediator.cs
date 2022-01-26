@@ -171,6 +171,7 @@ public class UITopPanelMediator : MonoBehaviour
         _playerShopModel.MoodChanged += OnMoodChanged;
         _crystalsBarView.ButtonClicked += OnAddGoldClicked;
         _cashBarView.ButtonClicked += OnAddCashClicked;
+        _expBarView.ButtonClicked += OnRequestOpenLeaderboardsClicked;
         _dispatcher.UIRequestAddGoldFlyAnimation += OnUIRequestAddGoldFlyAnimation;
         _dispatcher.UIRequestAddCashFlyAnimation += OnUIRequestAddCashFlyAnimation;
         _dispatcher.UIRequestAddExpFlyAnimation += OnUIRequestAddExpFlyAnimation;
@@ -273,6 +274,11 @@ public class UITopPanelMediator : MonoBehaviour
     private void OnAddCashClicked()
     {
         _dispatcher.UITopPanelAddMoneyClicked(false);
+    }
+
+    private void OnRequestOpenLeaderboardsClicked()
+    {
+        _dispatcher.UITopPanelRequestOpenLeaderboardsClicked();
     }
 
     private void OnGameStateChanged(GameStateName previousState, GameStateName currentState)

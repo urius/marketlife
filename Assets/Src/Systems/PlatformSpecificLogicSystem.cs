@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -22,6 +22,9 @@ public class PlatformSpecificLogicSystem
     private void Activate()
     {
         _dispatcher.JsIncomingMessage += OnJsIncomingMessage;
+#if UNITY_EDITOR
+        InitDebugEditorModule();
+#endif
     }
 
     private void OnJsIncomingMessage(string message)
@@ -37,6 +40,12 @@ public class PlatformSpecificLogicSystem
         }
     }
 
+    private void InitDebugEditorModule()
+    {
+        _module = new DebugEditorLogicModule();
+        _module.Start();
+    }
+
     private void InitModuleVK()
     {
         _module = new VKLogicModule();
@@ -49,6 +58,41 @@ public abstract class PlatformSpecificLogicModuleBase
     public abstract void Start();
 }
 
+public class DebugEditorLogicModule : PlatformSpecificLogicModuleBase
+{
+    private readonly SocialUsersData _socialUsersData;
+    private readonly AvatarsManager _avatarsManager;
+    private readonly MockDataProvider _mockDataProvider;
+
+    public DebugEditorLogicModule()
+    {
+        _socialUsersData = SocialUsersData.Instance;
+        _avatarsManager = AvatarsManager.Instance;
+        _mockDataProvider = MockDataProvider.Instance;
+    }
+
+    public override void Start()
+    {
+        Activate();
+    }
+
+    private void Activate()
+    {
+        _socialUsersData.NewUidsRequested += OnNewUidsRequested;
+    }
+
+    private void OnNewUidsRequested()
+    {        
+        var result = new List<UserSocialData>();
+        foreach (var uid in _socialUsersData.RequestedUids)
+        {
+            _avatarsManager.SetupAvatarSettings(uid, _mockDataProvider.GetMockAvatarUrl());
+            result.Add(new UserSocialData(uid, $"-{uid}-", "Lastname", null));
+        }
+        _socialUsersData.FillRequestedSocialData(result);
+    }
+}
+
 public class VKLogicModule : PlatformSpecificLogicModuleBase
 {
     private readonly GameStateModel _gameStateModel;
@@ -56,7 +100,7 @@ public class VKLogicModule : PlatformSpecificLogicModuleBase
     private readonly JsBridge _jsBridge;
     private readonly Dispatcher _dispatcher;
     private readonly ScreenCalculator _screenCalculator;
-    private readonly AdvertViewStateModel _advertViewStateModel;
+    private readonly SocialUsersData _socialUsersData;
 
     //
     private WallPostContext _wallPostContext;
@@ -69,7 +113,7 @@ public class VKLogicModule : PlatformSpecificLogicModuleBase
         _jsBridge = JsBridge.Instance;
         _dispatcher = Dispatcher.Instance;
         _screenCalculator = ScreenCalculator.Instance;
-        _advertViewStateModel = AdvertViewStateModel.Instance;
+        _socialUsersData = SocialUsersData.Instance;
     }
 
     public override async void Start()
@@ -90,6 +134,12 @@ public class VKLogicModule : PlatformSpecificLogicModuleBase
         _dispatcher.UIOfflineReportShareClicked += OnUIOfflineReportShareClicked;
         _dispatcher.RequestShowAdvert += OnRequestShowAdvert;
         _dispatcher.RequestNotifyInactiveFriend += OnRequestNotifyInactiveFriend;
+        _socialUsersData.NewUidsRequested += OnSocialUsersDataNewUidsRequested;
+    }
+
+    private void OnSocialUsersDataNewUidsRequested()
+    {
+        _jsBridge.SendCommandToJs("GetUsersData", new GetUsersDataJsPayload(_socialUsersData.RequestedUids));
     }
 
     private void OnRequestNotifyInactiveFriend(string friendUid)
@@ -120,6 +170,9 @@ public class VKLogicModule : PlatformSpecificLogicModuleBase
                 break;
             case "ShowAdsResult":
                 new ProcessShowAdsResultCommand().Execute(message);
+                break;
+            case "GetUsersDataResponse":
+                new ProcessVkGetUsersDataCommand().Execute(message);
                 break;
         }
     }
@@ -218,6 +271,16 @@ public struct NotifyInactiveFriendJsPayload
     public NotifyInactiveFriendJsPayload(string friendUid)
     {
         uid = friendUid;
+    }
+}
+
+public struct GetUsersDataJsPayload
+{
+    public string[] uids;
+
+    public GetUsersDataJsPayload(string[] uids)
+    {
+        this.uids = uids;
     }
 }
 

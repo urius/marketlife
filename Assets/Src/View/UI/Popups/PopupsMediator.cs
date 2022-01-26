@@ -75,6 +75,9 @@ public class PopupsMediator : IMediator
             case PopupType.DailyMissions:
                 newMediator = new UIDailyMissionsPopupMediator(_contentTransform);
                 break;
+            case PopupType.Leaderboards:
+                newMediator = new UILeaderboardsPopupMediator(_contentTransform);
+                break;
         };
         newMediator.Mediate();
         _popupMediators.Push(newMediator);

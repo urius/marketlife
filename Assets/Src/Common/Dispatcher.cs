@@ -17,6 +17,7 @@ public class Dispatcher
     public Action UIRequestUnblockRaycasts = delegate { };
     public Action UITopPanelLevelUpAnimationFinished = delegate { };
     public Action<bool> UITopPanelAddMoneyClicked = delegate { };
+    public Action UITopPanelRequestOpenLeaderboardsClicked = delegate { };    
     public Action<Vector2, int> UIRequestAddCashFlyAnimation = delegate { };
     public Action<Vector2, int> UIRequestAddGoldFlyAnimation = delegate { };
     public Action<Vector2, int> UIRequestAddExpFlyAnimation = delegate { };    

@@ -10,7 +10,7 @@ public class UITabbedContentPopupView : UIContentPopupView
     [SerializeField] private RectTransform _tabButtonsContainerRectTransform;
 
     private readonly List<Action> _disposeActions = new List<Action>();
-    private readonly List<UITabbedContentPopupTabButtonView> _tabButtons = new List<UITabbedContentPopupTabButtonView>();
+    private readonly List<ITabButtonView> _tabButtons = new List<ITabButtonView>();
 
     public void SetupTabButtons(string[] tabNames)
     {
@@ -33,10 +33,20 @@ public class UITabbedContentPopupView : UIContentPopupView
         }
     }
 
+    public ITabButtonView GetTabButton(int index)
+    {
+        if (index >= 0 && index < _tabButtons.Count)
+        {
+            return _tabButtons[index];
+        }
+
+        return null;
+    }
+
     private void CreateTabButton(int i, string tabName)
     {
         var buttonGo = Instantiate(_tabButtonPrefab, _tabButtonsContainerRectTransform);
-        var buttonView = buttonGo.GetComponent<UITabbedContentPopupTabButtonView>();
+        var buttonView = buttonGo.GetComponent<ITabButtonView>();
         void OnCategoryButtonClick()
         {
             TabButtonClicked(i);
@@ -45,9 +55,10 @@ public class UITabbedContentPopupView : UIContentPopupView
         _disposeActions.Add(() => buttonView.Clicked -= OnCategoryButtonClick);
         buttonView.SetText(tabName);
 
-        var pos = buttonView.transform.localPosition;
-        pos.x = i * (buttonView.transform as RectTransform).rect.width;
-        buttonView.transform.localPosition = pos;
+        var rectTransform = buttonView.RectTransform;
+        var pos = rectTransform.localPosition;
+        pos.x = i * rectTransform.rect.width;
+        rectTransform.localPosition = pos;
 
         _tabButtons.Add(buttonView);
     }

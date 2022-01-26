@@ -1,19 +1,22 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UITabbedContentPopupTabButtonView : MonoBehaviour, ITabButtonView
+public class UILeaderboardsPopupTabButtonView : MonoBehaviour, ITabButtonView
 {
     public event Action Clicked = delegate { };
 
     [SerializeField] private Button _button;
-    [SerializeField] private Text _text;
+    [SerializeField] private TMP_Text _text;
+    [SerializeField] private GameObject _placeInLBIndicator;
 
     public RectTransform RectTransform => transform as RectTransform;
 
     public void Awake()
     {
         _button.AddOnClickListener(OnButtonClick);
+        _placeInLBIndicator.SetActive(false);
     }
 
     public void SetInteractable(bool isEnabled)
@@ -24,6 +27,11 @@ public class UITabbedContentPopupTabButtonView : MonoBehaviour, ITabButtonView
     public void SetText(string text)
     {
         _text.text = text;
+    }
+
+    public void SetPlaceIndicatorVisibility(bool isVisible)
+    {
+        _placeInLBIndicator.SetActive(isVisible);
     }
 
     private void OnButtonClick()

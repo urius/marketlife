@@ -113,7 +113,7 @@ public class UserModel
             && shopObjectModel.Type == ShopObjectType.Shelf)
         {
             var shelfModel = shopObjectModel as ShelfModel;
-            var slot = shelfModel.Slots[addProductAction.ShelfSlotIndex];
+            var slot = shelfModel.Slots[Mathf.Min(addProductAction.ShelfSlotIndex, shelfModel.Slots.Length - 1)];
             if (slot.HasProduct
                 && slot.Product.Config.Key == addProductAction.ProductConfig.Key)
             {

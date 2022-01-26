@@ -46,12 +46,7 @@ public class UILeaderboardsPopupMediator : IMediator
         var popupGo = GameObject.Instantiate(_prefabsHolder.UILeaderboardsPopupPrefab, _contentTransform);
         _popupView = popupGo.GetComponent<UILeaderboardsPopupView>();
         _popupView.SetTitleText(_loc.GetLocalization(LocalizationKeys.PopupLeaderboardsTitle));
-        _popupView.SetupTabButtons(new[] {
-            _loc.GetLocalization(LocalizationKeys.PopupLeaderboardsExpTab),
-            _loc.GetLocalization(LocalizationKeys.PopupLeaderboardsFriendsTab),
-            _loc.GetLocalization(LocalizationKeys.PopupLeaderboardsCashTab),
-            _loc.GetLocalization(LocalizationKeys.PopupLeaderboardsGoldTab),
-        });
+        SetupTabs();
 
         _virtualListDisplayer = new VirtualListDisplayer<UILeaderboardsPopupItemView, LeaderboardUserData>(
             _popupView.ContentRectTransform,
@@ -64,6 +59,26 @@ public class UILeaderboardsPopupMediator : IMediator
         Activate();
 
         await _popupView.Appear2Async();
+    }
+
+    private void SetupTabs()
+    {
+        var tabNames = new[] {
+            _loc.GetLocalization(LocalizationKeys.PopupLeaderboardsExpTab),
+            _loc.GetLocalization(LocalizationKeys.PopupLeaderboardsFriendsTab),
+            _loc.GetLocalization(LocalizationKeys.PopupLeaderboardsCashTab),
+            _loc.GetLocalization(LocalizationKeys.PopupLeaderboardsGoldTab),
+        };
+        _popupView.SetupTabButtons(tabNames);
+
+        for (var i = 0; i < tabNames.Length; i++)
+        {
+            var tabType = GetTabByTabIndex(i);
+            var itemsData = GetDataByTab(tabType);
+            var existInLB = itemsData.Any(d => d.UserSocialData.Uid == _playerModelHolder.Uid);
+            var tabView = _popupView.GetTabButton(i) as UILeaderboardsPopupTabButtonView;
+            tabView.SetPlaceIndicatorVisibility(existInLB);
+        }
     }
 
     public async void Unmediate()
@@ -122,17 +137,26 @@ public class UILeaderboardsPopupMediator : IMediator
         _popupView.SetTabButtonSelected(tabIndex);
         _currentTab = GetTabByTabIndex(tabIndex);
         _currentLBTypeIconSprite = GetLeaderboardIconSprite();
-        LeaderboardUserData[] items = _currentTab switch
+        LeaderboardUserData[] items = GetDataByTab(_currentTab);
+        if (items == null)
+        {
+            throw new Exception($"{nameof(UILeaderboardsPopupMediator)} unsupported tabIndex: {tabIndex}");
+        }
+        _virtualListDisplayer.SetupViewModels(items);
+        SetContentPosition(GetSavedContentPosition(_currentTab));
+        _virtualListDisplayer.UpdateDisplayedItems();
+    }
+
+    private LeaderboardUserData[] GetDataByTab(TabType tabType)
+    {
+        return tabType switch
         {
             TabType.Exp => _viewModel.ExpLBData,
             TabType.Friends => _viewModel.FriendsLBData,
             TabType.Cash => _viewModel.CashLBData,
             TabType.Gold => _viewModel.GoldLBData,
-            _ => throw new Exception($"{nameof(UILeaderboardsPopupMediator)} unsupported tabIndex: {tabIndex}"),
+            _ => null,
         };
-        _virtualListDisplayer.SetupViewModels(items);
-        SetContentPosition(GetSavedContentPosition(_currentTab));
-        _virtualListDisplayer.UpdateDisplayedItems();
     }
 
     private void SetContentPosition(float newPos)
@@ -188,6 +212,7 @@ public class UILeaderboardsPopupMediator : IMediator
         }
         else
         {
+            itemView.SetAvatar(null);
             _avatarsManager.LoadAvatarForUid(itemModel.UserSocialData.Uid);
         }
     }

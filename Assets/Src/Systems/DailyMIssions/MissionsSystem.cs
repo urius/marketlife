@@ -12,6 +12,7 @@ public class MissionsSystem
     private readonly System.Random _random;
     private readonly Dispatcher _dispatcher;
     private readonly ScreenCalculator _screenCalculator;
+    private readonly UpdatesProvider _updatesProvider;
     private readonly Dictionary<DailyMissionModel, DailyMissionProcessorBase> _missionProcessors = new Dictionary<DailyMissionModel, DailyMissionProcessorBase>();
     private readonly Dictionary<string, IDailyMissionFactory> _missionFactories = new Dictionary<string, IDailyMissionFactory>()
     {
@@ -32,6 +33,8 @@ public class MissionsSystem
         { MissionKeys.AddWarehouseCells, new DailyMissionAddWarehouseCellsFactory() },
     };
 
+    private int _endOfServerDayTimestamp;
+
     public MissionsSystem()
     {
         _gameStateModel = GameStateModel.Instance;
@@ -40,12 +43,50 @@ public class MissionsSystem
         _random = new System.Random();
         _dispatcher = Dispatcher.Instance;
         _screenCalculator = ScreenCalculator.Instance;
+        _updatesProvider = UpdatesProvider.Instance;
     }
 
     public void Start()
     {
+        UpdateEndOfServerDayTimestamp();
+
         _gameStateModel.GameStateChanged += OnGameStateChanged;
         _dispatcher.UITakeDailyMissionRewardClicked += OnUITakeDailyMissionRewardClicked;
+        _updatesProvider.RealtimeSecondUpdate += OnRealtimeSecondUpdate;
+    }
+
+    private void UpdateEndOfServerDayTimestamp()
+    {
+        var serverTime = _gameStateModel.ServerTime;
+        _endOfServerDayTimestamp = serverTime + DateTimeHelper.GetSecondsLeftForTheEndOfTheDay(DateTimeHelper.GetDateTimeByUnixTimestamp(serverTime));
+    }
+
+    private void OnRealtimeSecondUpdate()
+    {
+        UpdateEndMissionTime();
+    }
+
+    private void UpdateEndMissionTime()
+    {
+        var secondsLeft = Mathf.Max(0, _endOfServerDayTimestamp - _gameStateModel.ServerTime);
+        if (secondsLeft <= 0)
+        {
+            UpdateEndOfServerDayTimestamp();
+            ClearMissions();
+        }
+        _dispatcher.DailyMissionsSecondsLeftAmountUpdated(secondsLeft);
+    }
+
+    private void ClearMissions()
+    {
+        var activeMissions = _missionProcessors.Keys.ToArray();
+        foreach (var mission in activeMissions)
+        {
+            RemoveProcessorForMission(mission);
+        }
+
+        var dailyMissionsModel = _playerModelHolder.UserModel.DailyMissionsModel;
+        dailyMissionsModel.Clear();
     }
 
     private void OnUITakeDailyMissionRewardClicked(DailyMissionModel missionModel, Vector3 rewardIconWorldPosition)
@@ -198,11 +239,16 @@ public class MissionsSystem
             .ToArray();
         foreach (var completedMission in completedMissions)
         {
-            if (_missionProcessors.ContainsKey(completedMission))
-            {
-                _missionProcessors[completedMission].Stop();
-                _missionProcessors.Remove(completedMission);
-            }
+            RemoveProcessorForMission(completedMission);
+        }
+    }
+
+    private void RemoveProcessorForMission(DailyMissionModel mission)
+    {
+        if (_missionProcessors.ContainsKey(mission))
+        {
+            _missionProcessors[mission].Stop();
+            _missionProcessors.Remove(mission);
         }
     }
 

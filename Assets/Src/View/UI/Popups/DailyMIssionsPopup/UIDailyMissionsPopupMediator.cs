@@ -10,11 +10,9 @@ public class UIDailyMissionsPopupMediator : IMediator
     private readonly LocalizationManager _loc;
     private readonly SpritesProvider _spritesProvider;
     private readonly Dispatcher _dispatcher;
-    private readonly UpdatesProvider _updatesProvider;
 
     //
     private DailyMissionsPopupViewModel _viewModel;
-    private int _endOfServerDayTimestamp;
     private UIDailyMissionsPopupView _popupView;
     private List<UIDailyMissionsPopupMissionItemView> _displayedItems = new List<UIDailyMissionsPopupMissionItemView>();
 
@@ -27,21 +25,18 @@ public class UIDailyMissionsPopupMediator : IMediator
         _loc = LocalizationManager.Instance;
         _spritesProvider = SpritesProvider.Instance;
         _dispatcher = Dispatcher.Instance;
-        _updatesProvider = UpdatesProvider.Instance;
     }
 
     public async void Mediate()
     {
         _viewModel = _gameStateModel.ShowingPopupModel as DailyMissionsPopupViewModel;
-        var serverTime = _gameStateModel.ServerTime;
-        _endOfServerDayTimestamp = serverTime + DateTimeHelper.GetSecondsLeftForTheEndOfTheDay(DateTimeHelper.GetDateTimeByUnixTimestamp(serverTime));
 
         var popupGo = GameObject.Instantiate(_prefabsHolder.UIDailyMissionsPopupPrefab, _contentTransform);
         _popupView = popupGo.GetComponent<UIDailyMissionsPopupView>();
         _popupView.SetTitleText(_loc.GetLocalization(LocalizationKeys.PopupDailyMissionsTitle));
 
         UpdateItems();
-        UpdateStatusText();
+        UpdateSecondsLeftText(-1);
 
         await _popupView.Appear2Async();
 
@@ -58,17 +53,23 @@ public class UIDailyMissionsPopupMediator : IMediator
         _popupView = null;
     }
 
-    private void UpdateStatusText()
+    private void UpdateSecondsLeftText(int secondsLeft)
     {
-        var secondsLeft = Math.Max(0, _endOfServerDayTimestamp - _gameStateModel.ServerTime);
-        var timeLeftStr = FormattingHelper.ToSeparatedTimeFormat(secondsLeft);
-        _popupView.SetStatusText(string.Format(_loc.GetLocalization(LocalizationKeys.PopupDailyMissionsStatusFormat), timeLeftStr));
+        if (secondsLeft < 0)
+        {
+            _popupView.SetStatusText(string.Empty);
+        }
+        else
+        {
+            var timeLeftStr = FormattingHelper.ToSeparatedTimeFormat(secondsLeft);
+            _popupView.SetStatusText(string.Format(_loc.GetLocalization(LocalizationKeys.PopupDailyMissionsStatusFormat), timeLeftStr));
+        }
     }
 
     private void Activate()
     {
         _popupView.ButtonCloseClicked += OnButtonCloseClicked;
-        _updatesProvider.RealtimeSecondUpdate += OnRealtimeSecondUpdate;
+        _dispatcher.DailyMissionsSecondsLeftAmountUpdated += OnDailyMissionsSecondsLeftAmountUpdated;
         foreach (var missionModel in _viewModel.DailyMissionsModel.MissionsList)
         {
             missionModel.RewardTaken += OnMissionRewardTaken;
@@ -78,7 +79,7 @@ public class UIDailyMissionsPopupMediator : IMediator
     private void Deactivate()
     {
         _popupView.ButtonCloseClicked -= OnButtonCloseClicked;
-        _updatesProvider.RealtimeSecondUpdate -= OnRealtimeSecondUpdate;
+        _dispatcher.DailyMissionsSecondsLeftAmountUpdated -= OnDailyMissionsSecondsLeftAmountUpdated;
         _displayedItems.ForEach(DeactivateItem);
         foreach (var missionModel in _viewModel.DailyMissionsModel.MissionsList)
         {
@@ -86,9 +87,9 @@ public class UIDailyMissionsPopupMediator : IMediator
         }
     }
 
-    private void OnRealtimeSecondUpdate()
+    private void OnDailyMissionsSecondsLeftAmountUpdated(int secondsLeft)
     {
-        UpdateStatusText();
+        UpdateSecondsLeftText(secondsLeft);
     }
 
     private void OnButtonCloseClicked()

@@ -29,7 +29,7 @@ public class UIWarehousePopupMediator : IMediator
     {
         var popupGo = GameObject.Instantiate(_prefabsHolder.UIContentPopupPrefab, _parentTransfoem);
         _popupView = popupGo.GetComponent<UIContentPopupView>();
-        _popupSize = new Vector2Int(940, 700);
+        _popupSize = new Vector2Int(940, 750);
         _popupView.SetSize(_popupSize.x, _popupSize.y);
         _popupView.SetTitleText(_loc.GetLocalization(LocalizationKeys.PopupWarehouseTitle));
 
@@ -99,6 +99,7 @@ public class UIWarehousePopupMediator : IMediator
         var warehouseSlots = playerModelHolder.ShopModel.WarehouseModel.Slots;
         var i = 0;
         var serverTime = _gameStateModel.ServerTime;
+        var contentSizeY = 0f;
         foreach (var slot in warehouseSlots)
         {
             if (slot.HasProduct && slot.Product.DeliverTime <= serverTime)
@@ -106,13 +107,17 @@ public class UIWarehousePopupMediator : IMediator
                 var slotGo = GameObject.Instantiate(_prefabsHolder.UIWarehousePopupItemPrefab, _popupView.ContentRectTransform);
                 var itemView = slotGo.GetComponent<UIWarehousePopupItemView>();
                 var rectTransform = itemView.transform as RectTransform;
-                rectTransform.anchoredPosition = new Vector2((i % maxColumns) * itemSize.x, -(i / maxColumns) * itemSize.y);
+                var position = new Vector2((i % maxColumns) * itemSize.x, -(i / maxColumns) * itemSize.y);
+                rectTransform.anchoredPosition = position;
+                contentSizeY = Mathf.Max(contentSizeY, Mathf.Abs(position.y) + itemSize.y);
                 _displayedItems.Add((itemView, slot));
                 SetupItemView(itemView, slot);
                 AactivateItem(itemView);
                 i++;
             }
         }
+
+        _popupView.SetContentHeight(contentSizeY);
     }
 
     private void SetupItemView(UIWarehousePopupItemView itemView, ProductSlotModel slot)

@@ -92,16 +92,21 @@ public class AudioManager : MonoBehaviour
     {
         if (_musicSource == null) return UniTask.CompletedTask;
         var registration = stopToken.Register(OnCompleteAction);
+
         void OnCompleteAction()
         {
             LeanTween.cancel(gameObject, callOnComplete: true);
-            registration.Dispose();
         }
+
         _musicSource.Stop();
         _musicSource.clip = clip;
         var musicFadeTsc = new UniTaskCompletionSource();
         LeanTween.value(gameObject, f => _musicSource.volume = f, _musicSource.volume, GetMusicVolume(), fadeInDuration)
-            .setOnComplete(() => musicFadeTsc.TrySetResult());
+            .setOnComplete(() =>
+            {
+                musicFadeTsc.TrySetResult();
+                registration.Dispose();
+            });
         _musicSource.Play();
 
         return musicFadeTsc.Task;
@@ -111,17 +116,19 @@ public class AudioManager : MonoBehaviour
     {
         if (_musicSource == null) return UniTask.CompletedTask;
         var registration = stopToken.Register(OnCompleteAction);
+
         void OnCompleteAction()
         {
             LeanTween.cancel(gameObject, callOnComplete: true);
-            registration.Dispose();
         }
+
         var musicFadeTsc = new UniTaskCompletionSource();
         LeanTween.value(gameObject, f => _musicSource.volume = f, _musicSource.volume, 0, fadeOutDuration)
             .setOnComplete(() =>
             {
                 _musicSource.Stop();
                 musicFadeTsc.TrySetResult();
+                registration.Dispose();
             });
 
         return musicFadeTsc.Task;

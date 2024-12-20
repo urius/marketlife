@@ -17,8 +17,7 @@ public struct CalculateForReportCommand
         }
 
         var report = new UserOfflineReportModel(
-            playerModel.StatsData.LastVisitTimestamp,
-            gameStateModel.ServerTime,
+            calculationResult.CalculationHours,
             calculationResult.SoldFromShelfs,
             calculationResult.SoldFromWarehouse,
             calculationResult.UnwashesCleanedAmount,

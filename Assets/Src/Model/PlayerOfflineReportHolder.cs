@@ -16,10 +16,8 @@ public class PlayerOfflineReportHolder
 
 public class UserOfflineReportModel
 {
-    public readonly int TimeFrom;
-    public readonly int TimeTo;
-    public readonly float HoursPassed;
-    public readonly int MinutesPassed;
+    public readonly float CalculationHours;
+    public readonly int CalculationMinutes;
     public readonly Dictionary<ProductConfig, int> SoldFromShelfs;
     public readonly Dictionary<ProductConfig, int> SoldFromWarehouse;
     public readonly int SellProfit;
@@ -31,21 +29,18 @@ public class UserOfflineReportModel
     public readonly IEnumerable<GuestOfflineReportActionModel> GuestOfflineActionModels;
 
     public UserOfflineReportModel(
-        int timeFrom,
-        int timeTo,
+        float calculationHours,
         Dictionary<ProductConfig, int> soldFromShelfs,
         Dictionary<ProductConfig, int> soldFromWarehouse,
         int unwashesCleanedAmount,
         IEnumerable<GuestOfflineReportActionModel> guestOfflineActionModels)
     {
-        TimeFrom = timeFrom;
-        TimeTo = timeTo;
+        CalculationHours = calculationHours;
+        CalculationMinutes = (int)(60 * calculationHours);
         SoldFromShelfs = soldFromShelfs;
         SoldFromWarehouse = soldFromWarehouse;
         UnwashesCleanedAmount = unwashesCleanedAmount;
         GuestOfflineActionModels = guestOfflineActionModels;
-        HoursPassed = (0.1f * (int)Math.Ceiling(10 * (TimeTo - TimeFrom) / 3600f));
-        MinutesPassed = (int)Math.Ceiling((TimeTo - TimeFrom) / 60f);
         SellProfit = CalculateSellProfit(SoldFromWarehouse) + CalculateSellProfit(SoldFromShelfs);
         ExpFromSell = CalculationHelper.CalculateExpToAdd(SoldFromWarehouse) + CalculationHelper.CalculateExpToAdd(SoldFromShelfs);
 

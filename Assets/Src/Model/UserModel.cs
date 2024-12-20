@@ -225,18 +225,20 @@ public class UserModel
         var personalModel = userShopModel.PersonalModel;
         var warehouseModel = userShopModel.WarehouseModel;
 
+        const int maxHoursForCalculation = 3;
         var (restProductsOnShelfs, totalShelfsVolume, restUsedShelfsVolume) = userShopModel.GetAllProductsInfo();
         var uniqueProductsOnShelfsCount = restProductsOnShelfs.Length;
         var startCalculationTime = StatsData.LastVisitTimestamp > 0 ? StatsData.LastVisitTimestamp : targetTime;
         var secondsSinceLastVisit = targetTime - startCalculationTime;
         var hoursSinceLastVisit = secondsSinceLastVisit / 3600f;
-        var hoursCeilSinceLastVisit = (int)Math.Ceiling(hoursSinceLastVisit);
+        var hoursForCalculation = Math.Min(maxHoursForCalculation, hoursSinceLastVisit);
+        var hoursForCalculationCeiling = (int)Math.Ceiling(hoursForCalculation);
         var soldFromShelfsProducts = new Dictionary<ProductConfig, int>(uniqueProductsOnShelfsCount);
         var cleanedUnwashesAmount = 0;
         var soldFromWarehouseProducts = new Dictionary<ProductConfig, int>(uniqueProductsOnShelfsCount);
         var restWarehouseProductsForMerchandiser = new Dictionary<ProductConfig, int>(uniqueProductsOnShelfsCount);
         var random = new System.Random(targetTime);
-        var grabbedProducts = GetGrabbedProductsForTime(restProductsOnShelfs, startCalculationTime, targetTime);
+        var grabbedProducts = GetGrabbedProductsForTime(restProductsOnShelfs);
         CorrectRestProductsAmountsByGrabbedProducts(restProductsOnShelfs, grabbedProducts);
 
         foreach (var productModel in restProductsOnShelfs)
@@ -247,11 +249,11 @@ public class UserModel
         }
         var unwashesCountAdded = 0;
         var totalShopSquare = userShopModel.ShopDesign.SizeX * userShopModel.ShopDesign.SizeY;
-        for (var i = 0; i < hoursCeilSinceLastVisit; i++)
+        for (var i = 0; i < hoursForCalculationCeiling; i++)
         {
             var unwashesCount = userShopModel.Unwashes.Count + unwashesCountAdded;
             var moodMultiplier = CalculationHelper.CalculateMood(restUsedShelfsVolume, totalShelfsVolume, unwashesCount, totalShopSquare);
-            var hourMultiplier = Math.Min(1, hoursSinceLastVisit - i);
+            var hourMultiplier = Math.Min(1, hoursForCalculation - i);
             var buyMultiplier = moodMultiplier * hourMultiplier;
             var iterationStartTime = startCalculationTime + i * 3600;
             var isMerchandiserActive = personalModel.GetMaxEndWorkTimeForPersonalType(PersonalType.Merchandiser) > iterationStartTime;
@@ -310,7 +312,12 @@ public class UserModel
             }
         }
 
-        return new OfflineCalculationResult(soldFromShelfsProducts, soldFromWarehouseProducts, unwashesCountAdded, cleanedUnwashesAmount);
+        return new OfflineCalculationResult(
+            hoursForCalculation,
+            soldFromShelfsProducts,
+            soldFromWarehouseProducts,
+            unwashesCountAdded,
+            cleanedUnwashesAmount);
     }
 
     private int CleanUnwashes(int maxUnwashesToClean)
@@ -339,7 +346,7 @@ public class UserModel
         }
     }
 
-    private Dictionary<ProductConfig, int> GetGrabbedProductsForTime(ProductModel[] restProducts, int startCalculationTime, int targetTime)
+    private Dictionary<ProductConfig, int> GetGrabbedProductsForTime(ProductModel[] restProducts)
     {
         var grabbedProductsDict = new Dictionary<ProductConfig, int>();
         foreach (var action in ExternalActionsModel.Actions)
@@ -531,6 +538,7 @@ public class UserProgressModel
 
 public class OfflineCalculationResult
 {
+    public readonly float CalculationHours;
     public readonly Dictionary<ProductConfig, int> SoldFromShelfs;
     public readonly Dictionary<ProductConfig, int> SoldFromWarehouse;
 
@@ -538,11 +546,13 @@ public class OfflineCalculationResult
     public readonly int UnwashesCleanedAmount;
 
     public OfflineCalculationResult(
+        float calculationHours,
         Dictionary<ProductConfig, int> soldFromShelfs,
         Dictionary<ProductConfig, int> soldFromWarehouse,
         int unwashesAddedAmount,
         int unwashesCleanedAmount)
     {
+        CalculationHours = calculationHours;
         SoldFromShelfs = soldFromShelfs;
         SoldFromWarehouse = soldFromWarehouse;
         UnwashesAddedAmount = unwashesAddedAmount;

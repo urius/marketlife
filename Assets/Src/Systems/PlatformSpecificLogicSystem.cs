@@ -232,8 +232,8 @@ public class VKLogicModule : PlatformSpecificLogicModuleBase
         var config = GameConfigManager.Instance.MainConfig;
         _wallPostContext = new WallPostContext(config.ShareOfflineReportRewardGold, buttonWorldPosition);
         var payload = new PostOfflineRevenueJsPayload(
-            offlineReportPopupModel.ReportModel.HoursPassed,
-            offlineReportPopupModel.ReportModel.MinutesPassed,
+            offlineReportPopupModel.ReportModel.CalculationHours,
+            offlineReportPopupModel.ReportModel.CalculationMinutes,
             offlineReportPopupModel.ProfitFromSell);
         _jsBridge.SendCommandToJs("PostOfflineRevenue", payload);
     }

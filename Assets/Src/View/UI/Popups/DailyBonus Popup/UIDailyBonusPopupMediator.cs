@@ -143,8 +143,13 @@ public class UIDailyBonusPopupMediator : IMediator
     private void SetupItemView(UIDailyBonusPopupPrizeItemView itemView, DailyBonusConfig itemConfig)
     {
         var isDoubled = _advertWatchStateModel.IsWatched(_advertWatchStateModel.GetAdvertTargetTypeByDailyBonusDayNum(itemConfig.DayNum));
+        var isGold = itemConfig.Reward.IsGold;
+        ColorUtility.TryParseHtmlString(
+            isGold ? Constants.GoldAmountTextRedColor : Constants.CashAmountTextGreenColor, out var valueTextColor);
+        
         itemView.SetDayText(string.Format(_loc.GetLocalization(LocalizationKeys.PopupDailyBonusDayFormat), itemConfig.DayNum));
-        itemView.SetIconSprite(itemConfig.Reward.IsGold ? _spritesProvider.GetGoldIcon() : _spritesProvider.GetCashIcon());
+        itemView.SetIconSprite(isGold ? _spritesProvider.GetGoldIcon() : _spritesProvider.GetCashIcon());
+        itemView.SetValueTextColor(valueTextColor);
         itemView.SetValueText($"+{FormattingHelper.ToCommaSeparatedNumber(itemConfig.Reward.Value * (isDoubled ? 2 : 1))}");
         itemView.SetAlpha(itemConfig.DayNum <= _viewModel.CurrentBonusDay ? 1 : 0.4f);
         itemView.SetDoubleButtonVisible(itemConfig.DayNum <= _viewModel.CurrentBonusDay);

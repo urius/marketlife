@@ -12,6 +12,11 @@ public class UIPriceLabelView : MonoBehaviour
     public void SetType(bool isGold)
     {
         _image.sprite = isGold ? SpritesProvider.Instance.GetGoldIcon() : SpritesProvider.Instance.GetCashIcon();
+
+        ColorUtility.TryParseHtmlString(
+            isGold ? Constants.GoldAmountTextRedColor : Constants.CashAmountTextGreenColor, out var textColor);
+        
+        _text.color = textColor;
     }
 
     public int Value

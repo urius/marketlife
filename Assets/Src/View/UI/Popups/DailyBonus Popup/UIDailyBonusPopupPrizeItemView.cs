@@ -27,6 +27,11 @@ public class UIDailyBonusPopupPrizeItemView : MonoBehaviour
     {
         _valueText.text = text;
     }
+    
+    public void SetValueTextColor(Color color)
+    {
+        _valueText.color = color;
+    }
 
     public void SetIconSprite(Sprite sprite)
     {

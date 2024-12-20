@@ -198,7 +198,11 @@ public class UIBankPopupMediator : UIContentPopupMediator
 
     private void UpdateBaseItem(UIBankPopupItemViewBase itemView, IBankItemViewModel viewModel)
     {
+        ColorUtility.TryParseHtmlString(
+            viewModel.IsGold ? Constants.GoldAmountTextRedColor : Constants.CashAmountTextGreenColor, out var color);
+        
         itemView.SetIconSprite(viewModel.IsGold ? _spritesProvider.GetGoldIcon() : _spritesProvider.GetCashIcon());
+        itemView.SetAmountTextColor(color);
         itemView.SetAmountText(FormattingHelper.ToCommaSeparatedNumber(viewModel.Value));
     }
 

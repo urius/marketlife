@@ -29,7 +29,7 @@ public class UIDailyMissionsPopupMissionItemView : MonoBehaviour
         _missionDescriptionText.text = description;
     }
 
-    public void SettakeButtonText(string description)
+    public void SetTakeButtonText(string description)
     {
         _takeRewardButtonText.text = description;
     }
@@ -37,6 +37,11 @@ public class UIDailyMissionsPopupMissionItemView : MonoBehaviour
     public void SetRewardAmount(int amount)
     {
         _rewardAmountText.text = $"+{FormattingHelper.ToCommaSeparatedNumber(amount)}";
+    }
+
+    public void SetRewardTextColor(Color color)
+    {
+        _rewardAmountText.color = color;
     }
 
     public void SetRewardIconSprite(Sprite sprite)

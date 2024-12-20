@@ -172,6 +172,8 @@ public class UIDailyMissionsPopupMediator : IMediator
         itemView.SetMissionDescription(missionDescription);
         var rewardIconSprite = GetRewardIconSprite(missionModel.Reward);
         itemView.SetRewardIconSprite(rewardIconSprite);
+        var rewardTextColor = GetRewardTextColor(missionModel.Reward);
+        itemView.SetRewardTextColor(rewardTextColor);
         itemView.SetRewardAmount(missionModel.Reward.Amount);
 
         UpdateItemProgressView(itemView, missionModel);
@@ -189,7 +191,7 @@ public class UIDailyMissionsPopupMediator : IMediator
         itemView.SetTakeButtonVisibility(missionModel.IsCompleted);
         itemView.SetTakeButtonInteractable(missionModel.IsCompleted && missionModel.IsRewardTaken == false);
         var takeButtonText = _loc.GetLocalization(missionModel.IsRewardTaken ? LocalizationKeys.PopupDailyMissionsMissionCompleted : LocalizationKeys.PopupDailyMissionsRetreiveReward);
-        itemView.SettakeButtonText(takeButtonText);
+        itemView.SetTakeButtonText(takeButtonText);
     }
 
     private Sprite GetRewardIconSprite(Reward reward)
@@ -205,6 +207,23 @@ public class UIDailyMissionsPopupMediator : IMediator
         }
 
         return null;
+    }
+    
+    private Color GetRewardTextColor(Reward reward)
+    {
+        var result = Color.white;
+        
+        switch (reward.Type)
+        {
+            case RewardType.Cash:
+                 ColorUtility.TryParseHtmlString(Constants.CashAmountTextGreenColor, out result);
+                 break;
+            case RewardType.Gold:
+                ColorUtility.TryParseHtmlString(Constants.GoldAmountTextRedColor, out result);
+                break;
+        }
+
+        return result;
     }
 
     private string GetMissionDescription(DailyMissionModel missionModel)

@@ -6,7 +6,7 @@ public class URLsHolder : ScriptableObject
 {
     public static URLsHolder Instance { get; private set; }
 
-    [SerializeField] private string _basePath = "https://devman.ru/marketVK/unity/";
+    [SerializeField] private string _basePath = "https://twin-pixel.ru/marketVK/unity/";
     [SerializeField] private string _getTimePostfix = "DataProvider.php?command=get_time";
     public string GetTimeURL => _basePath + _getTimePostfix;
     [SerializeField] private string _mainConfigPostfixFormat = "GameConfigs/MainConfig{0}.json";
@@ -15,7 +15,7 @@ public class URLsHolder : ScriptableObject
     public string GetDataURL => _basePath + _getDataPostfix;
     [SerializeField] private string _getVisitTimesPostfix = "DataProvider.php?command=get_users_last_visit&ids={0}";
     public string GetVisitTimesURL => _basePath + _getVisitTimesPostfix;
-    [SerializeField] private string _getFriendDataOldURL = "https://devman.ru/marketVK/dataProvider.php?command=get_friend_data&id={0}";
+    [SerializeField] private string _getFriendDataOldURL = "https://twin-pixel.ru/marketVK/dataProvider.php?command=get_friend_data&id={0}";
     public string GetFriendDataOldURL => _getFriendDataOldURL;
     [SerializeField] private string _saveDataPostfix = "DataProvider.php?command=save_data&id={0}";
     public string SaveDataURL => _basePath + _saveDataPostfix;
@@ -32,7 +32,7 @@ public class URLsHolder : ScriptableObject
     public string GetLeaderboardsURL => _basePath + _getLeaderboardsPostfix;
 
     [Space]
-    [SerializeField] private string _debugMainConfigUrl = "https://devman.ru/marketVK/unity/GameConfigs/MainConfig_Debug.json";
+    [SerializeField] private string _debugMainConfigUrl = "https://twin-pixel.ru/marketVK/unity/GameConfigs/MainConfig_Debug.json";
     public string DebugMainConfigUrl => _debugMainConfigUrl;
 
     public string GetBankDataURL(SocialType platformType)

@@ -8,7 +8,7 @@ public class DebugTestURL : MonoBehaviour
 {
     [SerializeField] private string _id;
 
-    private string GetDataUrl => string.Format("https://devman.ru/marketVK/dataProvider.php?command=get_data&id={0}", _id);
+    private string GetDataUrl => string.Format("https://twin-pixel.ru/marketVK/dataProvider.php?command=get_data&id={0}", _id);
 
     public async UniTaskVoid Load()
     {

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca816908687774d7c905e4bc25777257, type: 3}
   m_Name: LocalizationManager
   m_EditorClassIdentifier: 
-  _localizationUrlRu: https://devman.ru/marketVK/unity/GameConfigs/localizations/localization_ru.json
+  _localizationUrlRu: https://twin-pixel.ru/marketVK/unity/GameConfigs/localizations/localization_ru.json
   _builtinLocalization:
   - LocaleType: 0
     Items:

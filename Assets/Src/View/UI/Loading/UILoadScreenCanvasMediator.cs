@@ -90,7 +90,7 @@ public class UILoadScreenCanvasMediator : MonoBehaviour
 
     private UniTask AnimateRemoveLoadingPanelAsync()
     {
-        var moveData = LeanTweenHelper.MoveXAsync(_loadPanelView.transform as RectTransform, -Screen.width, 0.5f);
+        var moveData = LeanTweenHelper.MoveXAsync(_loadPanelView.transform as RectTransform, -2 * Screen.width, 0.5f);
         moveData.tweenDescription.setEaseInBack();
         return moveData.task;
     }

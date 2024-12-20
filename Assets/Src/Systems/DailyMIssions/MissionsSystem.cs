@@ -68,6 +68,8 @@ public class MissionsSystem
 
     private void UpdateEndMissionTime()
     {
+        if (_playerModelHolder.UserModel == null) return;
+        
         var secondsLeft = Mathf.Max(0, _endOfServerDayTimestamp - _gameStateModel.ServerTime);
         if (secondsLeft <= 0)
         {

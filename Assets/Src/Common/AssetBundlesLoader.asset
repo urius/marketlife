@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a6c20930b964615a7eee45faf80c0b, type: 3}
   m_Name: AssetBundlesLoader
   m_EditorClassIdentifier: 
-  _assetBundlesWebGLURL: https://devman.ru/marketVK/unity/AssetBundles/WebGL
-  _assetBundlesOSXURL: https://devman.ru/marketVK/unity/AssetBundles/OSX
-  _assetBundlesAndroidURL: https://devman.ru/marketVK/unity/AssetBundles/Android
+  _assetBundlesWebGLURL: https://twin-pixel.ru/marketVK/unity/AssetBundles/WebGL
+  _assetBundlesOSXURL: https://twin-pixel.ru/marketVK/unity/AssetBundles/OSX
+  _assetBundlesAndroidURL: https://twin-pixel.ru/marketVK/unity/AssetBundles/Android

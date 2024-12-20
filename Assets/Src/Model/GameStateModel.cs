@@ -61,6 +61,8 @@ public class GameStateModel
         }
     }
 
+    public bool IsServerTimeValid => _lastCheckedServerTime > 0;
+
     public bool CheckIsPlayingState(GameStateName state)
     {
         switch (state)

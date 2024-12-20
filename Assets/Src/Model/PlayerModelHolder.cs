@@ -8,7 +8,8 @@ public class PlayerModelHolder
 
     public event Action UserModelIsSet = delegate { };
 
-    private UniTaskCompletionSource _setUidTcs = new UniTaskCompletionSource();
+    private readonly UniTaskCompletionSource _setUidTcs = new UniTaskCompletionSource();
+    private readonly UniTaskCompletionSource _setUserModelTcs = new UniTaskCompletionSource();
 
     public string Uid { get; private set; }
     public SocialType SocialType { get; private set; }
@@ -17,6 +18,7 @@ public class PlayerModelHolder
     public UserModel UserModel { get; private set; }
     public ShopModel ShopModel => UserModel.ShopModel;
     public UniTask SetUidTask => _setUidTcs.Task;
+    public UniTask SetUserModelTask => _setUserModelTcs.Task;
 
     public void SetSocialType(SocialType socialType)
     {
@@ -37,6 +39,8 @@ public class PlayerModelHolder
     public void SetUserModel(UserModel userModel)
     {
         UserModel = userModel;
+        
+        _setUserModelTcs.TrySetResult();
         UserModelIsSet();
     }
 

@@ -23,8 +23,11 @@ public struct InitializeAndLoadCommand
         for (var i = 0; i < phasesData.Length; i++)
         {
             loadGameProgressModel.SetCurrentPhaseName(phasesData[i].Phase);
+            
+            await UniTask.Delay(50);
+            
             var result = await phasesData[i].Command.ExecuteAsync();
-            if (result == true)
+            if (result)
             {
                 loadGameProgressModel.SetCurrentPartLoaded();
             }

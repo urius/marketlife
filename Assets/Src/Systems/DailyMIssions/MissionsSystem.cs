@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class MissionsSystem
@@ -48,29 +49,48 @@ public class MissionsSystem
 
     public void Start()
     {
-        UpdateEndOfServerDayTimestamp();
+        WaitUserModelAndInitialize().Forget();
+    }
 
+    private async UniTaskVoid WaitUserModelAndInitialize()
+    {
+        await _playerModelHolder.SetUserModelTask;
+        
+        UpdateEndOfServerDayTimestamp();
+        UpdateEndMissionTimeOffline();
+            
         _gameStateModel.GameStateChanged += OnGameStateChanged;
         _dispatcher.UITakeDailyMissionRewardClicked += OnUITakeDailyMissionRewardClicked;
         _updatesProvider.RealtimeSecondUpdate += OnRealtimeSecondUpdate;
     }
 
+    private void UpdateEndMissionTimeOffline()
+    {
+        var prevVisitDate = DateTimeHelper.GetDateTimeByUnixTimestamp(_playerModelHolder.UserModel.StatsData.LastVisitTimestamp);
+        var currentVisitDate = DateTimeHelper.GetDateTimeByUnixTimestamp(_gameStateModel.StartGameServerTime);
+
+        if (DateTimeHelper.IsSameDays(prevVisitDate, currentVisitDate) == false)
+        {
+            ClearMissions();
+        }
+    }
+
     private void UpdateEndOfServerDayTimestamp()
     {
         var serverTime = _gameStateModel.ServerTime;
-        _endOfServerDayTimestamp = serverTime + DateTimeHelper.GetSecondsLeftForTheEndOfTheDay(DateTimeHelper.GetDateTimeByUnixTimestamp(serverTime));
+        var serverUnixDate = DateTimeHelper.GetDateTimeByUnixTimestamp(serverTime);
+        _endOfServerDayTimestamp = serverTime + DateTimeHelper.GetSecondsLeftForTheEndOfTheDay(serverUnixDate);
     }
 
     private void OnRealtimeSecondUpdate()
     {
-        UpdateEndMissionTime();
+        UpdateEndMissionTimeOnline();
     }
 
-    private void UpdateEndMissionTime()
+    private void UpdateEndMissionTimeOnline()
     {
-        if (_playerModelHolder.UserModel == null) return;
-        
-        var secondsLeft = Mathf.Max(0, _endOfServerDayTimestamp - _gameStateModel.ServerTime);
+        var secondToEndOfTheServerDay = _endOfServerDayTimestamp - _gameStateModel.ServerTime;
+        var secondsLeft = Mathf.Max(0, secondToEndOfTheServerDay);
         if (secondsLeft <= 0)
         {
             UpdateEndOfServerDayTimestamp();

@@ -43,13 +43,11 @@ public class AssetBundlesLoader : ScriptableObject
         var lastSavedVersion = PlayerPrefs.GetInt(versionParameterName);
         if (lastSavedVersion != version || version < 0)
         {
-            Caching.ClearAllCachedVersions(name);
             PlayerPrefs.SetInt(versionParameterName, version);
 
             Debug.Log($"Cache for {name} cleared because of new version {version}");
         }
 
-        var isFromCache = Caching.IsVersionCached(fullUrl, version);
         using (UnityWebRequest webRequest = UnityWebRequestAssetBundle.GetAssetBundle(fullUrl, (uint)version, 0))
         {
             var sendRequestOperation = webRequest.SendWebRequest();
@@ -66,7 +64,7 @@ public class AssetBundlesLoader : ScriptableObject
 
             _bundlesByName[name] = assetBundle;
 
-            Debug.Log($"Bundle {name} was loaded " + (isFromCache ? "from cache" : ""));
+            Debug.Log($"Bundle {name} was loaded ");
 
             return assetBundle;
         }

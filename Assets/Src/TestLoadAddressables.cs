@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -13,7 +11,6 @@ public class Test : MonoBehaviour
 
     async void Start()
     {
-        Caching.ClearAllCachedVersions("graphicsgameplay");
         using (UnityWebRequest webRequest = UnityWebRequestAssetBundle.GetAssetBundle("http://shoplife.01sh.ru/AssetBundles/graphicsgameplay", 1, 0))
         {
             var webRequestResult = await webRequest.SendWebRequest();

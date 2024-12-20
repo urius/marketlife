@@ -39,32 +39,32 @@ public class AnalyticsManager
 
     public void SendGameStart()
     {
-        AnalyticsEvent.GameStart(_metaParams);
+        // AnalyticsEvent.GameStart(_metaParams);
     }
 
     public void SendLevelUp(int levelIndex)
     {
-        AnalyticsEvent.LevelUp(levelIndex, _metaParams);
+        // AnalyticsEvent.LevelUp(levelIndex, _metaParams);
     }
 
     public void SendTutorialStart(string tutorialId)
     {
-        AnalyticsEvent.TutorialStart(tutorialId, _metaParams);
+        // AnalyticsEvent.TutorialStart(tutorialId, _metaParams);
     }
 
     public void SendTutorialStep(int stepIndex, string tutorialId)
     {
-        AnalyticsEvent.TutorialStep(stepIndex, tutorialId, _metaParams);
+        // AnalyticsEvent.TutorialStep(stepIndex, tutorialId, _metaParams);
     }
 
     public void SendStoreOpened(bool isGold)
     {
-        AnalyticsEvent.StoreOpened(isGold ? StoreType.Premium : StoreType.Soft, _metaParams);
+        // AnalyticsEvent.StoreOpened(isGold ? StoreType.Premium : StoreType.Soft, _metaParams);
     }
 
     public void SendStoreItemClick(bool isGold, string itemId)
     {
-        AnalyticsEvent.StoreItemClick(isGold ? StoreType.Premium : StoreType.Soft, itemId, itemId, _metaParams);
+        // AnalyticsEvent.StoreItemClick(isGold ? StoreType.Premium : StoreType.Soft, itemId, itemId, _metaParams);
     }
 
     public void SendCustom(string name, params (string Name, object Value)[] parameters)

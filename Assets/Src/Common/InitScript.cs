@@ -19,7 +19,7 @@ public class InitScript : MonoBehaviour
 
     private void Awake()
     {
-        //Application.targetFrameRate = 50;
+        Application.targetFrameRate = 51;
 
         _playerModelHolder = PlayerModelHolder.Instance;
         new InitializeSystemsCommand().Execute();

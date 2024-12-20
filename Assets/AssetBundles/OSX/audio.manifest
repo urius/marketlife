@@ -1,53 +1,56 @@
 ManifestFileVersion: 0
-CRC: 2183701027
+CRC: 352241762
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 7f2c1652405a8d18b1ff1c5ce8f2c46a
+    Hash: 5543001e304a5553005a5a457cc9eb44
   TypeTreeHash:
     serializedVersion: 2
     Hash: 9a2ca7bdbd1871f7131daf57de908e0c
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 5543001e304a5553005a5a457cc9eb44
 HashAppended: 0
 ClassTypes:
 - Class: 83
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Sounds/close_button_1.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Sounds/rotate_object_1.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Music/main_theme_2.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Sounds/delete.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Sounds/button_3.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Sounds/cleaning_1.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Sounds/put_product_1.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Sounds/coin_1.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Sounds/cashbox_2.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Sounds/scroll_open_1.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Sounds/new_level.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Sounds/button_negative_2.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Music/build_theme_1.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Sounds/cleaning_3.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Sounds/cleaning_2.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Sounds/close_button_3.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Sounds/negative_1.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Sounds/new_message_1.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Sounds/shopper_take.ogg
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Sounds/shopper_take_1.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Sounds/product_drops_1.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Sounds/cashbox_1.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Sounds/starsfall.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Sounds/object_placement_1.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Sounds/score.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Sounds/click_1.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Sounds/product_drops_2.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Sounds/negative_2.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Sounds/cleaning.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Sounds/button_2.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Sounds/button_5.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Sounds/button_4.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Music/build_theme_2.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Music/main_theme_1.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Sounds/button_1.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Sounds/take_product_1.mp3
-- Assets/External Resources/InterfaceGraphicsBundle/Audio/Sounds/scroll_close_1.mp3
+- Assets/External Resources/Audio/Sounds/close_button_1.mp3
+- Assets/External Resources/Audio/Sounds/rotate_object_1.mp3
+- Assets/External Resources/Audio/Music/main_theme_2.mp3
+- Assets/External Resources/Audio/Sounds/delete.mp3
+- Assets/External Resources/Audio/Sounds/button_3.mp3
+- Assets/External Resources/Audio/Sounds/cleaning_1.mp3
+- Assets/External Resources/Audio/Sounds/put_product_1.mp3
+- Assets/External Resources/Audio/Sounds/coin_1.mp3
+- Assets/External Resources/Audio/Sounds/cashbox_2.mp3
+- Assets/External Resources/Audio/Sounds/scroll_open_1.mp3
+- Assets/External Resources/Audio/Sounds/new_level.mp3
+- Assets/External Resources/Audio/Sounds/button_negative_2.mp3
+- Assets/External Resources/Audio/Music/build_theme_1.mp3
+- Assets/External Resources/Audio/Sounds/cleaning_3.mp3
+- Assets/External Resources/Audio/Sounds/cleaning_2.mp3
+- Assets/External Resources/Audio/Sounds/close_button_3.mp3
+- Assets/External Resources/Audio/Sounds/negative_1.mp3
+- Assets/External Resources/Audio/Sounds/new_message_1.mp3
+- Assets/External Resources/Audio/Sounds/shopper_take.ogg
+- Assets/External Resources/Audio/Sounds/shopper_take_1.mp3
+- Assets/External Resources/Audio/Sounds/product_drops_1.mp3
+- Assets/External Resources/Audio/Sounds/cashbox_1.mp3
+- Assets/External Resources/Audio/Sounds/starsfall.mp3
+- Assets/External Resources/Audio/Sounds/object_placement_1.mp3
+- Assets/External Resources/Audio/Sounds/score.mp3
+- Assets/External Resources/Audio/Sounds/click_1.mp3
+- Assets/External Resources/Audio/Sounds/product_drops_2.mp3
+- Assets/External Resources/Audio/Sounds/negative_2.mp3
+- Assets/External Resources/Audio/Sounds/cleaning.mp3
+- Assets/External Resources/Audio/Sounds/button_2.mp3
+- Assets/External Resources/Audio/Sounds/button_5.mp3
+- Assets/External Resources/Audio/Sounds/button_4.mp3
+- Assets/External Resources/Audio/Music/build_theme_2.mp3
+- Assets/External Resources/Audio/Music/main_theme_1.mp3
+- Assets/External Resources/Audio/Sounds/button_1.mp3
+- Assets/External Resources/Audio/Sounds/take_product_1.mp3
+- Assets/External Resources/Audio/Sounds/scroll_close_1.mp3
 Dependencies: []

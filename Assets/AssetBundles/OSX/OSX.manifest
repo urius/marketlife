@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 4071402591
+CRC: 323979724
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: graphicsgameplay
+      Name: graphicsinterface
       Dependencies: {}
     Info_1:
-      Name: graphicsinterface
+      Name: graphicsgameplay
       Dependencies: {}
     Info_2:
       Name: audio

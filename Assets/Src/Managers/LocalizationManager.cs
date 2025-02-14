@@ -146,10 +146,10 @@ public class LocalizationKeys
     public static string PopupShelfContentProductDescriptionFormat = "popup_shelf_content_product_description_format";
     public static string PopupShelfContentProductEmpty = "popup_shelf_content_product_empty";
     public static string PopupShelfContentProductTakeFromWarehouse = "popup_shelf_content_product_take_from_warehouse";
-    public static string PopupOrderProductItemDescriptionText = "popup_order_product_item_description_text_2";
-    public static string PopupOrderProductItemDemandMeasure = "popup_order_product_item_demand_measure";
+    public static string PopupOrderProductDemandText = "popup_order_product_demand_text";
+    public static string PopupOrderProductDeliverText = "popup_order_product_deliver_text";
+    public static string PopupOrderProductProfitText = "popup_order_product_profit_text";
     public static string PopupWarehouseTitle = "popup_warehouse_title";
-    public static string PopupWarehouseItemAmountFormat = "popup_warehouse_item_amount_format";
     public static string PopupWarehouseItemHintFormat = "popup_warehouse_item_hint_format";
     public static string PopupUpgradesTitle = "popup_upgrades_title";
     public static string PopupUpgradesWarehouseTab = "popup_upgrades_warehouse_tab_name";

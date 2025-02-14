@@ -1,4 +1,5 @@
 using System;
+using Src.View.UI.Common;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,6 +13,8 @@ public class UIOrderProductItemView : MonoBehaviour
     [SerializeField] private TMP_Text _descriptionText;
     [SerializeField] private Image _productIcon;
     [SerializeField] private UIPriceLabelView _priceLabelView;
+    [SerializeField] private TMP_Text _demandText;
+    [SerializeField] private UIProgressColorLineView _demandPercentView;
 
     public void Awake()
     {
@@ -26,6 +29,16 @@ public class UIOrderProductItemView : MonoBehaviour
     public void SetTitleText(string text)
     {
         _titleText.text = text;
+    }
+    
+    public void SetDemandText(string text)
+    {
+        _demandText.text = text;
+    }
+    
+    public void SetDemandPercent(float value)
+    {
+        _demandPercentView.SetProgress(value);
     }
 
     public void SetDescriptionText(string text)

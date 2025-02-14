@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using View.Helpers;
 
 public class UIOrderProductsPopupMediator : IMediator
 {
@@ -18,8 +19,8 @@ public class UIOrderProductsPopupMediator : IMediator
     private readonly PrefabsHolder _prefabsHolder;
     private readonly PoolCanvasProvider _poolCanvasProvider;
     private readonly TutorialUIElementsProvider _tutorialUIElementsProvider;
-    private readonly LinkedList<(UIOrderProductItemView View, ProductConfig Config)> _displayedItems = new LinkedList<(UIOrderProductItemView, ProductConfig)>();
-    private readonly Queue<UIOrderProductItemView> _cachedItems = new Queue<UIOrderProductItemView>();
+    private readonly LinkedList<(UIOrderProductItemView View, ProductConfig Config)> _displayedItems = new();
+    private readonly Queue<UIOrderProductItemView> _cachedItems = new();
 
     private UITabbedContentPopupView _popupView;
     private OrderProductPopupViewModel _viewModel;
@@ -232,13 +233,15 @@ public class UIOrderProductsPopupMediator : IMediator
         var price = config.GetPriceForVolume(warehouseVolume);
         itemView.SetPrice(price.IsGold, price.Value);
         itemView.SetTitleText(_loc.GetLocalization($"{LocalizationKeys.NameProductIdPrefix}{config.NumericId}"));
-        var description = string.Format(
-                _loc.GetLocalization(LocalizationKeys.PopupOrderProductItemDescriptionText),
-                $"{(int)Math.Ceiling(config.Demand)} {_loc.GetLocalization(LocalizationKeys.PopupOrderProductItemDemandMeasure)}",
-                config.GetAmountInVolume(warehouseVolume),
-                FormattingHelper.ToSeparatedTimeFormat(config.DeliverTimeSeconds),
-                config.GetExpForVolume(warehouseVolume),
-                config.GetProfitForVolume(warehouseVolume));
+        itemView.SetDemandText(_loc.GetLocalization(LocalizationKeys.PopupOrderProductDemandText));
+        itemView.SetDemandPercent(config.DemandPer1000v/config.DemandPer1000vMax);
+
+        var profitText = RichTextHelper.FormatColor($"+{config.GetProfitForVolume(warehouseVolume)}$", "#068220");
+        var deliverTimeText = RichTextHelper.FormatBlue(FormattingHelper.ToSeparatedTimeFormat(config.DeliverTimeSeconds));
+        var description =
+            $"{_loc.GetLocalization(LocalizationKeys.PopupOrderProductDeliverText)} {deliverTimeText}" +
+            $"\n\n{_loc.GetLocalization(LocalizationKeys.PopupOrderProductProfitText)} {profitText}";
+                
         itemView.SetDescriptionText(description);
     }
 

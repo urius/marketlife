@@ -468,11 +468,12 @@ public class ProductConfig : IUnlockableConfig
     public readonly float SellPrice;
     public readonly float Demand;
     public readonly float DemandPer1000v;
+    public readonly float DemandPer1000vMax;
     public readonly int DeliverTimeSeconds;
 
     private readonly int _amountIn1000Volume;
 
-    public ProductConfig(int numericId, ProductConfigDto dto)
+    public ProductConfig(int numericId, ProductConfigDto dto, float demandDailyMultiplier, float deliverDailyMultiplier)
     {
         NumericId = numericId;
         Key = dto.key;
@@ -480,7 +481,8 @@ public class ProductConfig : IUnlockableConfig
         UnlockLevel = dto.unlock_level;
         _amountIn1000Volume = dto.amount_per_1000v;
         Volume = 1000 / _amountIn1000Volume;
-        DemandPer1000v = dto.demand_1000v_per_hour;
+        DemandPer1000vMax = dto.demand_1000v_per_hour;
+        DemandPer1000v = DemandPer1000vMax * demandDailyMultiplier;
 
         PricePer1000v = Price.FromString(dto.price_per_1000v);
 
@@ -488,9 +490,9 @@ public class ProductConfig : IUnlockableConfig
         SellPricePer1000v = PricePer1000v.IsGold ? ProfitPer1000v : (PricePer1000v.Value + ProfitPer1000v);
         SellPrice = (float)SellPricePer1000v / _amountIn1000Volume;
 
-        Demand = (int)((DemandPer1000v * _amountIn1000Volume) * 100) * 0.01f;
+        Demand = Math.Max(1, (int)(DemandPer1000v * _amountIn1000Volume * 100) * 0.01f);
 
-        DeliverTimeSeconds = GetTotalSeconds(dto.deliver);
+        DeliverTimeSeconds = Math.Max(1, (int)(deliverDailyMultiplier * GetTotalSeconds(dto.deliver)));
     }
 
     public int GroupIndex => GroupId - 1;

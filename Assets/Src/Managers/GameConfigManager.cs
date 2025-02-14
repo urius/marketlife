@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
+using UnityEngine;
+using Random = System.Random;
 
 public class GameConfigManager
 {
@@ -204,11 +207,19 @@ public class GameConfigManager
 
     private Dictionary<string, ProductConfig> ToProductsConfigs(Dictionary<string, ProductConfigDto> configsDtosDictionary)
     {
+        var dayOfYear = DateTime.Now.DayOfYear;
+        var rnd = new Random(dayOfYear);
+        
         var result = new Dictionary<string, ProductConfig>();
-        foreach (var kvp in configsDtosDictionary)
+        var sortedConfigs = configsDtosDictionary
+            .OrderBy(kvp => int.Parse(kvp.Key[1..]));
+        
+        foreach (var kvp in sortedConfigs)
         {
             var numericId = int.Parse(kvp.Key.Split('p')[1]);
-            result[kvp.Key] = new ProductConfig(numericId, kvp.Value);
+            var demandMultiplier = (float)rnd.NextDouble();
+            var deliverMultiplier = 0.2f + (float)rnd.NextDouble() * 3;
+            result[kvp.Key] = new ProductConfig(numericId, kvp.Value, demandMultiplier, deliverMultiplier);
         }
 
         return result;

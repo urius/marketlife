@@ -59,9 +59,12 @@ public class CalculationHelper
         var result = 0;
         if (amount > 0)
         {
-            result += System.Math.Max(productConfig.GetPriceForAmount(amount).Value, 1);
+            var buyPrice = productConfig.GetPriceForAmount(amount);
+            var clearProfitInCash = productConfig.GetSellPriceForAmount(amount) - (buyPrice.IsGold ? 0 : buyPrice.Value);
+            result += clearProfitInCash;
         }
-        return result;
+
+        return result > 0 ? result : 0;
     }
 
     public static int GetLevelUpShareReward(int level)

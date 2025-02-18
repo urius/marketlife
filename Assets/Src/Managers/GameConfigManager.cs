@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
+using Src.Common;
 using UnityEngine;
 using Random = System.Random;
 
@@ -27,8 +28,8 @@ public class GameConfigManager
 
     public async UniTask<bool> LoadMainConfigAsync(string mainConfigABPostfix)
     {
-        var urlsHolder = URLsHolder.Instance;
-        var url = string.Format(urlsHolder.MainConfigUrlFormat, mainConfigABPostfix);
+        var urlsHolder = Urls.Instance;
+        var url = string.Format(Urls.MainConfigUrlFormat, mainConfigABPostfix);
 #if UNITY_EDITOR
         if (DebugDataHolder.Instance.UseTestConfigFile == true) url = urlsHolder.DebugMainConfigUrl;
 #endif

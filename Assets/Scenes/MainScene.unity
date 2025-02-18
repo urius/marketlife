@@ -4625,9 +4625,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1026738517}
+  - component: {fileID: 1026738518}
   - component: {fileID: 1026738516}
   - component: {fileID: 1026738515}
-  - component: {fileID: 1026738518}
   - component: {fileID: 1026738519}
   - component: {fileID: 1026738520}
   m_Layer: 0
@@ -4728,10 +4728,7 @@ MonoBehaviour:
   _disableSave: 1
   _disableTutorial: 0
   _loadDebugConfigVersion: 0
-  _assetBundlesLoader: {fileID: 11400000, guid: fbf27b609d1b04c23bbb3665f6bf7a19,
-    type: 2}
   _prefabsHolder: {fileID: 11400000, guid: ef9b7d8e9f2f24fa5b28642d8858a2d4, type: 2}
-  _urlsHolder: {fileID: 11400000, guid: 82f6a5b539c0540859d7a9ee4632f9f5, type: 2}
   _graphicsManager: {fileID: 11400000, guid: 3c651c81f401b4f6c9adfecf35f97506, type: 2}
   _localizationManager: {fileID: 11400000, guid: 896d83f0651d245229990a6d40d7740d,
     type: 2}

@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using Src.Common;
 
 public class NotificationsSystem
 {
     private readonly GameStateModel _gameStateModel;
     private readonly PlayerModelHolder _playerModelHodler;
-    private readonly URLsHolder _urlsHolder;
+    private readonly Urls _urlsHolder;
     private readonly Dispatcher _dispatcher;
     private readonly FriendsDataHolder _friendsDataHodler;
     private readonly Dictionary<string, NotificationData> _notificationDataByUid = new Dictionary<string, NotificationData>();
@@ -20,7 +21,7 @@ public class NotificationsSystem
     {
         _gameStateModel = GameStateModel.Instance;
         _playerModelHodler = PlayerModelHolder.Instance;
-        _urlsHolder = URLsHolder.Instance;
+        _urlsHolder = Urls.Instance;
         _dispatcher = Dispatcher.Instance;
         _friendsDataHodler = FriendsDataHolder.Instance;
     }
@@ -141,7 +142,7 @@ public class NotificationsSystem
 
     private UniTask SendAddNotificationAsync(string uids, NotificationType type)
     {
-        var url = string.Format(_urlsHolder.AddNotificationsURL, uids, (int)type);
+        var url = string.Format(Urls.AddNotificationsURL, uids, (int)type);
         return new WebRequestsSender().GetAsync(url);
     }
 }

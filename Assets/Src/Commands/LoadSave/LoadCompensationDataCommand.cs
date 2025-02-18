@@ -1,6 +1,7 @@
 using System;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
+using Src.Common;
 using UnityEngine;
 
 public struct LoadCompensationDataCommand : IAsyncGameLoadCommand
@@ -11,7 +12,7 @@ public struct LoadCompensationDataCommand : IAsyncGameLoadCommand
         var playerModel = playerModelHolder.UserModel;
         if (playerModel.BonusState.IsOldGameBonusProcessed == false)
         {
-            var url = string.Format(URLsHolder.Instance.GetFriendDataOldURL, playerModelHolder.Uid);
+            var url = string.Format(Urls.GetFriendDataOldURL, playerModelHolder.Uid);
             var resultOperation = await new WebRequestsSender().GetAsync(url);
             if (resultOperation.IsSuccess)
             {

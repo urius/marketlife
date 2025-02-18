@@ -2,13 +2,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
+using Src.Common;
 
 public struct LoadBankConfigCommand
 {
     public async UniTask<bool> ExecuteAsync()
     {
         var playerModelHolder = PlayerModelHolder.Instance;
-        var getBankURL = URLsHolder.Instance.GetBankDataURL(playerModelHolder.SocialType);
+        var getBankURL = Urls.Instance.GetBankDataURL(playerModelHolder.SocialType);
         var bankConfig = BankConfig.Instance;
 
         var getConfigOperation = await new WebRequestsSender().GetAsync(URLHelper.AddAntiCachePostfix(getBankURL));

@@ -8,9 +8,7 @@ public class InitScript : MonoBehaviour
     [SerializeField] private bool _disableTutorial;
     [SerializeField] private bool _loadDebugConfigVersion;
     [Space(20)]
-    [SerializeField] private AssetBundlesLoader _assetBundlesLoader;
     [SerializeField] private PrefabsHolder _prefabsHolder;
-    [SerializeField] private URLsHolder _urlsHolder;
     [SerializeField] private GraphicsManager _graphicsManager;
     [SerializeField] private LocalizationManager _localizationManager;
     [SerializeField] private ColorsHolder _colorsHolder;

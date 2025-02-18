@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
+using Src.Common;
 
 public struct LoadLeaderboardsDataCommand
 {
@@ -12,7 +13,7 @@ public struct LoadLeaderboardsDataCommand
         {
             var scocialUsersData = SocialUsersData.Instance;
             var playerUid = PlayerModelHolder.Instance.Uid;
-            var url = string.Format(URLsHolder.Instance.GetLeaderboardsURL, playerUid);
+            var url = string.Format(Urls.GetLeaderboardsURL, playerUid);
 
             var resultOperation = await new WebRequestsSender().GetAsync(url);
             if (resultOperation.IsSuccess)

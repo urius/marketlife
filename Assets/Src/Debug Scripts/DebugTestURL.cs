@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
+using Src.Common;
 using UnityEngine;
 
 public class DebugTestURL : MonoBehaviour
 {
     [SerializeField] private string _id;
 
-    private string GetDataUrl => string.Format("https://twin-pixel.ru/marketVK/dataProvider.php?command=get_data&id={0}", _id);
+    private string GetDataUrl => string.Format($"{Urls.BaseHostUrl}/marketVK/dataProvider.php?command=get_data&id={0}", _id);
 
     public async UniTaskVoid Load()
     {

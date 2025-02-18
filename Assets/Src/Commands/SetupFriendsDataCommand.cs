@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
+using Src.Common;
 
 public struct SetupFriendsDataCommand
 {
@@ -31,7 +32,7 @@ public struct SetupFriendsDataCommand
     {
         var ids = friendDatasArray.Select(f => f.Uid).ToArray();
         var idsStr = string.Join(",", ids);
-        var url = string.Format(URLsHolder.Instance.GetVisitTimesURL, idsStr);
+        var url = string.Format(Urls.GetVisitTimesURL, idsStr);
         var resultOperation = await new WebRequestsSender().GetAsync(url);
         if (resultOperation.IsSuccess)
         {

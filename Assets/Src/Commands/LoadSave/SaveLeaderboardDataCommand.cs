@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using Src.Common;
 using UnityEngine;
 
 public struct SaveLeaderboardDataCommand
@@ -11,8 +12,8 @@ public struct SaveLeaderboardDataCommand
         var playerModel = PlayerModelHolder.Instance.UserModel;
         var friendsDataHolder = FriendsDataHolder.Instance;
         var dataExporter = DataExporter.Instance;
-        var urlsHolder = URLsHolder.Instance;
-        var url = string.Format(urlsHolder.SaveLeaderboardDataURL, playerModel.Uid);
+        var urlsHolder = Urls.Instance;
+        var url = string.Format(Urls.SaveLeaderboardDataURL, playerModel.Uid);
 
         var dataToSave = dataExporter.ExportLeaderboardPlayerData(playerModel.ProgressModel, friendsDataHolder.InGameFriendsCount);
         var dataToSaveStr = JsonConvert.SerializeObject(dataToSave);

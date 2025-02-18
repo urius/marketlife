@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
+using Src.Common;
 using UnityEngine;
 
 public struct SaveExternalDataCommand
@@ -14,7 +15,7 @@ public struct SaveExternalDataCommand
 
         var dataToSave = GetExportData(userModel.ExternalActionsModel);
         var dataToSaveStr = JsonConvert.SerializeObject(dataToSave);
-        var url = string.Format(URLsHolder.Instance.SaveExternalDataURL, userModel.Uid);
+        var url = string.Format(Urls.SaveExternalDataURL, userModel.Uid);
 
         var resultOperation = await new WebRequestsSender().PostAsync<CommonResponseDto>(url, dataToSaveStr);
 

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
+using Src.Common;
 using UnityEngine;
 
 public struct SaveDataCommand
@@ -15,7 +16,7 @@ public struct SaveDataCommand
         Debug.Log("---SaveDataCommand: " + saveFields);
 
         var playerModel = PlayerModelHolder.Instance.UserModel;
-        var url = string.Format(URLsHolder.Instance.SaveDataURL, playerModel.Uid);
+        var url = string.Format(Urls.SaveDataURL, playerModel.Uid);
         var dataToSave = GetExportData(saveFields, playerModel);
         var dataToSaveStr = JsonConvert.SerializeObject(dataToSave);
 

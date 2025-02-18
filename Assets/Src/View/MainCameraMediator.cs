@@ -182,8 +182,6 @@ public class MainCameraMediator : MonoBehaviour
         var newCameraPos = _camera.transform.position - _deltaWorldMouse;
         _camera.transform.position = CorrectCameraCoords(newCameraPos);
         _dispatcher.CameraMoved(_deltaWorldMouse);
-        
-        Debug.Log("Camera moved");
     }
 
     private Vector3 CorrectCameraCoords(Vector3 newCameraPos)

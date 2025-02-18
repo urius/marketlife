@@ -228,9 +228,9 @@ public class TutorialOverlayView : MonoBehaviour
         var size = _bgRect.sizeDelta;
         var textRectTransform = _messageText.rectTransform;
         var anchorXMult = 1 / (textRectTransform.anchorMax.x - textRectTransform.anchorMin.x);
-        var anchorYMult = 1 / (textRectTransform.anchorMax.y - textRectTransform.anchorMin.y);
+        var anchorYMult = 1.1f / (textRectTransform.anchorMax.y - textRectTransform.anchorMin.y);
         size.x = _messageText.textBounds.size.x * anchorXMult + textRectTransform.offsetMin.x - textRectTransform.offsetMax.x + 1;
-        size.y = _messageText.textBounds.size.y * anchorYMult + textRectTransform.offsetMin.y - textRectTransform.offsetMax.y + 20;
+        size.y = _messageText.textBounds.size.y * anchorYMult + textRectTransform.offsetMin.y - textRectTransform.offsetMax.y + 30;
         _popupBodyRect.sizeDelta = size;
     }
 }

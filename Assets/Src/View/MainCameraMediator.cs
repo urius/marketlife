@@ -113,6 +113,10 @@ public class MainCameraMediator : MonoBehaviour
     {
         _mouseDownWorldPosition = GetOnPlaneMouseWorldPoint();
         _isMouseDown = true;
+        UpdateMousePositionValues();
+
+        _needToForceUpdateMouseCellPosition |= _isMouseOverGameView;
+        ProcessMouseCellPositionCalculation();
     }
 
     private void OnGameViewMouseUp()
@@ -122,8 +126,7 @@ public class MainCameraMediator : MonoBehaviour
 
     private void OnRealtimeUpdate()
     {
-        _previousMousePosition = _currentMousePosition;
-        _currentMousePosition = Input.mousePosition;
+        UpdateMousePositionValues();
         ProcessCameraMove();
         ProcessMouseCellPositionCalculation();
         if (_currentMousePosition != _previousMousePosition)
@@ -134,6 +137,12 @@ public class MainCameraMediator : MonoBehaviour
                 _dispatcher.UIGameViewMouseMoved();
             }
         }
+    }
+
+    private void UpdateMousePositionValues()
+    {
+        _previousMousePosition = _currentMousePosition;
+        _currentMousePosition = Input.mousePosition;
     }
 
     private void ProcessMouseCellPositionCalculation()
@@ -173,6 +182,8 @@ public class MainCameraMediator : MonoBehaviour
         var newCameraPos = _camera.transform.position - _deltaWorldMouse;
         _camera.transform.position = CorrectCameraCoords(newCameraPos);
         _dispatcher.CameraMoved(_deltaWorldMouse);
+        
+        Debug.Log("Camera moved");
     }
 
     private Vector3 CorrectCameraCoords(Vector3 newCameraPos)

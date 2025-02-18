@@ -12,6 +12,6 @@ public class MockDataProvider
 
     public string GetMockAvatarUrl()
     {
-        return "https://sun1-87.userapi.com/s/v1/ig2/oAQ5DWuFuBzK6k1zX_bAYmcXKnoKeXUYWxh_vuujVhIgVUxHbTFiGcHLqMPz2_bbEuoT-btBd1PDAfEoirxuugAv.jpg?size=50x50&quality=96&crop=0,232,1620,1620&ava=1";
+        return "https://sun25-2.userapi.com/s/v1/if2/sESjdcS5OMRichsQp3Rtg3V0RwORk2a-CPG6CAGLARnWI2GQj_PohgSnjrj8iuseg4LlsgeQoNvloGwFBHuET3Uy.jpg?quality=96&crop=40,48,274,274&as=32x32,48x48,72x72,108x108,160x160,240x240&ava=1&cs=50x50";
     }
 }

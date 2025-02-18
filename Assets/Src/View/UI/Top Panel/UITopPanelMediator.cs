@@ -330,7 +330,9 @@ public class UITopPanelMediator : MonoBehaviour
             {
                 await UniTask.Delay(_updateGoldAnimationDelayMs);
             }
-            _crystalsBarView.SetAmountAnimatedAsync(currentValue);
+            
+            _crystalsBarView.SetAmountAnimatedAsync(currentValue).Forget();
+            
             if (previousValue > currentValue)
             {
                 _audioManager.PlaySound(SoundNames.Cash1);
@@ -351,7 +353,9 @@ public class UITopPanelMediator : MonoBehaviour
             {
                 await UniTask.Delay(_updateCashAnimationDelayMs);
             }
-            _cashBarView.SetAmountAnimatedAsync(currentValue);
+            
+            _cashBarView.SetAmountAnimatedAsync(currentValue).Forget();
+            
             if (previousValue > currentValue)
             {
                 _audioManager.PlaySound(SoundNames.Cash1);

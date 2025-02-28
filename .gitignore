@@ -10,6 +10,8 @@
 /[Ll]ogs/
 /[Mm]emoryCaptures/
 /[Ss]creenshots/
+/asset_graphic/
+
 
 # Never ignore Asset meta data
 !/[Aa]ssets/**/*.meta
@@ -30,6 +32,7 @@
 .vs/
 .vscode/
 .vsconfig
+.idea/
 
 # Gradle cache directory
 .gradle/

@@ -15,27 +15,29 @@ namespace Src.Common
         private const string SaveExternalDataPostfix = "/DataProvider.php?command=save_external_data&id={0}";
         private const string SaveLeaderboardDataPostfix = "/DataProvider.php?command=save_leaderboard_data&id={0}";
         private const string ResetNotificationsPostfix = "/vk/VKNotificationsProcessor.php?command=reset&id={0}";
-        private const string VkBankDataPostfix = "/vk/VKBank.json";
         private const string GetLeaderboardsPostfix = "/DataProvider.php?command=get_leaderboards&id={0}";
         private const string AddNotificationsPostfix = "/vk/VKNotificationsProcessor.php?command=add&ids={0}&type={1}";
         private const string SaveDataPostfix = "/DataProvider.php?command=save_data&id={0}";
-
-        private static readonly string BasePath = $"{BaseHostUrl}/marketVK/unity";
         
-        public static readonly string AssetBundlesBaseUrl = $"{BasePath}/AssetBundles";
+        private static string _basePath = $"{BaseHostUrl}/marketVK/unity";
 
+        public static void UpdateBasePathPostfix(string basePathPostfix)
+        {
+            _basePath = $"{BaseHostUrl}{basePathPostfix}";
+        }
         
-        public static string GetTimeURL => BasePath + GetTimePostfix;
-        public static string MainConfigUrlFormat => BasePath + MainConfigPostfixFormat;
-        public static string GetDataURL => BasePath + GetDataPostfix;
-        public static string GetVisitTimesURL => BasePath + GetVisitTimesPostfix;
+        public static string AssetBundlesBaseUrl => $"{_basePath}/AssetBundles";
+        public static string GetTimeURL => _basePath + GetTimePostfix;
+        public static string MainConfigUrlFormat => _basePath + MainConfigPostfixFormat;
+        public static string GetDataURL => _basePath + GetDataPostfix;
+        public static string GetVisitTimesURL => _basePath + GetVisitTimesPostfix;
         public static string GetFriendDataOldURL => $"{BaseHostUrl}/marketVK/dataProvider.php?command=get_friend_data&id={0}";
-        public static string SaveDataURL => BasePath + SaveDataPostfix;
-        public static string SaveExternalDataURL => BasePath + SaveExternalDataPostfix;
-        public static string SaveLeaderboardDataURL => BasePath + SaveLeaderboardDataPostfix;
-        public string ResetNotificationsURL => BasePath + ResetNotificationsPostfix;
-        public static string AddNotificationsURL => BasePath + AddNotificationsPostfix;
-        public static string GetLeaderboardsURL => BasePath + GetLeaderboardsPostfix;
+        public static string SaveDataURL => _basePath + SaveDataPostfix;
+        public static string SaveExternalDataURL => _basePath + SaveExternalDataPostfix;
+        public static string SaveLeaderboardDataURL => _basePath + SaveLeaderboardDataPostfix;
+        public string ResetNotificationsURL => _basePath + ResetNotificationsPostfix;
+        public static string AddNotificationsURL => _basePath + AddNotificationsPostfix;
+        public static string GetLeaderboardsURL => _basePath + GetLeaderboardsPostfix;
 
         public string DebugMainConfigUrl { get; } = $"{BaseHostUrl}/marketVK/unity/GameConfigs/MainConfig_Debug.json";
 
@@ -43,11 +45,13 @@ namespace Src.Common
         {
             switch (platformType)
             {
-                case SocialType.Undefined:
                 case SocialType.VK:
-                    return BasePath + VkBankDataPostfix;
+                    return _basePath + "/vk/VKBank.json";
+                case SocialType.YG:
+                case SocialType.Undefined:
                 default:
-                    throw new ArgumentException($"{nameof(Urls)}::{nameof(GetBankDataURL)}: unsupported {nameof(platformType)} {platformType}");
+                    return _basePath + "/GameConfigs/BankConfig.json";
+                    //throw new ArgumentException($"{nameof(Urls)}::{nameof(GetBankDataURL)}: unsupported {nameof(platformType)} {platformType}");
             }
         }
     }

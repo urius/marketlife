@@ -1,4 +1,5 @@
 using System;
+using Src.Common;
 using UnityEngine;
 
 public class InitScript : MonoBehaviour
@@ -27,14 +28,23 @@ public class InitScript : MonoBehaviour
 
     private async void Start()
     {
-        ExecuteAdditionalStartupEditorLogic();
+        ExecuteAdditionalStartupLogic();
 
         await _playerModelHolder.SetUidTask;
         await new InitializeAndLoadCommand().ExecuteAsync();
     }
 
-    private void ExecuteAdditionalStartupEditorLogic()
+    private void ExecuteAdditionalStartupLogic()
     {
+        if (MirraSdkWrapper.IsYandexGames)
+        {
+            MirraSdkWrapper.Log("PlayerId: " + MirraSdkWrapper.PlayerId);
+            
+            Urls.UpdateBasePathPostfix("/marketYG");
+            _playerModelHolder.SetInitialData(MirraSdkWrapper.PlayerId, SocialType.YG);
+            return;
+        }
+        
 #if UNITY_EDITOR || UNITY_ANDROID
         new SetupExternalDebugDataCommand().Execute(_debugUid);
         new SetupDebugSystemsCommand().Execute();

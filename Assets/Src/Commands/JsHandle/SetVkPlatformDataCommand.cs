@@ -2,23 +2,13 @@ using Newtonsoft.Json;
 
 public struct SetVkPlatformDataCommand
 {
-    public void Execute(string dataStr)
+    public static void Execute(string dataStr)
     {
         var playerModelHolder = PlayerModelHolder.Instance;
 
         var dataDto = JsonConvert.DeserializeObject<JsVkPlatfomDataCommandDto>(dataStr);
-        playerModelHolder.SetSocialType(GetSocialType(dataDto.data.platform));
-        playerModelHolder.SetUid(dataDto.data.viewer_id);
+        playerModelHolder.SetInitialData(dataDto.data.viewer_id, SocialType.VK);
         playerModelHolder.SetBuyInBankAllowed(dataDto.data.is_ios_direct == false);
-    }
-
-    private SocialType GetSocialType(string platform)
-    {
-        return platform switch
-        {
-            "vk" => SocialType.VK,
-            _ => SocialType.Undefined,
-        };
     }
 }
 

@@ -20,19 +20,15 @@ public class PlayerModelHolder
     public UniTask SetUidTask => _setUidTcs.Task;
     public UniTask SetUserModelTask => _setUserModelTcs.Task;
 
-    public void SetSocialType(SocialType socialType)
-    {
-        SocialType = socialType;
-    }
-
     public void SetBuyInBankAllowed(bool isAllowed)
     {
         IsBuyInBankAllowed = isAllowed;
     }
 
-    public void SetUid(string uid)
+    public void SetInitialData(string userUid, SocialType socialType)
     {
-        Uid = uid;
+        SocialType = socialType;
+        Uid = userUid;
         _setUidTcs.TrySetResult();
     }
 
@@ -54,4 +50,5 @@ public enum SocialType
 {
     Undefined,
     VK,
+    YG,
 }

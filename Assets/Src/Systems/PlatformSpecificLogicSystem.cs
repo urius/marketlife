@@ -35,7 +35,7 @@ public class PlatformSpecificLogicSystem
         {
             case "SetVkPlatformData":
                 InitModuleVK();
-                new SetVkPlatformDataCommand().Execute(message);
+                SetVkPlatformDataCommand.Execute(message);
                 break;
         }
     }

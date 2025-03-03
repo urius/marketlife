@@ -10,6 +10,7 @@ public struct InitializeAndLoadCommand
 
         gameStateModel.SetGameState(GameStateName.Loading);
         var phasesData = GetLoadPhases();
+        
         loadGameProgressModel.SetupPartsCount(phasesData.Length);
         for (var i = 0; i < phasesData.Length; i++)
         {

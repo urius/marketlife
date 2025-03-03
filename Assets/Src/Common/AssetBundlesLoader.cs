@@ -10,10 +10,6 @@ namespace Src.Common
     {
         public static readonly AssetBundlesLoader Instance = new();
 
-        private static string AssetBundlesWebGlUrl => $"{Urls.AssetBundlesBaseUrl}/WebGL";
-        private static string AssetBundlesOsxUrl => $"{Urls.AssetBundlesBaseUrl}/OSX";
-        private static string AssetBundlesAndroidUrl => $"{Urls.AssetBundlesBaseUrl}/Android";
-
         private Dictionary<string, AssetBundle> _bundlesByName = new();
 
         public AssetBundle GetLoadedBundle(string name)
@@ -39,17 +35,9 @@ namespace Src.Common
                 return _bundlesByName[name];
             }
 
-            var fullUrl = $"{GetUrl()}/{name}";
-            var versionParameterName = $"bundleversion_{name}";
-            var lastSavedVersion = PlayerPrefs.GetInt(versionParameterName);
-            if (lastSavedVersion != version || version < 0)
-            {
-                PlayerPrefs.SetInt(versionParameterName, version);
+            var fullUrl = $"{Urls.GetAssetBundleUrl()}/{name}";
 
-                Debug.Log($"Cache for {name} cleared because of new version {version}");
-            }
-
-            using (UnityWebRequest webRequest = UnityWebRequestAssetBundle.GetAssetBundle(fullUrl, (uint)version, 0))
+            using (var webRequest = UnityWebRequestAssetBundle.GetAssetBundle(fullUrl, (uint)version, 0))
             {
                 var sendRequestOperation = webRequest.SendWebRequest();
                 if (progressCallback != null)
@@ -61,6 +49,11 @@ namespace Src.Common
                     }
                 }
                 var webRequestResult = await sendRequestOperation;
+                if (webRequestResult.error != null)
+                {
+                    Debug.Log($"Bundle {name} error: {webRequestResult.error} ");
+                }
+
                 var assetBundle = DownloadHandlerAssetBundle.GetContent(webRequestResult);
 
                 _bundlesByName[name] = assetBundle;
@@ -69,17 +62,6 @@ namespace Src.Common
 
                 return assetBundle;
             }
-        }
-
-        private string GetUrl()
-        {
-            return Application.platform switch
-            {
-                RuntimePlatform.OSXEditor => AssetBundlesOsxUrl,
-                RuntimePlatform.WebGLPlayer => AssetBundlesWebGlUrl,
-                RuntimePlatform.Android => AssetBundlesAndroidUrl,
-                _ => throw new System.Exception($"AssetBundlesLoader {nameof(GetUrl)}: Unsupported platform type: {Application.platform}"),
-            };
         }
     }
 }

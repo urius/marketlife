@@ -1,4 +1,4 @@
-using System;
+using UnityEngine;
 
 namespace Src.Common
 {
@@ -25,8 +25,7 @@ namespace Src.Common
         {
             _basePath = $"{BaseHostUrl}{basePathPostfix}";
         }
-        
-        public static string AssetBundlesBaseUrl => $"{_basePath}/AssetBundles";
+
         public static string GetTimeURL => _basePath + GetTimePostfix;
         public static string MainConfigUrlFormat => _basePath + MainConfigPostfixFormat;
         public static string GetDataURL => _basePath + GetDataPostfix;
@@ -38,6 +37,11 @@ namespace Src.Common
         public string ResetNotificationsURL => _basePath + ResetNotificationsPostfix;
         public static string AddNotificationsURL => _basePath + AddNotificationsPostfix;
         public static string GetLeaderboardsURL => _basePath + GetLeaderboardsPostfix;
+        
+        private static string AssetBundlesBaseUrl => $"{_basePath}/AssetBundles";
+        private static string AssetBundlesWebGlUrl => $"{AssetBundlesBaseUrl}/WebGL";
+        private static string AssetBundlesOsxUrl => $"{AssetBundlesBaseUrl}/OSX";
+        private static string AssetBundlesAndroidUrl => $"{AssetBundlesBaseUrl}/Android";
 
         public string DebugMainConfigUrl { get; } = $"{BaseHostUrl}/marketVK/unity/GameConfigs/MainConfig_Debug.json";
 
@@ -53,6 +57,17 @@ namespace Src.Common
                     return _basePath + "/GameConfigs/BankConfig.json";
                     //throw new ArgumentException($"{nameof(Urls)}::{nameof(GetBankDataURL)}: unsupported {nameof(platformType)} {platformType}");
             }
+        }
+
+        public static string GetAssetBundleUrl()
+        {
+            return Application.platform switch
+            {
+                RuntimePlatform.OSXEditor => AssetBundlesOsxUrl,
+                RuntimePlatform.WebGLPlayer => AssetBundlesWebGlUrl,
+                RuntimePlatform.Android => AssetBundlesAndroidUrl,
+                _ => throw new System.Exception($"AssetBundlesLoader {nameof(GetAssetBundleUrl)}: Unsupported platform type: {Application.platform}"),
+            };
         }
     }
 }

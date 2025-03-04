@@ -1,4 +1,4 @@
-using System;
+using Cysharp.Threading.Tasks;
 using Src.Common;
 using UnityEngine;
 
@@ -36,12 +36,9 @@ public class InitScript : MonoBehaviour
 
     private void ExecuteAdditionalStartupLogic()
     {
-        if (MirraSdkWrapper.IsYandexGames)
+        if (MirraSdkWrapper.IsVk == false)
         {
-            MirraSdkWrapper.Log("PlayerId: " + MirraSdkWrapper.PlayerId);
-            
-            Urls.UpdateBasePathPostfix("/marketYG");
-            _playerModelHolder.SetInitialData(MirraSdkWrapper.PlayerId, SocialType.YG);
+            InitViaMirraSdk().Forget();
             return;
         }
         
@@ -49,6 +46,21 @@ public class InitScript : MonoBehaviour
         new SetupExternalDebugDataCommand().Execute(_debugUid);
         new SetupDebugSystemsCommand().Execute();
 #endif
+    }
+
+    private async UniTaskVoid InitViaMirraSdk()
+    {
+        MirraSdkWrapper.Log("InitViaMirraSdk");
+
+        var playerId = await MirraSdkWrapper.GetPlayerId();
+
+        MirraSdkWrapper.Log("PlayerId: " + playerId);
+
+        if (MirraSdkWrapper.IsYandexGames)
+        {
+            Urls.UpdateBasePathPostfix("/marketYG");
+            _playerModelHolder.SetInitialData(playerId, SocialType.YG);
+        }
     }
 
     private void OnValidate()

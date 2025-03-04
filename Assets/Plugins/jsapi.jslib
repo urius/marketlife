@@ -9,5 +9,16 @@ mergeInto(LibraryManager.library, {
   SendToJs: function (str) {  
     console.log("calling window.receiveDataFromUnity: " + Pointer_stringify(str));
     window.receiveDataFromUnity(Pointer_stringify(str));
+  },
+  GetYGPlayerId: function(callback) {
+     console.log("calling GetYGPlayerId");
+     
+     yandexGamesWrapper.resolvePlayer()
+        .then(player => {
+            const uniqueId = player.getUniqueID();
+            
+            const uniqueIdCStr = stringToNewUTF8(uniqueId);
+            {{{ makeDynCall('vi', 'callback') }}} (uniqueIdCStr);
+        });
   }
 });

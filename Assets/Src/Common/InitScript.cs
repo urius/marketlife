@@ -51,15 +51,29 @@ public class InitScript : MonoBehaviour
     private async UniTaskVoid InitViaMirraSdk()
     {
         MirraSdkWrapper.Log("InitViaMirraSdk");
+        MirraSdkWrapper.Log("CurrentLanguage: " + MirraSdkWrapper.CurrentLanguage);
 
         var playerId = await MirraSdkWrapper.GetPlayerId();
-
         MirraSdkWrapper.Log("PlayerId: " + playerId);
+
+        SetupLanguage();
 
         if (MirraSdkWrapper.IsYandexGames)
         {
             Urls.UpdateBasePathPostfix("/marketYG");
             _playerModelHolder.SetInitialData(playerId, SocialType.YG);
+        }
+    }
+
+    private void SetupLanguage()
+    {
+        if (MirraSdkWrapper.IsRussianLanguage)
+        {
+            _localizationManager.SetLocale(LocaleType.Ru);
+        }
+        else if (MirraSdkWrapper.IsEnglishLanguage)
+        {
+            _localizationManager.SetLocale(LocaleType.En);
         }
     }
 

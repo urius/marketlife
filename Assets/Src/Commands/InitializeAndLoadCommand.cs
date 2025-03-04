@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using Src.Common;
 
 public struct InitializeAndLoadCommand
 {
@@ -39,6 +40,8 @@ public struct InitializeAndLoadCommand
         await UniTask.Delay(1500);
         
         gameStateModel.SetGameState(GameStateName.ReadyForStart);
+        
+        MirraSdkWrapper.SendGameReady();
     }
 
     private static (LoadGamePhase Phase, IAsyncGameLoadCommand Command)[] GetLoadPhases()

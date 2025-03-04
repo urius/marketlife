@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
+using Src.Common;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "LocalizationManager", menuName = "Scriptable Objects/Managers/LocalizationManager")]
@@ -10,18 +11,25 @@ public class LocalizationManager : ScriptableObject
 {
     public static LocalizationManager Instance { get; private set; }
 
-    [SerializeField] private string _localizationUrlRu;
     [SerializeField] private BuiltinLocalization[] _builtinLocalization;
 
-    public Dictionary<string, string> CurrentLocalization { get; private set; }
+    private LocaleType _locale = LocaleType.None;
+    
+    private LocaleType Locale => _locale == LocaleType.None ? GetDefaultLocale() : _locale;
+    
+    private Dictionary<string, string> CurrentLocalization { get; set; }
 
     public async UniTask<bool> LoadLocalizationAsync()
     {
-        var localizationUrl = _localizationUrlRu;
-        switch (GetLocale())
+        string localizationUrl;
+        switch (Locale)
         {
             case LocaleType.Ru:
-                localizationUrl = _localizationUrlRu;
+                localizationUrl = Urls.GetLocalizationUrl("ru");
+                break;
+            case LocaleType.En:
+            default:
+                localizationUrl = Urls.GetLocalizationUrl("en");
                 break;
         }
 
@@ -47,7 +55,7 @@ public class LocalizationManager : ScriptableObject
     public string GetBuiltinLocalization(string key)
     {
         var result = $"_builtin_{key}";
-        var locale = GetLocale();
+        var locale = Locale;
         var localization = _builtinLocalization.Where(l => l.LocaleType == locale).FirstOrDefault();
         if (localization != null && localization.Items != null)
         {
@@ -60,17 +68,22 @@ public class LocalizationManager : ScriptableObject
 
         return result;
     }
-
-    private LocaleType GetLocale()
+    
+    public void SetLocale(LocaleType locale)
     {
-        LocaleType result = default;
-        switch (Application.systemLanguage)
+        _locale = locale;
+    }
+
+    private static LocaleType GetDefaultLocale()
+    {
+        var result = Application.systemLanguage switch
         {
-            case SystemLanguage.Russian:
-            case SystemLanguage.Belarusian:
-                result = LocaleType.Ru;
-                break;
-        }
+            SystemLanguage.Russian => LocaleType.Ru,
+            SystemLanguage.Belarusian => LocaleType.Ru,
+            SystemLanguage.English => LocaleType.En,
+            _ => LocaleType.En
+        };
+
         return result;
     }
 
@@ -82,7 +95,9 @@ public class LocalizationManager : ScriptableObject
 
 public enum LocaleType
 {
+    None = 0,
     Ru,
+    En,
 }
 
 [Serializable]

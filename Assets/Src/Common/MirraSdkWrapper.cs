@@ -16,10 +16,20 @@ namespace Src.Common
 
         public static bool IsYandexGames => MirraSDK.Platform.Current == PlatformType.Web_YandexGames;
         public static bool IsVk => MirraSDK.Platform.Current == PlatformType.Web_VKontakte;
+
+        public static LanguageType CurrentLanguage => MirraSDK.Language.Current;
+        public static bool IsRussianLanguage => CurrentLanguage == LanguageType.Russian;
+        public static bool IsEnglishLanguage => CurrentLanguage == LanguageType.English;
+        
         
         [DllImport("__Internal")]
         private static extern void GetYGPlayerId(Action<string> callback);
 
+
+        public static void SendGameReady()
+        {
+            MirraSDK.Analytics.GameIsReady();
+        }
         
         public static UniTask<string> GetPlayerId()
         {

@@ -37,11 +37,14 @@ namespace Src.Common
         public string ResetNotificationsURL => _basePath + ResetNotificationsPostfix;
         public static string AddNotificationsURL => _basePath + AddNotificationsPostfix;
         public static string GetLeaderboardsURL => _basePath + GetLeaderboardsPostfix;
+
         
         private static string AssetBundlesBaseUrl => $"{_basePath}/AssetBundles";
         private static string AssetBundlesWebGlUrl => $"{AssetBundlesBaseUrl}/WebGL";
         private static string AssetBundlesOsxUrl => $"{AssetBundlesBaseUrl}/OSX";
         private static string AssetBundlesAndroidUrl => $"{AssetBundlesBaseUrl}/Android";
+        private static string LocalizationUrlFormat =>
+            $"{_basePath}/GameConfigs/localizations/localization_{{0}}.json";
 
         public string DebugMainConfigUrl { get; } = $"{BaseHostUrl}/marketVK/unity/GameConfigs/MainConfig_Debug.json";
 
@@ -68,6 +71,11 @@ namespace Src.Common
                 RuntimePlatform.Android => AssetBundlesAndroidUrl,
                 _ => throw new System.Exception($"AssetBundlesLoader {nameof(GetAssetBundleUrl)}: Unsupported platform type: {Application.platform}"),
             };
+        }
+        
+        public static string GetLocalizationUrl(string locale)
+        {
+            return string.Format(LocalizationUrlFormat, locale.ToLower());
         }
     }
 }

@@ -27,7 +27,8 @@ public struct SaveDataCommand
             var response = JsonConvert.DeserializeObject<BoolSuccessResponseDto>(resultOperation.Result.response);
             return response.success;
         }
-        return resultOperation.IsSuccess;
+
+        return false;
     }
 
     private Dictionary<string, object> GetExportData(SaveField saveFields, UserModel userModel)

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Src.Commands;
 
 namespace Src.Systems.PlatformModules
 {
@@ -7,6 +8,7 @@ namespace Src.Systems.PlatformModules
         private readonly SocialUsersData _socialUsersData = SocialUsersData.Instance;
         private readonly AvatarsManager _avatarsManager = AvatarsManager.Instance;
         private readonly MockDataProvider _mockDataProvider = MockDataProvider.Instance;
+        private readonly Dispatcher _dispatcher = Dispatcher.Instance;
 
         public override void Start()
         {
@@ -19,6 +21,12 @@ namespace Src.Systems.PlatformModules
         private void Activate()
         {
             _socialUsersData.NewUidsRequested += OnNewUidsRequested;
+            _dispatcher.UITopPanelRequestOpenLeaderboardsClicked += OnUITopPanelRequestOpenLeaderboardsClicked;
+        }
+
+        private void OnUITopPanelRequestOpenLeaderboardsClicked()
+        {
+            new ShowInGameLeaderboardsPopupCommand().Execute();
         }
 
         private void OnNewUidsRequested()

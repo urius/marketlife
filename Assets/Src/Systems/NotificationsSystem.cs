@@ -131,7 +131,7 @@ namespace Src.Systems
             }
         }
 
-        private void OnSaveCompleted(bool isSuccess)
+        private void OnSaveCompleted(bool isSuccess, SaveField _)
         {
             if (isSuccess)
             {

@@ -8,9 +8,9 @@ public class SaveDataSystem
     private const int DefaultSavePrewarmSeconds = 2;
     private const int DefaultSaveCooldownSeconds = 6;
 
-    private readonly GameStateModel _gameStateModel;
-    private readonly Dispatcher _dispatcher;
-    private readonly UpdatesProvider _updatesProvider;
+    private readonly GameStateModel _gameStateModel = GameStateModel.Instance;
+    private readonly Dispatcher _dispatcher = Dispatcher.Instance;
+    private readonly UpdatesProvider _updatesProvider = UpdatesProvider.Instance;
 
     private bool _saveProcessIsTriggered = false;
     private SaveField _saveFieldsData = SaveField.None;
@@ -22,13 +22,6 @@ public class SaveDataSystem
     private int _saveExternalDataCooldownSeconds = 0;
     private Action _unsubscribeFromFriendActionsDelegate;
     private Queue<UserModel> _saveExternalDataQueue = new Queue<UserModel>();
-
-    public SaveDataSystem()
-    {
-        _gameStateModel = GameStateModel.Instance;
-        _dispatcher = Dispatcher.Instance;
-        _updatesProvider = UpdatesProvider.Instance;
-    }
 
     public bool NeedToSavePlayerData => _saveFieldsData != SaveField.None;
     public bool NeedToSaveExternalData => _saveExternalDataQueue.Count > 0;
@@ -336,7 +329,7 @@ public class SaveDataSystem
         var saveFieldsData = _saveFieldsData;
         _saveFieldsData = SaveField.None;
         var result = await new SaveDataCommand().ExecuteAsync(saveFieldsData);
-        _dispatcher.SaveCompleted(result);
+        _dispatcher.SaveCompleted(result, saveFieldsData);
     }
 
     private async Task SaveExternalDataAsync()

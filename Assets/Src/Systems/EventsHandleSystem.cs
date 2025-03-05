@@ -64,7 +64,6 @@ public class EventsHandleSystem
         _dispatcher.UIBottomPanelFriendShopActionClicked += OnUIBottomPanelFriendShopActionClicked;
         _dispatcher.UIBottomPanelBuyFriendShopActionClicked += OnUIBottomPanelBuyFriendShopActionClicked;
         _dispatcher.UITopPanelAddMoneyClicked += OnUITopPanelAddMoneyClicked;
-        _dispatcher.UITopPanelRequestOpenLeaderboardsClicked += OnUITopPanelRequestOpenLeaderboardsClicked;
         _dispatcher.UIGetBonusButtonClicked += OnUIGetBonusButtonClicked;
         _dispatcher.UIDailyMissionsButtonClicked += OnUIDailyMissionsButtonClicked;
         _dispatcher.UICompensationPopupTakeClicked += OnUICompensationPopupTakeClicked;
@@ -181,11 +180,6 @@ public class EventsHandleSystem
     private void OnUITopPanelAddMoneyClicked(bool isGold)
     {
         new HandleAddMoneyClickCommand().Execute(isGold);
-    }
-
-    private void OnUITopPanelRequestOpenLeaderboardsClicked()
-    {
-        new ShowLeaderboardsPopupCommand().Execute();
     }
 
     private void OnUIBottomPanelFriendShopActionClicked(FriendShopActionId actionId)

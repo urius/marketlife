@@ -1,3 +1,4 @@
+using Src.Commands.JsHandle;
 using UnityEngine;
 
 public class HandleDebugKeyboardShortcutsSystem
@@ -57,7 +58,7 @@ public class HandleDebugKeyboardShortcutsSystem
 
     private void SimulateAdvertWatchResult()
     {
-        new ProcessShowAdsResultCommand().Execute("{\"data\":{\"is_success\":true}}");
+        new ProcessShowRewardedAdsResultCommand().Execute(isSuccessResult: true);
     }
 
     private void ResetMissions()

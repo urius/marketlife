@@ -111,13 +111,13 @@ public class Dispatcher
     public Action<bool> TutorialSaveStateChanged = delegate { };
 
     public Action<string> JsIncomingMessage = delegate { };
-    public Action<bool> SaveCompleted = delegate { };
+    public Action<bool, SaveField> SaveCompleted = delegate { };
     public Action<bool> SaveExternalDataCompleted = delegate { };
 
     public Action<ProductModel> CustomerBuyProduct = delegate { };
 
     public Action<int> DailyMissionsSecondsLeftAmountUpdated = delegate { };
 
-    private static Lazy<Dispatcher> _instance = new Lazy<Dispatcher>();
+    private static Lazy<Dispatcher> _instance = new();
     public static Dispatcher Instance => _instance.Value;
 }

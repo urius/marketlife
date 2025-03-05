@@ -1,4 +1,3 @@
-using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using Src.Common;
 using Src.Systems.PlatformModules;
@@ -11,12 +10,10 @@ namespace Src.Systems
         private readonly Dispatcher _dispatcher = Dispatcher.Instance;
         //
         private PlatformSpecificLogicModuleBase _module;
-        private PlayerModelHolder _playerModelHolder;
         private LocalizationManager _localizationManager;
 
         public void Start()
         {
-            _playerModelHolder = PlayerModelHolder.Instance;
             _localizationManager = LocalizationManager.Instance;
 
             SetupDisabledLogicFlags();
@@ -37,6 +34,7 @@ namespace Src.Systems
             if (MirraSdkWrapper.IsMirraSdkUsed)
             {
                 SetupMirraPlatform();
+                return;
             }
             else
             {
@@ -49,23 +47,15 @@ namespace Src.Systems
 
         private void SetupMirraPlatform()
         {
-            InitViaMirraSdk().Forget();
-        }
-
-        private async UniTaskVoid InitViaMirraSdk()
-        {
             MirraSdkWrapper.Log("InitViaMirraSdk");
             MirraSdkWrapper.Log("CurrentLanguage: " + MirraSdkWrapper.CurrentLanguage);
-
-            var playerId = await MirraSdkWrapper.GetPlayerId();
-            MirraSdkWrapper.Log("PlayerId: " + playerId);
-
+            
             SetupLanguage();
 
             if (MirraSdkWrapper.IsYandexGames)
             {
-                Urls.UpdateBasePathPostfix("/marketYG");
-                _playerModelHolder.SetInitialData(playerId, SocialType.YG);
+                _module = new MirraYandexGamesLogicModule();
+                _module.Start();
             }
         }
 
@@ -88,7 +78,7 @@ namespace Src.Systems
             switch (deserialized.command)
             {
                 case "SetVkPlatformData":
-                    InitModuleVK();
+                    InitModuleVk();
                     SetVkPlatformDataCommand.Execute(message);
                     break;
             }
@@ -100,7 +90,7 @@ namespace Src.Systems
             _module.Start();
         }
 
-        private void InitModuleVK()
+        private void InitModuleVk()
         {
             _module = new VkLogicModule();
             _module.Start();

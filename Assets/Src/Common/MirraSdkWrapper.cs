@@ -37,6 +37,48 @@ namespace Src.Common
             return Instance.GetPlayerIdInternal();
         }
 
+        public static void SetScore(int scoreValue, string scoreTag = "score")
+        {
+            Log("SetScore: " + scoreValue);
+            
+            MirraSDK.Socials.SetScore(scoreTag, scoreValue);
+        }
+
+        public static void ShowLeaderboard(string scoreTag = "score")
+        {
+            Log("Request ShowLeaderboard, scoreTag: " + scoreTag);
+            
+            MirraSDK.Socials.InvokeLeaderboard(scoreTag);
+        }
+
+        public static bool IsRewardedReady()
+        {
+            return MirraSDK.Ads.IsRewardedReady;
+        }
+
+        public static UniTask<bool> ShowRewardedAd()
+        {
+            var tcs = new UniTaskCompletionSource<bool>();
+            
+            MirraSDK.Ads.InvokeRewarded(
+                onSuccess: () =>
+                {
+                    tcs.TrySetResult(true);
+                },
+                onNotReady: () =>
+                {
+                    tcs.TrySetResult(false);
+                },
+                onAnyClose: () =>
+                {
+                    tcs.TrySetResult(false);
+                },
+                rewardTag: "cash"
+            );
+            
+            return tcs.Task;
+        }
+
         public static UniTask<AssetBundle> LoadAssetBundle(string bundleTag, string bundleUrl)
         {
             return Instance.LoadAssetBundleInternal(bundleTag, bundleUrl);

@@ -1,5 +1,7 @@
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
+using Src.Commands;
+using Src.Commands.JsHandle;
 using UnityEngine;
 
 namespace Src.Systems.PlatformModules
@@ -13,7 +15,7 @@ namespace Src.Systems.PlatformModules
         private readonly ScreenCalculator _screenCalculator = ScreenCalculator.Instance;
         private readonly SocialUsersData _socialUsersData = SocialUsersData.Instance;
         private readonly NotificationsSystem _notificationsSystem = new();
-        
+
         private WallPostContext _wallPostContext;
         private UserModel _playerModel;
 
@@ -24,7 +26,7 @@ namespace Src.Systems.PlatformModules
             await _gameStateModel.GameDataLoadedTask;
 
             _notificationsSystem.Start();
-            
+
             ActivateAfterLoad();
         }
 
@@ -37,6 +39,8 @@ namespace Src.Systems.PlatformModules
             _dispatcher.UIOfflineReportShareClicked += OnUIOfflineReportShareClicked;
             _dispatcher.RequestShowAdvert += OnRequestShowAdvert;
             _dispatcher.RequestNotifyInactiveFriend += OnRequestNotifyInactiveFriend;
+            _dispatcher.UITopPanelRequestOpenLeaderboardsClicked += OnUITopPanelRequestOpenLeaderboardsClicked;
+
             _socialUsersData.NewUidsRequested += OnSocialUsersDataNewUidsRequested;
         }
 
@@ -44,6 +48,11 @@ namespace Src.Systems.PlatformModules
         {
             _playerModel = _playerModelHolder.UserModel;
             _playerModel.ProgressModel.LevelChanged += OnLevelChanged;
+        }
+
+        private void OnUITopPanelRequestOpenLeaderboardsClicked()
+        {
+            new ShowInGameLeaderboardsPopupCommand().Execute();
         }
 
         private void OnSocialUsersDataNewUidsRequested()
@@ -72,7 +81,7 @@ namespace Src.Systems.PlatformModules
                     ProcessWallPostSuccess();
                     break;
                 case "ShowAdsResult":
-                    new ProcessShowAdsResultCommand().Execute(message);
+                    ProcessVkShowAdsResult(message);
                     break;
                 case "GetUsersDataResponse":
                     new ProcessVkGetUsersDataCommand().Execute(message);
@@ -102,6 +111,12 @@ namespace Src.Systems.PlatformModules
                 _playerModel.AddGold(_wallPostContext.rewardAmountGold);
                 _wallPostContext = null;
             }
+        }
+
+        private void ProcessVkShowAdsResult(string message)
+        {
+            var deserialized = JsonConvert.DeserializeObject<JsShowAdsResultCommandDto>(message);
+            new ProcessShowRewardedAdsResultCommand().Execute(deserialized.data.is_success);
         }
 
         private void OnUIBottomPanelInviteFriendsClicked()
@@ -140,7 +155,9 @@ namespace Src.Systems.PlatformModules
                 offlineReportPopupModel.ProfitFromSell);
             _jsBridge.SendCommandToJs("PostOfflineRevenue", payload);
         }
-
+        
+#region private dtos
+        
         private struct PostNewLevelJsPayload
         {
             public int level;
@@ -150,6 +167,7 @@ namespace Src.Systems.PlatformModules
                 level = value;
             }
         }
+
         private struct BuyVkMoneyPayload
         {
             public string product;
@@ -159,6 +177,7 @@ namespace Src.Systems.PlatformModules
                 product = id;
             }
         }
+
         private struct GetUsersDataJsPayload
         {
             public string[] uids;
@@ -168,6 +187,7 @@ namespace Src.Systems.PlatformModules
                 this.uids = uids;
             }
         }
+
         private struct PostOfflineRevenueJsPayload
         {
             public float hours;
@@ -181,6 +201,7 @@ namespace Src.Systems.PlatformModules
                 minutes = minutesPassed;
             }
         }
+
         private struct LevelUpJsPayload
         {
             public int level;
@@ -190,6 +211,7 @@ namespace Src.Systems.PlatformModules
                 level = value;
             }
         }
+
         private struct NotifyInactiveFriendJsPayload
         {
             public string uid;
@@ -199,7 +221,7 @@ namespace Src.Systems.PlatformModules
                 uid = friendUid;
             }
         }
-        
+
         private class WallPostContext
         {
             public readonly Vector3 ShareButtonWorldPosition;
@@ -211,5 +233,17 @@ namespace Src.Systems.PlatformModules
                 ShareButtonWorldPosition = shareButtonWorldPosition;
             }
         }
+
+        private struct JsShowAdsResultCommandDto
+        {
+            public JsShowAdsResultCommandDataDto data;
+        }
+
+        private struct JsShowAdsResultCommandDataDto
+        {
+            public bool is_success;
+        }
+
+#endregion
     }
 }

@@ -16,6 +16,7 @@ namespace Src.Common
 
         public static bool IsYandexGames => MirraSDK.Platform.Current == PlatformType.Web_YandexGames;
         public static bool IsVk => MirraSDK.Platform.Current == PlatformType.Web_VKontakte;
+        public static bool IsMirraSdkUsed => IsVk == false;
 
         public static LanguageType CurrentLanguage => MirraSDK.Language.Current;
         public static bool IsRussianLanguage => CurrentLanguage == LanguageType.Russian;
@@ -61,6 +62,9 @@ namespace Src.Common
         {
             _getPlayerIdTcs = new UniTaskCompletionSource<string>();
 
+#if UNITY_EDITOR
+            _getPlayerIdTcs.TrySetResult(DebugDataHolder.Instance.DebugUid);
+#else         
             if (IsYandexGames)
             {
                 GetYGPlayerId(GetYGPlayerIdCallback);
@@ -69,7 +73,7 @@ namespace Src.Common
             {
                 _getPlayerIdTcs.TrySetResult(MirraSDK.Player.PlatformToken);
             }
-            
+#endif
             return _getPlayerIdTcs.Task;
         }
 

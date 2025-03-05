@@ -81,7 +81,7 @@ public class BottomPanelView : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     public void Awake()
     {
-        _simulationModeButtons = new CanvasGroup[] { GetCanvasGroup(_friendsButton), GetCanvasGroup(_warehouseButton), GetCanvasGroup(_interiorButton), GetCanvasGroup(_manageButton) };
+        _simulationModeButtons = new CanvasGroup[] { GetCanvasGroup(_warehouseButton), GetCanvasGroup(_friendsButton), GetCanvasGroup(_interiorButton), GetCanvasGroup(_manageButton) };
         _interiorModeButtons = new CanvasGroup[] { GetCanvasGroup(_backButton), GetCanvasGroup(_interiorObjectsButton), GetCanvasGroup(_interiorFloorsButton), GetCanvasGroup(_interiorWallsButton), GetCanvasGroup(_interiorWindowsButton), GetCanvasGroup(_interiorDoorsButton) };
         _friendShopModeButtons = new CanvasGroup[] { GetCanvasGroup(_backButton) };
         _allActionModeButtons = new CanvasGroup[] { GetCanvasGroup(_buttonFinishAction), GetCanvasGroup(_buttonRotateRight), GetCanvasGroup(_buttonRotateLeft), GetCanvasGroup(_buttonAutoPlace) };

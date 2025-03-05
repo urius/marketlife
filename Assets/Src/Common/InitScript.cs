@@ -1,5 +1,4 @@
-using Cysharp.Threading.Tasks;
-using Src.Common;
+using Src.Commands;
 using UnityEngine;
 
 public class InitScript : MonoBehaviour
@@ -14,13 +13,10 @@ public class InitScript : MonoBehaviour
     [SerializeField] private LocalizationManager _localizationManager;
     [SerializeField] private ColorsHolder _colorsHolder;
 
-    private PlayerModelHolder _playerModelHolder;
-
     private void Awake()
     {
         Application.targetFrameRate = 51;
 
-        _playerModelHolder = PlayerModelHolder.Instance;
         new InitializeSystemsCommand().Execute();
 
         Debug.Log($"Application.absoluteURL: {Application.absoluteURL}");
@@ -28,57 +24,13 @@ public class InitScript : MonoBehaviour
 
     private async void Start()
     {
-        ExecuteAdditionalStartupLogic();
-
-        await _playerModelHolder.SetUidTask;
+        await PlayerModelHolder.Instance.SetUidTask;
         await new InitializeAndLoadCommand().ExecuteAsync();
-    }
-
-    private void ExecuteAdditionalStartupLogic()
-    {
-        if (MirraSdkWrapper.IsVk == false)
-        {
-            InitViaMirraSdk().Forget();
-            return;
-        }
-        
-#if UNITY_EDITOR || UNITY_ANDROID
-        new SetupExternalDebugDataCommand().Execute(_debugUid);
-        new SetupDebugSystemsCommand().Execute();
-#endif
-    }
-
-    private async UniTaskVoid InitViaMirraSdk()
-    {
-        MirraSdkWrapper.Log("InitViaMirraSdk");
-        MirraSdkWrapper.Log("CurrentLanguage: " + MirraSdkWrapper.CurrentLanguage);
-
-        var playerId = await MirraSdkWrapper.GetPlayerId();
-        MirraSdkWrapper.Log("PlayerId: " + playerId);
-
-        SetupLanguage();
-
-        if (MirraSdkWrapper.IsYandexGames)
-        {
-            Urls.UpdateBasePathPostfix("/marketYG");
-            _playerModelHolder.SetInitialData(playerId, SocialType.YG);
-        }
-    }
-
-    private void SetupLanguage()
-    {
-        if (MirraSdkWrapper.IsRussianLanguage)
-        {
-            _localizationManager.SetLocale(LocaleType.Ru);
-        }
-        else if (MirraSdkWrapper.IsEnglishLanguage)
-        {
-            _localizationManager.SetLocale(LocaleType.En);
-        }
     }
 
     private void OnValidate()
     {
+        DebugDataHolder.Instance.DebugUid = _debugUid;
         DebugDataHolder.Instance.IsSaveDisabled = _disableSave;
         DebugDataHolder.Instance.UseTestConfigFile = _loadDebugConfigVersion;
         DebugDataHolder.Instance.IsTutorialDisabled = _disableTutorial;

@@ -1,3 +1,4 @@
+using Src.Common;
 using UnityEngine;
 
 public class TutorialShowMoodInteriorFriendsMediator : TutorialStepMediatorBase
@@ -23,6 +24,11 @@ public class TutorialShowMoodInteriorFriendsMediator : TutorialStepMediatorBase
 
     protected override void OnViewButtonClicked()
     {
+        ProcessNextPhase();
+    }
+
+    private void ProcessNextPhase()
+    {
         _phaseIndex++;
         switch (_phaseIndex)
         {
@@ -30,7 +36,15 @@ public class TutorialShowMoodInteriorFriendsMediator : TutorialStepMediatorBase
                 HandleInteriorPhase();
                 break;
             case 2:
-                HandleFriendsPhase();
+                if (DisabledLogicFlags.IsFriendsLogicDisabled)
+                {
+                    ProcessNextPhase();
+                }
+                else
+                {
+                    HandleFriendsPhase();
+                }
+
                 break;
             case 3:
                 HandleManagePhase();

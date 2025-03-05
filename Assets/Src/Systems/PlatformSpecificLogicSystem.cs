@@ -8,23 +8,28 @@ namespace Src.Systems
 {
     public class PlatformSpecificLogicSystem
     {
-        private readonly Dispatcher _dispatcher;
+        private readonly Dispatcher _dispatcher = Dispatcher.Instance;
         //
         private PlatformSpecificLogicModuleBase _module;
         private PlayerModelHolder _playerModelHolder;
         private LocalizationManager _localizationManager;
 
-        public PlatformSpecificLogicSystem()
-        {
-            _dispatcher = Dispatcher.Instance;
-        }
-
         public void Start()
         {
             _playerModelHolder = PlayerModelHolder.Instance;
             _localizationManager = LocalizationManager.Instance;
-        
+
+            SetupDisabledLogicFlags();
+            
             Activate();
+        }
+
+        private void SetupDisabledLogicFlags()
+        {
+            if (MirraSdkWrapper.IsYandexGames)
+            {
+                DisabledLogicFlags.IsFriendsLogicDisabled = true;
+            }
         }
 
         private void Activate()

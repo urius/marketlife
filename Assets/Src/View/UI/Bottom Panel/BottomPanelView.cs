@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -57,16 +57,15 @@ public class BottomPanelView : MonoBehaviour, IPointerEnterHandler, IPointerExit
     private const float DeltaPositionForAnimation = 40;
 
     private bool _isBlocked = false;
-    private Dictionary<CanvasGroup[], float> _buttonYPositionsByCanvasGroup;
-    private CanvasGroup[] _simulationModeButtons;
-    private CanvasGroup[] _interiorModeButtons;
-    private CanvasGroup[] _friendShopModeButtons;
-    private CanvasGroup[] _allActionModeButtons;
-    private CanvasGroup[] _placingShopObjectModeButtons;
-    private CanvasGroup[] _movingShopObjectModeButtons;
-    private CanvasGroup[] _placingDecorationModeButtons;
-    private CanvasGroup[] _placingProductModeButtons;
-    private CanvasGroup[] _performingFriendActionModeButtons;    
+    private ButtonData[] _simulationModeButtons;
+    private ButtonData[] _interiorModeButtons;
+    private ButtonData[] _friendShopModeButtons;
+    private ButtonData[] _allActionModeButtons;
+    private ButtonData[] _placingShopObjectModeButtons;
+    private ButtonData[] _movingShopObjectModeButtons;
+    private ButtonData[] _placingDecorationModeButtons;
+    private ButtonData[] _placingProductModeButtons;
+    private ButtonData[] _performingFriendActionModeButtons;    
     private UIHintableView[] _allHintableViews;
 
     public Button FriendsButton => _friendsButton;
@@ -81,32 +80,24 @@ public class BottomPanelView : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     public void Awake()
     {
-        _simulationModeButtons = new CanvasGroup[] { GetCanvasGroup(_warehouseButton), GetCanvasGroup(_friendsButton), GetCanvasGroup(_interiorButton), GetCanvasGroup(_manageButton) };
-        _interiorModeButtons = new CanvasGroup[] { GetCanvasGroup(_backButton), GetCanvasGroup(_interiorObjectsButton), GetCanvasGroup(_interiorFloorsButton), GetCanvasGroup(_interiorWallsButton), GetCanvasGroup(_interiorWindowsButton), GetCanvasGroup(_interiorDoorsButton) };
-        _friendShopModeButtons = new CanvasGroup[] { GetCanvasGroup(_backButton) };
-        _allActionModeButtons = new CanvasGroup[] { GetCanvasGroup(_buttonFinishAction), GetCanvasGroup(_buttonRotateRight), GetCanvasGroup(_buttonRotateLeft), GetCanvasGroup(_buttonAutoPlace) };
-        _placingShopObjectModeButtons = new CanvasGroup[] { GetCanvasGroup(_buttonFinishAction), GetCanvasGroup(_buttonRotateRight), GetCanvasGroup(_buttonRotateLeft) };
-        _movingShopObjectModeButtons = new CanvasGroup[] { GetCanvasGroup(_buttonRotateRight), GetCanvasGroup(_buttonRotateLeft) };
-        _placingDecorationModeButtons = new CanvasGroup[] { GetCanvasGroup(_buttonFinishAction) };
-        _placingProductModeButtons = new CanvasGroup[] { GetCanvasGroup(_buttonFinishAction), GetCanvasGroup(_buttonAutoPlace) };
-        _performingFriendActionModeButtons = new CanvasGroup[] { GetCanvasGroup(_buttonFinishAction) };
-
-        _buttonYPositionsByCanvasGroup = new Dictionary<CanvasGroup[], float>
-        {
-            [_simulationModeButtons] = (_simulationModeButtons[0].transform as RectTransform).anchoredPosition.y,
-            [_interiorModeButtons] = (_interiorModeButtons[0].transform as RectTransform).anchoredPosition.y,
-            [_friendShopModeButtons] = (_friendShopModeButtons[0].transform as RectTransform).anchoredPosition.y,
-            [_allActionModeButtons] = (_allActionModeButtons[0].transform as RectTransform).anchoredPosition.y,
-            [_placingShopObjectModeButtons] = (_placingShopObjectModeButtons[0].transform as RectTransform).anchoredPosition.y,
-            [_movingShopObjectModeButtons] = (_movingShopObjectModeButtons[0].transform as RectTransform).anchoredPosition.y,
-            [_placingDecorationModeButtons] = (_placingDecorationModeButtons[0].transform as RectTransform).anchoredPosition.y,
-            [_placingProductModeButtons] = (_placingProductModeButtons[0].transform as RectTransform).anchoredPosition.y,
-            [_performingFriendActionModeButtons] = (_performingFriendActionModeButtons[0].transform as RectTransform).anchoredPosition.y,
-        };
+        _simulationModeButtons = new[] { GetButtonData(_warehouseButton), GetButtonData(_friendsButton), GetButtonData(_interiorButton), GetButtonData(_manageButton) };
+        _interiorModeButtons = new [] { GetButtonData(_backButton), GetButtonData(_interiorObjectsButton), GetButtonData(_interiorFloorsButton), GetButtonData(_interiorWallsButton), GetButtonData(_interiorWindowsButton), GetButtonData(_interiorDoorsButton) };
+        _friendShopModeButtons = new [] { GetButtonData(_backButton) };
+        _allActionModeButtons = new [] { GetButtonData(_buttonFinishAction), GetButtonData(_buttonRotateRight), GetButtonData(_buttonRotateLeft), GetButtonData(_buttonAutoPlace) };
+        _placingShopObjectModeButtons = new [] { GetButtonData(_buttonFinishAction), GetButtonData(_buttonRotateRight), GetButtonData(_buttonRotateLeft) };
+        _movingShopObjectModeButtons = new [] { GetButtonData(_buttonRotateRight), GetButtonData(_buttonRotateLeft) };
+        _placingDecorationModeButtons = new [] { GetButtonData(_buttonFinishAction) };
+        _placingProductModeButtons = new [] { GetButtonData(_buttonFinishAction), GetButtonData(_buttonAutoPlace) };
+        _performingFriendActionModeButtons = new [] { GetButtonData(_buttonFinishAction) };
 
         _allHintableViews = GetComponentsInChildren<UIHintableView>(true);
 
         Activate();
+    }
+
+    public void DisableFriendsButton()
+    {
+        _simulationModeButtons.First(d => d.RectTransform == _friendsButton.transform).IsDisabled = true;
     }
 
     public void SetIsBlocked(bool isBlocked)
@@ -225,79 +216,14 @@ public class BottomPanelView : MonoBehaviour, IPointerEnterHandler, IPointerExit
         return tcs.Task;
     }
 
-    private UniTask ShowButtonsInternalAsync(CanvasGroup[] canvasGroups, bool withDelays = true)
+    public void OnPointerEnter(PointerEventData eventData)
     {
-        var resultTsc = new UniTaskCompletionSource();
-        foreach (var canvasGroup in canvasGroups)
-        {
-            canvasGroup.alpha = 0;
-            canvasGroup.gameObject.SetActive(true);
-            canvasGroup.interactable = true;
-        }
-
-        var startPos = _buttonYPositionsByCanvasGroup[canvasGroups];
-        LTDescr tweenDescription = null;
-        for (var i = 0; i < canvasGroups.Length; i++)
-        {
-            var delay = withDelays ? i * DefaultDelaySeconds : 0;
-
-            var rectTransform = canvasGroups[i].transform as RectTransform;
-            var v = rectTransform.anchoredPosition;
-            rectTransform.anchoredPosition = new Vector2(v.x, startPos + DeltaPositionForAnimation);
-            LeanTween.move(rectTransform, new Vector2(v.x, startPos), DefaultDurationSeconds).setDelay(delay).setEaseOutQuad();
-
-            tweenDescription = LeanTween.alphaCanvas(canvasGroups[i], 1, DefaultDurationSeconds).setDelay(delay);
-        }
-        if (tweenDescription != null)
-        {
-            tweenDescription?.setOnComplete(() => resultTsc.TrySetResult());
-        }
-        else
-        {
-            resultTsc.TrySetResult();
-        }
-
-        return resultTsc.Task;
+        PointerEnter();
     }
 
-    private UniTask HideButtonsInternalAsync(CanvasGroup[] canvasGroups, bool withDelays = true)
+    public void OnPointerExit(PointerEventData eventData)
     {
-        var resultTsc = new UniTaskCompletionSource();
-        void OnLastTweenComplete()
-        {
-            foreach (var canvasGroup in canvasGroups)
-            {
-                canvasGroup.alpha = 0;
-                canvasGroup.gameObject.SetActive(false);
-            }
-            resultTsc.TrySetResult();
-        }
-
-        var targetPos = _buttonYPositionsByCanvasGroup[canvasGroups] + DeltaPositionForAnimation;
-        LTDescr tweenDescription = null;
-        for (var i = 0; i < canvasGroups.Length; i++)
-        {
-            if (canvasGroups[i].gameObject.activeSelf == false) continue;
-
-            var delay = withDelays ? i * DefaultDelaySeconds : 0;
-            canvasGroups[i].interactable = false;
-
-            var rectTransform = canvasGroups[i].transform as RectTransform;
-            var v = rectTransform.anchoredPosition;
-            LeanTween.move(rectTransform, new Vector2(v.x, targetPos), DefaultDurationSeconds).setDelay(delay).setEaseInQuad();
-
-            tweenDescription = LeanTween.alphaCanvas(canvasGroups[i], 0, DefaultDurationSeconds).setDelay(delay);
-        }
-        if (tweenDescription != null)
-        {
-            tweenDescription?.setOnComplete(OnLastTweenComplete);
-        }
-        else
-        {
-            resultTsc.TrySetResult();
-        }
-
-        return resultTsc.Task;
+        PointerExit();
     }
 
     private void Activate()
@@ -318,6 +244,87 @@ public class BottomPanelView : MonoBehaviour, IPointerEnterHandler, IPointerExit
         _buttonRotateRight.AddOnClickListener(OnRotateRightButtonClicked);
         _buttonRotateLeft.AddOnClickListener(OnRotateLeftButtonClicked);
         _buttonAutoPlace.AddOnClickListener(OnAutoPlaceClicked);
+    }
+
+    private UniTask ShowButtonsInternalAsync(ButtonData[] buttonsData, bool withDelays = true)
+    {
+        var resultTsc = new UniTaskCompletionSource();
+        foreach (var buttonData in buttonsData)
+        {
+            var canvasGroup = buttonData.CanvasGroup;
+            var isButtonEnabled = !buttonData.IsDisabled;
+            
+            canvasGroup.alpha = 0;
+            canvasGroup.gameObject.SetActive(isButtonEnabled);
+            canvasGroup.interactable = isButtonEnabled;
+        }
+
+        var startPos = buttonsData[0].DefaultYPosition;
+        LTDescr tweenDescription = null;
+        for (var i = 0; i < buttonsData.Length; i++)
+        {
+            if (buttonsData[i].IsDisabled) continue;
+            
+            var delay = withDelays ? i * DefaultDelaySeconds : 0;
+
+            var rectTransform = buttonsData[i].RectTransform;
+            var v = rectTransform.anchoredPosition;
+            rectTransform.anchoredPosition = new Vector2(v.x, startPos + DeltaPositionForAnimation);
+            LeanTween.move(rectTransform, new Vector2(v.x, startPos), DefaultDurationSeconds).setDelay(delay).setEaseOutQuad();
+
+            tweenDescription = LeanTween.alphaCanvas(buttonsData[i].CanvasGroup, 1, DefaultDurationSeconds).setDelay(delay);
+        }
+        if (tweenDescription != null)
+        {
+            tweenDescription.setOnComplete(() => resultTsc.TrySetResult());
+        }
+        else
+        {
+            resultTsc.TrySetResult();
+        }
+
+        return resultTsc.Task;
+    }
+
+    private UniTask HideButtonsInternalAsync(ButtonData[] buttonsData, bool withDelays = true)
+    {
+        var resultTsc = new UniTaskCompletionSource();
+        void OnLastTweenComplete()
+        {
+            foreach (var buttonData in buttonsData)
+            {
+                var canvasGroup = buttonData.CanvasGroup;
+                canvasGroup.alpha = 0;
+                canvasGroup.gameObject.SetActive(false);
+            }
+            resultTsc.TrySetResult();
+        }
+
+        var targetPos = buttonsData[0].DefaultYPosition + DeltaPositionForAnimation;
+        LTDescr tweenDescription = null;
+        for (var i = 0; i < buttonsData.Length; i++)
+        {
+            if (buttonsData[i].RectTransform.gameObject.activeSelf == false) continue;
+
+            var delay = withDelays ? i * DefaultDelaySeconds : 0;
+            buttonsData[i].CanvasGroup.interactable = false;
+
+            var rectTransform = buttonsData[i].RectTransform;
+            var v = rectTransform.anchoredPosition;
+            LeanTween.move(rectTransform, new Vector2(v.x, targetPos), DefaultDurationSeconds).setDelay(delay).setEaseInQuad();
+
+            tweenDescription = LeanTween.alphaCanvas(buttonsData[i].CanvasGroup, 0, DefaultDurationSeconds).setDelay(delay);
+        }
+        if (tweenDescription != null)
+        {
+            tweenDescription.setOnComplete(OnLastTweenComplete);
+        }
+        else
+        {
+            resultTsc.TrySetResult();
+        }
+
+        return resultTsc.Task;
     }
 
     private void OnAutoPlaceClicked()
@@ -398,19 +405,30 @@ public class BottomPanelView : MonoBehaviour, IPointerEnterHandler, IPointerExit
         }
     }
 
-    private CanvasGroup GetCanvasGroup(Button button)
+    private static ButtonData GetButtonData(Button button)
     {
-        return button.GetComponent<CanvasGroup>();
+        var canvasGroup = button.GetComponent<CanvasGroup>();
+        var rectTransform = (RectTransform)button.transform;
+        var yPos = rectTransform.anchoredPosition.y;
+        
+        return new ButtonData(rectTransform, canvasGroup, yPos);
     }
-
-    public void OnPointerEnter(PointerEventData eventData)
+    
+    private class ButtonData
     {
-        PointerEnter();
-    }
+        public readonly RectTransform RectTransform;
+        public readonly CanvasGroup CanvasGroup;
+        public readonly float DefaultYPosition;
+        
+        public bool IsDisabled;
 
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        PointerExit();
+        public ButtonData(RectTransform rectTransform, CanvasGroup canvasGroup, float defaultYPosition)
+        {
+            RectTransform = rectTransform;
+            CanvasGroup = canvasGroup;
+            DefaultYPosition = defaultYPosition;
+            IsDisabled = false;
+        }
     }
 }
 

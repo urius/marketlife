@@ -8,10 +8,10 @@ public class TutorialSystem
     private readonly PlayerModelHolder _playerModelHolder;
     private readonly AnalyticsManager _analyticsManager;
     private readonly List<TutorialStep> _openTutorialSteps;
-    private readonly TutorialStep[][] _tutorialSequences = new TutorialStep[][] {
-        new TutorialStep[]{
+    private readonly TutorialStep[][] _tutorialSequences = {
+        new[]{
             TutorialStep.Welcome,
-            TutorialStep.OpenWarehouse,
+            //TutorialStep.OpenWarehouse,
             TutorialStep.OpenOrderPopup,
             TutorialStep.OrderProduct,
             TutorialStep.Delivering,
@@ -22,7 +22,7 @@ public class TutorialSystem
             TutorialStep.ReadyToPlay,
             TutorialStep.Billboard,
         },
-        new TutorialStep[]{
+        new[]{
             TutorialStep.FriendUI
         },
     };

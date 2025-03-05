@@ -1,21 +1,24 @@
-public class LeaderboardsPopupViewModel : PopupViewModelBase
+namespace Src.Model.Popups
 {
-    public readonly LeaderboardUserData[] ExpLBData;
-    public readonly LeaderboardUserData[] FriendsLBData;
-    public readonly LeaderboardUserData[] CashLBData;
-    public readonly LeaderboardUserData[] GoldLBData;
-
-    public LeaderboardsPopupViewModel(
-        LeaderboardUserData[] expLBData,
-        LeaderboardUserData[] friendsLBData,
-        LeaderboardUserData[] cashLBData,
-        LeaderboardUserData[] goldLBData)
+    public class LeaderboardsPopupViewModel : PopupViewModelBase
     {
-        ExpLBData = expLBData;
-        FriendsLBData = friendsLBData;
-        CashLBData = cashLBData;
-        GoldLBData = goldLBData;
-    }
+        public readonly LeaderboardUserData[] ExpLBData;
+        public readonly LeaderboardUserData[] CashLBData;
+        public readonly LeaderboardUserData[] GoldLBData;
+        public readonly LeaderboardUserData[] FriendsLBData;
 
-    public override PopupType PopupType => PopupType.Leaderboards;
+        public LeaderboardsPopupViewModel(
+            LeaderboardUserData[] expLBData,
+            LeaderboardUserData[] cashLBData,
+            LeaderboardUserData[] goldLBData,
+            LeaderboardUserData[] friendsLBData)
+        {
+            ExpLBData = expLBData;
+            CashLBData = cashLBData;
+            GoldLBData = goldLBData;
+            FriendsLBData = friendsLBData;
+        }
+
+        public override PopupType PopupType => PopupType.Leaderboards;
+    }
 }

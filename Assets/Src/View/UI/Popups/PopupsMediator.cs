@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Src.View.UI.Popups.LeaderboardsPopup;
 using UnityEngine;
 
 public class PopupsMediator : IMediator

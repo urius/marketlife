@@ -188,7 +188,7 @@ public class GameConfigManager
         var result = new UpgradeConfig[upgradesConfigsDto.Count];
         for (var i = 0; i < upgradesConfigsDto.Count; i++)
         {
-            result[i] = new UpgradeConfig(upgradeType, upgradesConfigsDto[i]);
+            result[i] = new UpgradeConfig(upgradeType, upgradesConfigsDto[i], DisabledLogicFlags.IsFriendsLogicDisabled);
         }
         return result;
     }

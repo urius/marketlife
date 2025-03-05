@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using Src.Common;
 using UnityEngine;
 
 public class BottomPanelMediator : UINotMonoMediatorBase
@@ -32,6 +33,11 @@ public class BottomPanelMediator : UINotMonoMediatorBase
     public override async void Mediate()
     {
         base.Mediate();
+
+        if (DisabledLogicFlags.IsFriendsLogicDisabled)
+        {
+            _view.DisableFriendsButton();
+        }
 
         Activate();
         UpdateTabMediator();
@@ -67,7 +73,6 @@ public class BottomPanelMediator : UINotMonoMediatorBase
         {
             result = _viewModel.SimulationModeTab switch
             {
-
                 BottomPanelSimulationModeTab.Friends => new UIBottomPanelFriendsTabMediator(_view),
                 BottomPanelSimulationModeTab.Warehouse => new UIBottomPanelWarehouseTabMediator(_view),
                 _ => throw new InvalidOperationException($"{nameof(GetSimulationModeTabMediator)}i: interior tab {_viewModel.InteriorModeTab} is not supported"),

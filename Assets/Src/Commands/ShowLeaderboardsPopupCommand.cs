@@ -1,3 +1,5 @@
+using Src.Model.Popups;
+
 public struct ShowLeaderboardsPopupCommand
 {
     public async void Execute()
@@ -13,9 +15,9 @@ public struct ShowLeaderboardsPopupCommand
             var leaderboardDataHolder = LeaderboardsDataHolder.Instance;
             var popupModel = new LeaderboardsPopupViewModel(
                 leaderboardDataHolder.GetLeaderboardData(LeaderboardType.Exp),
-                leaderboardDataHolder.GetLeaderboardData(LeaderboardType.Friends),
                 leaderboardDataHolder.GetLeaderboardData(LeaderboardType.Cash),
-                leaderboardDataHolder.GetLeaderboardData(LeaderboardType.Gold));
+                leaderboardDataHolder.GetLeaderboardData(LeaderboardType.Gold),
+                leaderboardDataHolder.GetLeaderboardData(LeaderboardType.Friends));
             gameStateModel.ShowPopup(popupModel);
         }
     }

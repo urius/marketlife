@@ -5,14 +5,8 @@ public class BottomPanelViewModel
     public event Action SimulationTabChanged = delegate { };
     public event Action InteriorTabChanged = delegate { };
 
-    public BottomPanelSimulationModeTab SimulationModeTab { get; private set; }
-    public BottomPanelInteriorModeTab InteriorModeTab { get; private set; }
-
-    public BottomPanelViewModel()
-    {
-        SimulationModeTab = BottomPanelSimulationModeTab.Friends;
-        InteriorModeTab = BottomPanelInteriorModeTab.Shelfs;
-    }
+    public BottomPanelSimulationModeTab SimulationModeTab { get; private set; } = BottomPanelSimulationModeTab.Warehouse;
+    public BottomPanelInteriorModeTab InteriorModeTab { get; private set; } = BottomPanelInteriorModeTab.Shelfs;
 
     public void SetSimulationTab(BottomPanelSimulationModeTab tab)
     {

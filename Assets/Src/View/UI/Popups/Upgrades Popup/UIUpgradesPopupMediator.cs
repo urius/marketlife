@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Src.View.UI.Popups;
 using UnityEngine;
 
 public class UIUpgradesPopupMediator : IMediator
@@ -16,11 +17,11 @@ public class UIUpgradesPopupMediator : IMediator
     private readonly UpdatesProvider _updatesProvider;
     private readonly PoolCanvasProvider _poolCanvasProvider;
     private readonly FriendsDataHolder _friendsDataHolder;
-    private readonly List<(UIUpgradesPopupItemView View, UpgradesPopupItemViewModelBase Model)> _displayedItems = new List<(UIUpgradesPopupItemView View, UpgradesPopupItemViewModelBase Model)>(3);
+    private readonly List<(UIUpgradesPopupItemView View, UpgradesPopupItemViewModelBase Model)> _displayedItems = new(3);
 
     private UpgradesPopupViewModel _viewModel;
     private UITabbedContentPopupView _popupView;
-    private Queue<UIUpgradesPopupItemView> _cachedViews = new Queue<UIUpgradesPopupItemView>();
+    private Queue<UIUpgradesPopupItemView> _cachedViews = new();
     private int _currentShowingTabIndex = -1;
 
     public UIUpgradesPopupMediator(RectTransform parentTransform)

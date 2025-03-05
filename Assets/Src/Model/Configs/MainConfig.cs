@@ -611,13 +611,13 @@ public class UpgradeConfig : IUnlockableConfig
     public readonly Price Price;
     public readonly int UnlockFriends;
 
-    public UpgradeConfig(UpgradeType upgradeType, UpgradeConfigDto dto)
+    public UpgradeConfig(UpgradeType upgradeType, UpgradeConfigDto dto, bool dontConsiderFriends = false)
     {
         UpgradeType = upgradeType;
         Value = dto.value;
         Price = Price.FromString(dto.price);
         UnlockLevel = dto.unlock_level;
-        UnlockFriends = dto.unlock_friends;
+        UnlockFriends = dontConsiderFriends ? 0 : dto.unlock_friends;
     }
 
     public string UpgradeTypeStr => UpgradeType switch

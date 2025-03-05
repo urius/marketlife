@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Src.View.UI.Popups;
 using UnityEngine;
 
 public class UIBankPopupMediator : UIContentPopupMediator

@@ -1,9 +1,13 @@
 using Cysharp.Threading.Tasks;
+using Src.Managers;
 
-public struct LoadLocalizationCommand : IAsyncGameLoadCommand
+namespace Src.Commands.LoadSave
 {
-    public UniTask<bool> ExecuteAsync()
+    public struct LoadLocalizationCommand : IAsyncGameLoadCommand
     {
-        return LocalizationManager.Instance.LoadLocalizationAsync();
+        public UniTask<bool> ExecuteAsync()
+        {
+            return LocalizationManager.Instance.LoadLocalizationAsync();
+        }
     }
 }

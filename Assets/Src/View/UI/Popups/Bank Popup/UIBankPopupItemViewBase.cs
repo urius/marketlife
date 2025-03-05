@@ -1,54 +1,58 @@
 using System;
+using Src.Common_Utils;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public abstract class UIBankPopupItemViewBase : MonoBehaviour
+namespace Src.View.UI.Popups.Bank_Popup
 {
-    public event Action<UIBankPopupItemViewBase> Clicked = delegate { };
-
-    [SerializeField] protected Image IconImage;
-    [SerializeField] protected TMP_Text AmountText;
-    [SerializeField] protected Button BuyButton;
-    [SerializeField] protected Button MainButton;
-    [SerializeField] protected TMP_Text PriceText;
-
-    public virtual void Awake()
+    public abstract class UIBankPopupItemViewBase : MonoBehaviour
     {
-        SetAvailable(true);
+        public event Action<UIBankPopupItemViewBase> Clicked = delegate { };
 
-        BuyButton.AddOnClickListener(OnClick);
-        MainButton.AddOnClickListener(OnClick);
-    }
+        [SerializeField] protected Image IconImage;
+        [SerializeField] protected TMP_Text AmountText;
+        [SerializeField] protected Button BuyButton;
+        [SerializeField] protected Button MainButton;
+        [SerializeField] protected TMP_Text PriceText;
 
-    public virtual void SetAvailable(bool isAvailable)
-    {
-        MainButton.interactable = isAvailable;
-        BuyButton.interactable = isAvailable;
-    }
+        public virtual void Awake()
+        {
+            SetAvailable(true);
 
-    public void SetIconSprite(Sprite sprite)
-    {
-        IconImage.sprite = sprite;
-    }
+            BuyButton.AddOnClickListener(OnClick);
+            MainButton.AddOnClickListener(OnClick);
+        }
 
-    public void SetAmountText(string amountText)
-    {
-        AmountText.text = amountText;
-    }
+        public virtual void SetAvailable(bool isAvailable)
+        {
+            MainButton.interactable = isAvailable;
+            BuyButton.interactable = isAvailable;
+        }
 
-    public void SetAmountTextColor(Color color)
-    {
-        AmountText.color = color;
-    }
+        public void SetIconSprite(Sprite sprite)
+        {
+            IconImage.sprite = sprite;
+        }
 
-    public void SetPriceText(string text)
-    {
-        PriceText.text = text;
-    }
+        public void SetAmountText(string amountText)
+        {
+            AmountText.text = amountText;
+        }
 
-    private void OnClick()
-    {
-        Clicked(this);
+        public void SetAmountTextColor(Color color)
+        {
+            AmountText.color = color;
+        }
+
+        public void SetPriceText(string text)
+        {
+            PriceText.text = text;
+        }
+
+        private void OnClick()
+        {
+            Clicked(this);
+        }
     }
 }

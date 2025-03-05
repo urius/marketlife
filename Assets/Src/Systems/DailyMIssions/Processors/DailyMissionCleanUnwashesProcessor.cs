@@ -1,50 +1,54 @@
+using Src.Model;
 using UnityEngine;
 
-public class DailyMissionCleanUnwashesProcessor : DailyMissionProcessorBase
+namespace Src.Systems.DailyMIssions.Processors
 {
-    private readonly PlayerModelHolder _playerModelHolder;
-    private readonly GameStateModel _gameStateModel;
-    private readonly PlayerOfflineReportHolder _offlineReportHolder;
-
-    public DailyMissionCleanUnwashesProcessor()
+    public class DailyMissionCleanUnwashesProcessor : DailyMissionProcessorBase
     {
-        _playerModelHolder = PlayerModelHolder.Instance;
-        _gameStateModel = GameStateModel.Instance;
-        _offlineReportHolder = PlayerOfflineReportHolder.Instance;
-    }
+        private readonly PlayerModelHolder _playerModelHolder;
+        private readonly GameStateModel _gameStateModel;
+        private readonly PlayerOfflineReportHolder _offlineReportHolder;
 
-    public override void Start()
-    {
-        _playerModelHolder.ShopModel.UnwashRemoved += OnUnwashRemoved;
-        _gameStateModel.GameStateChanged += OnGameStateChanged;
-    }
-
-    public override void Stop()
-    {
-        _playerModelHolder.ShopModel.UnwashRemoved -= OnUnwashRemoved;
-        _gameStateModel.GameStateChanged -= OnGameStateChanged;
-    }
-
-    private void OnGameStateChanged(GameStateName prevState, GameStateName currentState)
-    {
-        if (prevState == GameStateName.ReadyForStart && _gameStateModel.IsPlayingState)
+        public DailyMissionCleanUnwashesProcessor()
         {
-            if (_offlineReportHolder.PlayerOfflineReport != null)
+            _playerModelHolder = PlayerModelHolder.Instance;
+            _gameStateModel = GameStateModel.Instance;
+            _offlineReportHolder = PlayerOfflineReportHolder.Instance;
+        }
+
+        public override void Start()
+        {
+            _playerModelHolder.ShopModel.UnwashRemoved += OnUnwashRemoved;
+            _gameStateModel.GameStateChanged += OnGameStateChanged;
+        }
+
+        public override void Stop()
+        {
+            _playerModelHolder.ShopModel.UnwashRemoved -= OnUnwashRemoved;
+            _gameStateModel.GameStateChanged -= OnGameStateChanged;
+        }
+
+        private void OnGameStateChanged(GameStateName prevState, GameStateName currentState)
+        {
+            if (prevState == GameStateName.ReadyForStart && _gameStateModel.IsPlayingState)
             {
-                var unwashesCleaned = _offlineReportHolder.PlayerOfflineReport.UnwashesCleanedAmount;
-                if (unwashesCleaned > 0)
+                if (_offlineReportHolder.PlayerOfflineReport != null)
                 {
-                    MissionModel.AddValue(unwashesCleaned);
+                    var unwashesCleaned = _offlineReportHolder.PlayerOfflineReport.UnwashesCleanedAmount;
+                    if (unwashesCleaned > 0)
+                    {
+                        MissionModel.AddValue(unwashesCleaned);
+                    }
                 }
             }
         }
-    }
 
-    private void OnUnwashRemoved(Vector2Int coords)
-    {
-        if (_gameStateModel.GameState == GameStateName.PlayerShopSimulation)
+        private void OnUnwashRemoved(Vector2Int coords)
         {
-            MissionModel.AddValue(1);
+            if (_gameStateModel.GameState == GameStateName.PlayerShopSimulation)
+            {
+                MissionModel.AddValue(1);
+            }
         }
     }
 }

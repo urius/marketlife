@@ -1,138 +1,144 @@
 using System;
+using Src.Common;
+using Src.Managers;
+using Src.Model;
 using UnityEngine;
 
-public class TutorialDeliveringStepMediator : TutorialStepMediatorBase
+namespace Src.View.UI.Tutorial.StepsMediators
 {
-    private readonly TutorialUIElementsProvider _tutorialUIElementProvider;
-    private readonly ShopModel _playerShopModel;
-    private readonly GameStateModel _gameStateModel;
-    private readonly UpdatesProvider _updatesProvider;
-    private readonly LocalizationManager _loc;
-
-    private Action _realtimeSecondUpdateDelegate;
-    private Action _realtimeUpdateDelegate;
-    private int _minDeliverTime;
-    private RectTransform _highlightRectTransform;
-
-    public TutorialDeliveringStepMediator(RectTransform parentTransform)
-        : base(parentTransform)
+    public class TutorialDeliveringStepMediator : TutorialStepMediatorBase
     {
-        _tutorialUIElementProvider = TutorialUIElementsProvider.Instance;
-        _playerShopModel = PlayerModelHolder.Instance.ShopModel;
-        _gameStateModel = GameStateModel.Instance;
-        _updatesProvider = UpdatesProvider.Instance;
-        _loc = LocalizationManager.Instance;
-    }
+        private readonly TutorialUIElementsProvider _tutorialUIElementProvider;
+        private readonly ShopModel _playerShopModel;
+        private readonly GameStateModel _gameStateModel;
+        private readonly UpdatesProvider _updatesProvider;
+        private readonly LocalizationManager _loc;
 
-    public override void Mediate()
-    {
-        base.Mediate();
+        private Action _realtimeSecondUpdateDelegate;
+        private Action _realtimeUpdateDelegate;
+        private int _minDeliverTime;
+        private RectTransform _highlightRectTransform;
 
-        _minDeliverTime = GetMinDeliverTime();
-        View.DisableButton();
-        _realtimeSecondUpdateDelegate = WaitForHightlightDeliver;
-
-        Activate();
-    }
-
-    public override void Unmediate()
-    {
-        Deactivate();
-        base.Unmediate();
-    }
-
-    private void Activate()
-    {
-        _updatesProvider.RealtimeUpdate += OnRealtimeUpdate;
-        _updatesProvider.RealtimeSecondUpdate += OnRealtimeSecondUpdate;
-        _gameStateModel.ActionStateChanged += OnActionStateChanged;
-    }
-
-    private void Deactivate()
-    {
-        _updatesProvider.RealtimeUpdate -= OnRealtimeUpdate;
-        _updatesProvider.RealtimeSecondUpdate -= OnRealtimeSecondUpdate;
-        _gameStateModel.ActionStateChanged -= OnActionStateChanged;
-    }
-
-    private void OnActionStateChanged(ActionStateName prev, ActionStateName current)
-    {
-        if (current == ActionStateName.PlacingProductPlayer)
+        public TutorialDeliveringStepMediator(RectTransform parentTransform)
+            : base(parentTransform)
         {
-            DispatchTutorialActionPerformed();
+            _tutorialUIElementProvider = TutorialUIElementsProvider.Instance;
+            _playerShopModel = PlayerModelHolder.Instance.ShopModel;
+            _gameStateModel = GameStateModel.Instance;
+            _updatesProvider = UpdatesProvider.Instance;
+            _loc = LocalizationManager.Instance;
         }
-    }
 
-    private void WaitForHightlightDeliver()
-    {
-        if (_tutorialUIElementProvider.HasElement(TutorialUIElement.BottomPanelWarehouseTabLastDeliveringSlotTime))
+        public override void Mediate()
         {
-            if (_highlightRectTransform == null)
-            {
-                _highlightRectTransform = _tutorialUIElementProvider.GetElementRectTransform(TutorialUIElement.BottomPanelWarehouseTabLastDeliveringSlotTime);
-                View.HighlightScreenRoundArea(GetDeliverTimeHighlightWorldPosition(), _highlightRectTransform.rect.size * 1.5f, animated: true);
+            base.Mediate();
 
-                _realtimeSecondUpdateDelegate = WaitForDeliver;
-                _realtimeUpdateDelegate = UpdateDeliverHighlightPosition;
+            _minDeliverTime = GetMinDeliverTime();
+            View.DisableButton();
+            _realtimeSecondUpdateDelegate = WaitForHightlightDeliver;
+
+            Activate();
+        }
+
+        public override void Unmediate()
+        {
+            Deactivate();
+            base.Unmediate();
+        }
+
+        private void Activate()
+        {
+            _updatesProvider.RealtimeUpdate += OnRealtimeUpdate;
+            _updatesProvider.RealtimeSecondUpdate += OnRealtimeSecondUpdate;
+            _gameStateModel.ActionStateChanged += OnActionStateChanged;
+        }
+
+        private void Deactivate()
+        {
+            _updatesProvider.RealtimeUpdate -= OnRealtimeUpdate;
+            _updatesProvider.RealtimeSecondUpdate -= OnRealtimeSecondUpdate;
+            _gameStateModel.ActionStateChanged -= OnActionStateChanged;
+        }
+
+        private void OnActionStateChanged(ActionStateName prev, ActionStateName current)
+        {
+            if (current == ActionStateName.PlacingProductPlayer)
+            {
+                DispatchTutorialActionPerformed();
             }
         }
-    }
 
-    private void WaitForDeliver()
-    {
-        if (_gameStateModel.ServerTime >= _minDeliverTime)
+        private void WaitForHightlightDeliver()
         {
-            _realtimeUpdateDelegate = null;
-            _highlightRectTransform = _tutorialUIElementProvider.GetElementRectTransform(TutorialUIElement.BottomPanelWarehouseTabLastDeliveringSlot);
-
-            View.SetMessageText(_loc.GetLocalization($"{LocalizationKeys.TutorialMessagePrefix}{ViewModel.StepIndex}_a"));
-
-            var itemBoundsRect = _highlightRectTransform.rect;
-            var size = new Vector2(itemBoundsRect.size.x, itemBoundsRect.size.y) * 1.1f;
-            View.HighlightScreenRoundArea(_highlightRectTransform.position, size, animated: true);
-
-            AllowClickOnRectTransform(_highlightRectTransform);
-
-            _realtimeSecondUpdateDelegate = null;
-        }
-    }
-
-    private void UpdateDeliverHighlightPosition()
-    {
-        View.SetHighlightPosition(GetDeliverTimeHighlightWorldPosition());
-    }
-
-    private Vector3 GetDeliverTimeHighlightWorldPosition()
-    {
-        var corners = new Vector3[4];
-        _highlightRectTransform.GetWorldCorners(corners);
-        return (corners[0] + corners[2]) * 0.5f;
-    }
-
-    private void OnRealtimeUpdate()
-    {
-        _realtimeUpdateDelegate?.Invoke();
-    }
-
-    private void OnRealtimeSecondUpdate()
-    {
-        _realtimeSecondUpdateDelegate?.Invoke();
-    }
-
-    private int GetMinDeliverTime()
-    {
-        var result = 0;
-        foreach (var slot in _playerShopModel.WarehouseModel.Slots)
-        {
-            if (slot.HasProduct && slot.Product.DeliverTime > _gameStateModel.ServerTime)
+            if (_tutorialUIElementProvider.HasElement(TutorialUIElement.BottomPanelWarehouseTabLastDeliveringSlotTime))
             {
-                if (result == 0 || slot.Product.DeliverTime < result)
+                if (_highlightRectTransform == null)
                 {
-                    result = slot.Product.DeliverTime;
+                    _highlightRectTransform = _tutorialUIElementProvider.GetElementRectTransform(TutorialUIElement.BottomPanelWarehouseTabLastDeliveringSlotTime);
+                    View.HighlightScreenRoundArea(GetDeliverTimeHighlightWorldPosition(), _highlightRectTransform.rect.size * 1.5f, animated: true);
+
+                    _realtimeSecondUpdateDelegate = WaitForDeliver;
+                    _realtimeUpdateDelegate = UpdateDeliverHighlightPosition;
                 }
             }
         }
 
-        return result;
+        private void WaitForDeliver()
+        {
+            if (_gameStateModel.ServerTime >= _minDeliverTime)
+            {
+                _realtimeUpdateDelegate = null;
+                _highlightRectTransform = _tutorialUIElementProvider.GetElementRectTransform(TutorialUIElement.BottomPanelWarehouseTabLastDeliveringSlot);
+
+                View.SetMessageText(_loc.GetLocalization($"{LocalizationKeys.TutorialMessagePrefix}{ViewModel.StepIndex}_a"));
+
+                var itemBoundsRect = _highlightRectTransform.rect;
+                var size = new Vector2(itemBoundsRect.size.x, itemBoundsRect.size.y) * 1.1f;
+                View.HighlightScreenRoundArea(_highlightRectTransform.position, size, animated: true);
+
+                AllowClickOnRectTransform(_highlightRectTransform);
+
+                _realtimeSecondUpdateDelegate = null;
+            }
+        }
+
+        private void UpdateDeliverHighlightPosition()
+        {
+            View.SetHighlightPosition(GetDeliverTimeHighlightWorldPosition());
+        }
+
+        private Vector3 GetDeliverTimeHighlightWorldPosition()
+        {
+            var corners = new Vector3[4];
+            _highlightRectTransform.GetWorldCorners(corners);
+            return (corners[0] + corners[2]) * 0.5f;
+        }
+
+        private void OnRealtimeUpdate()
+        {
+            _realtimeUpdateDelegate?.Invoke();
+        }
+
+        private void OnRealtimeSecondUpdate()
+        {
+            _realtimeSecondUpdateDelegate?.Invoke();
+        }
+
+        private int GetMinDeliverTime()
+        {
+            var result = 0;
+            foreach (var slot in _playerShopModel.WarehouseModel.Slots)
+            {
+                if (slot.HasProduct && slot.Product.DeliverTime > _gameStateModel.ServerTime)
+                {
+                    if (result == 0 || slot.Product.DeliverTime < result)
+                    {
+                        result = slot.Product.DeliverTime;
+                    }
+                }
+            }
+
+            return result;
+        }
     }
 }

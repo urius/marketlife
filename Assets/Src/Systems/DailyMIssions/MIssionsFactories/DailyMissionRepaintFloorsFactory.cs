@@ -1,30 +1,37 @@
 using System.Linq;
+using Src.Managers;
+using Src.Model;
+using Src.Model.Missions;
+using Src.Systems.DailyMIssions.Processors;
 using UnityEngine;
 
-public class DailyMissionRepaintFloorsFactory : DailyMissionFactoryBase<DailyMissionRepaintFloorsProcessor>
+namespace Src.Systems.DailyMIssions.MIssionsFactories
 {
-    protected override string Key => MissionKeys.RepaintFloors;
-
-    public override bool CanAdd()
+    public class DailyMissionRepaintFloorsFactory : DailyMissionFactoryBase<DailyMissionRepaintFloorsProcessor>
     {
-        return base.CanAdd()
-            && ExtraCanAddCondition();
-    }
+        protected override string Key => MissionKeys.RepaintFloors;
 
-    public override DailyMissionModel CreateModel(float complexityMultiplier)
-    {
-        var playerShopModel = PlayerModelHolder.Instance.ShopModel;
-        var floorsCount = playerShopModel.ShopDesign.Square;
-        var targetValue = (int)Mathf.Max(1, Mathf.Lerp(1, floorsCount, complexityMultiplier));
-        var reward = ChooseReward(complexityMultiplier);
-        return new DailyMissionModel(Key, 0, targetValue, 0, reward);
-    }
+        public override bool CanAdd()
+        {
+            return base.CanAdd()
+                   && ExtraCanAddCondition();
+        }
 
-    private bool ExtraCanAddCondition()
-    {
-        var floorsConfig = GameConfigManager.Instance.FloorsConfig;
-        var playerModel = PlayerModelHolder.Instance.UserModel;
-        var floorsCountOnLevel = floorsConfig.GetFloorsConfigsForLevel(playerModel.ProgressModel.Level).Count();
-        return floorsCountOnLevel > 1;
+        public override DailyMissionModel CreateModel(float complexityMultiplier)
+        {
+            var playerShopModel = PlayerModelHolder.Instance.ShopModel;
+            var floorsCount = playerShopModel.ShopDesign.Square;
+            var targetValue = (int)Mathf.Max(1, Mathf.Lerp(1, floorsCount, complexityMultiplier));
+            var reward = ChooseReward(complexityMultiplier);
+            return new DailyMissionModel(Key, 0, targetValue, 0, reward);
+        }
+
+        private bool ExtraCanAddCondition()
+        {
+            var floorsConfig = GameConfigManager.Instance.FloorsConfig;
+            var playerModel = PlayerModelHolder.Instance.UserModel;
+            var floorsCountOnLevel = floorsConfig.GetFloorsConfigsForLevel(playerModel.ProgressModel.Level).Count();
+            return floorsCountOnLevel > 1;
+        }
     }
 }

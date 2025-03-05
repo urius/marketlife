@@ -1,50 +1,54 @@
 using System;
+using Src.Model.Configs;
 using UnityEngine;
 
-public class CashDeskModel : ShopObjectModelBase
+namespace Src.Model.ShopObjects
 {
-    public event Action DisplayItemChanged = delegate { };
-
-    public CashDeskModel(
-        int numericId,
-        ShopObjectConfigDto cashDeskConfigDto,
-        Vector2Int coords,
-        int side,
-        int hairId,
-        int glassesId,
-        int dressId)
-        : base(numericId, cashDeskConfigDto, coords, side)
+    public class CashDeskModel : ShopObjectModelBase
     {
-        HairId = hairId;
-        GlassesId = glassesId;
-        DressId = dressId;
-    }
+        public event Action DisplayItemChanged = delegate { };
 
-    public int HairId { get; private set; }
-    public int GlassesId { get; private set; }
-    public int DressId { get; private set; }
-    public override ShopObjectType Type => ShopObjectType.CashDesk;
+        public CashDeskModel(
+            int numericId,
+            ShopObjectConfigDto cashDeskConfigDto,
+            Vector2Int coords,
+            int side,
+            int hairId,
+            int glassesId,
+            int dressId)
+            : base(numericId, cashDeskConfigDto, coords, side)
+        {
+            HairId = hairId;
+            GlassesId = glassesId;
+            DressId = dressId;
+        }
 
-    public void SetHairId(int id)
-    {
-        HairId = id;
-        DisplayItemChanged();
-    }
+        public int HairId { get; private set; }
+        public int GlassesId { get; private set; }
+        public int DressId { get; private set; }
+        public override ShopObjectType Type => ShopObjectType.CashDesk;
 
-    public void SetGlassesId(int id)
-    {
-        GlassesId = id;
-        DisplayItemChanged();
-    }
+        public void SetHairId(int id)
+        {
+            HairId = id;
+            DisplayItemChanged();
+        }
 
-    public void SetDressId(int id)
-    {
-        DressId = id;
-        DisplayItemChanged();
-    }
+        public void SetGlassesId(int id)
+        {
+            GlassesId = id;
+            DisplayItemChanged();
+        }
 
-    public override ShopObjectModelBase Clone()
-    {
-        return new ShopObjectModelFactory().CreateCashDesk(NumericId, Coords, Side);
+        public void SetDressId(int id)
+        {
+            DressId = id;
+            DisplayItemChanged();
+        }
+
+        public override ShopObjectModelBase Clone()
+        {
+            return new ShopObjectModelFactory().CreateCashDesk(NumericId, Coords, Side);
+        }
     }
 }

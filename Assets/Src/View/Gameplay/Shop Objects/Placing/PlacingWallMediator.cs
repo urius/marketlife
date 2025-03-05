@@ -1,71 +1,77 @@
+using Src.Common;
+using Src.Common_Utils;
+using Src.Model;
 using UnityEngine;
 
-public class PlacingWallMediator : IMediator
+namespace Src.View.Gameplay.Shop_Objects.Placing
 {
-    protected readonly Transform ParentTransform;
-
-    private readonly GameStateModel _gameStateModel;
-    private readonly Dispatcher _dispatcher;
-    private readonly MouseDataProvider _mouseCellCoordsProvider;
-
-    private (SpriteRenderer sprite, Transform transform) _currentPlacingObjectContext;
-    private ShopModel _currentShopModel;
-
-    public PlacingWallMediator(Transform parentTransform)
+    public class PlacingWallMediator : IMediator
     {
-        ParentTransform = parentTransform;
+        protected readonly Transform ParentTransform;
 
-        _gameStateModel = GameStateModel.Instance;
-        _dispatcher = Dispatcher.Instance;
-        _mouseCellCoordsProvider = MouseDataProvider.Instance;
-    }
+        private readonly GameStateModel _gameStateModel;
+        private readonly Dispatcher _dispatcher;
+        private readonly MouseDataProvider _mouseCellCoordsProvider;
 
-    public void Mediate()
-    {
-        _currentShopModel = GameStateModel.Instance.ViewingShopModel;
+        private (SpriteRenderer sprite, Transform transform) _currentPlacingObjectContext;
+        private ShopModel _currentShopModel;
 
-        _dispatcher.MouseCellCoordsUpdated += OnMouseCellCoordsUpdated;
-        _currentShopModel.ShopDesign.WallChanged += OnWallChanged;
+        public PlacingWallMediator(Transform parentTransform)
+        {
+            ParentTransform = parentTransform;
 
-        var sprite = new ViewsFactory().CreateWall(ParentTransform, _gameStateModel.PlacingDecorationNumericId);
-        sprite.color = sprite.color.SetAlpha(0.7f);
-        sprite.sortingLayerName = SortingLayers.Placing;
-        WallsHelper.ToLeftState(sprite.transform);
-        _currentPlacingObjectContext = (sprite, sprite.transform);
+            _gameStateModel = GameStateModel.Instance;
+            _dispatcher = Dispatcher.Instance;
+            _mouseCellCoordsProvider = MouseDataProvider.Instance;
+        }
 
-        UpdatePosition(_mouseCellCoordsProvider.MouseCellCoords);
-        UpdateBuildAvailability(_mouseCellCoordsProvider.MouseCellCoords);
-    }
+        public void Mediate()
+        {
+            _currentShopModel = GameStateModel.Instance.ViewingShopModel;
 
-    public void Unmediate()
-    {
-        _dispatcher.MouseCellCoordsUpdated -= OnMouseCellCoordsUpdated;
-        _currentShopModel.ShopDesign.WallChanged -= OnWallChanged;
+            _dispatcher.MouseCellCoordsUpdated += OnMouseCellCoordsUpdated;
+            _currentShopModel.ShopDesign.WallChanged += OnWallChanged;
 
-        GameObject.Destroy(_currentPlacingObjectContext.transform.gameObject);
-        _currentPlacingObjectContext = default;
-    }
+            var sprite = new ViewsFactory().CreateWall(ParentTransform, _gameStateModel.PlacingDecorationNumericId);
+            sprite.color = sprite.color.SetAlpha(0.7f);
+            sprite.sortingLayerName = SortingLayers.Placing;
+            WallsHelper.ToLeftState(sprite.transform);
+            _currentPlacingObjectContext = (sprite, sprite.transform);
 
-    private void OnWallChanged(Vector2Int cellCoords, int numericId)
-    {
-        UpdateBuildAvailability(cellCoords);
-    }
+            UpdatePosition(_mouseCellCoordsProvider.MouseCellCoords);
+            UpdateBuildAvailability(_mouseCellCoordsProvider.MouseCellCoords);
+        }
 
-    private void OnMouseCellCoordsUpdated(Vector2Int cellCoords)
-    {
-        UpdatePosition(cellCoords);
-        UpdateBuildAvailability(cellCoords);
-    }
+        public void Unmediate()
+        {
+            _dispatcher.MouseCellCoordsUpdated -= OnMouseCellCoordsUpdated;
+            _currentShopModel.ShopDesign.WallChanged -= OnWallChanged;
 
-    private void UpdatePosition(Vector2Int cellCoords)
-    {
-        WallsHelper.PlaceAsWallLike(_currentPlacingObjectContext.transform, cellCoords);
-    }
+            GameObject.Destroy(_currentPlacingObjectContext.transform.gameObject);
+            _currentPlacingObjectContext = default;
+        }
 
-    private void UpdateBuildAvailability(Vector2Int mouseCellCoords)
-    {
-        _currentPlacingObjectContext.sprite.color = _currentShopModel.CanPlaceWall(mouseCellCoords, _gameStateModel.PlacingDecorationNumericId)
-                    ? _currentPlacingObjectContext.sprite.color.SetRGB(0.5f, 1f, 0.5f)
-                    : _currentPlacingObjectContext.sprite.color.SetRGB(1f, 0.5f, 0.5f);
+        private void OnWallChanged(Vector2Int cellCoords, int numericId)
+        {
+            UpdateBuildAvailability(cellCoords);
+        }
+
+        private void OnMouseCellCoordsUpdated(Vector2Int cellCoords)
+        {
+            UpdatePosition(cellCoords);
+            UpdateBuildAvailability(cellCoords);
+        }
+
+        private void UpdatePosition(Vector2Int cellCoords)
+        {
+            WallsHelper.PlaceAsWallLike(_currentPlacingObjectContext.transform, cellCoords);
+        }
+
+        private void UpdateBuildAvailability(Vector2Int mouseCellCoords)
+        {
+            _currentPlacingObjectContext.sprite.color = _currentShopModel.CanPlaceWall(mouseCellCoords, _gameStateModel.PlacingDecorationNumericId)
+                ? _currentPlacingObjectContext.sprite.color.SetRGB(0.5f, 1f, 0.5f)
+                : _currentPlacingObjectContext.sprite.color.SetRGB(1f, 0.5f, 0.5f);
+        }
     }
 }

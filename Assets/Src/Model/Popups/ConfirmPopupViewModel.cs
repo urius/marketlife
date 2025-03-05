@@ -1,13 +1,16 @@
-public class ConfirmPopupViewModel : PopupViewModelBase
+namespace Src.Model.Popups
 {
-    public readonly string TitleText;
-    public readonly string MessageText;
-
-    public ConfirmPopupViewModel(string titleText, string messageText)
+    public class ConfirmPopupViewModel : PopupViewModelBase
     {
-        TitleText = titleText;
-        MessageText = messageText;
-    }
+        public readonly string TitleText;
+        public readonly string MessageText;
 
-    public override PopupType PopupType => PopupType.Confirm;
+        public ConfirmPopupViewModel(string titleText, string messageText)
+        {
+            TitleText = titleText;
+            MessageText = messageText;
+        }
+
+        public override PopupType PopupType => PopupType.Confirm;
+    }
 }

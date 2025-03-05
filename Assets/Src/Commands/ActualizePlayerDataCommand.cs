@@ -1,63 +1,67 @@
-using System;
+using Src.Managers;
+using Src.Model;
 
-public struct ActualizePlayerDataCommand
+namespace Src.Commands
 {
-    public void Execute()
+    public struct ActualizePlayerDataCommand
     {
-        var mainConfig = GameConfigManager.Instance.MainConfig;
-        var playerModel = PlayerModelHolder.Instance.UserModel;
-        var billboardModel = playerModel.ShopModel.BillboardModel;
-        var loc = LocalizationManager.Instance;
-        var friendsDataHolder = FriendsDataHolder.Instance;
-
-        if (billboardModel.IsAvailable == false)
+        public void Execute()
         {
-            if (playerModel.ProgressModel.Level >= mainConfig.BillboardUnlockLevel)
+            var mainConfig = GameConfigManager.Instance.MainConfig;
+            var playerModel = PlayerModelHolder.Instance.UserModel;
+            var billboardModel = playerModel.ShopModel.BillboardModel;
+            var loc = LocalizationManager.Instance;
+            var friendsDataHolder = FriendsDataHolder.Instance;
+
+            if (billboardModel.IsAvailable == false)
             {
-                billboardModel.SetText(loc.GetLocalization(LocalizationKeys.BillboardDefaultText));
-                billboardModel.SetAvailable(true);
+                if (playerModel.ProgressModel.Level >= mainConfig.BillboardUnlockLevel)
+                {
+                    billboardModel.SetText(loc.GetLocalization(LocalizationKeys.BillboardDefaultText));
+                    billboardModel.SetAvailable(true);
+                }
+            }
+
+            if (friendsDataHolder.FriendsDataIsSet == true)
+            {
+                ActualizeFriendsActions();
+            }
+            else
+            {
+                friendsDataHolder.FriendsDataWasSetup += OnFriendsDataWasSetup;
             }
         }
 
-        if (friendsDataHolder.FriendsDataIsSet == true)
+        private void OnFriendsDataWasSetup()
         {
+            var friendsDataHolder = FriendsDataHolder.Instance;
+            friendsDataHolder.FriendsDataWasSetup -= OnFriendsDataWasSetup;
             ActualizeFriendsActions();
         }
-        else
+
+        private void ActualizeFriendsActions()
         {
-            friendsDataHolder.FriendsDataWasSetup += OnFriendsDataWasSetup;
-        }
-    }
+            var playerModel = PlayerModelHolder.Instance.UserModel;
+            var allFriendsActionsModel = playerModel.FriendsActionsDataModels;
+            var friendsData = FriendsDataHolder.Instance.Friends;
+            var friendActionsConfig = GameConfigManager.Instance.FriendActionsConfig;
 
-    private void OnFriendsDataWasSetup()
-    {
-        var friendsDataHolder = FriendsDataHolder.Instance;
-        friendsDataHolder.FriendsDataWasSetup -= OnFriendsDataWasSetup;
-        ActualizeFriendsActions();
-    }
-
-    private void ActualizeFriendsActions()
-    {
-        var playerModel = PlayerModelHolder.Instance.UserModel;
-        var allFriendsActionsModel = playerModel.FriendsActionsDataModels;
-        var friendsData = FriendsDataHolder.Instance.Friends;
-        var friendActionsConfig = GameConfigManager.Instance.FriendActionsConfig;
-
-        foreach (var friendData in friendsData)
-        {
-            if (friendData.IsApp == false) continue;
-            if (allFriendsActionsModel.FriendShopActionsModelByUid.ContainsKey(friendData.Uid) == false)
+            foreach (var friendData in friendsData)
             {
-                allFriendsActionsModel.AddActionsModelForUid(friendData.Uid);
-            }
-
-            var friendActionsModel = allFriendsActionsModel.GetFriendShopActionsModel(friendData.Uid);
-            foreach (var actionId in FriendShopActionsModel.SupportedActions)
-            {
-                if (friendActionsModel.ActionsById.ContainsKey(actionId) == false)
+                if (friendData.IsApp == false) continue;
+                if (allFriendsActionsModel.FriendShopActionsModelByUid.ContainsKey(friendData.Uid) == false)
                 {
-                    var actionData = new FriendShopActionData(actionId, friendActionsConfig.GetDefaultActionAmount(actionId));
-                    friendActionsModel.AddActionData(actionData);
+                    allFriendsActionsModel.AddActionsModelForUid(friendData.Uid);
+                }
+
+                var friendActionsModel = allFriendsActionsModel.GetFriendShopActionsModel(friendData.Uid);
+                foreach (var actionId in FriendShopActionsModel.SupportedActions)
+                {
+                    if (friendActionsModel.ActionsById.ContainsKey(actionId) == false)
+                    {
+                        var actionData = new FriendShopActionData(actionId, friendActionsConfig.GetDefaultActionAmount(actionId));
+                        friendActionsModel.AddActionData(actionData);
+                    }
                 }
             }
         }

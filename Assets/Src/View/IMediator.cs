@@ -1,5 +1,8 @@
-public interface IMediator
+namespace Src.View
 {
-    void Mediate();
-    void Unmediate();
+    public interface IMediator
+    {
+        void Mediate();
+        void Unmediate();
+    }
 }

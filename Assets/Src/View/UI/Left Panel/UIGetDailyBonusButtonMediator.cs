@@ -1,60 +1,58 @@
-public class UIGetDailyBonusButtonMediator : IMediator
+using Src.Common;
+using Src.Managers;
+using Src.Model;
+
+namespace Src.View.UI.Left_Panel
 {
-    private readonly UIGetDailyBonusButtonView _buttonView;
-    private readonly GameStateModel _gameStateModel;
-    private readonly PlayerModelHolder _playerModelHolder;
-    private readonly LocalizationManager _loc;
-    private readonly Dispatcher _dispatcher;
-
-    public UIGetDailyBonusButtonMediator(UIGetDailyBonusButtonView buttonView)
+    public class UIGetDailyBonusButtonMediator : IMediator
     {
-        _buttonView = buttonView;
+        private readonly UIGetDailyBonusButtonView _buttonView;
+        private readonly GameStateModel _gameStateModel;
+        private readonly PlayerModelHolder _playerModelHolder;
+        private readonly LocalizationManager _loc;
+        private readonly Dispatcher _dispatcher;
 
-        _gameStateModel = GameStateModel.Instance;
-        _playerModelHolder = PlayerModelHolder.Instance;
-        _loc = LocalizationManager.Instance;
-        _dispatcher = Dispatcher.Instance;
-    }
-
-    public async void Mediate()
-    {
-        _buttonView.SetVisibility(false);
-
-        await _gameStateModel.GameDataLoadedTask;
-
-        SetupView();
-
-        Activate();
-    }
-
-    public void Unmediate()
-    {
-        Deactivate();
-    }
-
-    private void Activate()
-    {
-        _buttonView.Clicked += OnButtonClicked;
-        _playerModelHolder.UserModel.BonusStateUpdated += OnBonusStateUpdated;
-    }
-
-    private void Deactivate()
-    {
-        _buttonView.Clicked -= OnButtonClicked;
-        _playerModelHolder.UserModel.BonusStateUpdated -= OnBonusStateUpdated;
-    }
-
-    private void SetupView()
-    {
-        var bonusState = _playerModelHolder.UserModel.BonusState;
-        if (bonusState.IsOldGameBonusProcessed == false)
+        public UIGetDailyBonusButtonMediator(UIGetDailyBonusButtonView buttonView)
         {
-            _buttonView.ShowBlue();
-            _buttonView.SetVisibility(true);
-            _buttonView.SetupHintText(_loc.GetLocalization(LocalizationKeys.HintOldGameBonus));
+            _buttonView = buttonView;
+
+            _gameStateModel = GameStateModel.Instance;
+            _playerModelHolder = PlayerModelHolder.Instance;
+            _loc = LocalizationManager.Instance;
+            _dispatcher = Dispatcher.Instance;
         }
-        else
+
+        public async void Mediate()
         {
+            _buttonView.SetVisibility(false);
+
+            await _gameStateModel.GameDataLoadedTask;
+
+            SetupView();
+
+            Activate();
+        }
+
+        public void Unmediate()
+        {
+            Deactivate();
+        }
+
+        private void Activate()
+        {
+            _buttonView.Clicked += OnButtonClicked;
+            _playerModelHolder.UserModel.BonusStateUpdated += OnBonusStateUpdated;
+        }
+
+        private void Deactivate()
+        {
+            _buttonView.Clicked -= OnButtonClicked;
+            _playerModelHolder.UserModel.BonusStateUpdated -= OnBonusStateUpdated;
+        }
+
+        private void SetupView()
+        {
+            var bonusState = _playerModelHolder.UserModel.BonusState;
             var bonusDateTime = DateTimeHelper.GetDateTimeByUnixTimestamp(bonusState.LastBonusTakeTimestamp);
             var serverDateTime = DateTimeHelper.GetDateTimeByUnixTimestamp(_gameStateModel.ServerTime);
             if (DateTimeHelper.IsSameDays(bonusDateTime, serverDateTime))
@@ -77,6 +75,7 @@ public class UIGetDailyBonusButtonMediator : IMediator
                         break;
 
                 }
+
                 _buttonView.SetVisibility(true);
                 _buttonView.SetupHintText(_loc.GetLocalization(LocalizationKeys.HintDailyBonus));
             }
@@ -87,15 +86,15 @@ public class UIGetDailyBonusButtonMediator : IMediator
                 _buttonView.SetupHintText(_loc.GetLocalization(LocalizationKeys.HintDailyBonus));
             }
         }
-    }
 
-    private void OnBonusStateUpdated()
-    {
-        SetupView();
-    }
+        private void OnBonusStateUpdated()
+        {
+            SetupView();
+        }
 
-    private void OnButtonClicked()
-    {
-        _dispatcher.UIGetBonusButtonClicked();
+        private void OnButtonClicked()
+        {
+            _dispatcher.UIGetBonusButtonClicked();
+        }
     }
 }

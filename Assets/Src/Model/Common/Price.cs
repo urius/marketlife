@@ -1,19 +1,22 @@
-public struct Price
+namespace Src.Model.Common
 {
-    public int Value;
-    public bool IsGold;
-
-    public Price(int value, bool isGold)
+    public struct Price
     {
-        Value = value;
-        IsGold = isGold;
-    }
+        public int Value;
+        public bool IsGold;
 
-    public static Price FromString(string str)
-    {
-        var value = int.Parse(str.Split('g')[0]);
-        var isGoldPrice = str.IndexOf('g') != -1;
+        public Price(int value, bool isGold)
+        {
+            Value = value;
+            IsGold = isGold;
+        }
 
-        return new Price(value, isGoldPrice);
+        public static Price FromString(string str)
+        {
+            var value = int.Parse(str.Split('g')[0]);
+            var isGoldPrice = str.IndexOf('g') != -1;
+
+            return new Price(value, isGoldPrice);
+        }
     }
 }

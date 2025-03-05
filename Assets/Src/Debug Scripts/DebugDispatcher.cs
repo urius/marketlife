@@ -1,25 +1,25 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
-public class DebugDispatcher
+namespace Src.Debug_Scripts
 {
-    public static DebugDispatcher Instance => _instance ?? CreateAndGetInstance();
-
-    private static DebugDispatcher _instance;
-
-    public Action<int> ShowHumanSide = delegate { };
-    public Action<int> ShowHumanAnimation = delegate { };
-    public Action<int> ShowFaceAnimation = delegate { };
-    public Action<int> ShowHair = delegate { };
-    public Action<int> ShowTopClothes = delegate { };
-    public Action<int> ShowBottomClothes = delegate { };
-    public Action<int> ShowGlasses = delegate { };
-
-    private static DebugDispatcher CreateAndGetInstance()
+    public class DebugDispatcher
     {
-        _instance = new DebugDispatcher();
-        return _instance;
+        public static DebugDispatcher Instance => _instance ?? CreateAndGetInstance();
+
+        private static DebugDispatcher _instance;
+
+        public Action<int> ShowHumanSide = delegate { };
+        public Action<int> ShowHumanAnimation = delegate { };
+        public Action<int> ShowFaceAnimation = delegate { };
+        public Action<int> ShowHair = delegate { };
+        public Action<int> ShowTopClothes = delegate { };
+        public Action<int> ShowBottomClothes = delegate { };
+        public Action<int> ShowGlasses = delegate { };
+
+        private static DebugDispatcher CreateAndGetInstance()
+        {
+            _instance = new DebugDispatcher();
+            return _instance;
+        }
     }
 }

@@ -1,47 +1,51 @@
 using Newtonsoft.Json;
+using Src.Model;
 
-public struct ProcessBuyVkMoneyResultCommand
+namespace Src.Commands.JsHandle
 {
-    public void Execute(string message)
+    public struct ProcessBuyVkMoneyResultCommand
     {
-        var gameStateModel = GameStateModel.Instance;
-        var playerModelHolder = PlayerModelHolder.Instance;
-        var deserialized = JsonConvert.DeserializeObject<BuyVkMoneyResultDto>(message);
-
-        if (deserialized.data.is_success)
+        public void Execute(string message)
         {
-            if (gameStateModel.ChargedBankItem != null)
+            var gameStateModel = GameStateModel.Instance;
+            var playerModelHolder = PlayerModelHolder.Instance;
+            var deserialized = JsonConvert.DeserializeObject<BuyVkMoneyResultDto>(message);
+
+            if (deserialized.data.is_success)
             {
-                var bankItemConfig = gameStateModel.ChargedBankItem;
-                if (bankItemConfig.IsGold)
+                if (gameStateModel.ChargedBankItem != null)
                 {
-                    playerModelHolder.UserModel.AddGold(bankItemConfig.Value);
+                    var bankItemConfig = gameStateModel.ChargedBankItem;
+                    if (bankItemConfig.IsGold)
+                    {
+                        playerModelHolder.UserModel.AddGold(bankItemConfig.Value);
+                    }
+                    else
+                    {
+                        playerModelHolder.UserModel.AddCash(bankItemConfig.Value);
+                    }
                 }
-                else
-                {
-                    playerModelHolder.UserModel.AddCash(bankItemConfig.Value);
-                }
+                gameStateModel.RemoveCurrentPopupIfNeeded();
             }
-            gameStateModel.RemoveCurrentPopupIfNeeded();
-        }
-        else if (deserialized.data.is_user_cancelled == false)
-        {
-            //failed to buy
-        }
+            else if (deserialized.data.is_user_cancelled == false)
+            {
+                //failed to buy
+            }
 
-        gameStateModel.ChargedBankItem = null;
+            gameStateModel.ChargedBankItem = null;
+        }
     }
-}
 
-public struct BuyVkMoneyResultDto
-{
-    public string command;
-    public BuyVkMoneyResultPayloadDto data;
-}
+    public struct BuyVkMoneyResultDto
+    {
+        public string command;
+        public BuyVkMoneyResultPayloadDto data;
+    }
 
-public struct BuyVkMoneyResultPayloadDto
-{
-    public bool is_success;
-    public string order_id;
-    public bool is_user_cancelled;
+    public struct BuyVkMoneyResultPayloadDto
+    {
+        public bool is_success;
+        public string order_id;
+        public bool is_user_cancelled;
+    }
 }

@@ -3,36 +3,39 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UITopPanelBarWithProgressView : UITopPanelBarView
+namespace Src.View.UI.Top_Panel
 {
-    [SerializeField] private Image _progressImage;
-
-    public void SetProgressBarImageSprite(Sprite sprite)
+    public class UITopPanelBarWithProgressView : UITopPanelBarView
     {
-        _progressImage.sprite = sprite;
-    }
+        [SerializeField] private Image _progressImage;
 
-    public void SetProgress(float progress)
-    {
-        _progressImage.transform.localScale = new Vector3(Math.Max(0, progress), 1, 1);
-    }
-
-    public void SetProgressAnimated(float progress)
-    {
-        LeanTween.cancel(_progressImage.gameObject);
-        _progressImage.transform.LeanScaleX(Math.Max(0, progress), ChangeAmountDuration);
-    }
-
-    public UniTask SetProgressAnimatedAsync(float progress, float duration = -1)
-    {
-        if (duration < 0)
+        public void SetProgressBarImageSprite(Sprite sprite)
         {
-            duration = ChangeAmountDuration;
+            _progressImage.sprite = sprite;
         }
-        var result = new UniTaskCompletionSource();
-        LeanTween.cancel(_progressImage.gameObject);
-        _progressImage.transform.LeanScaleX(Math.Max(0, progress), duration);
-        LeanTween.delayedCall(duration, () => result.TrySetResult());
-        return result.Task;
+
+        public void SetProgress(float progress)
+        {
+            _progressImage.transform.localScale = new Vector3(Math.Max(0, progress), 1, 1);
+        }
+
+        public void SetProgressAnimated(float progress)
+        {
+            LeanTween.cancel(_progressImage.gameObject);
+            _progressImage.transform.LeanScaleX(Math.Max(0, progress), ChangeAmountDuration);
+        }
+
+        public UniTask SetProgressAnimatedAsync(float progress, float duration = -1)
+        {
+            if (duration < 0)
+            {
+                duration = ChangeAmountDuration;
+            }
+            var result = new UniTaskCompletionSource();
+            LeanTween.cancel(_progressImage.gameObject);
+            _progressImage.transform.LeanScaleX(Math.Max(0, progress), duration);
+            LeanTween.delayedCall(duration, () => result.TrySetResult());
+            return result.Task;
+        }
     }
 }

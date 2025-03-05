@@ -1,16 +1,19 @@
 using System;
 
-public struct DisposableSource : IDisposable
+namespace Src.Common_Utils
 {
-    private readonly Action _disposeAction;
-
-    public DisposableSource(Action disposeAction)
+    public struct DisposableSource : IDisposable
     {
-        _disposeAction = disposeAction;
-    }
+        private readonly Action _disposeAction;
 
-    public void Dispose()
-    {
-        _disposeAction?.Invoke();
+        public DisposableSource(Action disposeAction)
+        {
+            _disposeAction = disposeAction;
+        }
+
+        public void Dispose()
+        {
+            _disposeAction?.Invoke();
+        }
     }
 }

@@ -1,37 +1,41 @@
 using System.Collections.Generic;
+using Src.Model;
 
-public class DailyMissionVisitFriendsProcessor : DailyMissionProcessorBase
+namespace Src.Systems.DailyMIssions.Processors
 {
-    private readonly GameStateModel _gameStateModel;
-    private readonly PlayerModelHolder _playerModelHolder;
-
-    //
-    private List<string> _visitedUids = new List<string>();
-
-    public DailyMissionVisitFriendsProcessor()
+    public class DailyMissionVisitFriendsProcessor : DailyMissionProcessorBase
     {
-        _gameStateModel = GameStateModel.Instance;
-        _playerModelHolder = PlayerModelHolder.Instance;
-    }
+        private readonly GameStateModel _gameStateModel;
+        private readonly PlayerModelHolder _playerModelHolder;
 
-    public override void Start()
-    {
-        _gameStateModel.ViewingUserModelChanged += OnViewingUserModelChanged;
-    }
+        //
+        private List<string> _visitedUids = new List<string>();
 
-    public override void Stop()
-    {
-        _gameStateModel.ViewingUserModelChanged -= OnViewingUserModelChanged;
-    }
-
-    private void OnViewingUserModelChanged(UserModel userModel)
-    {
-        if (userModel.Uid != _playerModelHolder.Uid)
+        public DailyMissionVisitFriendsProcessor()
         {
-            if (_visitedUids.Contains(userModel.Uid) == false)
+            _gameStateModel = GameStateModel.Instance;
+            _playerModelHolder = PlayerModelHolder.Instance;
+        }
+
+        public override void Start()
+        {
+            _gameStateModel.ViewingUserModelChanged += OnViewingUserModelChanged;
+        }
+
+        public override void Stop()
+        {
+            _gameStateModel.ViewingUserModelChanged -= OnViewingUserModelChanged;
+        }
+
+        private void OnViewingUserModelChanged(UserModel userModel)
+        {
+            if (userModel.Uid != _playerModelHolder.Uid)
             {
-                _visitedUids.Add(userModel.Uid);
-                MissionModel.AddValue(1);
+                if (_visitedUids.Contains(userModel.Uid) == false)
+                {
+                    _visitedUids.Add(userModel.Uid);
+                    MissionModel.AddValue(1);
+                }
             }
         }
     }

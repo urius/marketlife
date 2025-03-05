@@ -1,131 +1,135 @@
-using System;
 using Cysharp.Threading.Tasks;
+using Src.Common_Utils;
+using Src.Managers;
+using Src.Model;
 using UnityEngine;
 
-public class UILoadScreenCanvasMediator : MonoBehaviour
+namespace Src.View.UI.Loading
 {
-    [SerializeField] private UIGameLoadPanelView _loadPanelView;
-    [SerializeField] private RectTransform _bgRectTransform;
-
-    private LoadGameProgressModel _loadProgressModel;
-    private LocalizationManager _loc;
-    private GameStateModel _gameStateModel;
-    private float _targetBarScale;
-    private float _currentBarScale;
-    private bool _isScreenRemoved;
-
-    private void Awake()
+    public class UILoadScreenCanvasMediator : MonoBehaviour
     {
-        _loadProgressModel = LoadGameProgressModel.Instance;
-        _loc = LocalizationManager.Instance;
-        _gameStateModel = GameStateModel.Instance;
+        [SerializeField] private UIGameLoadPanelView _loadPanelView;
+        [SerializeField] private RectTransform _bgRectTransform;
 
-        _bgRectTransform.gameObject.SetActive(true);
-        _loadPanelView.gameObject.SetActive(true);
+        private LoadGameProgressModel _loadProgressModel;
+        private LocalizationManager _loc;
+        private GameStateModel _gameStateModel;
+        private float _targetBarScale;
+        private float _currentBarScale;
+        private bool _isScreenRemoved;
 
-        SetBarScale(0f);
-    }
-
-    private void Start()
-    {
-        Activate();
-    }
-
-    private void Update()
-    {
-        if (_currentBarScale < _targetBarScale && _loadProgressModel.IsError == false)
+        private void Awake()
         {
-            SetBarScale(_currentBarScale + (_targetBarScale - _currentBarScale) * 0.2f);
-        }
-    }
+            _loadProgressModel = LoadGameProgressModel.Instance;
+            _loc = LocalizationManager.Instance;
+            _gameStateModel = GameStateModel.Instance;
 
-    private void OnDestroy()
-    {
-        Deactivate();
-    }
+            _bgRectTransform.gameObject.SetActive(true);
+            _loadPanelView.gameObject.SetActive(true);
 
-    private void Activate()
-    {
-        _loadProgressModel.ProgressChanged += OnLoadProgressChanged;
-        _loadProgressModel.PhaseChanged += OnLoadPhaseChanged;
-        _loadProgressModel.ErrorHappened += OnError;
-        _gameStateModel.GameStateChanged += OnGameStateChanged;
-    }
-
-    private void Deactivate()
-    {
-        _loadProgressModel.ProgressChanged -= OnLoadProgressChanged;
-        _loadProgressModel.PhaseChanged -= OnLoadPhaseChanged;
-        _loadProgressModel.ErrorHappened -= OnError;
-        _gameStateModel.GameStateChanged -= OnGameStateChanged;
-    }
-
-    private async void OnGameStateChanged(GameStateName prevState, GameStateName currentState)
-    {
-        if (currentState == GameStateName.Loaded)
-        {
-            await AnimateRemoveLoadingPanelAsync();
-            await AnimateRemoveBgAsync();
-            _isScreenRemoved = true;
+            SetBarScale(0f);
         }
 
-        DestroyIfNeeded();
-    }
-
-    private void DestroyIfNeeded()
-    {
-        if (_isScreenRemoved &&
-            (_gameStateModel.GameState == GameStateName.ReadyForStart || _gameStateModel.IsPlayingState))
+        private void Start()
         {
-            Destroy(gameObject);
+            Activate();
         }
-    }
 
-    private UniTask AnimateRemoveBgAsync()
-    {
-        var moveData = LeanTweenHelper.MoveYAsync(_bgRectTransform.transform as RectTransform, 2 * Screen.height, 1.5f);
-        moveData.tweenDescription.setEaseInOutQuad();
-        return moveData.task;
-    }
-
-    private UniTask AnimateRemoveLoadingPanelAsync()
-    {
-        var moveData = LeanTweenHelper.MoveXAsync(_loadPanelView.transform as RectTransform, -2 * Screen.width, 0.5f);
-        moveData.tweenDescription.setEaseInBack();
-        return moveData.task;
-    }
-
-    private void OnLoadPhaseChanged(LoadGamePhase phase)
-    {
-        string key = phase switch
+        private void Update()
         {
-            LoadGamePhase.LoadTime => "load_time",
-            LoadGamePhase.LoadShopData => "load_data",
-            LoadGamePhase.LoadLocalization => "load_localization",
-            LoadGamePhase.LoadConfigs => "load_configs",
-            LoadGamePhase.LoadAssets => "load_assets",
-            LoadGamePhase.CreatePlayerModel => "create_player",
-            LoadGamePhase.LoadCompensationData => "load_additional_data",
-            _ => "loading",
-        };
-        _loadPanelView.SetStatusText(_loc.GetBuiltinLocalization(key));
-    }
+            if (_currentBarScale < _targetBarScale && _loadProgressModel.IsError == false)
+            {
+                SetBarScale(_currentBarScale + (_targetBarScale - _currentBarScale) * 0.2f);
+            }
+        }
 
-    private void OnError()
-    {
-        _loadPanelView.ShowError(
-            string.Format(_loc.GetBuiltinLocalization("error_format"), _loadProgressModel.PhaseName.ToString()));
-    }
+        private void OnDestroy()
+        {
+            Deactivate();
+        }
 
-    private void OnLoadProgressChanged(float progress)
-    {
-        _targetBarScale = progress;
-    }
+        private void Activate()
+        {
+            _loadProgressModel.ProgressChanged += OnLoadProgressChanged;
+            _loadProgressModel.PhaseChanged += OnLoadPhaseChanged;
+            _loadProgressModel.ErrorHappened += OnError;
+            _gameStateModel.GameStateChanged += OnGameStateChanged;
+        }
 
-    private void SetBarScale(float value)
-    {
-        value = value > 1 ? 1 : value;
-        _currentBarScale = value;
-        _loadPanelView.SetBarScale(_currentBarScale);
+        private void Deactivate()
+        {
+            _loadProgressModel.ProgressChanged -= OnLoadProgressChanged;
+            _loadProgressModel.PhaseChanged -= OnLoadPhaseChanged;
+            _loadProgressModel.ErrorHappened -= OnError;
+            _gameStateModel.GameStateChanged -= OnGameStateChanged;
+        }
+
+        private async void OnGameStateChanged(GameStateName prevState, GameStateName currentState)
+        {
+            if (currentState == GameStateName.Loaded)
+            {
+                await AnimateRemoveLoadingPanelAsync();
+                await AnimateRemoveBgAsync();
+                _isScreenRemoved = true;
+            }
+
+            DestroyIfNeeded();
+        }
+
+        private void DestroyIfNeeded()
+        {
+            if (_isScreenRemoved &&
+                (_gameStateModel.GameState == GameStateName.ReadyForStart || _gameStateModel.IsPlayingState))
+            {
+                Destroy(gameObject);
+            }
+        }
+
+        private UniTask AnimateRemoveBgAsync()
+        {
+            var moveData = LeanTweenHelper.MoveYAsync(_bgRectTransform.transform as RectTransform, 2 * Screen.height, 1.5f);
+            moveData.tweenDescription.setEaseInOutQuad();
+            return moveData.task;
+        }
+
+        private UniTask AnimateRemoveLoadingPanelAsync()
+        {
+            var moveData = LeanTweenHelper.MoveXAsync(_loadPanelView.transform as RectTransform, -2 * Screen.width, 0.5f);
+            moveData.tweenDescription.setEaseInBack();
+            return moveData.task;
+        }
+
+        private void OnLoadPhaseChanged(LoadGamePhase phase)
+        {
+            string key = phase switch
+            {
+                LoadGamePhase.LoadTime => "load_time",
+                LoadGamePhase.LoadShopData => "load_data",
+                LoadGamePhase.LoadLocalization => "load_localization",
+                LoadGamePhase.LoadConfigs => "load_configs",
+                LoadGamePhase.LoadAssets => "load_assets",
+                LoadGamePhase.CreatePlayerModel => "create_player",
+                _ => "loading",
+            };
+            _loadPanelView.SetStatusText(_loc.GetBuiltinLocalization(key));
+        }
+
+        private void OnError()
+        {
+            _loadPanelView.ShowError(
+                string.Format(_loc.GetBuiltinLocalization("error_format"), _loadProgressModel.PhaseName.ToString()));
+        }
+
+        private void OnLoadProgressChanged(float progress)
+        {
+            _targetBarScale = progress;
+        }
+
+        private void SetBarScale(float value)
+        {
+            value = value > 1 ? 1 : value;
+            _currentBarScale = value;
+            _loadPanelView.SetBarScale(_currentBarScale);
+        }
     }
 }

@@ -1,10 +1,13 @@
-public class RemoveProductPopupViewModel : ConfirmPopupViewModel
+namespace Src.Model.Popups
 {
-    public readonly int SlotIndex;
-
-    public RemoveProductPopupViewModel(string titleText, string messageText, int slotIndex)
-        : base(titleText, messageText)
+    public class RemoveProductPopupViewModel : ConfirmPopupViewModel
     {
-        SlotIndex = slotIndex;
+        public readonly int SlotIndex;
+
+        public RemoveProductPopupViewModel(string titleText, string messageText, int slotIndex)
+            : base(titleText, messageText)
+        {
+            SlotIndex = slotIndex;
+        }
     }
 }

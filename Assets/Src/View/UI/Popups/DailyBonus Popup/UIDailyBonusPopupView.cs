@@ -1,30 +1,34 @@
 using System;
+using Src.Common_Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIDailyBonusPopupView : UIPopupBase
+namespace Src.View.UI.Popups.DailyBonus_Popup
 {
-    public event Action TakeButtonClicked = delegate { };
-
-    [SerializeField] private Button _takeButton;
-    [SerializeField] private UIDailyBonusPopupPrizeItemView[] _itemViews;
-
-    public UIDailyBonusPopupPrizeItemView[] ItemViews => _itemViews;
-
-    public override void Awake()
+    public class UIDailyBonusPopupView : UIPopupBase
     {
-        base.Awake();
+        public event Action TakeButtonClicked = delegate { };
 
-        _takeButton.AddOnClickListener(OnTakeClicked);
-    }
+        [SerializeField] private Button _takeButton;
+        [SerializeField] private UIDailyBonusPopupPrizeItemView[] _itemViews;
 
-    public void SetTakeButtonInteractable(bool isInteractable)
-    {
-        _takeButton.interactable = isInteractable;
-    }
+        public UIDailyBonusPopupPrizeItemView[] ItemViews => _itemViews;
 
-    private void OnTakeClicked()
-    {
-        TakeButtonClicked();
+        public override void Awake()
+        {
+            base.Awake();
+
+            _takeButton.AddOnClickListener(OnTakeClicked);
+        }
+
+        public void SetTakeButtonInteractable(bool isInteractable)
+        {
+            _takeButton.interactable = isInteractable;
+        }
+
+        private void OnTakeClicked()
+        {
+            TakeButtonClicked();
+        }
     }
 }

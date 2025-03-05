@@ -1,31 +1,34 @@
 using System;
 using UnityEngine;
 
-public class MouseDataProvider
+namespace Src.Common
 {
-    private static Lazy<MouseDataProvider> _instance = new Lazy<MouseDataProvider>();
-    public static MouseDataProvider Instance => _instance.Value;
-
-    public Vector2Int MouseCellCoords { get; private set; }
-    public bool IsMouseOverGameView { get; private set; }
-    public Vector3 MousePlanePosition { get; private set; }
-
-    public void SetMouseCellCoords(Vector2Int newCoords, bool forceUpdate = false)
+    public class MouseDataProvider
     {
-        if (newCoords != MouseCellCoords || forceUpdate)
+        private static Lazy<MouseDataProvider> _instance = new Lazy<MouseDataProvider>();
+        public static MouseDataProvider Instance => _instance.Value;
+
+        public Vector2Int MouseCellCoords { get; private set; }
+        public bool IsMouseOverGameView { get; private set; }
+        public Vector3 MousePlanePosition { get; private set; }
+
+        public void SetMouseCellCoords(Vector2Int newCoords, bool forceUpdate = false)
         {
-            MouseCellCoords = newCoords;
-            Dispatcher.Instance.MouseCellCoordsUpdated(newCoords);
+            if (newCoords != MouseCellCoords || forceUpdate)
+            {
+                MouseCellCoords = newCoords;
+                Dispatcher.Instance.MouseCellCoordsUpdated(newCoords);
+            }
         }
-    }
 
-    public void SetMouseOverGameView(bool isOverGameView)
-    {
-        IsMouseOverGameView = isOverGameView;
-    }
+        public void SetMouseOverGameView(bool isOverGameView)
+        {
+            IsMouseOverGameView = isOverGameView;
+        }
 
-    public void SetMouseProjectedOnPlaneWorldPosition(Vector3 mousePlanePosition)
-    {
-        MousePlanePosition = mousePlanePosition;
+        public void SetMouseProjectedOnPlaneWorldPosition(Vector3 mousePlanePosition)
+        {
+            MousePlanePosition = mousePlanePosition;
+        }
     }
 }

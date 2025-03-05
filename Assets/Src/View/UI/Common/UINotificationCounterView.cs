@@ -2,18 +2,21 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UINotificationCounterView : MonoBehaviour
+namespace Src.View.UI.Common
 {
-    [SerializeField] private Image _bgImage;
-    [SerializeField] private TMP_Text _counterText;
-
-    public void SetBgImageColor(Color color)
+    public class UINotificationCounterView : MonoBehaviour
     {
-        _bgImage.color = color;
-    }
+        [SerializeField] private Image _bgImage;
+        [SerializeField] private TMP_Text _counterText;
 
-    public void SetCounterText(string text)
-    {
-        _counterText.text = text;
+        public void SetBgImageColor(Color color)
+        {
+            _bgImage.color = color;
+        }
+
+        public void SetCounterText(string text)
+        {
+            _counterText.text = text;
+        }
     }
 }

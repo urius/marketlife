@@ -1,18 +1,22 @@
+using Src.Managers;
 using UnityEngine;
 
-public class TutorialWelcomeStepMediator : TutorialStepMediatorBase
+namespace Src.View.UI.Tutorial.StepsMediators
 {
-    private readonly LocalizationManager _loc;
-
-    public TutorialWelcomeStepMediator(RectTransform parentTransform)
-        : base(parentTransform)
+    public class TutorialWelcomeStepMediator : TutorialStepMediatorBase
     {
-        _loc = LocalizationManager.Instance;
-    }
+        private readonly LocalizationManager _loc;
 
-    public override void Mediate()
-    {
-        base.Mediate();
-        View.SetButtonText(_loc.GetLocalization($"{LocalizationKeys.TutorialButtonPrefix}{ViewModel.StepIndex}"));
+        public TutorialWelcomeStepMediator(RectTransform parentTransform)
+            : base(parentTransform)
+        {
+            _loc = LocalizationManager.Instance;
+        }
+
+        public override void Mediate()
+        {
+            base.Mediate();
+            View.SetButtonText(_loc.GetLocalization($"{LocalizationKeys.TutorialButtonPrefix}{ViewModel.StepIndex}"));
+        }
     }
 }

@@ -1,12 +1,15 @@
 using TMPro;
 using UnityEngine;
 
-public class UIPopupCaptionItemView : MonoBehaviour
+namespace Src.View.UI.Popups
 {
-    [SerializeField] private TMP_Text _text;
-
-    public void SetText(string text)
+    public class UIPopupCaptionItemView : MonoBehaviour
     {
-        _text.text = text;
+        [SerializeField] private TMP_Text _text;
+
+        public void SetText(string text)
+        {
+            _text.text = text;
+        }
     }
 }

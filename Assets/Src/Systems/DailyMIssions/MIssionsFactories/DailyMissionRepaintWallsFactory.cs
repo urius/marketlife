@@ -1,30 +1,37 @@
 using System.Linq;
+using Src.Managers;
+using Src.Model;
+using Src.Model.Missions;
+using Src.Systems.DailyMIssions.Processors;
 using UnityEngine;
 
-public class DailyMissionRepaintWallsFactory : DailyMissionFactoryBase<DailyMissionRepaintWallsProcessor>
+namespace Src.Systems.DailyMIssions.MIssionsFactories
 {
-    protected override string Key => MissionKeys.RepaintWalls;
-
-    public override bool CanAdd()
+    public class DailyMissionRepaintWallsFactory : DailyMissionFactoryBase<DailyMissionRepaintWallsProcessor>
     {
-        return base.CanAdd()
-            && ExtraCanAddCondition();
-    }
+        protected override string Key => MissionKeys.RepaintWalls;
 
-    public override DailyMissionModel CreateModel(float complexityMultiplier)
-    {
-        var playerShopModel = PlayerModelHolder.Instance.ShopModel;
-        var wallsCount = playerShopModel.ShopDesign.SizeX + playerShopModel.ShopDesign.SizeY;
-        var targetValue = (int)Mathf.Max(1, Mathf.Lerp(1, wallsCount, complexityMultiplier));
-        var reward = ChooseReward(complexityMultiplier);
-        return new DailyMissionModel(Key, 0, targetValue, 0, reward);
-    }
+        public override bool CanAdd()
+        {
+            return base.CanAdd()
+                   && ExtraCanAddCondition();
+        }
 
-    private bool ExtraCanAddCondition()
-    {
-        var wallsConfig = GameConfigManager.Instance.WallsConfig;
-        var playerModel = PlayerModelHolder.Instance.UserModel;
-        var wallsCountOnLevel = wallsConfig.GetWallsConfigsForLevel(playerModel.ProgressModel.Level).Count();
-        return wallsCountOnLevel > 1;
+        public override DailyMissionModel CreateModel(float complexityMultiplier)
+        {
+            var playerShopModel = PlayerModelHolder.Instance.ShopModel;
+            var wallsCount = playerShopModel.ShopDesign.SizeX + playerShopModel.ShopDesign.SizeY;
+            var targetValue = (int)Mathf.Max(1, Mathf.Lerp(1, wallsCount, complexityMultiplier));
+            var reward = ChooseReward(complexityMultiplier);
+            return new DailyMissionModel(Key, 0, targetValue, 0, reward);
+        }
+
+        private bool ExtraCanAddCondition()
+        {
+            var wallsConfig = GameConfigManager.Instance.WallsConfig;
+            var playerModel = PlayerModelHolder.Instance.UserModel;
+            var wallsCountOnLevel = wallsConfig.GetWallsConfigsForLevel(playerModel.ProgressModel.Level).Count();
+            return wallsCountOnLevel > 1;
+        }
     }
 }

@@ -1,35 +1,37 @@
 using System;
-using UnityEngine;
 
-public class OldGameCompensationHolder
+namespace Src.Model
 {
-    public static readonly OldGameCompensationHolder Instance = new OldGameCompensationHolder();
-
-    public event Action CompensationWasSetup = delegate { };
-
-    static OldGameCompensationHolder()
+    public class OldGameCompensationHolder
     {
-        Debug.Log("test static OldGameCompensationHolder");
+        public static readonly OldGameCompensationHolder Instance = new OldGameCompensationHolder();
+
+        public event Action CompensationWasSetup = delegate { };
+
+        static OldGameCompensationHolder()
+        {
+            UnityEngine.Debug.Log("test static OldGameCompensationHolder");
+        }
+
+        public OldGameCompensationHolder()
+        {
+            UnityEngine.Debug.Log("test OldGameCompensationHolder");
+        }
+
+        public OldGameCompensation Compensation { get; private set; }
+        public bool CompensationIsSet { get; private set; } = false;
+
+        public void SetupCompensation(OldGameCompensation compensation)
+        {
+            Compensation = compensation;
+            CompensationIsSet = true;
+            CompensationWasSetup();
+        }
     }
 
-    public OldGameCompensationHolder()
+    public struct OldGameCompensation
     {
-        Debug.Log("test OldGameCompensationHolder");
+        public int AmountGold;
+        public int AmountCash;
     }
-
-    public OldGameCompensation Compensation { get; private set; }
-    public bool CompensationIsSet { get; private set; } = false;
-
-    public void SetupCompensation(OldGameCompensation compensation)
-    {
-        Compensation = compensation;
-        CompensationIsSet = true;
-        CompensationWasSetup();
-    }
-}
-
-public struct OldGameCompensation
-{
-    public int AmountGold;
-    public int AmountCash;
 }

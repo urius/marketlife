@@ -1,143 +1,150 @@
 using System.Linq;
+using Src.Common;
+using Src.Model;
+using Src.Model.Missions;
+using Src.Model.Popups;
 
-public class UIDailyMissionsButtonMediator : IMediator
+namespace Src.View.UI.Left_Panel
 {
-    private readonly UIDailyMIssionsButtonView _buttonView;
-    private readonly GameStateModel _gameStateModel;
-    private readonly PlayerModelHolder _playerModelHodler;
-    private readonly Dispatcher _dispatcher;
-    private readonly ColorsHolder _colorsHolder;
-
-    //
-    private DailyMissionsModel _playerMissionsModel;
-    private bool _newMissionsNotificationFlag = false;
-
-    public UIDailyMissionsButtonMediator(UIDailyMIssionsButtonView buttonView)
+    public class UIDailyMissionsButtonMediator : IMediator
     {
-        _buttonView = buttonView;
+        private readonly UIDailyMIssionsButtonView _buttonView;
+        private readonly GameStateModel _gameStateModel;
+        private readonly PlayerModelHolder _playerModelHodler;
+        private readonly Dispatcher _dispatcher;
+        private readonly ColorsHolder _colorsHolder;
 
-        _gameStateModel = GameStateModel.Instance;
-        _playerModelHodler = PlayerModelHolder.Instance;
-        _dispatcher = Dispatcher.Instance;
-        _colorsHolder = ColorsHolder.Instance;
-    }
+        //
+        private DailyMissionsModel _playerMissionsModel;
+        private bool _newMissionsNotificationFlag = false;
 
-    public void Mediate()
-    {
-        _playerMissionsModel = _playerModelHodler.UserModel.DailyMissionsModel;
-        UpdateButtonView();
-        Activate();
-    }
-
-    public void Unmediate()
-    {
-        Deactivate();
-    }
-
-    private void UpdateButtonView()
-    {
-        _buttonView.gameObject.SetActive(_playerMissionsModel.MissionsList.Count > 0);
-        var allRewardsTaken = _playerMissionsModel.MissionsList.All(m => m.IsRewardTaken);
-        _buttonView.SetIconImageAlpha(allRewardsTaken ? 0.5f : 1f);
-        _buttonView.SetNotificationCheckVisibility(false);
-        if (HaveCompletedMissions())
+        public UIDailyMissionsButtonMediator(UIDailyMIssionsButtonView buttonView)
         {
-            _buttonView.SetNotificationColor(_colorsHolder.DailyMissionCompletedMissionsNotificationColor);
-            _buttonView.SetNotificationVisibility(true);
-            _buttonView.SetNotificationCheckVisibility(true);
+            _buttonView = buttonView;
+
+            _gameStateModel = GameStateModel.Instance;
+            _playerModelHodler = PlayerModelHolder.Instance;
+            _dispatcher = Dispatcher.Instance;
+            _colorsHolder = ColorsHolder.Instance;
         }
-        else if (_newMissionsNotificationFlag == true)
-        {
-            _buttonView.SetNotificationColor(_colorsHolder.DailyMissionNewMissionsNotificationColor);
-            _buttonView.SetNotificationVisibility(true);
-        }
-        else
-        {
-            _buttonView.SetNotificationVisibility(false);
-        }
-    }
 
-    private void Activate()
-    {
-        _buttonView.OnClick += OnButtonClick;
-        _playerMissionsModel.MissionAdded += OnMissionAdded;
-        _playerMissionsModel.MissionRemoved += OnMissionRemoved;
-        _gameStateModel.PopupShown += OnPopupShown;
-        _gameStateModel.PopupRemoved += OnPopupRemoved;
-        foreach (var mission in _playerMissionsModel.MissionsList)
+        public void Mediate()
         {
-            SubscribeOnMission(mission);
+            _playerMissionsModel = _playerModelHodler.UserModel.DailyMissionsModel;
+            UpdateButtonView();
+            Activate();
         }
-    }
 
-    private void Deactivate()
-    {
-        _buttonView.OnClick -= OnButtonClick;
-        _playerMissionsModel.MissionAdded -= OnMissionAdded;
-        _playerMissionsModel.MissionRemoved -= OnMissionRemoved;
-        _gameStateModel.PopupShown -= OnPopupShown;
-        _gameStateModel.PopupRemoved -= OnPopupRemoved;
-        foreach (var mission in _playerMissionsModel.MissionsList)
+        public void Unmediate()
         {
-            UnsubscribeFromMission(mission);
+            Deactivate();
         }
-    }
 
-    private void OnPopupShown()
-    {
-        if (_gameStateModel.ShowingPopupModel.PopupType == PopupType.DailyMissions)
+        private void UpdateButtonView()
         {
-            _newMissionsNotificationFlag = false;
+            _buttonView.gameObject.SetActive(_playerMissionsModel.MissionsList.Count > 0);
+            var allRewardsTaken = _playerMissionsModel.MissionsList.All(m => m.IsRewardTaken);
+            _buttonView.SetIconImageAlpha(allRewardsTaken ? 0.5f : 1f);
+            _buttonView.SetNotificationCheckVisibility(false);
+            if (HaveCompletedMissions())
+            {
+                _buttonView.SetNotificationColor(_colorsHolder.DailyMissionCompletedMissionsNotificationColor);
+                _buttonView.SetNotificationVisibility(true);
+                _buttonView.SetNotificationCheckVisibility(true);
+            }
+            else if (_newMissionsNotificationFlag == true)
+            {
+                _buttonView.SetNotificationColor(_colorsHolder.DailyMissionNewMissionsNotificationColor);
+                _buttonView.SetNotificationVisibility(true);
+            }
+            else
+            {
+                _buttonView.SetNotificationVisibility(false);
+            }
+        }
+
+        private void Activate()
+        {
+            _buttonView.OnClick += OnButtonClick;
+            _playerMissionsModel.MissionAdded += OnMissionAdded;
+            _playerMissionsModel.MissionRemoved += OnMissionRemoved;
+            _gameStateModel.PopupShown += OnPopupShown;
+            _gameStateModel.PopupRemoved += OnPopupRemoved;
+            foreach (var mission in _playerMissionsModel.MissionsList)
+            {
+                SubscribeOnMission(mission);
+            }
+        }
+
+        private void Deactivate()
+        {
+            _buttonView.OnClick -= OnButtonClick;
+            _playerMissionsModel.MissionAdded -= OnMissionAdded;
+            _playerMissionsModel.MissionRemoved -= OnMissionRemoved;
+            _gameStateModel.PopupShown -= OnPopupShown;
+            _gameStateModel.PopupRemoved -= OnPopupRemoved;
+            foreach (var mission in _playerMissionsModel.MissionsList)
+            {
+                UnsubscribeFromMission(mission);
+            }
+        }
+
+        private void OnPopupShown()
+        {
+            if (_gameStateModel.ShowingPopupModel.PopupType == PopupType.DailyMissions)
+            {
+                _newMissionsNotificationFlag = false;
+                UpdateButtonView();
+            }
+        }
+
+        private void OnPopupRemoved(PopupViewModelBase popupModel)
+        {
+            if (popupModel.PopupType == PopupType.DailyMissions)
+            {
+                UpdateButtonView();
+            }
+        }
+
+        private void OnMissionAdded(DailyMissionModel missionModel)
+        {
+            _newMissionsNotificationFlag = true;
+            UpdateButtonView();
+            SubscribeOnMission(missionModel);
+        }
+
+        private void SubscribeOnMission(DailyMissionModel missionModel)
+        {
+            UnsubscribeFromMission(missionModel);
+            missionModel.ValueChanged += OnMissionStateChanged;
+            missionModel.RewardTaken += OnMissionStateChanged;
+        }
+
+        private void UnsubscribeFromMission(DailyMissionModel missionModel)
+        {
+            missionModel.ValueChanged -= OnMissionStateChanged;
+            missionModel.RewardTaken -= OnMissionStateChanged;
+        }
+
+        private void OnMissionStateChanged()
+        {
             UpdateButtonView();
         }
-    }
 
-    private void OnPopupRemoved(PopupViewModelBase popupModel)
-    {
-        if (popupModel.PopupType == PopupType.DailyMissions)
+        private void OnMissionRemoved(DailyMissionModel missionModel)
         {
+            UnsubscribeFromMission(missionModel);
             UpdateButtonView();
         }
-    }
 
-    private void OnMissionAdded(DailyMissionModel missionModel)
-    {
-        _newMissionsNotificationFlag = true;
-        UpdateButtonView();
-        SubscribeOnMission(missionModel);
-    }
+        private void OnButtonClick()
+        {
+            _dispatcher.UIDailyMissionsButtonClicked();
+        }
 
-    private void SubscribeOnMission(DailyMissionModel missionModel)
-    {
-        UnsubscribeFromMission(missionModel);
-        missionModel.ValueChanged += OnMissionStateChanged;
-        missionModel.RewardTaken += OnMissionStateChanged;
-    }
-
-    private void UnsubscribeFromMission(DailyMissionModel missionModel)
-    {
-        missionModel.ValueChanged -= OnMissionStateChanged;
-        missionModel.RewardTaken -= OnMissionStateChanged;
-    }
-
-    private void OnMissionStateChanged()
-    {
-        UpdateButtonView();
-    }
-
-    private void OnMissionRemoved(DailyMissionModel missionModel)
-    {
-        UnsubscribeFromMission(missionModel);
-        UpdateButtonView();
-    }
-
-    private void OnButtonClick()
-    {
-        _dispatcher.UIDailyMissionsButtonClicked();
-    }
-
-    private bool HaveCompletedMissions()
-    {
-        return _playerMissionsModel.MissionsList.Any(m => m.IsCompleted && m.IsRewardTaken == false);
+        private bool HaveCompletedMissions()
+        {
+            return _playerMissionsModel.MissionsList.Any(m => m.IsCompleted && m.IsRewardTaken == false);
+        }
     }
 }

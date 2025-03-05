@@ -1,39 +1,44 @@
+using Src.Common;
+using Src.Common_Utils;
 using UnityEngine;
 
-public class HighlightableMediatorComponent
+namespace Src.View.Gameplay
 {
-    private readonly ScreenCalculator _screenCalculator;
-    private readonly MouseDataProvider _mouseDataProvider;
-
-    //
-    private Vector2[] _projectedBoundPoints;
-
-    public HighlightableMediatorComponent()
+    public class HighlightableMediatorComponent
     {
-        _screenCalculator = ScreenCalculator.Instance;
-        _mouseDataProvider = MouseDataProvider.Instance;
-    }
+        private readonly ScreenCalculator _screenCalculator;
+        private readonly MouseDataProvider _mouseDataProvider;
 
-    public void UpdateBoundPoints(Vector3[] boundWorldPoints)
-    {
-        _projectedBoundPoints = new Vector2[boundWorldPoints.Length];
-        for (var i = 0; i < boundWorldPoints.Length; i++)
+        //
+        private Vector2[] _projectedBoundPoints;
+
+        public HighlightableMediatorComponent()
         {
-            var planePoint = _screenCalculator.WorldToPlaneProjection(boundWorldPoints[i]);
-            _projectedBoundPoints[i] = new Vector2(planePoint.x, planePoint.y);
+            _screenCalculator = ScreenCalculator.Instance;
+            _mouseDataProvider = MouseDataProvider.Instance;
         }
-    }
 
-    public bool CheckMousePoint()
-    {
-        var result = false;
-        if (_mouseDataProvider.IsMouseOverGameView == true
-            && _projectedBoundPoints != null
-            && _projectedBoundPoints.Length > 2)
+        public void UpdateBoundPoints(Vector3[] boundWorldPoints)
         {
-            var mouseOnPlanePosition = _mouseDataProvider.MousePlanePosition;
-            result = new Vector2(mouseOnPlanePosition.x, mouseOnPlanePosition.y).IsInsidePolygon(_projectedBoundPoints);
+            _projectedBoundPoints = new Vector2[boundWorldPoints.Length];
+            for (var i = 0; i < boundWorldPoints.Length; i++)
+            {
+                var planePoint = _screenCalculator.WorldToPlaneProjection(boundWorldPoints[i]);
+                _projectedBoundPoints[i] = new Vector2(planePoint.x, planePoint.y);
+            }
         }
-        return result;
+
+        public bool CheckMousePoint()
+        {
+            var result = false;
+            if (_mouseDataProvider.IsMouseOverGameView == true
+                && _projectedBoundPoints != null
+                && _projectedBoundPoints.Length > 2)
+            {
+                var mouseOnPlanePosition = _mouseDataProvider.MousePlanePosition;
+                result = new Vector2(mouseOnPlanePosition.x, mouseOnPlanePosition.y).IsInsidePolygon(_projectedBoundPoints);
+            }
+            return result;
+        }
     }
 }

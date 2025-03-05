@@ -1,20 +1,27 @@
-public struct HandleBottomPanelFriendClickedCommand
+using Src.Managers;
+using Src.Model;
+using Src.Model.Popups;
+
+namespace Src.Commands
 {
-    public void Execute(FriendData friendData)
+    public struct HandleBottomPanelFriendClickedCommand
     {
-        if (friendData.IsInactive())
+        public void Execute(FriendData friendData)
         {
-            var gameStateModel = GameStateModel.Instance;
-            var loc = LocalizationManager.Instance;
-            var popupViewModel = new NotifyInactiveFriendPopupViewModel(
-                friendData.Uid,
-                loc.GetLocalization(LocalizationKeys.PopupNotifyInactiveFriendTitle),
-                loc.GetLocalization(LocalizationKeys.PopupNotifyInactiveFriendMessage));
-            gameStateModel.ShowPopup(popupViewModel);
-        }
-        else
-        {
-            new SwitchToFriendShopCommand().Execute(friendData);
+            if (friendData.IsInactive())
+            {
+                var gameStateModel = GameStateModel.Instance;
+                var loc = LocalizationManager.Instance;
+                var popupViewModel = new NotifyInactiveFriendPopupViewModel(
+                    friendData.Uid,
+                    loc.GetLocalization(LocalizationKeys.PopupNotifyInactiveFriendTitle),
+                    loc.GetLocalization(LocalizationKeys.PopupNotifyInactiveFriendMessage));
+                gameStateModel.ShowPopup(popupViewModel);
+            }
+            else
+            {
+                new SwitchToFriendShopCommand().Execute(friendData);
+            }
         }
     }
 }

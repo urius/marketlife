@@ -1,743 +1,748 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Src.Common;
+using Src.Model.Common;
 
-public class MainConfig :
-    IProductsConfig,
-    IShelfsConfig,
-    IFloorsConfig,
-    IWallsConfig,
-    IWindowsConfig,
-    IDoorsConfig,
-    IPersonalsConfig,
-    IUpgradesConfig,
-    ILevelsConfig,
-    IDailyBonusConfig,
-    IFriendActionsConfig,
-    IMissionsConfig,
-    IAdvertConfig
+namespace Src.Model.Configs
 {
-    public readonly int GameplayAtlasVersion;
-    public readonly int InterfaceAtlasVersion;
-    public readonly int AudioBundleVersion;
-    public readonly int RemoveUnwashesRewardExp;
-    public readonly int QuickDeliverPriceGoldPerHour;
-    public readonly int ActionDefaultAmount;
-    public readonly int ActionDefaultCooldownMinutes;
-    public readonly int ShareOfflineReportRewardGold = 1;
-    public readonly int BankAdvertRewardGold = 1;
-    public readonly int BillboardUnlockLevel;
-    public readonly int MaxBillboardTextLength = 128;
-    public readonly int FriendInactivityThresholdHours = 70;
-    public readonly int GoldToCashConversionRate = 100;
-    public readonly Dictionary<string, ProductConfig> ProductsConfig;
-    public readonly Dictionary<string, ItemConfig<ShelfConfigDto>> ShelfsConfig;
-    public readonly Dictionary<string, ItemConfig<ShopObjectConfigDto>> ShopObjectsConfig;
-    public readonly Dictionary<string, ItemConfig<ShopDecorationConfigDto>> FloorsConfig;
-    public readonly Dictionary<string, ItemConfig<ShopDecorationConfigDto>> WallsConfig;
-    public readonly Dictionary<string, ItemConfig<ShopDecorationConfigDto>> WindowsConfig;
-    public readonly Dictionary<string, ItemConfig<ShopDecorationConfigDto>> DoorsConfig;
-    public readonly Dictionary<string, PersonalConfig> PersonalConfig;
-    public readonly UpgradeConfig[] WarehouseVolumeUpgradesConfig;
-    public readonly UpgradeConfig[] WarehouseSlotsUpgradesConfig;
-    public readonly UpgradeConfig[] ExtendShopXUpgradesConfig;
-    public readonly UpgradeConfig[] ExtendShopYUpgradesConfig;
-    public readonly DailyBonusConfig[] DailyBonusConfig;
-    public readonly MissionConfig[] MissionsConfig;
-    //
-    private readonly float[] _levelsConfig;
-    private readonly MainConfigDto dto;
-    private readonly FriendActionConfig[] _friendActionConfigs;
-
-    public MainConfig(
-        MainConfigDto dto,
-        FriendActionConfig[] friendActionConfigs,
-        Dictionary<string, ProductConfig> productsConfig,
-        Dictionary<string, ItemConfig<ShelfConfigDto>> shelfsConfig,
-        Dictionary<string, ItemConfig<ShopObjectConfigDto>> shopObjectsConfig,
-        Dictionary<string, ItemConfig<ShopDecorationConfigDto>> floorsConfig,
-        Dictionary<string, ItemConfig<ShopDecorationConfigDto>> wallsConfig,
-        Dictionary<string, ItemConfig<ShopDecorationConfigDto>> windowsConfig,
-        Dictionary<string, ItemConfig<ShopDecorationConfigDto>> doorsConfig,
-        Dictionary<string, PersonalConfig> personalConfig,
-        UpgradeConfig[] warehouseVolumeUpgradesConfig,
-        UpgradeConfig[] warehouseSlotsUpgradesConfig,
-        UpgradeConfig[] extendShopXUpgradesConfig,
-        UpgradeConfig[] extendShopYUpgradesConfig,
-        float[] levelsConfig,
-        DailyBonusConfig[] dailyBonusConfig,
-        MissionConfig[] missionsConfig)
+    public class MainConfig :
+        IProductsConfig,
+        IShelfsConfig,
+        IFloorsConfig,
+        IWallsConfig,
+        IWindowsConfig,
+        IDoorsConfig,
+        IPersonalsConfig,
+        IUpgradesConfig,
+        ILevelsConfig,
+        IDailyBonusConfig,
+        IFriendActionsConfig,
+        IMissionsConfig,
+        IAdvertConfig
     {
-        GameplayAtlasVersion = dto.GameplayAtlasVersion;
-        InterfaceAtlasVersion = dto.InterfaceAtlasVersion;
-        AudioBundleVersion = dto.AudioBundleVersion;
-        RemoveUnwashesRewardExp = dto.RemoveUnwashesRewardExp;
-        QuickDeliverPriceGoldPerHour = dto.QuickDeliverPriceGoldPerHour;
-        ActionDefaultAmount = dto.ActionDefaultAmount;
-        ActionDefaultCooldownMinutes = dto.ActionDefaultCooldownMinutes;
-        BillboardUnlockLevel = dto.BillboardUnlockLevel;
-        GoldToCashConversionRate = dto.GoldToCashConversionRate;
-        ProductsConfig = productsConfig;
-        ShelfsConfig = shelfsConfig;
-        ShopObjectsConfig = shopObjectsConfig;
-        FloorsConfig = floorsConfig;
-        WallsConfig = wallsConfig;
-        WindowsConfig = windowsConfig;
-        DoorsConfig = doorsConfig;
-        PersonalConfig = personalConfig;
-        WarehouseVolumeUpgradesConfig = warehouseVolumeUpgradesConfig;
-        WarehouseSlotsUpgradesConfig = warehouseSlotsUpgradesConfig;
-        ExtendShopXUpgradesConfig = extendShopXUpgradesConfig;
-        ExtendShopYUpgradesConfig = extendShopYUpgradesConfig;
-        DailyBonusConfig = dailyBonusConfig;
-        MissionsConfig = missionsConfig;
-        AdvertDefaultWatchesCount = dto.AdvertDefaultWatchesCount;
-        AdvertWatchCooldownMinutes = dto.AdvertWatchCooldownMinutes;
+        public readonly int GameplayAtlasVersion;
+        public readonly int InterfaceAtlasVersion;
+        public readonly int AudioBundleVersion;
+        public readonly int RemoveUnwashesRewardExp;
+        public readonly int QuickDeliverPriceGoldPerHour;
+        public readonly int ActionDefaultAmount;
+        public readonly int ActionDefaultCooldownMinutes;
+        public readonly int ShareOfflineReportRewardGold = 1;
+        public readonly int BankAdvertRewardGold = 1;
+        public readonly int BillboardUnlockLevel;
+        public readonly int MaxBillboardTextLength = 128;
+        public readonly int FriendInactivityThresholdHours = 70;
+        public readonly int GoldToCashConversionRate = 100;
+        public readonly Dictionary<string, ProductConfig> ProductsConfig;
+        public readonly Dictionary<string, ItemConfig<ShelfConfigDto>> ShelfsConfig;
+        public readonly Dictionary<string, ItemConfig<ShopObjectConfigDto>> ShopObjectsConfig;
+        public readonly Dictionary<string, ItemConfig<ShopDecorationConfigDto>> FloorsConfig;
+        public readonly Dictionary<string, ItemConfig<ShopDecorationConfigDto>> WallsConfig;
+        public readonly Dictionary<string, ItemConfig<ShopDecorationConfigDto>> WindowsConfig;
+        public readonly Dictionary<string, ItemConfig<ShopDecorationConfigDto>> DoorsConfig;
+        public readonly Dictionary<string, PersonalConfig> PersonalConfig;
+        public readonly UpgradeConfig[] WarehouseVolumeUpgradesConfig;
+        public readonly UpgradeConfig[] WarehouseSlotsUpgradesConfig;
+        public readonly UpgradeConfig[] ExtendShopXUpgradesConfig;
+        public readonly UpgradeConfig[] ExtendShopYUpgradesConfig;
+        public readonly DailyBonusConfig[] DailyBonusConfig;
+        public readonly MissionConfig[] MissionsConfig;
         //
-        _levelsConfig = levelsConfig;
-        this.dto = dto;
-        _friendActionConfigs = friendActionConfigs;
-    }
+        private readonly float[] _levelsConfig;
+        private readonly MainConfigDto dto;
+        private readonly FriendActionConfig[] _friendActionConfigs;
 
-    DailyBonusConfig[] IDailyBonusConfig.DailyBonusConfig => DailyBonusConfig;
-    public int AdvertDefaultWatchesCount { get; private set; }
-    public int AdvertWatchCooldownMinutes { get; private set; }
-
-    public UpgradeConfig GetCurrentUpgradeForValue(UpgradeType upgradeType, int value)
-    {
-        return GetCurrentUpgradeForValueInternal(GetUpgradesFor(upgradeType), value);
-    }
-
-    public UpgradeConfig GetNextUpgradeForValue(UpgradeType upgradeType, int value)
-    {
-        return GetNextUpgradeForValueInternal(GetUpgradesFor(upgradeType), value);
-    }
-
-    public IEnumerable<UpgradeConfig> GetAllUpgradesByType(UpgradeType upgradeType)
-    {
-        switch (upgradeType)
+        public MainConfig(
+            MainConfigDto dto,
+            FriendActionConfig[] friendActionConfigs,
+            Dictionary<string, ProductConfig> productsConfig,
+            Dictionary<string, ItemConfig<ShelfConfigDto>> shelfsConfig,
+            Dictionary<string, ItemConfig<ShopObjectConfigDto>> shopObjectsConfig,
+            Dictionary<string, ItemConfig<ShopDecorationConfigDto>> floorsConfig,
+            Dictionary<string, ItemConfig<ShopDecorationConfigDto>> wallsConfig,
+            Dictionary<string, ItemConfig<ShopDecorationConfigDto>> windowsConfig,
+            Dictionary<string, ItemConfig<ShopDecorationConfigDto>> doorsConfig,
+            Dictionary<string, PersonalConfig> personalConfig,
+            UpgradeConfig[] warehouseVolumeUpgradesConfig,
+            UpgradeConfig[] warehouseSlotsUpgradesConfig,
+            UpgradeConfig[] extendShopXUpgradesConfig,
+            UpgradeConfig[] extendShopYUpgradesConfig,
+            float[] levelsConfig,
+            DailyBonusConfig[] dailyBonusConfig,
+            MissionConfig[] missionsConfig)
         {
-            case UpgradeType.ExpandX:
-                return ExtendShopXUpgradesConfig;
-            case UpgradeType.ExpandY:
-                return ExtendShopYUpgradesConfig;
-            case UpgradeType.WarehouseSlots:
-                return WarehouseSlotsUpgradesConfig;
-            case UpgradeType.WarehouseVolume:
-                return WarehouseVolumeUpgradesConfig;
+            GameplayAtlasVersion = dto.GameplayAtlasVersion;
+            InterfaceAtlasVersion = dto.InterfaceAtlasVersion;
+            AudioBundleVersion = dto.AudioBundleVersion;
+            RemoveUnwashesRewardExp = dto.RemoveUnwashesRewardExp;
+            QuickDeliverPriceGoldPerHour = dto.QuickDeliverPriceGoldPerHour;
+            ActionDefaultAmount = dto.ActionDefaultAmount;
+            ActionDefaultCooldownMinutes = dto.ActionDefaultCooldownMinutes;
+            BillboardUnlockLevel = dto.BillboardUnlockLevel;
+            GoldToCashConversionRate = dto.GoldToCashConversionRate;
+            ProductsConfig = productsConfig;
+            ShelfsConfig = shelfsConfig;
+            ShopObjectsConfig = shopObjectsConfig;
+            FloorsConfig = floorsConfig;
+            WallsConfig = wallsConfig;
+            WindowsConfig = windowsConfig;
+            DoorsConfig = doorsConfig;
+            PersonalConfig = personalConfig;
+            WarehouseVolumeUpgradesConfig = warehouseVolumeUpgradesConfig;
+            WarehouseSlotsUpgradesConfig = warehouseSlotsUpgradesConfig;
+            ExtendShopXUpgradesConfig = extendShopXUpgradesConfig;
+            ExtendShopYUpgradesConfig = extendShopYUpgradesConfig;
+            DailyBonusConfig = dailyBonusConfig;
+            MissionsConfig = missionsConfig;
+            AdvertDefaultWatchesCount = dto.AdvertDefaultWatchesCount;
+            AdvertWatchCooldownMinutes = dto.AdvertWatchCooldownMinutes;
+            //
+            _levelsConfig = levelsConfig;
+            this.dto = dto;
+            _friendActionConfigs = friendActionConfigs;
         }
-        return Enumerable.Empty<UpgradeConfig>();
-    }
 
-    public IEnumerable<ItemConfig<ShelfConfigDto>> GetShelfConfigsForLevel(int level)
-    {
-        return GetConfigsForLevel(ShelfsConfig, level);
-    }
+        DailyBonusConfig[] IDailyBonusConfig.DailyBonusConfig => DailyBonusConfig;
+        public int AdvertDefaultWatchesCount { get; private set; }
+        public int AdvertWatchCooldownMinutes { get; private set; }
 
-    public ItemConfig<ShelfConfigDto> GetShelfConfigByNumericId(int numericId)
-    {
-        return ShelfsConfig[$"s_{numericId}"];
-    }
-
-    public IEnumerable<ProductConfig> GetProductConfigsForLevel(int level)
-    {
-        foreach (var kvp in ProductsConfig)
+        public UpgradeConfig GetCurrentUpgradeForValue(UpgradeType upgradeType, int value)
         {
-            if (kvp.Value.UnlockLevel <= level)
+            return GetCurrentUpgradeForValueInternal(GetUpgradesFor(upgradeType), value);
+        }
+
+        public UpgradeConfig GetNextUpgradeForValue(UpgradeType upgradeType, int value)
+        {
+            return GetNextUpgradeForValueInternal(GetUpgradesFor(upgradeType), value);
+        }
+
+        public IEnumerable<UpgradeConfig> GetAllUpgradesByType(UpgradeType upgradeType)
+        {
+            switch (upgradeType)
             {
-                yield return kvp.Value;
+                case UpgradeType.ExpandX:
+                    return ExtendShopXUpgradesConfig;
+                case UpgradeType.ExpandY:
+                    return ExtendShopYUpgradesConfig;
+                case UpgradeType.WarehouseSlots:
+                    return WarehouseSlotsUpgradesConfig;
+                case UpgradeType.WarehouseVolume:
+                    return WarehouseVolumeUpgradesConfig;
+            }
+            return Enumerable.Empty<UpgradeConfig>();
+        }
+
+        public IEnumerable<ItemConfig<ShelfConfigDto>> GetShelfConfigsForLevel(int level)
+        {
+            return GetConfigsForLevel(ShelfsConfig, level);
+        }
+
+        public ItemConfig<ShelfConfigDto> GetShelfConfigByNumericId(int numericId)
+        {
+            return ShelfsConfig[$"s_{numericId}"];
+        }
+
+        public IEnumerable<ProductConfig> GetProductConfigsForLevel(int level)
+        {
+            foreach (var kvp in ProductsConfig)
+            {
+                if (kvp.Value.UnlockLevel <= level)
+                {
+                    yield return kvp.Value;
+                }
             }
         }
-    }
 
-    public ProductConfig GetProductConfigByNumericId(int numericId)
-    {
-        return ProductsConfig[$"p{numericId}"];
-    }
-
-    public IEnumerable<PersonalConfig> GetPersonalConfigsForLevel(int level)
-    {
-        foreach (var kvp in PersonalConfig)
+        public ProductConfig GetProductConfigByNumericId(int numericId)
         {
-            if (kvp.Value.UnlockLevel <= level)
+            return ProductsConfig[$"p{numericId}"];
+        }
+
+        public IEnumerable<PersonalConfig> GetPersonalConfigsForLevel(int level)
+        {
+            foreach (var kvp in PersonalConfig)
             {
-                yield return kvp.Value;
+                if (kvp.Value.UnlockLevel <= level)
+                {
+                    yield return kvp.Value;
+                }
             }
         }
-    }
 
-    public PersonalConfig GetPersonalConfigByIds(PersonalType typeId, int numericId)
-    {
-        foreach (var kvp in PersonalConfig)
+        public PersonalConfig GetPersonalConfigByIds(PersonalType typeId, int numericId)
         {
-            if (kvp.Value.TypeId == typeId && kvp.Value.NumericId == numericId)
+            foreach (var kvp in PersonalConfig)
             {
-                return kvp.Value;
+                if (kvp.Value.TypeId == typeId && kvp.Value.NumericId == numericId)
+                {
+                    return kvp.Value;
+                }
+            }
+            return null;
+        }
+
+        public PersonalConfig GetPersonalConfigByStringId(string stringId)
+        {
+            return PersonalConfig[stringId];
+        }
+
+        public ProductConfig GetProductConfigByKey(string key)
+        {
+            return ProductsConfig.First(c => c.Key == key).Value;
+        }
+
+        public ItemConfig<ShopObjectConfigDto> GetCashDeskConfigByNumericId(int cashDeskNumericId)
+        {
+            return ShopObjectsConfig[$"cd_{cashDeskNumericId}"];
+        }
+
+        public IEnumerable<ItemConfig<ShopDecorationConfigDto>> GetFloorsConfigsForLevel(int level)
+        {
+            return GetConfigsForLevel(FloorsConfig, level);
+        }
+
+        public ItemConfig<ShopDecorationConfigDto> GetDecorationConfigBuNumericId(ShopDecorationObjectType decorationType, int numericId)
+        {
+            switch (decorationType)
+            {
+                case ShopDecorationObjectType.Floor:
+                    return GetFloorConfigByNumericId(numericId);
+                case ShopDecorationObjectType.Wall:
+                    return GetWallConfigByNumericId(numericId);
+                case ShopDecorationObjectType.Window:
+                    return GetWindowConfigByNumericId(numericId);
+                case ShopDecorationObjectType.Door:
+                    return GetDoorConfigByNumericId(numericId);
+                default:
+                    throw new ArgumentException($"GetDecorationConfigBuNumericId: unsupported {nameof(ShopDecorationObjectType)} '{decorationType}'");
             }
         }
-        return null;
-    }
 
-    public PersonalConfig GetPersonalConfigByStringId(string stringId)
-    {
-        return PersonalConfig[stringId];
-    }
-
-    public ProductConfig GetProductConfigByKey(string key)
-    {
-        return ProductsConfig.First(c => c.Key == key).Value;
-    }
-
-    public ItemConfig<ShopObjectConfigDto> GetCashDeskConfigByNumericId(int cashDeskNumericId)
-    {
-        return ShopObjectsConfig[$"cd_{cashDeskNumericId}"];
-    }
-
-    public IEnumerable<ItemConfig<ShopDecorationConfigDto>> GetFloorsConfigsForLevel(int level)
-    {
-        return GetConfigsForLevel(FloorsConfig, level);
-    }
-
-    public ItemConfig<ShopDecorationConfigDto> GetDecorationConfigBuNumericId(ShopDecorationObjectType decorationType, int numericId)
-    {
-        switch (decorationType)
+        public ItemConfig<ShopDecorationConfigDto> GetFloorConfigByNumericId(int floorNumericId)
         {
-            case ShopDecorationObjectType.Floor:
-                return GetFloorConfigByNumericId(numericId);
-            case ShopDecorationObjectType.Wall:
-                return GetWallConfigByNumericId(numericId);
-            case ShopDecorationObjectType.Window:
-                return GetWindowConfigByNumericId(numericId);
-            case ShopDecorationObjectType.Door:
-                return GetDoorConfigByNumericId(numericId);
-            default:
-                throw new ArgumentException($"GetDecorationConfigBuNumericId: unsupported {nameof(ShopDecorationObjectType)} '{decorationType}'");
+            return FloorsConfig[$"f_{floorNumericId}"];
         }
-    }
 
-    public ItemConfig<ShopDecorationConfigDto> GetFloorConfigByNumericId(int floorNumericId)
-    {
-        return FloorsConfig[$"f_{floorNumericId}"];
-    }
-
-    public IEnumerable<ItemConfig<ShopDecorationConfigDto>> GetWallsConfigsForLevel(int level)
-    {
-        return GetConfigsForLevel(WallsConfig, level);
-    }
-
-    public ItemConfig<ShopDecorationConfigDto> GetWallConfigByNumericId(int wallNumericId)
-    {
-        return WallsConfig[$"w_{wallNumericId}"];
-    }
-
-    public IEnumerable<ItemConfig<ShopDecorationConfigDto>> GetWindowsConfigsForLevel(int level)
-    {
-        return GetConfigsForLevel(WindowsConfig, level);
-    }
-
-    public ItemConfig<ShopDecorationConfigDto> GetWindowConfigByNumericId(int windowNumericId)
-    {
-        return WindowsConfig[$"wnd_{windowNumericId}"];
-    }
-
-    public IEnumerable<ItemConfig<ShopDecorationConfigDto>> GetDoorsConfigsForLevel(int level)
-    {
-        return GetConfigsForLevel(DoorsConfig, level);
-    }
-
-    public ItemConfig<ShopDecorationConfigDto> GetDoorConfigByNumericId(int doorNumericId)
-    {
-        return DoorsConfig[$"d_{doorNumericId}"];
-    }
-
-    public int GetExpByLevel(int level)
-    {
-        if (level <= 0) return 0;
-        if (_levelsConfig.Length > level)
+        public IEnumerable<ItemConfig<ShopDecorationConfigDto>> GetWallsConfigsForLevel(int level)
         {
-            return (int)_levelsConfig[level];
+            return GetConfigsForLevel(WallsConfig, level);
         }
-        else
-        {
-            var multiplier = _levelsConfig[0];
-            var lastDefinedLevelIndex = _levelsConfig.Length - 1;
-            var extraLevels = level - lastDefinedLevelIndex;
-            var pow = Math.Pow(multiplier, extraLevels);
-            var resultRaw = (int)(_levelsConfig[lastDefinedLevelIndex] * pow);
-            return (int)(1000 * Math.Ceiling(resultRaw * 0.001f));
-        }
-    }
 
-    public int GetLevelByExp(int exp)
-    {
-        var result = 1;
-        while (GetExpByLevel(result + 1) <= exp)
+        public ItemConfig<ShopDecorationConfigDto> GetWallConfigByNumericId(int wallNumericId)
         {
-            result++;
+            return WallsConfig[$"w_{wallNumericId}"];
         }
-        return result;
-    }
 
-    private IEnumerable<ItemConfig<T>> GetConfigsForLevel<T>(Dictionary<string, ItemConfig<T>> configsDictionary, int level)
-        where T : PlaceableItemConfigDto
-    {
-        foreach (var kvp in configsDictionary)
+        public IEnumerable<ItemConfig<ShopDecorationConfigDto>> GetWindowsConfigsForLevel(int level)
         {
-            if (kvp.Value.ConfigDto.unlock_level <= level)
+            return GetConfigsForLevel(WindowsConfig, level);
+        }
+
+        public ItemConfig<ShopDecorationConfigDto> GetWindowConfigByNumericId(int windowNumericId)
+        {
+            return WindowsConfig[$"wnd_{windowNumericId}"];
+        }
+
+        public IEnumerable<ItemConfig<ShopDecorationConfigDto>> GetDoorsConfigsForLevel(int level)
+        {
+            return GetConfigsForLevel(DoorsConfig, level);
+        }
+
+        public ItemConfig<ShopDecorationConfigDto> GetDoorConfigByNumericId(int doorNumericId)
+        {
+            return DoorsConfig[$"d_{doorNumericId}"];
+        }
+
+        public int GetExpByLevel(int level)
+        {
+            if (level <= 0) return 0;
+            if (_levelsConfig.Length > level)
             {
-                yield return kvp.Value;
+                return (int)_levelsConfig[level];
+            }
+            else
+            {
+                var multiplier = _levelsConfig[0];
+                var lastDefinedLevelIndex = _levelsConfig.Length - 1;
+                var extraLevels = level - lastDefinedLevelIndex;
+                var pow = Math.Pow(multiplier, extraLevels);
+                var resultRaw = (int)(_levelsConfig[lastDefinedLevelIndex] * pow);
+                return (int)(1000 * Math.Ceiling(resultRaw * 0.001f));
             }
         }
-    }
 
-    private UpgradeConfig GetCurrentUpgradeForValueInternal(UpgradeConfig[] upgradeConfigs, int value)
-    {
-        foreach (var upgrade in upgradeConfigs)
+        public int GetLevelByExp(int exp)
         {
-            if (upgrade.Value >= value)
+            var result = 1;
+            while (GetExpByLevel(result + 1) <= exp)
             {
-                return upgrade;
+                result++;
+            }
+            return result;
+        }
+
+        private IEnumerable<ItemConfig<T>> GetConfigsForLevel<T>(Dictionary<string, ItemConfig<T>> configsDictionary, int level)
+            where T : PlaceableItemConfigDto
+        {
+            foreach (var kvp in configsDictionary)
+            {
+                if (kvp.Value.ConfigDto.unlock_level <= level)
+                {
+                    yield return kvp.Value;
+                }
             }
         }
-        return null;
-    }
 
-    private UpgradeConfig GetNextUpgradeForValueInternal(UpgradeConfig[] upgradeConfigs, int value)
-    {
-        foreach (var upgrade in upgradeConfigs)
+        private UpgradeConfig GetCurrentUpgradeForValueInternal(UpgradeConfig[] upgradeConfigs, int value)
         {
-            if (upgrade.Value > value)
+            foreach (var upgrade in upgradeConfigs)
             {
-                return upgrade;
+                if (upgrade.Value >= value)
+                {
+                    return upgrade;
+                }
             }
+            return null;
         }
-        return null;
+
+        private UpgradeConfig GetNextUpgradeForValueInternal(UpgradeConfig[] upgradeConfigs, int value)
+        {
+            foreach (var upgrade in upgradeConfigs)
+            {
+                if (upgrade.Value > value)
+                {
+                    return upgrade;
+                }
+            }
+            return null;
+        }
+
+        private UpgradeConfig[] GetUpgradesFor(UpgradeType upgradeType)
+        {
+            return upgradeType switch
+            {
+                UpgradeType.ExpandX => ExtendShopXUpgradesConfig,
+                UpgradeType.ExpandY => ExtendShopYUpgradesConfig,
+                UpgradeType.WarehouseVolume => WarehouseVolumeUpgradesConfig,
+                UpgradeType.WarehouseSlots => WarehouseSlotsUpgradesConfig,
+                _ => null,
+            };
+        }
+
+        public int GetDefaultActionAmount(FriendShopActionId actionId)
+        {
+            foreach (var actionConfig in _friendActionConfigs)
+            {
+                if (actionConfig.ActionId == actionId)
+                {
+                    return actionConfig.Amount;
+                }
+            }
+            return ActionDefaultAmount;
+        }
+
+        public int GetDefaultActionCooldownMinutes(FriendShopActionId actionId)
+        {
+            foreach (var actionConfig in _friendActionConfigs)
+            {
+                if (actionConfig.ActionId == actionId)
+                {
+                    return actionConfig.CooldownMinutes;
+                }
+            }
+            return ActionDefaultCooldownMinutes;
+        }
+
+        public int GetActionResetCooldownPriceGold(FriendShopActionId actionId)
+        {
+            foreach (var actionConfig in _friendActionConfigs)
+            {
+                if (actionConfig.ActionId == actionId)
+                {
+                    return actionConfig.ResetPrice.Value;
+                }
+            }
+            return 0;
+        }
+
+        public bool IsEnabled(FriendShopActionId actionId)
+        {
+            foreach (var actionConfig in _friendActionConfigs)
+            {
+                if (actionConfig.ActionId == actionId)
+                {
+                    return actionConfig.IsEnabled;
+                }
+            }
+            return false;
+        }
+
+        public IEnumerable<MissionConfig> GetMissionsForLevel(int level)
+        {
+            return MissionsConfig.Where(c => c.UnlockLevel <= level);
+        }
+
+        public MissionConfig GetMissionConfig(string key)
+        {
+            return MissionsConfig.FirstOrDefault(c => c.Key == key);
+        }
     }
 
-    private UpgradeConfig[] GetUpgradesFor(UpgradeType upgradeType)
+    public class ItemConfig<TConfigDto> : IUnlockableConfig
+        where TConfigDto : PlaceableItemConfigDto
     {
-        return upgradeType switch
+        public readonly int NumericId;
+        public readonly TConfigDto ConfigDto;
+        public readonly Price Price;
+
+        public ItemConfig(int numericId, TConfigDto configDto)
         {
-            UpgradeType.ExpandX => ExtendShopXUpgradesConfig,
-            UpgradeType.ExpandY => ExtendShopYUpgradesConfig,
-            UpgradeType.WarehouseVolume => WarehouseVolumeUpgradesConfig,
-            UpgradeType.WarehouseSlots => WarehouseSlotsUpgradesConfig,
-            _ => null,
+            NumericId = numericId;
+            ConfigDto = configDto;
+            Price = Price.FromString(configDto.price);
+        }
+
+        public int UnlockLevel => ConfigDto.unlock_level;
+    }
+
+    public class MissionConfig
+    {
+        public readonly string Key;
+        public readonly int UnlockLevel;
+        public readonly int Frequency;
+        public readonly MissionRewardConfig[] RewardConfigs;
+        public readonly int MaxComplexityFactor;
+
+        public MissionConfig(string key, int unlockLevel, int frequency, MissionRewardConfig[] rewardConfigs, int maxComplexityFactor)
+        {
+            Key = key;
+            UnlockLevel = unlockLevel;
+            Frequency = frequency;
+            RewardConfigs = rewardConfigs;
+            MaxComplexityFactor = maxComplexityFactor;
+        }
+    }
+
+    public class MissionRewardConfig
+    {
+        public readonly Reward MinReward;
+        public readonly Reward MaxReward;
+        public readonly int RewardLevelMultiplier;
+
+        public MissionRewardConfig(Reward minReward, Reward maxReward, int rewardLevelMultiplier)
+        {
+            MinReward = minReward;
+            MaxReward = maxReward;
+            RewardLevelMultiplier = rewardLevelMultiplier;
+        }
+    }
+
+    public class FriendActionConfig
+    {
+        public readonly int ActionIdInt;
+        public readonly FriendShopActionId ActionId;
+        public readonly string Key;
+        public readonly int CooldownMinutes;
+        public readonly int Amount;
+        public readonly Price ResetPrice;
+        public readonly bool IsEnabled;
+
+        public FriendActionConfig(string key, FriendActionConfigDto dto)
+        {
+            Key = key;
+            ActionIdInt = dto.action_id;
+            ActionId = (FriendShopActionId)ActionIdInt;
+            CooldownMinutes = dto.cooldown_minutes;
+            Amount = dto.amount;
+            ResetPrice = new Price(dto.reset_price_gold, isGold: true);
+            IsEnabled = !dto.is_disabled;
+        }
+    }
+
+    public class ProductConfig : IUnlockableConfig
+    {
+        public readonly int NumericId;
+        public readonly string Key;//Sprite name
+        public readonly int GroupId;
+        public readonly int Volume;
+        public readonly Price PricePer1000v;
+        public readonly int ProfitPer1000v;
+        public readonly int SellPricePer1000v;
+        public readonly float SellPrice;
+        public readonly float Demand;
+        public readonly float DemandPer1000v;
+        public readonly float DemandPer1000vMax;
+        public readonly int DeliverTimeSeconds;
+
+        private readonly int _amountIn1000Volume;
+
+        public ProductConfig(int numericId, ProductConfigDto dto, float demandDailyMultiplier, float deliverDailyMultiplier)
+        {
+            NumericId = numericId;
+            Key = dto.key;
+            GroupId = dto.group;
+            UnlockLevel = dto.unlock_level;
+            _amountIn1000Volume = dto.amount_per_1000v;
+            Volume = 1000 / _amountIn1000Volume;
+            DemandPer1000vMax = dto.demand_1000v_per_hour;
+            DemandPer1000v = DemandPer1000vMax * demandDailyMultiplier;
+
+            PricePer1000v = Price.FromString(dto.price_per_1000v);
+
+            ProfitPer1000v = dto.profit_per_1000v;
+            SellPricePer1000v = PricePer1000v.IsGold ? ProfitPer1000v : (PricePer1000v.Value + ProfitPer1000v);
+            SellPrice = (float)SellPricePer1000v / _amountIn1000Volume;
+
+            Demand = Math.Max(1, (int)(DemandPer1000v * _amountIn1000Volume * 100) * 0.01f);
+
+            DeliverTimeSeconds = Math.Max(1, (int)(deliverDailyMultiplier * GetTotalSeconds(dto.deliver)));
+        }
+
+        public int GroupIndex => GroupId - 1;
+        public int UnlockLevel { get; private set; }
+
+        public int GetSellPriceForAmount(int amount)
+        {
+            return (int)Math.Ceiling((amount / (float)_amountIn1000Volume) * SellPricePer1000v);
+        }
+
+        public Price GetPriceForAmount(int amount)
+        {
+            var newValue = (int)Math.Ceiling((amount / (float)_amountIn1000Volume) * PricePer1000v.Value);
+            return new Price(newValue, PricePer1000v.IsGold);
+        }
+
+        public int GetAmountInVolume(int volume)
+        {
+            return volume / Volume;
+        }
+
+        public Price GetPriceForVolume(int volume)
+        {
+            var newValue = (int)(PricePer1000v.Value * (float)volume / 1000);
+            return new Price(newValue, PricePer1000v.IsGold);
+        }
+
+        public int GetSellPriceForVolume(int volume)
+        {
+            return (int)(SellPricePer1000v * (float)volume / 1000);
+        }
+
+        public int GetExpForVolume(int volume)
+        {
+            return CalculationHelper.CalculateExpToAdd(this, GetAmountInVolume(volume));
+        }
+
+        public int GetProfitForVolume(int volume)
+        {
+            return (int)(ProfitPer1000v * (float)volume / 1000);
+        }
+
+        private int GetTotalSeconds(string deliverTimeStr)
+        {
+            var result = 0;
+            var splitted = deliverTimeStr.Split(':').Select(int.Parse).ToArray();
+            var length = splitted.Length;
+            for (var i = 0; i < length; i++)
+            {
+                result += splitted[i] * (int)Math.Pow(60, length - i - 1);
+            }
+
+            return result;
+        }
+    }
+
+    public class PersonalConfig : IUnlockableConfig
+    {
+        public readonly string RawIdStr;
+        public readonly string TypeIdStr;
+        public readonly PersonalType TypeId;
+        public readonly int NumericId;
+        public readonly string Key;
+        public readonly int WorkHours;
+        public readonly Price PricePerCell;
+
+        public PersonalConfig(string id, PersonalConfigDto dto)
+        {
+            RawIdStr = id;
+            var splitted = id.Split('_');
+            TypeIdStr = splitted[0];
+            TypeId = GetPersonalTypeByIdStr(id);
+            NumericId = int.Parse(splitted[1]);
+            Key = dto.key;
+            UnlockLevel = dto.unlock_level;
+            WorkHours = dto.work_hours;
+            PricePerCell = Price.FromString(dto.price_per_cell);
+        }
+
+        public int UnlockLevel { get; private set; }
+
+        public Price GetPrice(int shopSquare)
+        {
+            var result = PricePerCell;
+            result.Value *= shopSquare;
+            return result;
+        }
+
+        public static PersonalType GetPersonalTypeByIdStr(string personalTypeIdStr)
+        {
+            var personalTypeStr = personalTypeIdStr.Split('_')[0];
+            return personalTypeStr switch
+            {
+                Constants.PersonalMerchandiserStr => PersonalType.Merchandiser,
+                Constants.PersonalCleanerStr => PersonalType.Cleaner,
+                Constants.PersonalSecurityStr => PersonalType.Security,
+                _ => PersonalType.Undefined,
+            };
+        }
+    }
+
+    public class MerchandiserPersonalConfig : PersonalConfig
+    {
+        public readonly int VolumePerHour;
+        public MerchandiserPersonalConfig(string id, PersonalConfigDto dto)
+            : base(id, dto)
+        {
+            VolumePerHour = dto.volume_per_hour;
+        }
+    }
+
+    public class UpgradeConfig : IUnlockableConfig
+    {
+        public readonly UpgradeType UpgradeType;
+        public readonly int Value;
+        public readonly Price Price;
+        public readonly int UnlockFriends;
+
+        public UpgradeConfig(UpgradeType upgradeType, UpgradeConfigDto dto, bool dontConsiderFriends = false)
+        {
+            UpgradeType = upgradeType;
+            Value = dto.value;
+            Price = Price.FromString(dto.price);
+            UnlockLevel = dto.unlock_level;
+            UnlockFriends = dontConsiderFriends ? 0 : dto.unlock_friends;
+        }
+
+        public string UpgradeTypeStr => UpgradeType switch
+        {
+            UpgradeType.ExpandX => "expand_x",
+            UpgradeType.ExpandY => "expand_y",
+            UpgradeType.WarehouseSlots => "add_wh_slots",
+            UpgradeType.WarehouseVolume => "add_wh_volume",
+            _ => "Undefined upgrade type",
         };
+
+        public int UnlockLevel { get; private set; }
     }
 
-    public int GetDefaultActionAmount(FriendShopActionId actionId)
+    public enum UpgradeType
     {
-        foreach (var actionConfig in _friendActionConfigs)
-        {
-            if (actionConfig.ActionId == actionId)
-            {
-                return actionConfig.Amount;
-            }
-        }
-        return ActionDefaultAmount;
+        Undefined,
+        ExpandX,
+        ExpandY,
+        WarehouseSlots,
+        WarehouseVolume,
     }
 
-    public int GetDefaultActionCooldownMinutes(FriendShopActionId actionId)
+    public enum PersonalType
     {
-        foreach (var actionConfig in _friendActionConfigs)
-        {
-            if (actionConfig.ActionId == actionId)
-            {
-                return actionConfig.CooldownMinutes;
-            }
-        }
-        return ActionDefaultCooldownMinutes;
+        Undefined,
+        Merchandiser,
+        Cleaner,
+        Security,
     }
 
-    public int GetActionResetCooldownPriceGold(FriendShopActionId actionId)
+    public struct DailyBonusConfig
     {
-        foreach (var actionConfig in _friendActionConfigs)
-        {
-            if (actionConfig.ActionId == actionId)
-            {
-                return actionConfig.ResetPrice.Value;
-            }
-        }
-        return 0;
+        public int DayNum;
+        public Price Reward;
     }
 
-    public bool IsEnabled(FriendShopActionId actionId)
+    public interface IProductsConfig
     {
-        foreach (var actionConfig in _friendActionConfigs)
-        {
-            if (actionConfig.ActionId == actionId)
-            {
-                return actionConfig.IsEnabled;
-            }
-        }
-        return false;
+        IEnumerable<ProductConfig> GetProductConfigsForLevel(int level);
+        ProductConfig GetProductConfigByNumericId(int numericId);
+        ProductConfig GetProductConfigByKey(string key);
     }
 
-    public IEnumerable<MissionConfig> GetMissionsForLevel(int level)
+    public interface IShelfsConfig
     {
-        return MissionsConfig.Where(c => c.UnlockLevel <= level);
+        IEnumerable<ItemConfig<ShelfConfigDto>> GetShelfConfigsForLevel(int level);
+        ItemConfig<ShelfConfigDto> GetShelfConfigByNumericId(int shelfId);
     }
 
-    public MissionConfig GetMissionConfig(string key)
+    public interface IFloorsConfig
     {
-        return MissionsConfig.FirstOrDefault(c => c.Key == key);
-    }
-}
-
-public class ItemConfig<TConfigDto> : IUnlockableConfig
-    where TConfigDto : PlaceableItemConfigDto
-{
-    public readonly int NumericId;
-    public readonly TConfigDto ConfigDto;
-    public readonly Price Price;
-
-    public ItemConfig(int numericId, TConfigDto configDto)
-    {
-        NumericId = numericId;
-        ConfigDto = configDto;
-        Price = Price.FromString(configDto.price);
+        IEnumerable<ItemConfig<ShopDecorationConfigDto>> GetFloorsConfigsForLevel(int level);
+        ItemConfig<ShopDecorationConfigDto> GetFloorConfigByNumericId(int levelId);
     }
 
-    public int UnlockLevel => ConfigDto.unlock_level;
-}
-
-public class MissionConfig
-{
-    public readonly string Key;
-    public readonly int UnlockLevel;
-    public readonly int Frequency;
-    public readonly MissionRewardConfig[] RewardConfigs;
-    public readonly int MaxComplexityFactor;
-
-    public MissionConfig(string key, int unlockLevel, int frequency, MissionRewardConfig[] rewardConfigs, int maxComplexityFactor)
+    public interface IWallsConfig
     {
-        Key = key;
-        UnlockLevel = unlockLevel;
-        Frequency = frequency;
-        RewardConfigs = rewardConfigs;
-        MaxComplexityFactor = maxComplexityFactor;
-    }
-}
-
-public class MissionRewardConfig
-{
-    public readonly Reward MinReward;
-    public readonly Reward MaxReward;
-    public readonly int RewardLevelMultiplier;
-
-    public MissionRewardConfig(Reward minReward, Reward maxReward, int rewardLevelMultiplier)
-    {
-        MinReward = minReward;
-        MaxReward = maxReward;
-        RewardLevelMultiplier = rewardLevelMultiplier;
-    }
-}
-
-public class FriendActionConfig
-{
-    public readonly int ActionIdInt;
-    public readonly FriendShopActionId ActionId;
-    public readonly string Key;
-    public readonly int CooldownMinutes;
-    public readonly int Amount;
-    public readonly Price ResetPrice;
-    public readonly bool IsEnabled;
-
-    public FriendActionConfig(string key, FriendActionConfigDto dto)
-    {
-        Key = key;
-        ActionIdInt = dto.action_id;
-        ActionId = (FriendShopActionId)ActionIdInt;
-        CooldownMinutes = dto.cooldown_minutes;
-        Amount = dto.amount;
-        ResetPrice = new Price(dto.reset_price_gold, isGold: true);
-        IsEnabled = !dto.is_disabled;
-    }
-}
-
-public class ProductConfig : IUnlockableConfig
-{
-    public readonly int NumericId;
-    public readonly string Key;//Sprite name
-    public readonly int GroupId;
-    public readonly int Volume;
-    public readonly Price PricePer1000v;
-    public readonly int ProfitPer1000v;
-    public readonly int SellPricePer1000v;
-    public readonly float SellPrice;
-    public readonly float Demand;
-    public readonly float DemandPer1000v;
-    public readonly float DemandPer1000vMax;
-    public readonly int DeliverTimeSeconds;
-
-    private readonly int _amountIn1000Volume;
-
-    public ProductConfig(int numericId, ProductConfigDto dto, float demandDailyMultiplier, float deliverDailyMultiplier)
-    {
-        NumericId = numericId;
-        Key = dto.key;
-        GroupId = dto.group;
-        UnlockLevel = dto.unlock_level;
-        _amountIn1000Volume = dto.amount_per_1000v;
-        Volume = 1000 / _amountIn1000Volume;
-        DemandPer1000vMax = dto.demand_1000v_per_hour;
-        DemandPer1000v = DemandPer1000vMax * demandDailyMultiplier;
-
-        PricePer1000v = Price.FromString(dto.price_per_1000v);
-
-        ProfitPer1000v = dto.profit_per_1000v;
-        SellPricePer1000v = PricePer1000v.IsGold ? ProfitPer1000v : (PricePer1000v.Value + ProfitPer1000v);
-        SellPrice = (float)SellPricePer1000v / _amountIn1000Volume;
-
-        Demand = Math.Max(1, (int)(DemandPer1000v * _amountIn1000Volume * 100) * 0.01f);
-
-        DeliverTimeSeconds = Math.Max(1, (int)(deliverDailyMultiplier * GetTotalSeconds(dto.deliver)));
+        IEnumerable<ItemConfig<ShopDecorationConfigDto>> GetWallsConfigsForLevel(int level);
+        ItemConfig<ShopDecorationConfigDto> GetWallConfigByNumericId(int levelId);
     }
 
-    public int GroupIndex => GroupId - 1;
-    public int UnlockLevel { get; private set; }
-
-    public int GetSellPriceForAmount(int amount)
+    public interface IWindowsConfig
     {
-        return (int)Math.Ceiling((amount / (float)_amountIn1000Volume) * SellPricePer1000v);
+        IEnumerable<ItemConfig<ShopDecorationConfigDto>> GetWindowsConfigsForLevel(int level);
+        ItemConfig<ShopDecorationConfigDto> GetWindowConfigByNumericId(int levelId);
     }
 
-    public Price GetPriceForAmount(int amount)
+    public interface IDoorsConfig
     {
-        var newValue = (int)Math.Ceiling((amount / (float)_amountIn1000Volume) * PricePer1000v.Value);
-        return new Price(newValue, PricePer1000v.IsGold);
+        IEnumerable<ItemConfig<ShopDecorationConfigDto>> GetDoorsConfigsForLevel(int level);
+        ItemConfig<ShopDecorationConfigDto> GetDoorConfigByNumericId(int levelId);
     }
 
-    public int GetAmountInVolume(int volume)
+    public interface IPersonalsConfig
     {
-        return volume / Volume;
+        IEnumerable<PersonalConfig> GetPersonalConfigsForLevel(int level);
+        PersonalConfig GetPersonalConfigByIds(PersonalType typeId, int numericId);
+        PersonalConfig GetPersonalConfigByStringId(string typeIdStr);
     }
 
-    public Price GetPriceForVolume(int volume)
+    public interface IUpgradesConfig
     {
-        var newValue = (int)(PricePer1000v.Value * (float)volume / 1000);
-        return new Price(newValue, PricePer1000v.IsGold);
+        UpgradeConfig GetCurrentUpgradeForValue(UpgradeType upgradeType, int value);
+        UpgradeConfig GetNextUpgradeForValue(UpgradeType upgradeType, int value);
+        IEnumerable<UpgradeConfig> GetAllUpgradesByType(UpgradeType upgradeType);
     }
 
-    public int GetSellPriceForVolume(int volume)
+    public interface IDailyBonusConfig
     {
-        return (int)(SellPricePer1000v * (float)volume / 1000);
+        DailyBonusConfig[] DailyBonusConfig { get; }
     }
 
-    public int GetExpForVolume(int volume)
+    public interface ILevelsConfig
     {
-        return CalculationHelper.CalculateExpToAdd(this, GetAmountInVolume(volume));
+        int GetExpByLevel(int level);
+        int GetLevelByExp(int exp);
     }
 
-    public int GetProfitForVolume(int volume)
+    public interface IUnlockableConfig
     {
-        return (int)(ProfitPer1000v * (float)volume / 1000);
+        int UnlockLevel { get; }
     }
 
-    private int GetTotalSeconds(string deliverTimeStr)
+    public interface IFriendActionsConfig
     {
-        var result = 0;
-        var splitted = deliverTimeStr.Split(':').Select(int.Parse).ToArray();
-        var length = splitted.Length;
-        for (var i = 0; i < length; i++)
-        {
-            result += splitted[i] * (int)Math.Pow(60, length - i - 1);
-        }
-
-        return result;
-    }
-}
-
-public class PersonalConfig : IUnlockableConfig
-{
-    public readonly string RawIdStr;
-    public readonly string TypeIdStr;
-    public readonly PersonalType TypeId;
-    public readonly int NumericId;
-    public readonly string Key;
-    public readonly int WorkHours;
-    public readonly Price PricePerCell;
-
-    public PersonalConfig(string id, PersonalConfigDto dto)
-    {
-        RawIdStr = id;
-        var splitted = id.Split('_');
-        TypeIdStr = splitted[0];
-        TypeId = GetPersonalTypeByIdStr(id);
-        NumericId = int.Parse(splitted[1]);
-        Key = dto.key;
-        UnlockLevel = dto.unlock_level;
-        WorkHours = dto.work_hours;
-        PricePerCell = Price.FromString(dto.price_per_cell);
+        int GetDefaultActionAmount(FriendShopActionId actionId);
+        int GetDefaultActionCooldownMinutes(FriendShopActionId actionId);
+        int GetActionResetCooldownPriceGold(FriendShopActionId actionId);
+        bool IsEnabled(FriendShopActionId actionId);
     }
 
-    public int UnlockLevel { get; private set; }
-
-    public Price GetPrice(int shopSquare)
+    public interface IMissionsConfig
     {
-        var result = PricePerCell;
-        result.Value *= shopSquare;
-        return result;
+        IEnumerable<MissionConfig> GetMissionsForLevel(int level);
+        MissionConfig GetMissionConfig(string key);
     }
 
-    public static PersonalType GetPersonalTypeByIdStr(string personalTypeIdStr)
+    public interface IAdvertConfig
     {
-        var personalTypeStr = personalTypeIdStr.Split('_')[0];
-        return personalTypeStr switch
-        {
-            Constants.PersonalMerchandiserStr => PersonalType.Merchandiser,
-            Constants.PersonalCleanerStr => PersonalType.Cleaner,
-            Constants.PersonalSecurityStr => PersonalType.Security,
-            _ => PersonalType.Undefined,
-        };
+        int AdvertDefaultWatchesCount { get; }
+        int AdvertWatchCooldownMinutes { get; }
     }
-}
-
-public class MerchandiserPersonalConfig : PersonalConfig
-{
-    public readonly int VolumePerHour;
-    public MerchandiserPersonalConfig(string id, PersonalConfigDto dto)
-        : base(id, dto)
-    {
-        VolumePerHour = dto.volume_per_hour;
-    }
-}
-
-public class UpgradeConfig : IUnlockableConfig
-{
-    public readonly UpgradeType UpgradeType;
-    public readonly int Value;
-    public readonly Price Price;
-    public readonly int UnlockFriends;
-
-    public UpgradeConfig(UpgradeType upgradeType, UpgradeConfigDto dto, bool dontConsiderFriends = false)
-    {
-        UpgradeType = upgradeType;
-        Value = dto.value;
-        Price = Price.FromString(dto.price);
-        UnlockLevel = dto.unlock_level;
-        UnlockFriends = dontConsiderFriends ? 0 : dto.unlock_friends;
-    }
-
-    public string UpgradeTypeStr => UpgradeType switch
-    {
-        UpgradeType.ExpandX => "expand_x",
-        UpgradeType.ExpandY => "expand_y",
-        UpgradeType.WarehouseSlots => "add_wh_slots",
-        UpgradeType.WarehouseVolume => "add_wh_volume",
-        _ => "Undefined upgrade type",
-    };
-
-    public int UnlockLevel { get; private set; }
-}
-
-public enum UpgradeType
-{
-    Undefined,
-    ExpandX,
-    ExpandY,
-    WarehouseSlots,
-    WarehouseVolume,
-}
-
-public enum PersonalType
-{
-    Undefined,
-    Merchandiser,
-    Cleaner,
-    Security,
-}
-
-public struct DailyBonusConfig
-{
-    public int DayNum;
-    public Price Reward;
-}
-
-public interface IProductsConfig
-{
-    IEnumerable<ProductConfig> GetProductConfigsForLevel(int level);
-    ProductConfig GetProductConfigByNumericId(int numericId);
-    ProductConfig GetProductConfigByKey(string key);
-}
-
-public interface IShelfsConfig
-{
-    IEnumerable<ItemConfig<ShelfConfigDto>> GetShelfConfigsForLevel(int level);
-    ItemConfig<ShelfConfigDto> GetShelfConfigByNumericId(int shelfId);
-}
-
-public interface IFloorsConfig
-{
-    IEnumerable<ItemConfig<ShopDecorationConfigDto>> GetFloorsConfigsForLevel(int level);
-    ItemConfig<ShopDecorationConfigDto> GetFloorConfigByNumericId(int levelId);
-}
-
-public interface IWallsConfig
-{
-    IEnumerable<ItemConfig<ShopDecorationConfigDto>> GetWallsConfigsForLevel(int level);
-    ItemConfig<ShopDecorationConfigDto> GetWallConfigByNumericId(int levelId);
-}
-
-public interface IWindowsConfig
-{
-    IEnumerable<ItemConfig<ShopDecorationConfigDto>> GetWindowsConfigsForLevel(int level);
-    ItemConfig<ShopDecorationConfigDto> GetWindowConfigByNumericId(int levelId);
-}
-
-public interface IDoorsConfig
-{
-    IEnumerable<ItemConfig<ShopDecorationConfigDto>> GetDoorsConfigsForLevel(int level);
-    ItemConfig<ShopDecorationConfigDto> GetDoorConfigByNumericId(int levelId);
-}
-
-public interface IPersonalsConfig
-{
-    IEnumerable<PersonalConfig> GetPersonalConfigsForLevel(int level);
-    PersonalConfig GetPersonalConfigByIds(PersonalType typeId, int numericId);
-    PersonalConfig GetPersonalConfigByStringId(string typeIdStr);
-}
-
-public interface IUpgradesConfig
-{
-    UpgradeConfig GetCurrentUpgradeForValue(UpgradeType upgradeType, int value);
-    UpgradeConfig GetNextUpgradeForValue(UpgradeType upgradeType, int value);
-    IEnumerable<UpgradeConfig> GetAllUpgradesByType(UpgradeType upgradeType);
-}
-
-public interface IDailyBonusConfig
-{
-    DailyBonusConfig[] DailyBonusConfig { get; }
-}
-
-public interface ILevelsConfig
-{
-    int GetExpByLevel(int level);
-    int GetLevelByExp(int exp);
-}
-
-public interface IUnlockableConfig
-{
-    int UnlockLevel { get; }
-}
-
-public interface IFriendActionsConfig
-{
-    int GetDefaultActionAmount(FriendShopActionId actionId);
-    int GetDefaultActionCooldownMinutes(FriendShopActionId actionId);
-    int GetActionResetCooldownPriceGold(FriendShopActionId actionId);
-    bool IsEnabled(FriendShopActionId actionId);
-}
-
-public interface IMissionsConfig
-{
-    IEnumerable<MissionConfig> GetMissionsForLevel(int level);
-    MissionConfig GetMissionConfig(string key);
-}
-
-public interface IAdvertConfig
-{
-    int AdvertDefaultWatchesCount { get; }
-    int AdvertWatchCooldownMinutes { get; }
 }

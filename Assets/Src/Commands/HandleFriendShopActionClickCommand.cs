@@ -1,48 +1,56 @@
-public struct HandleFriendShopActionClickCommand
+using Src.Managers;
+using Src.Model;
+using Src.Model.Common;
+using Src.Model.Popups;
+
+namespace Src.Commands
 {
-    public void Execute(FriendShopActionId actionId, bool isBuyClicked)
+    public struct HandleFriendShopActionClickCommand
     {
-        var gameStateModel = GameStateModel.Instance;
-        var viewingUserModel = gameStateModel.ViewingUserModel;
-        var playerModel = PlayerModelHolder.Instance.UserModel;
-        var friendActionsDataModel = playerModel.FriendsActionsDataModels.GetFriendShopActionsModel(viewingUserModel.Uid);
-        var mainConfig = GameConfigManager.Instance.MainConfig;
-        var analyticsManager = AnalyticsManager.Instance;
-
-        if (isBuyClicked == false)
+        public void Execute(FriendShopActionId actionId, bool isBuyClicked)
         {
-            switch (actionId)
+            var gameStateModel = GameStateModel.Instance;
+            var viewingUserModel = gameStateModel.ViewingUserModel;
+            var playerModel = PlayerModelHolder.Instance.UserModel;
+            var friendActionsDataModel = playerModel.FriendsActionsDataModels.GetFriendShopActionsModel(viewingUserModel.Uid);
+            var mainConfig = GameConfigManager.Instance.MainConfig;
+            var analyticsManager = AnalyticsManager.Instance;
+
+            if (isBuyClicked == false)
             {
-                case FriendShopActionId.AddProduct:
-                    gameStateModel.ShowPopup(new WarehousePopupViewModel());
-                    break;
-                case FriendShopActionId.TakeProduct:
-                    gameStateModel.SetTakeProductAction();
-                    break;
-                case FriendShopActionId.AddUnwash:
-                    gameStateModel.SetAddUnwashAction();
-                    break;
+                switch (actionId)
+                {
+                    case FriendShopActionId.AddProduct:
+                        gameStateModel.ShowPopup(new WarehousePopupViewModel());
+                        break;
+                    case FriendShopActionId.TakeProduct:
+                        gameStateModel.SetTakeProductAction();
+                        break;
+                    case FriendShopActionId.AddUnwash:
+                        gameStateModel.SetAddUnwashAction();
+                        break;
+                }
+
+                analyticsManager.SendCustom(AnalyticsManager.EventNameFriendActionClick, ("action", actionId.ToString()));
             }
-
-            analyticsManager.SendCustom(AnalyticsManager.EventNameFriendActionClick, ("action", actionId.ToString()));
-        }
-        else
-        {
-            var priceGoldAmount = mainConfig.GetActionResetCooldownPriceGold(actionId);
-            if (priceGoldAmount > 0)
+            else
             {
-                var price = new Price(priceGoldAmount, isGold: true);
-                var success = playerModel.TrySpendMoney(price);
-                if (success)
+                var priceGoldAmount = mainConfig.GetActionResetCooldownPriceGold(actionId);
+                if (priceGoldAmount > 0)
                 {
-                    friendActionsDataModel.ActionsById[actionId].SetEndCooldownTime(gameStateModel.ServerTime - 1);
-                }
-                else
-                {
-                    new NotEnoughtMoneySequenceCommand().Execute(price.IsGold);
-                }
+                    var price = new Price(priceGoldAmount, isGold: true);
+                    var success = playerModel.TrySpendMoney(price);
+                    if (success)
+                    {
+                        friendActionsDataModel.ActionsById[actionId].SetEndCooldownTime(gameStateModel.ServerTime - 1);
+                    }
+                    else
+                    {
+                        new NotEnoughtMoneySequenceCommand().Execute(price.IsGold);
+                    }
 
-                analyticsManager.SendCustom(AnalyticsManager.EventNameFriendActionBuyRecharge, ("action", actionId.ToString()), ("success", success));
+                    analyticsManager.SendCustom(AnalyticsManager.EventNameFriendActionBuyRecharge, ("action", actionId.ToString()), ("success", success));
+                }
             }
         }
     }

@@ -1,72 +1,78 @@
+using Src.Common;
+using Src.Common_Utils;
+using Src.Model;
 using UnityEngine;
 
-public class PlacingFloorMediator : IMediator
+namespace Src.View.Gameplay.Shop_Objects.Placing
 {
-    protected readonly Transform ParentTransform;
-
-    private readonly GameStateModel _gameStateModel;
-    private readonly Dispatcher _dispatcher;
-    private readonly MouseDataProvider _mouseCellCoordsProvider;
-    private readonly GridCalculator _gridCalculator;
-
-    private SpriteRenderer _currentPlacingSprite;
-    private ShopModel _currentShopModel;
-
-    public PlacingFloorMediator(Transform parentTransform)
+    public class PlacingFloorMediator : IMediator
     {
-        ParentTransform = parentTransform;
+        protected readonly Transform ParentTransform;
 
-        _gameStateModel = GameStateModel.Instance;
-        _dispatcher = Dispatcher.Instance;
-        _mouseCellCoordsProvider = MouseDataProvider.Instance;
-        _gridCalculator = GridCalculator.Instance;
-    }
+        private readonly GameStateModel _gameStateModel;
+        private readonly Dispatcher _dispatcher;
+        private readonly MouseDataProvider _mouseCellCoordsProvider;
+        private readonly GridCalculator _gridCalculator;
 
-    public void Mediate()
-    {
-        _currentShopModel = GameStateModel.Instance.ViewingShopModel;
+        private SpriteRenderer _currentPlacingSprite;
+        private ShopModel _currentShopModel;
 
-        _dispatcher.MouseCellCoordsUpdated += OnMouseCellCoordsUpdated;
-        _currentShopModel.ShopDesign.FloorChanged += OnFloorChanged;
+        public PlacingFloorMediator(Transform parentTransform)
+        {
+            ParentTransform = parentTransform;
 
-        var sprite = new ViewsFactory().CreateFloor(ParentTransform, _gameStateModel.PlacingDecorationNumericId);
-        sprite.color = sprite.color.SetAlpha(0.7f);
-        sprite.sortingLayerName = SortingLayers.Placing;
-        _currentPlacingSprite = sprite;
+            _gameStateModel = GameStateModel.Instance;
+            _dispatcher = Dispatcher.Instance;
+            _mouseCellCoordsProvider = MouseDataProvider.Instance;
+            _gridCalculator = GridCalculator.Instance;
+        }
 
-        UpdatePosition(_mouseCellCoordsProvider.MouseCellCoords);
-        UpdateBuildAvailability(_mouseCellCoordsProvider.MouseCellCoords);
-    }
+        public void Mediate()
+        {
+            _currentShopModel = GameStateModel.Instance.ViewingShopModel;
 
-    public void Unmediate()
-    {
-        _dispatcher.MouseCellCoordsUpdated -= OnMouseCellCoordsUpdated;
-        _currentShopModel.ShopDesign.FloorChanged -= OnFloorChanged;
+            _dispatcher.MouseCellCoordsUpdated += OnMouseCellCoordsUpdated;
+            _currentShopModel.ShopDesign.FloorChanged += OnFloorChanged;
 
-        GameObject.Destroy(_currentPlacingSprite.gameObject);
-        _currentPlacingSprite = default;
-    }
+            var sprite = new ViewsFactory().CreateFloor(ParentTransform, _gameStateModel.PlacingDecorationNumericId);
+            sprite.color = sprite.color.SetAlpha(0.7f);
+            sprite.sortingLayerName = SortingLayers.Placing;
+            _currentPlacingSprite = sprite;
 
-    private void OnFloorChanged(Vector2Int cellCoords, int numericId)
-    {
-        UpdateBuildAvailability(cellCoords);
-    }
+            UpdatePosition(_mouseCellCoordsProvider.MouseCellCoords);
+            UpdateBuildAvailability(_mouseCellCoordsProvider.MouseCellCoords);
+        }
 
-    private void OnMouseCellCoordsUpdated(Vector2Int cellCoords)
-    {
-        UpdatePosition(cellCoords);
-        UpdateBuildAvailability(cellCoords);
-    }
+        public void Unmediate()
+        {
+            _dispatcher.MouseCellCoordsUpdated -= OnMouseCellCoordsUpdated;
+            _currentShopModel.ShopDesign.FloorChanged -= OnFloorChanged;
 
-    private void UpdatePosition(Vector2Int cellCoords)
-    {
-        _currentPlacingSprite.transform.position = _gridCalculator.CellToWorld(cellCoords); ;
-    }
+            GameObject.Destroy(_currentPlacingSprite.gameObject);
+            _currentPlacingSprite = default;
+        }
 
-    private void UpdateBuildAvailability(Vector2Int mouseCellCoords)
-    {
-        _currentPlacingSprite.color = _currentShopModel.CanPlaceFloor(mouseCellCoords, _gameStateModel.PlacingDecorationNumericId)
-                    ? _currentPlacingSprite.color.SetRGB(0.5f, 1f, 0.5f)
-                    : _currentPlacingSprite.color.SetRGB(1f, 0.5f, 0.5f);
+        private void OnFloorChanged(Vector2Int cellCoords, int numericId)
+        {
+            UpdateBuildAvailability(cellCoords);
+        }
+
+        private void OnMouseCellCoordsUpdated(Vector2Int cellCoords)
+        {
+            UpdatePosition(cellCoords);
+            UpdateBuildAvailability(cellCoords);
+        }
+
+        private void UpdatePosition(Vector2Int cellCoords)
+        {
+            _currentPlacingSprite.transform.position = _gridCalculator.CellToWorld(cellCoords); ;
+        }
+
+        private void UpdateBuildAvailability(Vector2Int mouseCellCoords)
+        {
+            _currentPlacingSprite.color = _currentShopModel.CanPlaceFloor(mouseCellCoords, _gameStateModel.PlacingDecorationNumericId)
+                ? _currentPlacingSprite.color.SetRGB(0.5f, 1f, 0.5f)
+                : _currentPlacingSprite.color.SetRGB(1f, 0.5f, 0.5f);
+        }
     }
 }

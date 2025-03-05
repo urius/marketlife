@@ -1,66 +1,72 @@
+using Src.Common;
+using Src.Model;
+using Src.Model.Popups;
 using UnityEngine;
 
-public class TutorialOrderProductStepMediator : TutorialStepMediatorBase
+namespace Src.View.UI.Tutorial.StepsMediators
 {
-    private readonly Dispatcher _dispatcher;
-    private readonly TutorialUIElementsProvider _tutorialUIElementsProvider;
-    private readonly GameStateModel _gameStateModel;
-
-    //
-    private RectTransform _itemSlotRect;
-
-    public TutorialOrderProductStepMediator(RectTransform parentTransform)
-        : base(parentTransform)
+    public class TutorialOrderProductStepMediator : TutorialStepMediatorBase
     {
-        _dispatcher = Dispatcher.Instance;
-        _tutorialUIElementsProvider = TutorialUIElementsProvider.Instance;
-        _gameStateModel = GameStateModel.Instance;
-    }
+        private readonly Dispatcher _dispatcher;
+        private readonly TutorialUIElementsProvider _tutorialUIElementsProvider;
+        private readonly GameStateModel _gameStateModel;
 
-    public override void Mediate()
-    {
-        base.Mediate();
+        //
+        private RectTransform _itemSlotRect;
 
-        View.DisableButton();
-        View.SetQuadrant(3);
+        public TutorialOrderProductStepMediator(RectTransform parentTransform)
+            : base(parentTransform)
+        {
+            _dispatcher = Dispatcher.Instance;
+            _tutorialUIElementsProvider = TutorialUIElementsProvider.Instance;
+            _gameStateModel = GameStateModel.Instance;
+        }
 
-        Activate();
-    }
+        public override void Mediate()
+        {
+            base.Mediate();
 
-    public override void Unmediate()
-    {
-        Deactivate();
+            View.DisableButton();
+            View.SetQuadrant(3);
 
-        base.Unmediate();
-    }
+            Activate();
+        }
 
-    private void Activate()
-    {
-        _dispatcher.UIOrderPopupAppeared += OnUIOrderPopupAppeared;
-        _gameStateModel.PopupRemoved += OnPopupRemoved;
-    }
+        public override void Unmediate()
+        {
+            Deactivate();
 
-    private void Deactivate()
-    {
-        _dispatcher.UIOrderPopupAppeared -= OnUIOrderPopupAppeared;
-        _gameStateModel.PopupRemoved -= OnPopupRemoved;
-    }
+            base.Unmediate();
+        }
 
-    private void OnPopupRemoved(PopupViewModelBase popupViewModel)
-    {
-        DispatchTutorialActionPerformed();
-    }
+        private void Activate()
+        {
+            _dispatcher.UIOrderPopupAppeared += OnUIOrderPopupAppeared;
+            _gameStateModel.PopupRemoved += OnPopupRemoved;
+        }
 
-    private void OnUIOrderPopupAppeared()
-    {
-        _itemSlotRect = _tutorialUIElementsProvider.GetElementRectTransform(TutorialUIElement.OrderProductsPopupFirstItem);
-        //Highlight element not on the pivot point
-        var itemBoundsRect = _itemSlotRect.rect;
-        var size = new Vector2(itemBoundsRect.size.x, itemBoundsRect.size.y * 1.5f);
-        var corners = new Vector3[4];
-        _itemSlotRect.GetWorldCorners(corners);
-        View.HighlightScreenRoundArea((corners[0] + corners[2]) * 0.5f, size, animated: true);
+        private void Deactivate()
+        {
+            _dispatcher.UIOrderPopupAppeared -= OnUIOrderPopupAppeared;
+            _gameStateModel.PopupRemoved -= OnPopupRemoved;
+        }
 
-        AllowClickOnRectTransform(_itemSlotRect);
+        private void OnPopupRemoved(PopupViewModelBase popupViewModel)
+        {
+            DispatchTutorialActionPerformed();
+        }
+
+        private void OnUIOrderPopupAppeared()
+        {
+            _itemSlotRect = _tutorialUIElementsProvider.GetElementRectTransform(TutorialUIElement.OrderProductsPopupFirstItem);
+            //Highlight element not on the pivot point
+            var itemBoundsRect = _itemSlotRect.rect;
+            var size = new Vector2(itemBoundsRect.size.x, itemBoundsRect.size.y * 1.5f);
+            var corners = new Vector3[4];
+            _itemSlotRect.GetWorldCorners(corners);
+            View.HighlightScreenRoundArea((corners[0] + corners[2]) * 0.5f, size, animated: true);
+
+            AllowClickOnRectTransform(_itemSlotRect);
+        }
     }
 }

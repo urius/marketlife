@@ -1,31 +1,36 @@
-public class DailyMissionExpandShopProcessor : DailyMissionProcessorBase
+using Src.Model;
+
+namespace Src.Systems.DailyMIssions.Processors
 {
-    private readonly PlayerModelHolder _playerModelHolder;
-
-    public DailyMissionExpandShopProcessor()
+    public class DailyMissionExpandShopProcessor : DailyMissionProcessorBase
     {
-        _playerModelHolder = PlayerModelHolder.Instance;
-    }
+        private readonly PlayerModelHolder _playerModelHolder;
 
-    public override void Start()
-    {
-        _playerModelHolder.ShopModel.ShopDesign.SizeXChanged += OnSizeXChanged;
-        _playerModelHolder.ShopModel.ShopDesign.SizeYChanged += OnSizeYChanged;
-    }
+        public DailyMissionExpandShopProcessor()
+        {
+            _playerModelHolder = PlayerModelHolder.Instance;
+        }
 
-    public override void Stop()
-    {
-        _playerModelHolder.ShopModel.ShopDesign.SizeXChanged -= OnSizeXChanged;
-        _playerModelHolder.ShopModel.ShopDesign.SizeYChanged -= OnSizeYChanged;
-    }
+        public override void Start()
+        {
+            _playerModelHolder.ShopModel.ShopDesign.SizeXChanged += OnSizeXChanged;
+            _playerModelHolder.ShopModel.ShopDesign.SizeYChanged += OnSizeYChanged;
+        }
 
-    private void OnSizeXChanged(int prevSize, int currentSize)
-    {
-        MissionModel.AddValue(currentSize - prevSize);
-    }
+        public override void Stop()
+        {
+            _playerModelHolder.ShopModel.ShopDesign.SizeXChanged -= OnSizeXChanged;
+            _playerModelHolder.ShopModel.ShopDesign.SizeYChanged -= OnSizeYChanged;
+        }
 
-    private void OnSizeYChanged(int prevSize, int currentSize)
-    {
-        MissionModel.AddValue(currentSize - prevSize);
+        private void OnSizeXChanged(int prevSize, int currentSize)
+        {
+            MissionModel.AddValue(currentSize - prevSize);
+        }
+
+        private void OnSizeYChanged(int prevSize, int currentSize)
+        {
+            MissionModel.AddValue(currentSize - prevSize);
+        }
     }
 }

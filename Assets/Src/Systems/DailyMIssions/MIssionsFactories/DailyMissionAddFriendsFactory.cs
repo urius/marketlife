@@ -1,22 +1,28 @@
 using System;
+using Src.Model;
+using Src.Model.Missions;
+using Src.Systems.DailyMIssions.Processors;
 using UnityEngine;
 
-public class DailyMissionAddFriendsFactory : DailyMissionFactoryBase<DailyMissionAddFriendsProcessor>
+namespace Src.Systems.DailyMIssions.MIssionsFactories
 {
-    protected override string Key => MissionKeys.AddFriends;
-
-    public override DailyMissionModel CreateModel(float complexityMultiplier)
+    public class DailyMissionAddFriendsFactory : DailyMissionFactoryBase<DailyMissionAddFriendsProcessor>
     {
-        var friendsDataHolder = FriendsDataHolder.Instance; ;
-        var additionalFriendsCount = Math.Max(1, (int)Mathf.Lerp(1, MissionConfig.MaxComplexityFactor, complexityMultiplier));
-        var totalFriendsCount = friendsDataHolder.InGameFriendsCount;
-        var targetFriendsCount = totalFriendsCount + additionalFriendsCount;
-        var reward = ChooseReward(complexityMultiplier);
-        return new DailyMissionModel(
-            Key,
-            totalFriendsCount,
-            targetFriendsCount,
-            totalFriendsCount,
-            reward);
+        protected override string Key => MissionKeys.AddFriends;
+
+        public override DailyMissionModel CreateModel(float complexityMultiplier)
+        {
+            var friendsDataHolder = FriendsDataHolder.Instance; ;
+            var additionalFriendsCount = Math.Max(1, (int)Mathf.Lerp(1, MissionConfig.MaxComplexityFactor, complexityMultiplier));
+            var totalFriendsCount = friendsDataHolder.InGameFriendsCount;
+            var targetFriendsCount = totalFriendsCount + additionalFriendsCount;
+            var reward = ChooseReward(complexityMultiplier);
+            return new DailyMissionModel(
+                Key,
+                totalFriendsCount,
+                targetFriendsCount,
+                totalFriendsCount,
+                reward);
+        }
     }
 }

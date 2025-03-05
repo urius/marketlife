@@ -1,17 +1,21 @@
 using Cysharp.Threading.Tasks;
 using Src.Common;
+using Src.Common_Utils;
 
-public struct LoadUserDataCommand
+namespace Src.Commands.LoadSave
 {
-    public async UniTask<string> ExecuteAsync(string uid)
+    public struct LoadUserDataCommand
     {
-        var url = string.Format(Urls.GetDataURL, uid);
-        var resultOperation = await new WebRequestsSender().GetAsync(url);
-        if (resultOperation.IsSuccess)
+        public async UniTask<string> ExecuteAsync(string uid)
         {
-            return resultOperation.Result;
-        }
+            var url = string.Format(Urls.GetDataURL, uid);
+            var resultOperation = await new WebRequestsSender().GetAsync(url);
+            if (resultOperation.IsSuccess)
+            {
+                return resultOperation.Result;
+            }
 
-        return null;
+            return null;
+        }
     }
 }

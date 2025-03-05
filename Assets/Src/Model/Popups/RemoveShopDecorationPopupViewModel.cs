@@ -1,17 +1,20 @@
 using UnityEngine;
 
-public class RemoveShopDecorationPopupViewModel : ConfirmPopupViewModel, IConfirmRemoveWithRefundPopupViewModel
+namespace Src.Model.Popups
 {
-    private readonly Vector2Int _coords;
-    private readonly int _sellPrice;
-
-    public RemoveShopDecorationPopupViewModel(string titleText, string messageText, Vector2Int coords, int sellPrice)
-        : base(titleText, messageText)
+    public class RemoveShopDecorationPopupViewModel : ConfirmPopupViewModel, IConfirmRemoveWithRefundPopupViewModel
     {
-        _coords = coords;
-        _sellPrice = sellPrice;
-    }
+        private readonly Vector2Int _coords;
+        private readonly int _sellPrice;
 
-    public int SellPrice => _sellPrice;
-    public Vector2Int ObjectCoords => _coords;
+        public RemoveShopDecorationPopupViewModel(string titleText, string messageText, Vector2Int coords, int sellPrice)
+            : base(titleText, messageText)
+        {
+            _coords = coords;
+            _sellPrice = sellPrice;
+        }
+
+        public int SellPrice => _sellPrice;
+        public Vector2Int ObjectCoords => _coords;
+    }
 }

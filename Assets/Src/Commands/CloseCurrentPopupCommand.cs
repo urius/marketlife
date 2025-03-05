@@ -1,43 +1,50 @@
-public struct CloseCurrentPopupCommand
+using Src.Managers;
+using Src.Model;
+using Src.Model.Popups;
+
+namespace Src.Commands
 {
-    public void Execute()
+    public struct CloseCurrentPopupCommand
     {
-        var gameStateModel = GameStateModel.Instance;
-
-        if (gameStateModel.GameState == GameStateName.ReadyForStart
-            && gameStateModel.ShowingPopupModel.PopupType == PopupType.OfflineReport)
+        public void Execute()
         {
-            var playerModel = PlayerModelHolder.Instance.UserModel;
-            var userShopModel = playerModel.ShopModel;
-            var warehouseModel = userShopModel.WarehouseModel;
-            var offlineReport = PlayerOfflineReportHolder.Instance.PlayerOfflineReport;
-            var advertViewStateModel = AdvertViewStateModel.Instance;
+            var gameStateModel = GameStateModel.Instance;
 
-            gameStateModel.RemoveCurrentPopupIfNeeded();
+            if (gameStateModel.GameState == GameStateName.ReadyForStart
+                && gameStateModel.ShowingPopupModel.PopupType == PopupType.OfflineReport)
+            {
+                var playerModel = PlayerModelHolder.Instance.UserModel;
+                var userShopModel = playerModel.ShopModel;
+                var warehouseModel = userShopModel.WarehouseModel;
+                var offlineReport = PlayerOfflineReportHolder.Instance.PlayerOfflineReport;
+                var advertViewStateModel = AdvertViewStateModel.Instance;
 
-            var isX2ProfitAdsViewed = advertViewStateModel.IsWatched(AdvertTargetType.OfflineProfitX2);
-            var isX2ExpAdsViewed = advertViewStateModel.IsWatched(AdvertTargetType.OfflineExpX2);
-            var cashAmountToAdd = offlineReport.SellProfit * (isX2ProfitAdsViewed ? 2 : 1);
-            var expAmountToAdd = offlineReport.ExpFromSell * (isX2ExpAdsViewed ? 2 : 1);
+                gameStateModel.RemoveCurrentPopupIfNeeded();
 
-            warehouseModel.RemoveDeliveredProducts(offlineReport.SoldFromWarehouse, gameStateModel.ServerTime);
-            userShopModel.RemoveProducts(offlineReport.SoldFromShelfs);
-            playerModel.AddCash(cashAmountToAdd); //TODO Animate cash adding
-            playerModel.AddExp(expAmountToAdd); //TODO Animate exp adding ?
+                var isX2ProfitAdsViewed = advertViewStateModel.IsWatched(AdvertTargetType.OfflineProfitX2);
+                var isX2ExpAdsViewed = advertViewStateModel.IsWatched(AdvertTargetType.OfflineExpX2);
+                var cashAmountToAdd = offlineReport.SellProfit * (isX2ProfitAdsViewed ? 2 : 1);
+                var expAmountToAdd = offlineReport.ExpFromSell * (isX2ExpAdsViewed ? 2 : 1);
 
-            playerModel.ApplyExternalActions();
-            playerModel.ExternalActionsModel.Clear();
+                warehouseModel.RemoveDeliveredProducts(offlineReport.SoldFromWarehouse, gameStateModel.ServerTime);
+                userShopModel.RemoveProducts(offlineReport.SoldFromShelfs);
+                playerModel.AddCash(cashAmountToAdd); //TODO Animate cash adding
+                playerModel.AddExp(expAmountToAdd); //TODO Animate exp adding ?
 
-            advertViewStateModel.ResetTarget(AdvertTargetType.OfflineProfitX2);
+                playerModel.ApplyExternalActions();
+                playerModel.ExternalActionsModel.Clear();
 
-            gameStateModel.SetGameState(GameStateName.PlayerShopSimulation);
+                advertViewStateModel.ResetTarget(AdvertTargetType.OfflineProfitX2);
 
-            AnalyticsManager.Instance.SendCustom(AnalyticsManager.EventNameOfflineProfit,
-                ("cash", offlineReport.SellProfit), ("exp", offlineReport.ExpFromSell), ("ads_viewed", isX2ProfitAdsViewed));
-        }
-        else
-        {
-            gameStateModel.RemoveCurrentPopupIfNeeded();
+                gameStateModel.SetGameState(GameStateName.PlayerShopSimulation);
+
+                AnalyticsManager.Instance.SendCustom(AnalyticsManager.EventNameOfflineProfit,
+                    ("cash", offlineReport.SellProfit), ("exp", offlineReport.ExpFromSell), ("ads_viewed", isX2ProfitAdsViewed));
+            }
+            else
+            {
+                gameStateModel.RemoveCurrentPopupIfNeeded();
+            }
         }
     }
 }

@@ -1,11 +1,14 @@
 using Cysharp.Threading.Tasks;
 
-public interface IAsyncCommand
+namespace Src.Commands
 {
-    UniTask ExecuteAsync();
-}
+    public interface IAsyncCommand
+    {
+        UniTask ExecuteAsync();
+    }
 
-public interface IAsyncGameLoadCommand
-{
-    UniTask<bool> ExecuteAsync();
+    public interface IAsyncGameLoadCommand
+    {
+        UniTask<bool> ExecuteAsync();
+    }
 }

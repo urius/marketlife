@@ -1,19 +1,25 @@
+using Src.Common;
+using Src.Managers;
+using Src.Model;
 using UnityEngine;
 
-public struct HanleBankAdvertItemClickedCommand
+namespace Src.Commands
 {
-    public void Execute(bool isGold)
+    public struct HanleBankAdvertItemClickedCommand
     {
-        var advertStateModel = AdvertViewStateModel.Instance;
-        var dispatcher = Dispatcher.Instance;
-        var advertConfig = GameConfigManager.Instance.AdvertConfig;
-
-        var restWatchesCount = Mathf.Max(0, advertConfig.AdvertDefaultWatchesCount - advertStateModel.BankAdvertWatchesCount);
-        if (restWatchesCount > 0)
+        public void Execute(bool isGold)
         {
-            AnalyticsManager.Instance.SendCustom(AnalyticsManager.EventBankAdsViewClick, ("is_gold", isGold));
-            advertStateModel.PrepareTarget(isGold ? AdvertTargetType.BankGold : AdvertTargetType.BankCash);
-            dispatcher.RequestShowAdvert();
+            var advertStateModel = AdvertViewStateModel.Instance;
+            var dispatcher = Dispatcher.Instance;
+            var advertConfig = GameConfigManager.Instance.AdvertConfig;
+
+            var restWatchesCount = Mathf.Max(0, advertConfig.AdvertDefaultWatchesCount - advertStateModel.BankAdvertWatchesCount);
+            if (restWatchesCount > 0)
+            {
+                AnalyticsManager.Instance.SendCustom(AnalyticsManager.EventBankAdsViewClick, ("is_gold", isGold));
+                advertStateModel.PrepareTarget(isGold ? AdvertTargetType.BankGold : AdvertTargetType.BankCash);
+                dispatcher.RequestShowAdvert();
+            }
         }
     }
 }

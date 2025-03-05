@@ -1,54 +1,57 @@
 using System;
 using Cysharp.Threading.Tasks;
 
-public class PlayerModelHolder
+namespace Src.Model
 {
-    public static PlayerModelHolder Instance => _instance.Value;
-    private static Lazy<PlayerModelHolder> _instance = new Lazy<PlayerModelHolder>();
-
-    public event Action UserModelIsSet = delegate { };
-
-    private readonly UniTaskCompletionSource _setUidTcs = new UniTaskCompletionSource();
-    private readonly UniTaskCompletionSource _setUserModelTcs = new UniTaskCompletionSource();
-
-    public string Uid { get; private set; }
-    public SocialType SocialType { get; private set; }
-    public bool IsBuyInBankAllowed { get; private set; }
-    public string UserDataStr { get; private set; }
-    public UserModel UserModel { get; private set; }
-    public ShopModel ShopModel => UserModel.ShopModel;
-    public UniTask SetUidTask => _setUidTcs.Task;
-    public UniTask SetUserModelTask => _setUserModelTcs.Task;
-
-    public void SetBuyInBankAllowed(bool isAllowed)
+    public class PlayerModelHolder
     {
-        IsBuyInBankAllowed = isAllowed;
-    }
+        public static PlayerModelHolder Instance => _instance.Value;
+        private static Lazy<PlayerModelHolder> _instance = new Lazy<PlayerModelHolder>();
 
-    public void SetInitialData(string userUid, SocialType socialType)
-    {
-        SocialType = socialType;
-        Uid = userUid;
-        _setUidTcs.TrySetResult();
-    }
+        public event Action UserModelIsSet = delegate { };
 
-    public void SetUserModel(UserModel userModel)
-    {
-        UserModel = userModel;
+        private readonly UniTaskCompletionSource _setUidTcs = new UniTaskCompletionSource();
+        private readonly UniTaskCompletionSource _setUserModelTcs = new UniTaskCompletionSource();
+
+        public string Uid { get; private set; }
+        public SocialType SocialType { get; private set; }
+        public bool IsBuyInBankAllowed { get; private set; }
+        public string UserDataStr { get; private set; }
+        public UserModel UserModel { get; private set; }
+        public ShopModel ShopModel => UserModel.ShopModel;
+        public UniTask SetUidTask => _setUidTcs.Task;
+        public UniTask SetUserModelTask => _setUserModelTcs.Task;
+
+        public void SetBuyInBankAllowed(bool isAllowed)
+        {
+            IsBuyInBankAllowed = isAllowed;
+        }
+
+        public void SetInitialData(string userUid, SocialType socialType)
+        {
+            SocialType = socialType;
+            Uid = userUid;
+            _setUidTcs.TrySetResult();
+        }
+
+        public void SetUserModel(UserModel userModel)
+        {
+            UserModel = userModel;
         
-        _setUserModelTcs.TrySetResult();
-        UserModelIsSet();
+            _setUserModelTcs.TrySetResult();
+            UserModelIsSet();
+        }
+
+        public void SetUserDataRaw(string userDataStr)
+        {
+            UserDataStr = userDataStr;
+        }
     }
 
-    public void SetUserDataRaw(string userDataStr)
+    public enum SocialType
     {
-        UserDataStr = userDataStr;
+        Undefined,
+        VK,
+        YG,
     }
-}
-
-public enum SocialType
-{
-    Undefined,
-    VK,
-    YG,
 }

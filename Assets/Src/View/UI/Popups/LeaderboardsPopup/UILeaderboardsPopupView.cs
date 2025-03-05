@@ -1,5 +1,6 @@
-using Src.View.UI.Popups;
-
-public class UILeaderboardsPopupView : UITabbedContentPopupView
+namespace Src.View.UI.Popups.LeaderboardsPopup
 {
+    public class UILeaderboardsPopupView : UITabbedContentPopupView
+    {
+    }
 }

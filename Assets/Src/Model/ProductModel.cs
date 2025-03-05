@@ -1,52 +1,56 @@
 using System;
+using Src.Model.Configs;
 
-public class ProductModel
+namespace Src.Model
 {
-    public event Action<int> AmountChanged = delegate { };
-    public event Action<int> DeliveryTimeChanged = delegate { };
-
-    public readonly ProductConfig Config;
-
-    private int _amount = 1;
-    private int _deliverTime = 0;
-
-    public ProductModel(ProductConfig config)
+    public class ProductModel
     {
-        Config = config;
-    }
+        public event Action<int> AmountChanged = delegate { };
+        public event Action<int> DeliveryTimeChanged = delegate { };
 
-    public ProductModel(ProductConfig config, int amount) : this(config)
-    {
-        _amount = amount;
-    }
+        public readonly ProductConfig Config;
 
-    public ProductModel(ProductConfig config, int amount, int deliverTime) : this(config, amount)
-    {
-        _deliverTime = deliverTime;
-    }
+        private int _amount = 1;
+        private int _deliverTime = 0;
 
-    public int NumericId => Config.NumericId;
-    public int Amount
-    {
-        get => _amount;
-        set
+        public ProductModel(ProductConfig config)
         {
-            var previousValue = _amount;
-            _amount = value;
-            AmountChanged(value - previousValue);
+            Config = config;
         }
-    }
 
-    public int DeliverTime
-    {
-        get => _deliverTime;
-        set
+        public ProductModel(ProductConfig config, int amount) : this(config)
         {
-            var previousValue = _deliverTime;
-            _deliverTime = value;
-            DeliveryTimeChanged(value - previousValue);
+            _amount = amount;
         }
-    }
 
-    public int SellPrice => Config.GetSellPriceForAmount(Amount);
+        public ProductModel(ProductConfig config, int amount, int deliverTime) : this(config, amount)
+        {
+            _deliverTime = deliverTime;
+        }
+
+        public int NumericId => Config.NumericId;
+        public int Amount
+        {
+            get => _amount;
+            set
+            {
+                var previousValue = _amount;
+                _amount = value;
+                AmountChanged(value - previousValue);
+            }
+        }
+
+        public int DeliverTime
+        {
+            get => _deliverTime;
+            set
+            {
+                var previousValue = _deliverTime;
+                _deliverTime = value;
+                DeliveryTimeChanged(value - previousValue);
+            }
+        }
+
+        public int SellPrice => Config.GetSellPriceForAmount(Amount);
+    }
 }

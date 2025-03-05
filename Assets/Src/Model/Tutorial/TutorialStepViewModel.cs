@@ -1,11 +1,14 @@
-public class TutorialStepViewModel
+namespace Src.Model.Tutorial
 {
-    public readonly int StepIndex;
-    public readonly bool IsImmediate;
-
-    public TutorialStepViewModel(int stepIndex, bool isImmediate)
+    public class TutorialStepViewModel
     {
-        StepIndex = stepIndex;
-        IsImmediate = isImmediate;
+        public readonly int StepIndex;
+        public readonly bool IsImmediate;
+
+        public TutorialStepViewModel(int stepIndex, bool isImmediate)
+        {
+            StepIndex = stepIndex;
+            IsImmediate = isImmediate;
+        }
     }
 }

@@ -1,13 +1,17 @@
+using Src.View.UI.Common;
 using UnityEngine;
 
-public class UIBankPopupAdvertItemView : UIBankPopupItemViewBase
+namespace Src.View.UI.Popups.Bank_Popup
 {
-    [SerializeField] private UINotificationCounterView _notificationCiunter;
-    public UINotificationCounterView NotificationCounter => _notificationCiunter;
-
-    public override void SetAvailable(bool isAvailable)
+    public class UIBankPopupAdvertItemView : UIBankPopupItemViewBase
     {
-        base.SetAvailable(isAvailable);
-        _notificationCiunter.gameObject.SetActive(isAvailable);
+        [SerializeField] private UINotificationCounterView _notificationCiunter;
+        public UINotificationCounterView NotificationCounter => _notificationCiunter;
+
+        public override void SetAvailable(bool isAvailable)
+        {
+            base.SetAvailable(isAvailable);
+            _notificationCiunter.gameObject.SetActive(isAvailable);
+        }
     }
 }

@@ -1,16 +1,22 @@
-public struct SpendMoneyCommand
+using Src.Common;
+using Src.Model;
+
+namespace Src.Commands
 {
-    public bool Execute(string priceStr)
+    public struct SpendMoneyCommand
     {
-        var playerModel = PlayerModelHolder.Instance.UserModel;
-        if (playerModel.TrySpendMoney(priceStr))
+        public bool Execute(string priceStr)
         {
-            return true;
-        }
-        else
-        {
-            Dispatcher.Instance.NotifyNotEnoughtMoney();
-            return false;
+            var playerModel = PlayerModelHolder.Instance.UserModel;
+            if (playerModel.TrySpendMoney(priceStr))
+            {
+                return true;
+            }
+            else
+            {
+                Dispatcher.Instance.NotifyNotEnoughtMoney();
+                return false;
+            }
         }
     }
 }

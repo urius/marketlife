@@ -1,47 +1,54 @@
 using System.Collections.Generic;
+using Src.Common;
+using Src.Managers;
+using Src.Model;
+using Src.Model.Configs;
 
-public class UIBottomPanelWallsTabMediator : UIBottomPanelInteriorModeScrollItemsTabMediatorBase<ItemConfig<ShopDecorationConfigDto>>
+namespace Src.View.UI.Bottom_Panel.Tabs
 {
-    private readonly IWallsConfig _wallsConfig;
-    private readonly SpritesProvider _spritesProvider;
-    private readonly Dispatcher _dispatcher;
-    private readonly UserModel _playerModel;
-
-    public UIBottomPanelWallsTabMediator(BottomPanelView view)
-        : base(view)
+    public class UIBottomPanelWallsTabMediator : UIBottomPanelInteriorModeScrollItemsTabMediatorBase<ItemConfig<ShopDecorationConfigDto>>
     {
-        _wallsConfig = GameConfigManager.Instance.MainConfig;
-        _spritesProvider = SpritesProvider.Instance;
-        _dispatcher = Dispatcher.Instance;
-        _playerModel = PlayerModelHolder.Instance.UserModel;
-    }
+        private readonly IWallsConfig _wallsConfig;
+        private readonly SpritesProvider _spritesProvider;
+        private readonly Dispatcher _dispatcher;
+        private readonly UserModel _playerModel;
 
-    public override void Mediate()
-    {
-        base.Mediate();
-        View.SetButtonSelected(View.InteriorWallsButton);
-    }
+        public UIBottomPanelWallsTabMediator(BottomPanelView view)
+            : base(view)
+        {
+            _wallsConfig = GameConfigManager.Instance.MainConfig;
+            _spritesProvider = SpritesProvider.Instance;
+            _dispatcher = Dispatcher.Instance;
+            _playerModel = PlayerModelHolder.Instance.UserModel;
+        }
 
-    public override void Unmediate()
-    {
-        View.SetButtonUnselected(View.InteriorWallsButton);
-        base.Unmediate();
-    }
+        public override void Mediate()
+        {
+            base.Mediate();
+            View.SetButtonSelected(View.InteriorWallsButton);
+        }
 
-    protected override IEnumerable<ItemConfig<ShopDecorationConfigDto>> GetViewModelsToShow()
-    {
-        return _wallsConfig.GetWallsConfigsForLevel(_playerModel.ProgressModel.Level);
-    }
+        public override void Unmediate()
+        {
+            View.SetButtonUnselected(View.InteriorWallsButton);
+            base.Unmediate();
+        }
 
-    protected override void SetupItem(UIBottomPanelScrollItemView itemView, ItemConfig<ShopDecorationConfigDto> viewModel)
-    {
-        itemView.SetupIconSize(110);
-        itemView.SetImage(_spritesProvider.GetWallSprite(viewModel.NumericId));
-        itemView.SetPrice(viewModel.Price);
-    }
+        protected override IEnumerable<ItemConfig<ShopDecorationConfigDto>> GetViewModelsToShow()
+        {
+            return _wallsConfig.GetWallsConfigsForLevel(_playerModel.ProgressModel.Level);
+        }
 
-    protected override void HandleClick(ItemConfig<ShopDecorationConfigDto> viewModel)
-    {
-        _dispatcher.UIBottomPanelPlaceWallClicked(viewModel.NumericId);
+        protected override void SetupItem(UIBottomPanelScrollItemView itemView, ItemConfig<ShopDecorationConfigDto> viewModel)
+        {
+            itemView.SetupIconSize(110);
+            itemView.SetImage(_spritesProvider.GetWallSprite(viewModel.NumericId));
+            itemView.SetPrice(viewModel.Price);
+        }
+
+        protected override void HandleClick(ItemConfig<ShopDecorationConfigDto> viewModel)
+        {
+            _dispatcher.UIBottomPanelPlaceWallClicked(viewModel.NumericId);
+        }
     }
 }

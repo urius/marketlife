@@ -1,34 +1,43 @@
-public class DailyMissionUpgradeWarehouseVolumeFactory : DailyMissionFactoryBase<DailyMissionUpgradeWarehouseVolumeProcessor>
+using Src.Managers;
+using Src.Model;
+using Src.Model.Configs;
+using Src.Model.Missions;
+using Src.Systems.DailyMIssions.Processors;
+
+namespace Src.Systems.DailyMIssions.MIssionsFactories
 {
-    protected override string Key => MissionKeys.UpgradeWarehouseVolume;
-
-    public override bool CanAdd()
+    public class DailyMissionUpgradeWarehouseVolumeFactory : DailyMissionFactoryBase<DailyMissionUpgradeWarehouseVolumeProcessor>
     {
-        return base.CanAdd()
-            && ExtraCanAddConditions();
-    }
+        protected override string Key => MissionKeys.UpgradeWarehouseVolume;
 
-    public override DailyMissionModel CreateModel(float complexityMultiplier)
-    {
-        var upgradesConfig = GameConfigManager.Instance.UpgradesConfig;
-        var playerModel = PlayerModelHolder.Instance.UserModel;
-        var whVolume = playerModel.ShopModel.WarehouseModel.Volume;
-        var nextUpgrade = upgradesConfig.GetNextUpgradeForValue(UpgradeType.WarehouseVolume, whVolume);
-        if (nextUpgrade != null)
+        public override bool CanAdd()
         {
-            return new DailyMissionModel(Key, whVolume, nextUpgrade.Value, whVolume, ChooseReward(complexityMultiplier));
+            return base.CanAdd()
+                   && ExtraCanAddConditions();
         }
-        else
-        {
-            return null;
-        }
-    }
 
-    private bool ExtraCanAddConditions()
-    {
-        var upgradesConfig = GameConfigManager.Instance.UpgradesConfig;
-        var playerModel = PlayerModelHolder.Instance.UserModel;
-        var nextUpgrade = upgradesConfig.GetNextUpgradeForValue(UpgradeType.WarehouseVolume, playerModel.ShopModel.WarehouseModel.Volume);
-        return nextUpgrade != null;
+        public override DailyMissionModel CreateModel(float complexityMultiplier)
+        {
+            var upgradesConfig = GameConfigManager.Instance.UpgradesConfig;
+            var playerModel = PlayerModelHolder.Instance.UserModel;
+            var whVolume = playerModel.ShopModel.WarehouseModel.Volume;
+            var nextUpgrade = upgradesConfig.GetNextUpgradeForValue(UpgradeType.WarehouseVolume, whVolume);
+            if (nextUpgrade != null)
+            {
+                return new DailyMissionModel(Key, whVolume, nextUpgrade.Value, whVolume, ChooseReward(complexityMultiplier));
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private bool ExtraCanAddConditions()
+        {
+            var upgradesConfig = GameConfigManager.Instance.UpgradesConfig;
+            var playerModel = PlayerModelHolder.Instance.UserModel;
+            var nextUpgrade = upgradesConfig.GetNextUpgradeForValue(UpgradeType.WarehouseVolume, playerModel.ShopModel.WarehouseModel.Volume);
+            return nextUpgrade != null;
+        }
     }
 }

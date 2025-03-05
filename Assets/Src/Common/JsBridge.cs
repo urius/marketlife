@@ -2,44 +2,47 @@ using System.Runtime.InteropServices;
 using Newtonsoft.Json;
 using UnityEngine;
 
-public class JsBridge : MonoBehaviour
+namespace Src.Common
 {
-    private Dispatcher _dispatcher;
-
-    [DllImport("__Internal")]
-    private static extern void SendToJs(string str);
-
-    public static JsBridge Instance { get; private set; }
-
-    public void Awake()
+    public class JsBridge : MonoBehaviour
     {
-        Debug.Log("JsBridge Awaken");
+        private Dispatcher _dispatcher;
 
-        Instance = this;
-        _dispatcher = Dispatcher.Instance;
-    }
+        [DllImport("__Internal")]
+        private static extern void SendToJs(string str);
 
-    public void JsCommandMessage(string payload)
-    {
-        _dispatcher.JsIncomingMessage(payload);
-    }
+        public static JsBridge Instance { get; private set; }
 
-    public void SendCommandToJs(string command, object payload)
-    {
-        Debug.Log("Unity->Js: command = " + command);
-
-        var dto = new UnityToJsCommonCommandDto()
+        public void Awake()
         {
-            command = command,
-            payload = payload,
-        };
-        var dtoStr = JsonConvert.SerializeObject(dto);
-        SendToJs(dtoStr);
-    }
-}
+            Debug.Log("JsBridge Awaken");
 
-public struct UnityToJsCommonCommandDto
-{
-    public string command;
-    public object payload;
+            Instance = this;
+            _dispatcher = Dispatcher.Instance;
+        }
+
+        public void JsCommandMessage(string payload)
+        {
+            _dispatcher.JsIncomingMessage(payload);
+        }
+
+        public void SendCommandToJs(string command, object payload)
+        {
+            Debug.Log("Unity->Js: command = " + command);
+
+            var dto = new UnityToJsCommonCommandDto()
+            {
+                command = command,
+                payload = payload,
+            };
+            var dtoStr = JsonConvert.SerializeObject(dto);
+            SendToJs(dtoStr);
+        }
+    }
+
+    public struct UnityToJsCommonCommandDto
+    {
+        public string command;
+        public object payload;
+    }
 }

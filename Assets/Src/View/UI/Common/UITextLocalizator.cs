@@ -1,29 +1,34 @@
+using Src.Managers;
+using Src.Model;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UITextLocalizator : MonoBehaviour
+namespace Src.View.UI.Common
 {
-    [SerializeField] private string _localizationKey;
-    [SerializeField] private Text _text;
-    [SerializeField] private TMP_Text _tmpText;
-
-    public async void Start()
+    public class UITextLocalizator : MonoBehaviour
     {
-        await GameStateModel.Instance.GameDataLoadedTask;
+        [SerializeField] private string _localizationKey;
+        [SerializeField] private Text _text;
+        [SerializeField] private TMP_Text _tmpText;
 
-        var textStr = LocalizationManager.Instance.GetLocalization(_localizationKey);
-
-        if (_text != null)
+        public async void Start()
         {
-            _text.text = textStr;
-        }
+            await GameStateModel.Instance.GameDataLoadedTask;
 
-        if (_tmpText != null)
-        {
-            _tmpText.text = textStr;
-        }
+            var textStr = LocalizationManager.Instance.GetLocalization(_localizationKey);
 
-        Destroy(this);
+            if (_text != null)
+            {
+                _text.text = textStr;
+            }
+
+            if (_tmpText != null)
+            {
+                _tmpText.text = textStr;
+            }
+
+            Destroy(this);
+        }
     }
 }

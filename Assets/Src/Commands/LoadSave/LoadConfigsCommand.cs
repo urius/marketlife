@@ -1,14 +1,19 @@
 using Cysharp.Threading.Tasks;
+using Src.Managers;
+using Src.Model;
 
-public struct LoadConfigsCommand : IAsyncGameLoadCommand
+namespace Src.Commands.LoadSave
 {
-    public async UniTask<bool> ExecuteAsync()
+    public struct LoadConfigsCommand : IAsyncGameLoadCommand
     {
-        var result = true;
-        var abDataHolder = ABDataHolder.Instance;
+        public async UniTask<bool> ExecuteAsync()
+        {
+            var result = true;
+            var abDataHolder = ABDataHolder.Instance;
 
-        result &= await GameConfigManager.Instance.LoadMainConfigAsync(abDataHolder.MainConfigPostfix);
-        result &= await new LoadBankConfigCommand().ExecuteAsync();
-        return result;
+            result &= await GameConfigManager.Instance.LoadMainConfigAsync(abDataHolder.MainConfigPostfix);
+            result &= await new LoadBankConfigCommand().ExecuteAsync();
+            return result;
+        }
     }
 }

@@ -1,77 +1,75 @@
-using System;
+using Src.Common;
+using Src.Managers;
+using Src.Model;
 using UnityEngine;
 
-public class UIOldGameCompensationPopupMediator : IMediator
+namespace Src.View.UI.Popups.OldGameCompensationPopup
 {
-    private readonly RectTransform _contentTransform;
-    private readonly OldGameCompensationHolder _compensationHolder;
-    private readonly PrefabsHolder _prefabsHolder;
-    private readonly Dispatcher _dispatcher;
-    private readonly LocalizationManager _loc;
-
-    //
-    private UIOldGameCompensationPopupView _popupView;
-
-    public UIOldGameCompensationPopupMediator(RectTransform contentTransform)
+    public class UIOldGameCompensationPopupMediator : IMediator
     {
-        _contentTransform = contentTransform;
+        private readonly RectTransform _contentTransform;
+        private readonly OldGameCompensationHolder _compensationHolder;
+        private readonly PrefabsHolder _prefabsHolder;
+        private readonly Dispatcher _dispatcher;
+        private readonly LocalizationManager _loc;
 
-        _compensationHolder = OldGameCompensationHolder.Instance;
-        _prefabsHolder = PrefabsHolder.Instance;
-        _dispatcher = Dispatcher.Instance;
-        _loc = LocalizationManager.Instance;
-    }
+        //
+        private UIOldGameCompensationPopupView _popupView;
 
-    public async void Mediate()
-    {
-        var popupGo = GameObject.Instantiate(_prefabsHolder.UIOldGameCompensationPopupPrefab, _contentTransform);
-        _popupView = popupGo.GetComponent<UIOldGameCompensationPopupView>();
+        public UIOldGameCompensationPopupMediator(RectTransform contentTransform)
+        {
+            _contentTransform = contentTransform;
 
-        SetupPopup();
+            _compensationHolder = OldGameCompensationHolder.Instance;
+            _prefabsHolder = PrefabsHolder.Instance;
+            _dispatcher = Dispatcher.Instance;
+            _loc = LocalizationManager.Instance;
+        }
 
-        await _popupView.Appear2Async();
+        public async void Mediate()
+        {
+            var popupGo = GameObject.Instantiate(_prefabsHolder.UIOldGameCompensationPopupPrefab, _contentTransform);
+            _popupView = popupGo.GetComponent<UIOldGameCompensationPopupView>();
 
-        Activate();
-    }
+            SetupPopup();
 
-    public async void Unmediate()
-    {
-        Deactivate();
+            await _popupView.Appear2Async();
 
-        await _popupView.Disppear2Async();
+            Activate();
+        }
 
-        GameObject.Destroy(_popupView.gameObject);
-    }
+        public async void Unmediate()
+        {
+            Deactivate();
 
-    private void Activate()
-    {
-        _popupView.ButtonCloseClicked += OnButtonCloseClicked;
-        _popupView.TakeClicked += OnTakeClicked;
-    }
+            await _popupView.Disppear2Async();
 
-    private void Deactivate()
-    {
-        _popupView.ButtonCloseClicked -= OnButtonCloseClicked;
-        _popupView.TakeClicked -= OnTakeClicked;
-    }
+            GameObject.Destroy(_popupView.gameObject);
+        }
 
-    private void OnButtonCloseClicked()
-    {
-        _dispatcher.UIRequestRemoveCurrentPopup();
-    }
+        private void Activate()
+        {
+            _popupView.ButtonCloseClicked += OnButtonCloseClicked;
+        }
 
-    private void OnTakeClicked()
-    {
-        _dispatcher.UICompensationPopupTakeClicked(_popupView.TakeButton.transform.position);
-    }
+        private void Deactivate()
+        {
+            _popupView.ButtonCloseClicked -= OnButtonCloseClicked;
+        }
 
-    private void SetupPopup()
-    {
-        _popupView.SetTitleText(_loc.GetLocalization(LocalizationKeys.PopupCompensationTitle));
-        _popupView.SetMessageText(_loc.GetLocalization(LocalizationKeys.PopupCompensationMessage));
+        private void OnButtonCloseClicked()
+        {
+            _dispatcher.UIRequestRemoveCurrentPopup();
+        }
 
-        var compensationData = _compensationHolder.Compensation;
-        _popupView.SetGoldText($"+{FormattingHelper.ToCommaSeparatedNumber(compensationData.AmountGold)}");
-        _popupView.SetCashText($"+{FormattingHelper.ToCommaSeparatedNumber(compensationData.AmountCash)}");
+        private void SetupPopup()
+        {
+            _popupView.SetTitleText(_loc.GetLocalization(LocalizationKeys.PopupCompensationTitle));
+            _popupView.SetMessageText(_loc.GetLocalization(LocalizationKeys.PopupCompensationMessage));
+
+            var compensationData = _compensationHolder.Compensation;
+            _popupView.SetGoldText($"+{FormattingHelper.ToCommaSeparatedNumber(compensationData.AmountGold)}");
+            _popupView.SetCashText($"+{FormattingHelper.ToCommaSeparatedNumber(compensationData.AmountCash)}");
+        }
     }
 }

@@ -1,64 +1,66 @@
 using System;
 
-public class LoadGameProgressModel
+namespace Src.Model
 {
-    public static readonly LoadGameProgressModel Instance = new LoadGameProgressModel();
-
-    public event Action<float> ProgressChanged = delegate { };
-    public event Action<LoadGamePhase> PhaseChanged = delegate { };
-    public event Action ErrorHappened = delegate { };
-
-    private int _partsNumTotal = 1;
-    private int _partsNumLoaded = 0;
-    private float _currentPartLoadProgress = 0;
-
-    public float LoadProgress => (_partsNumLoaded + _currentPartLoadProgress) / _partsNumTotal;
-    public LoadGamePhase PhaseName { get; private set; }
-    public bool IsError { get; private set; } = false;
-
-    public void SetupPartsCount(int partsCount)
+    public class LoadGameProgressModel
     {
-        _partsNumTotal = partsCount;
-    }
+        public static readonly LoadGameProgressModel Instance = new LoadGameProgressModel();
 
-    public void SetCurrentPhaseName(LoadGamePhase name)
-    {
-        PhaseName = name;
-        PhaseChanged(PhaseName);
-    }
+        public event Action<float> ProgressChanged = delegate { };
+        public event Action<LoadGamePhase> PhaseChanged = delegate { };
+        public event Action ErrorHappened = delegate { };
 
-    public void SetCurrentPartLoadProgress(float progress)
-    {
-        _currentPartLoadProgress = progress;
-        ProgressChanged(LoadProgress);
-    }
+        private int _partsNumTotal = 1;
+        private int _partsNumLoaded = 0;
+        private float _currentPartLoadProgress = 0;
 
-    public void SetCurrentPartLoaded()
-    {
-        _partsNumLoaded++;
-        _currentPartLoadProgress = 0;
-        if (_partsNumLoaded > _partsNumTotal)
+        public float LoadProgress => (_partsNumLoaded + _currentPartLoadProgress) / _partsNumTotal;
+        public LoadGamePhase PhaseName { get; private set; }
+        public bool IsError { get; private set; } = false;
+
+        public void SetupPartsCount(int partsCount)
         {
-            _partsNumTotal = _partsNumLoaded;
+            _partsNumTotal = partsCount;
         }
-        ProgressChanged(LoadProgress);
+
+        public void SetCurrentPhaseName(LoadGamePhase name)
+        {
+            PhaseName = name;
+            PhaseChanged(PhaseName);
+        }
+
+        public void SetCurrentPartLoadProgress(float progress)
+        {
+            _currentPartLoadProgress = progress;
+            ProgressChanged(LoadProgress);
+        }
+
+        public void SetCurrentPartLoaded()
+        {
+            _partsNumLoaded++;
+            _currentPartLoadProgress = 0;
+            if (_partsNumLoaded > _partsNumTotal)
+            {
+                _partsNumTotal = _partsNumLoaded;
+            }
+            ProgressChanged(LoadProgress);
+        }
+
+        public void SetErrorState()
+        {
+            IsError = true;
+            ErrorHappened();
+        }
     }
 
-    public void SetErrorState()
+    public enum LoadGamePhase
     {
-        IsError = true;
-        ErrorHappened();
+        Undefined,
+        LoadTime,
+        LoadShopData,
+        LoadLocalization,
+        LoadConfigs,
+        LoadAssets,
+        CreatePlayerModel,
     }
-}
-
-public enum LoadGamePhase
-{
-    Undefined,
-    LoadTime,
-    LoadShopData,
-    LoadLocalization,
-    LoadConfigs,
-    LoadAssets,
-    CreatePlayerModel,
-    LoadCompensationData,
 }

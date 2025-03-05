@@ -1,30 +1,35 @@
+using Src.Common;
+using Src.Managers;
 using UnityEngine;
 
-public class TutorialShowSaveIconStepMediator : TutorialStepMediatorBase
+namespace Src.View.UI.Tutorial.StepsMediators
 {
-    private readonly LocalizationManager _loc;
-    private readonly Dispatcher _dispatcher;
-
-    public TutorialShowSaveIconStepMediator(RectTransform parentTransform)
-        : base(parentTransform)
+    public class TutorialShowSaveIconStepMediator : TutorialStepMediatorBase
     {
-        _loc = LocalizationManager.Instance;
-        _dispatcher = Dispatcher.Instance;
-    }
+        private readonly LocalizationManager _loc;
+        private readonly Dispatcher _dispatcher;
 
-    public override void Mediate()
-    {
-        base.Mediate();
-        View.SetButtonText(_loc.GetLocalization($"{LocalizationKeys.TutorialButtonPrefix}{ViewModel.StepIndex}"));
-        View.SetQuadrant(1);
+        public TutorialShowSaveIconStepMediator(RectTransform parentTransform)
+            : base(parentTransform)
+        {
+            _loc = LocalizationManager.Instance;
+            _dispatcher = Dispatcher.Instance;
+        }
 
-        _dispatcher.TutorialSaveStateChanged(true);
-        HighlightUIElement(TutorialUIElement.TopSaveIcon, 1.2f);
-    }
+        public override void Mediate()
+        {
+            base.Mediate();
+            View.SetButtonText(_loc.GetLocalization($"{LocalizationKeys.TutorialButtonPrefix}{ViewModel.StepIndex}"));
+            View.SetQuadrant(1);
 
-    public override void Unmediate()
-    {
-        _dispatcher.TutorialSaveStateChanged(false);
-        base.Unmediate();
+            _dispatcher.TutorialSaveStateChanged(true);
+            HighlightUIElement(TutorialUIElement.TopSaveIcon, 1.2f);
+        }
+
+        public override void Unmediate()
+        {
+            _dispatcher.TutorialSaveStateChanged(false);
+            base.Unmediate();
+        }
     }
 }

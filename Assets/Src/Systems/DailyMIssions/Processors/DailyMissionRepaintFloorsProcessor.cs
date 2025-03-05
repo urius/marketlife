@@ -1,26 +1,30 @@
+using Src.Model;
 using UnityEngine;
 
-public class DailyMissionRepaintFloorsProcessor : DailyMissionProcessorBase
+namespace Src.Systems.DailyMIssions.Processors
 {
-    private readonly ShopModel _playerShopModel;
-
-    public DailyMissionRepaintFloorsProcessor()
+    public class DailyMissionRepaintFloorsProcessor : DailyMissionProcessorBase
     {
-        _playerShopModel = PlayerModelHolder.Instance.ShopModel;
-    }
+        private readonly ShopModel _playerShopModel;
 
-    public override void Start()
-    {
-        _playerShopModel.ShopDesign.FloorChanged += OnFloorChanged;
-    }
+        public DailyMissionRepaintFloorsProcessor()
+        {
+            _playerShopModel = PlayerModelHolder.Instance.ShopModel;
+        }
 
-    public override void Stop()
-    {
-        _playerShopModel.ShopDesign.FloorChanged -= OnFloorChanged;
-    }
+        public override void Start()
+        {
+            _playerShopModel.ShopDesign.FloorChanged += OnFloorChanged;
+        }
 
-    private void OnFloorChanged(Vector2Int coords, int floorId)
-    {
-        MissionModel.AddValue(1);
+        public override void Stop()
+        {
+            _playerShopModel.ShopDesign.FloorChanged -= OnFloorChanged;
+        }
+
+        private void OnFloorChanged(Vector2Int coords, int floorId)
+        {
+            MissionModel.AddValue(1);
+        }
     }
 }

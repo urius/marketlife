@@ -1,31 +1,34 @@
 using System;
 
-public abstract class PopupViewModelBase : IDisposable
+namespace Src.Model.Popups
 {
-    public abstract PopupType PopupType { get; }
-
-    public virtual void Dispose()
+    public abstract class PopupViewModelBase : IDisposable
     {
-    }
-}
+        public abstract PopupType PopupType { get; }
 
-public enum PopupType
-{
-    Unknown,
-    Confirm,
-    OrderProduct,
-    ShelfContent,
-    WarehouseForShelf,
-    Warehouse,
-    Upgrades,
-    OfflineReport,
-    LevelUp,
-    Bank,
-    OldGameCompensation,
-    Error,
-    DailyBonus,
-    Billboard,
-    CashDesk,
-    DailyMissions,
-    Leaderboards,
+        public virtual void Dispose()
+        {
+        }
+    }
+
+    public enum PopupType
+    {
+        Unknown,
+        Confirm,
+        OrderProduct,
+        ShelfContent,
+        WarehouseForShelf,
+        Warehouse,
+        Upgrades,
+        OfflineReport,
+        LevelUp,
+        Bank,
+        OldGameCompensation,
+        Error,
+        DailyBonus,
+        Billboard,
+        CashDesk,
+        DailyMissions,
+        Leaderboards,
+    }
 }

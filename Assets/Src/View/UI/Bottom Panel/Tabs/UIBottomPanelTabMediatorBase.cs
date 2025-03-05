@@ -1,12 +1,16 @@
+using Src.View.UI.Common;
 using UnityEngine;
 
-public class UIBottomPanelTabMediatorBase : UINotMonoMediatorBase
+namespace Src.View.UI.Bottom_Panel.Tabs
 {
-    protected readonly BottomPanelView View;
-
-    public UIBottomPanelTabMediatorBase(BottomPanelView view)
-        : base(view.transform as RectTransform)
+    public class UIBottomPanelTabMediatorBase : UINotMonoMediatorBase
     {
-        View = view;
+        protected readonly BottomPanelView View;
+
+        public UIBottomPanelTabMediatorBase(BottomPanelView view)
+            : base(view.transform as RectTransform)
+        {
+            View = view;
+        }
     }
 }

@@ -1,18 +1,23 @@
-public struct BottomPanelHandleBackClickCommand
+using Src.Model;
+
+namespace Src.Commands
 {
-    public void Execute()
+    public struct BottomPanelHandleBackClickCommand
     {
-        var gameStateModel = GameStateModel.Instance;
-        var playerModelHolder = PlayerModelHolder.Instance;
-        switch (gameStateModel.GameState)
+        public void Execute()
         {
-            case GameStateName.PlayerShopInterior:
-                gameStateModel.SetGameState(GameStateName.PlayerShopSimulation);
-                break;
-            case GameStateName.ShopFriend:
-                gameStateModel.SetViewingUserModel(playerModelHolder.UserModel);
-                gameStateModel.SetGameState(GameStateName.PlayerShopSimulation);
-                break;
+            var gameStateModel = GameStateModel.Instance;
+            var playerModelHolder = PlayerModelHolder.Instance;
+            switch (gameStateModel.GameState)
+            {
+                case GameStateName.PlayerShopInterior:
+                    gameStateModel.SetGameState(GameStateName.PlayerShopSimulation);
+                    break;
+                case GameStateName.ShopFriend:
+                    gameStateModel.SetViewingUserModel(playerModelHolder.UserModel);
+                    gameStateModel.SetGameState(GameStateName.PlayerShopSimulation);
+                    break;
+            }
         }
     }
 }

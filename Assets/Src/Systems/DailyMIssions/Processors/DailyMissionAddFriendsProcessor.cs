@@ -1,40 +1,43 @@
-using System;
+using Src.Model;
 
-public class DailyMissionAddFriendsProcessor : DailyMissionProcessorBase
+namespace Src.Systems.DailyMIssions.Processors
 {
-    private readonly GameStateModel _gameStateModel;
-    private readonly FriendsDataHolder _friendsDataHolder;
-
-    public DailyMissionAddFriendsProcessor()
+    public class DailyMissionAddFriendsProcessor : DailyMissionProcessorBase
     {
-        _gameStateModel = GameStateModel.Instance;
-        _friendsDataHolder = FriendsDataHolder.Instance;
-    }
+        private readonly GameStateModel _gameStateModel;
+        private readonly FriendsDataHolder _friendsDataHolder;
 
-    public override async void Start()
-    {
-        await _friendsDataHolder.FriendsDataSetupTask;
-        _gameStateModel.GameStateChanged += OnGameStateChanged;
-        Update();
-    }
+        public DailyMissionAddFriendsProcessor()
+        {
+            _gameStateModel = GameStateModel.Instance;
+            _friendsDataHolder = FriendsDataHolder.Instance;
+        }
 
-    public override void Stop()
-    {
-        _gameStateModel.GameStateChanged -= OnGameStateChanged;
-    }
+        public override async void Start()
+        {
+            await _friendsDataHolder.FriendsDataSetupTask;
+            _gameStateModel.GameStateChanged += OnGameStateChanged;
+            Update();
+        }
 
-    private void OnGameStateChanged(GameStateName prevState, GameStateName currentState)
-    {
-        Update();
-    }
-
-    private void Update()
-    {
-        if (_gameStateModel.IsPlayingState
-            && _friendsDataHolder.FriendsDataIsSet)
+        public override void Stop()
         {
             _gameStateModel.GameStateChanged -= OnGameStateChanged;
-            MissionModel.SetValue(_friendsDataHolder.InGameFriendsCount);
+        }
+
+        private void OnGameStateChanged(GameStateName prevState, GameStateName currentState)
+        {
+            Update();
+        }
+
+        private void Update()
+        {
+            if (_gameStateModel.IsPlayingState
+                && _friendsDataHolder.FriendsDataIsSet)
+            {
+                _gameStateModel.GameStateChanged -= OnGameStateChanged;
+                MissionModel.SetValue(_friendsDataHolder.InGameFriendsCount);
+            }
         }
     }
 }

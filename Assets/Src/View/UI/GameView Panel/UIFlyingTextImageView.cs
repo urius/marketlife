@@ -1,19 +1,23 @@
+using Src.Common_Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIFlyingTextImageView : UIFlyingTextView
+namespace Src.View.UI.GameView_Panel
 {
-    [SerializeField] private Image _image;
-
-    public void SetImageSprite(Sprite sprite)
+    public class UIFlyingTextImageView : UIFlyingTextView
     {
-        _image.sprite = sprite;
-    }
+        [SerializeField] private Image _image;
 
-    public override void SetAlpha(float alpha)
-    {
-        base.SetAlpha(alpha);
+        public void SetImageSprite(Sprite sprite)
+        {
+            _image.sprite = sprite;
+        }
 
-        _image.color = _image.color.SetAlpha(alpha);
+        public override void SetAlpha(float alpha)
+        {
+            base.SetAlpha(alpha);
+
+            _image.color = _image.color.SetAlpha(alpha);
+        }
     }
 }

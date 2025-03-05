@@ -1,8 +1,14 @@
-public struct UIShelfContentAddProductClicked
+using Src.Model;
+using Src.Model.Popups;
+
+namespace Src.Commands
 {
-    public void Execute(ShelfContentPopupViewModel popupModel, int shelfSlotIndex)
+    public struct UIShelfContentAddProductClicked
     {
-        var gameStateModel = GameStateModel.Instance;
-        gameStateModel.ShowPopup(new WarehousePopupForShelfViewModel(popupModel.ShelfModel, shelfSlotIndex));
+        public void Execute(ShelfContentPopupViewModel popupModel, int shelfSlotIndex)
+        {
+            var gameStateModel = GameStateModel.Instance;
+            gameStateModel.ShowPopup(new WarehousePopupForShelfViewModel(popupModel.ShelfModel, shelfSlotIndex));
+        }
     }
 }

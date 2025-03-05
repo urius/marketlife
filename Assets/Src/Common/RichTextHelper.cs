@@ -1,4 +1,4 @@
-namespace View.Helpers
+namespace Src.Common
 {
     public abstract class RichTextHelper
     {

@@ -1,138 +1,144 @@
+using Src.Common;
+using Src.Model;
+using Src.Model.ShopObjects;
 using UnityEngine;
 
-public abstract class ShopObjectMediatorBase
+namespace Src.View.Gameplay.Shop_Objects
 {
-    protected readonly Transform ParentTransform;
-    protected readonly ShopObjectModelBase Model;
-
-    private readonly bool _hasProfileSide;
-    private readonly (GameObject, GameObject) _prefabs;
-
-    protected ShopObjectViewBase CurrentView => _currentView;
-
-    private ShopObjectViewBase _currentView;
-    private ShopObjectViewBase _defaultSideView;
-    private ShopObjectViewBase _profileSideView;
-
-    public ShopObjectMediatorBase(Transform parentTransform, ShopObjectModelBase model)
+    public abstract class ShopObjectMediatorBase
     {
-        ParentTransform = parentTransform;
-        Model = model;
+        protected readonly Transform ParentTransform;
+        protected readonly ShopObjectModelBase Model;
 
-        _prefabs = PrefabsHolder.Instance.GetShopObjectPrefabs(Model.Type, Model.NumericId);
-        _hasProfileSide = _prefabs.Item2 != null;
-    }
+        private readonly bool _hasProfileSide;
+        private readonly (GameObject, GameObject) _prefabs;
 
-    public virtual void Mediate()
-    {
-        UpdateView();
-        Activate();
-    }
+        protected ShopObjectViewBase CurrentView => _currentView;
 
-    public virtual void Unmediate()
-    {
-        Deactivate();
-        DestroyViews();
-    }
+        private ShopObjectViewBase _currentView;
+        private ShopObjectViewBase _defaultSideView;
+        private ShopObjectViewBase _profileSideView;
 
-    protected virtual void DestroyNotDisplayedSideView()
-    {
-        if (_currentView != _defaultSideView && _defaultSideView != null)
+        public ShopObjectMediatorBase(Transform parentTransform, ShopObjectModelBase model)
         {
-            GameObject.Destroy(_defaultSideView.gameObject);
-            _defaultSideView = null;
+            ParentTransform = parentTransform;
+            Model = model;
+
+            _prefabs = PrefabsHolder.Instance.GetShopObjectPrefabs(Model.Type, Model.NumericId);
+            _hasProfileSide = _prefabs.Item2 != null;
         }
-        if (_currentView != _profileSideView && _profileSideView != null)
-        {
-            GameObject.Destroy(_profileSideView.gameObject);
-            _profileSideView = null;
-        }
-    }
 
-    protected virtual void UpdateView()
-    {
-        if (_currentView != null)
+        public virtual void Mediate()
         {
-            _currentView.gameObject.SetActive(false);
+            UpdateView();
+            Activate();
         }
-        _currentView = GetOrCreatRotatedView(Model.Side);
-        SetIsHighlighted(Model.IsHighlighted);
-        UpdatePosition();
-    }
 
-    private ShopObjectViewBase GetOrCreatRotatedView(int side)
-    {
-        ShopObjectViewBase result;
-        var isProfileSide = _hasProfileSide && SideHelper.IsProfileSide(side);
-        result = isProfileSide ? _profileSideView : _defaultSideView;
-        if (result == null)
+        public virtual void Unmediate()
         {
-            var prefab = isProfileSide ? _prefabs.Item2 : _prefabs.Item1;
-            var go = GameObject.Instantiate(prefab, ParentTransform);
-            result = go.GetComponent<ShopObjectViewBase>();
-            if (isProfileSide)
+            Deactivate();
+            DestroyViews();
+        }
+
+        protected virtual void DestroyNotDisplayedSideView()
+        {
+            if (_currentView != _defaultSideView && _defaultSideView != null)
             {
-                _profileSideView = result;
+                GameObject.Destroy(_defaultSideView.gameObject);
+                _defaultSideView = null;
             }
-            else
+            if (_currentView != _profileSideView && _profileSideView != null)
             {
-                _defaultSideView = result;
+                GameObject.Destroy(_profileSideView.gameObject);
+                _profileSideView = null;
             }
         }
 
-        result.gameObject.SetActive(true);
-        var scaleXMultiplier = SideHelper.GetScaleXMultiplier(side);
-        result.transform.localScale = new Vector3(scaleXMultiplier, 1, 1);
-
-        return result;
-    }
-
-    private void Activate()
-    {
-        Model.CoordsChanged += OnCoordsChanged;
-        Model.SideChanged += OnSideChanged;
-        Model.HighlightStateChanged += OnHighlightStateChanged;
-    }
-
-    private void Deactivate()
-    {
-        Model.CoordsChanged -= OnCoordsChanged;
-        Model.SideChanged -= OnSideChanged;
-        Model.HighlightStateChanged -= OnHighlightStateChanged;
-    }
-
-    private void OnHighlightStateChanged(bool isHighlighted)
-    {
-        SetIsHighlighted(isHighlighted);
-    }
-
-    private void SetIsHighlighted(bool isHovered)
-    {
-        _currentView.SetAllSpritesColor(isHovered ? new Color(0, 1, 1, 0.5f) : Color.white);
-    }
-
-    private void OnSideChanged(int previousSide, int newSide)
-    {
-        UpdateView();
-    }
-
-    private void OnCoordsChanged(PositionableObjectModelBase shopObject, Vector2Int oldCoords, Vector2Int newCoords)
-    {
-        UpdatePosition();
-    }
-
-    private void DestroyViews()
-    {
-        DestroyNotDisplayedSideView();
-        if (_currentView != null)
+        protected virtual void UpdateView()
         {
-            GameObject.Destroy(_currentView.gameObject);
-            _currentView = null;
+            if (_currentView != null)
+            {
+                _currentView.gameObject.SetActive(false);
+            }
+            _currentView = GetOrCreatRotatedView(Model.Side);
+            SetIsHighlighted(Model.IsHighlighted);
+            UpdatePosition();
         }
-    }
 
-    private void UpdatePosition()
-    {
-        _currentView.transform.position = GridCalculator.Instance.CellToWorld(Model.Coords);
+        private ShopObjectViewBase GetOrCreatRotatedView(int side)
+        {
+            ShopObjectViewBase result;
+            var isProfileSide = _hasProfileSide && SideHelper.IsProfileSide(side);
+            result = isProfileSide ? _profileSideView : _defaultSideView;
+            if (result == null)
+            {
+                var prefab = isProfileSide ? _prefabs.Item2 : _prefabs.Item1;
+                var go = GameObject.Instantiate(prefab, ParentTransform);
+                result = go.GetComponent<ShopObjectViewBase>();
+                if (isProfileSide)
+                {
+                    _profileSideView = result;
+                }
+                else
+                {
+                    _defaultSideView = result;
+                }
+            }
+
+            result.gameObject.SetActive(true);
+            var scaleXMultiplier = SideHelper.GetScaleXMultiplier(side);
+            result.transform.localScale = new Vector3(scaleXMultiplier, 1, 1);
+
+            return result;
+        }
+
+        private void Activate()
+        {
+            Model.CoordsChanged += OnCoordsChanged;
+            Model.SideChanged += OnSideChanged;
+            Model.HighlightStateChanged += OnHighlightStateChanged;
+        }
+
+        private void Deactivate()
+        {
+            Model.CoordsChanged -= OnCoordsChanged;
+            Model.SideChanged -= OnSideChanged;
+            Model.HighlightStateChanged -= OnHighlightStateChanged;
+        }
+
+        private void OnHighlightStateChanged(bool isHighlighted)
+        {
+            SetIsHighlighted(isHighlighted);
+        }
+
+        private void SetIsHighlighted(bool isHovered)
+        {
+            _currentView.SetAllSpritesColor(isHovered ? new Color(0, 1, 1, 0.5f) : Color.white);
+        }
+
+        private void OnSideChanged(int previousSide, int newSide)
+        {
+            UpdateView();
+        }
+
+        private void OnCoordsChanged(PositionableObjectModelBase shopObject, Vector2Int oldCoords, Vector2Int newCoords)
+        {
+            UpdatePosition();
+        }
+
+        private void DestroyViews()
+        {
+            DestroyNotDisplayedSideView();
+            if (_currentView != null)
+            {
+                GameObject.Destroy(_currentView.gameObject);
+                _currentView = null;
+            }
+        }
+
+        private void UpdatePosition()
+        {
+            _currentView.transform.position = GridCalculator.Instance.CellToWorld(Model.Coords);
+        }
     }
 }

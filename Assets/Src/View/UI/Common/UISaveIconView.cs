@@ -1,22 +1,26 @@
+using Src.Common_Utils;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UISaveIconView : MonoBehaviour
+namespace Src.View.UI.Common
 {
-    [SerializeField] private RectTransform _imageRectTransform;
-    public RectTransform ImageRectTransform => _imageRectTransform;
-    [SerializeField] private Image _image;
-    [SerializeField] private TMP_Text _text;
-
-    public void SetText(string text)
+    public class UISaveIconView : MonoBehaviour
     {
-        _text.text = text;
-    }
+        [SerializeField] private RectTransform _imageRectTransform;
+        public RectTransform ImageRectTransform => _imageRectTransform;
+        [SerializeField] private Image _image;
+        [SerializeField] private TMP_Text _text;
 
-    public void SetAlpha(float alpha)
-    {
-        _image.color.SetAlpha(alpha);
-        _text.color.SetAlpha(alpha);
+        public void SetText(string text)
+        {
+            _text.text = text;
+        }
+
+        public void SetAlpha(float alpha)
+        {
+            _image.color.SetAlpha(alpha);
+            _text.color.SetAlpha(alpha);
+        }
     }
 }

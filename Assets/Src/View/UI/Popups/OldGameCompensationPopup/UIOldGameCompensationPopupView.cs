@@ -1,42 +1,46 @@
 using System;
+using Src.Common_Utils;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIOldGameCompensationPopupView : UIPopupBase
+namespace Src.View.UI.Popups.OldGameCompensationPopup
 {
-    public event Action TakeClicked = delegate { };
-
-    [SerializeField] private TMP_Text _messageText;
-    [SerializeField] private TMP_Text _goldText;
-    [SerializeField] private TMP_Text _cashText;
-    [SerializeField] private Button _takeButton;
-    public Button TakeButton => _takeButton;
-
-    public override void Awake()
+    public class UIOldGameCompensationPopupView : UIPopupBase
     {
-        base.Awake();
+        public event Action TakeClicked = delegate { };
 
-        _takeButton.AddOnClickListener(OnTakeClicked);
-    }
+        [SerializeField] private TMP_Text _messageText;
+        [SerializeField] private TMP_Text _goldText;
+        [SerializeField] private TMP_Text _cashText;
+        [SerializeField] private Button _takeButton;
+        public Button TakeButton => _takeButton;
 
-    public void SetGoldText(string text)
-    {
-        _goldText.text = text;
-    }
+        public override void Awake()
+        {
+            base.Awake();
 
-    public void SetCashText(string text)
-    {
-        _cashText.text = text;
-    }
+            _takeButton.AddOnClickListener(OnTakeClicked);
+        }
 
-    public void SetMessageText(string text)
-    {
-        _messageText.text = text;
-    }
+        public void SetGoldText(string text)
+        {
+            _goldText.text = text;
+        }
 
-    private void OnTakeClicked()
-    {
-        TakeClicked();
+        public void SetCashText(string text)
+        {
+            _cashText.text = text;
+        }
+
+        public void SetMessageText(string text)
+        {
+            _messageText.text = text;
+        }
+
+        private void OnTakeClicked()
+        {
+            TakeClicked();
+        }
     }
 }

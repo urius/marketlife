@@ -1,4 +1,7 @@
-public interface IConfirmRemoveWithRefundPopupViewModel
+namespace Src.Model.Popups
 {
-    public int SellPrice { get; }
+    public interface IConfirmRemoveWithRefundPopupViewModel
+    {
+        public int SellPrice { get; }
+    }
 }

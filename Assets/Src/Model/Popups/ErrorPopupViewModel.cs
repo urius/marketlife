@@ -1,11 +1,14 @@
-public class ErrorPopupViewModel : PopupViewModelBase
+namespace Src.Model.Popups
 {
-    public readonly string ErrorText;
-
-    public ErrorPopupViewModel(string text)
+    public class ErrorPopupViewModel : PopupViewModelBase
     {
-        ErrorText = text;
-    }
+        public readonly string ErrorText;
 
-    public override PopupType PopupType => PopupType.Error;
+        public ErrorPopupViewModel(string text)
+        {
+            ErrorText = text;
+        }
+
+        public override PopupType PopupType => PopupType.Error;
+    }
 }

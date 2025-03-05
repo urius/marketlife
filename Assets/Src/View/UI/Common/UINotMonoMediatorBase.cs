@@ -1,19 +1,22 @@
 using UnityEngine;
 
-public abstract class UINotMonoMediatorBase : IMediator
+namespace Src.View.UI.Common
 {
-    protected readonly RectTransform ContentTransform;
-
-    public UINotMonoMediatorBase(RectTransform contentTransform)
+    public abstract class UINotMonoMediatorBase : IMediator
     {
-        ContentTransform = contentTransform;
-    }
+        protected readonly RectTransform ContentTransform;
 
-    public virtual void Mediate()
-    {
-    }
+        public UINotMonoMediatorBase(RectTransform contentTransform)
+        {
+            ContentTransform = contentTransform;
+        }
 
-    public virtual void Unmediate()
-    {
+        public virtual void Mediate()
+        {
+        }
+
+        public virtual void Unmediate()
+        {
+        }
     }
 }

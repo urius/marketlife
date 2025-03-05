@@ -1,36 +1,39 @@
 using TMPro;
 using UnityEngine;
 
-public class UIFlyingTextView : MonoBehaviour
+namespace Src.View.UI.GameView_Panel
 {
-    [SerializeField] private TMP_Text _text;
-
-    private RectTransform _flyingPartRect;
-
-    public void Awake()
+    public class UIFlyingTextView : MonoBehaviour
     {
-        _flyingPartRect = _text.transform as RectTransform;
-    }
+        [SerializeField] private TMP_Text _text;
 
-    public void SetText(string text)
-    {
-        _text.text = text;
-    }
+        private RectTransform _flyingPartRect;
 
-    public void SetTextColor(Color color)
-    {
-        _text.color = color;
-    }
+        public void Awake()
+        {
+            _flyingPartRect = _text.transform as RectTransform;
+        }
 
-    public virtual void SetAlpha(float alpha)
-    {
-        _text.alpha = alpha;
-    }
+        public void SetText(string text)
+        {
+            _text.text = text;
+        }
 
-    public void SetOffsetY(float offset)
-    {
-        var pos = _flyingPartRect.anchoredPosition;
-        pos.y = offset;
-        _flyingPartRect.anchoredPosition = pos;
+        public void SetTextColor(Color color)
+        {
+            _text.color = color;
+        }
+
+        public virtual void SetAlpha(float alpha)
+        {
+            _text.alpha = alpha;
+        }
+
+        public void SetOffsetY(float offset)
+        {
+            var pos = _flyingPartRect.anchoredPosition;
+            pos.y = offset;
+            _flyingPartRect.anchoredPosition = pos;
+        }
     }
 }

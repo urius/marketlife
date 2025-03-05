@@ -1,62 +1,67 @@
 using System;
+using Src.Common_Utils;
+using Src.View.UI.Common;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIBottomPanelFriendTabActionButtonView : MonoBehaviour
+namespace Src.View.UI.Bottom_Panel.Tabs
 {
-    public event Action Clicked = delegate { };
-    public event Action BuyButtonClicked = delegate { };
-
-    [SerializeField] private TMP_Text _amountText;
-    [SerializeField] private TMP_Text _timeText;
-    [SerializeField] private Button _mainButton;
-    [SerializeField] private Button _buyButton;
-    [SerializeField] private TMP_Text _buyPriceText;
-    [SerializeField] private UIHintableView _hintableView;
-
-    public void Awake()
+    public class UIBottomPanelFriendTabActionButtonView : MonoBehaviour
     {
-        _mainButton.AddOnClickListener(OnMainButtonClicked);
-        _buyButton.AddOnClickListener(OnBuyButtonClicked);
-    }
+        public event Action Clicked = delegate { };
+        public event Action BuyButtonClicked = delegate { };
 
-    public void SetAmountTextVisibility(bool isVisible)
-    {
-        _amountText.gameObject.SetActive(isVisible);
-    }
+        [SerializeField] private TMP_Text _amountText;
+        [SerializeField] private TMP_Text _timeText;
+        [SerializeField] private Button _mainButton;
+        [SerializeField] private Button _buyButton;
+        [SerializeField] private TMP_Text _buyPriceText;
+        [SerializeField] private UIHintableView _hintableView;
 
-    public void SetAmountText(string text)
-    {
-        _amountText.text = text;
-    }
+        public void Awake()
+        {
+            _mainButton.AddOnClickListener(OnMainButtonClicked);
+            _buyButton.AddOnClickListener(OnBuyButtonClicked);
+        }
 
-    public void SetTimeText(string text)
-    {
-        _timeText.text = text;
-    }
+        public void SetAmountTextVisibility(bool isVisible)
+        {
+            _amountText.gameObject.SetActive(isVisible);
+        }
 
-    public void SetBuyPriceText(string text)
-    {
-        _buyPriceText.text = text;
-    }
+        public void SetAmountText(string text)
+        {
+            _amountText.text = text;
+        }
 
-    public void SetChargingState(bool isChargingEnabled)
-    {
-        _hintableView.SetEnabled(!isChargingEnabled);
-        SetAmountTextVisibility(!isChargingEnabled);
-        _timeText.gameObject.SetActive(isChargingEnabled);
-        _mainButton.interactable = !isChargingEnabled;
-        _buyButton.gameObject.SetActive(isChargingEnabled);
-    }
+        public void SetTimeText(string text)
+        {
+            _timeText.text = text;
+        }
 
-    private void OnBuyButtonClicked()
-    {
-        BuyButtonClicked();
-    }
+        public void SetBuyPriceText(string text)
+        {
+            _buyPriceText.text = text;
+        }
 
-    private void OnMainButtonClicked()
-    {
-        Clicked();
+        public void SetChargingState(bool isChargingEnabled)
+        {
+            _hintableView.SetEnabled(!isChargingEnabled);
+            SetAmountTextVisibility(!isChargingEnabled);
+            _timeText.gameObject.SetActive(isChargingEnabled);
+            _mainButton.interactable = !isChargingEnabled;
+            _buyButton.gameObject.SetActive(isChargingEnabled);
+        }
+
+        private void OnBuyButtonClicked()
+        {
+            BuyButtonClicked();
+        }
+
+        private void OnMainButtonClicked()
+        {
+            Clicked();
+        }
     }
 }

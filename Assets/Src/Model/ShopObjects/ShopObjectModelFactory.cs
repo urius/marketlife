@@ -1,40 +1,44 @@
+using Src.Managers;
 using UnityEngine;
 
-public struct ShopObjectModelFactory
+namespace Src.Model.ShopObjects
 {
-    public ShelfModel CreateShelf(int numericId, Vector2Int coords, int side = 3, ProductModel[] products = null)
+    public struct ShopObjectModelFactory
     {
-        var config = GameConfigManager.Instance.MainConfig.GetShelfConfigByNumericId(numericId);
-        var result = new ShelfModel(numericId, config.ConfigDto, coords, side);
-        if (products != null)
+        public ShelfModel CreateShelf(int numericId, Vector2Int coords, int side = 3, ProductModel[] products = null)
         {
-            for (var i = 0; i < products.Length; i++)
+            var config = GameConfigManager.Instance.MainConfig.GetShelfConfigByNumericId(numericId);
+            var result = new ShelfModel(numericId, config.ConfigDto, coords, side);
+            if (products != null)
             {
-                result.TrySetProductOn(i, products[i]);
+                for (var i = 0; i < products.Length; i++)
+                {
+                    result.TrySetProductOn(i, products[i]);
+                }
             }
+
+            return result;
         }
 
-        return result;
-    }
-
-    public CashDeskModel CreateCashDesk(int numericId, Vector2Int coords, int side, string paramsShort = null)
-    {
-        var config = GameConfigManager.Instance.MainConfig.GetCashDeskConfigByNumericId(numericId);
-        var hairId = 1;
-        var glassesId = 1;
-        var dressId = 1;
-        if (paramsShort != null)
+        public CashDeskModel CreateCashDesk(int numericId, Vector2Int coords, int side, string paramsShort = null)
         {
-            var splitted = paramsShort.Split(',');
-            if (splitted.Length > 2)
+            var config = GameConfigManager.Instance.MainConfig.GetCashDeskConfigByNumericId(numericId);
+            var hairId = 1;
+            var glassesId = 1;
+            var dressId = 1;
+            if (paramsShort != null)
             {
-                int.TryParse(splitted[0], out hairId);
-                int.TryParse(splitted[1], out glassesId);
-                int.TryParse(splitted[2], out dressId);
+                var splitted = paramsShort.Split(',');
+                if (splitted.Length > 2)
+                {
+                    int.TryParse(splitted[0], out hairId);
+                    int.TryParse(splitted[1], out glassesId);
+                    int.TryParse(splitted[2], out dressId);
+                }
             }
-        }
 
-        var result = new CashDeskModel(numericId, config.ConfigDto, coords, side, hairId, glassesId, dressId);
-        return result;
+            var result = new CashDeskModel(numericId, config.ConfigDto, coords, side, hairId, glassesId, dressId);
+            return result;
+        }
     }
 }

@@ -1,12 +1,17 @@
-public abstract class DailyMissionProcessorBase
+using Src.Model.Missions;
+
+namespace Src.Systems.DailyMIssions.Processors
 {
-    public DailyMissionModel MissionModel { get; private set; }
-
-    public virtual void SetupMissionModel(DailyMissionModel missionModel)
+    public abstract class DailyMissionProcessorBase
     {
-        MissionModel = missionModel;
-    }
+        public DailyMissionModel MissionModel { get; private set; }
 
-    public abstract void Start();
-    public abstract void Stop();
+        public virtual void SetupMissionModel(DailyMissionModel missionModel)
+        {
+            MissionModel = missionModel;
+        }
+
+        public abstract void Start();
+        public abstract void Stop();
+    }
 }

@@ -1,15 +1,18 @@
-public class UserSocialData
+namespace Src.Model
 {
-    public readonly string Uid;
-    public readonly string FirstName;
-    public readonly string LastName;
-    public readonly string Picture50Url;
-
-    public UserSocialData(string uid, string firstName, string lastName, string picture50Url)
+    public class UserSocialData
     {
-        Uid = uid;
-        FirstName = firstName;
-        LastName = lastName;
-        Picture50Url = picture50Url;
+        public readonly string Uid;
+        public readonly string FirstName;
+        public readonly string LastName;
+        public readonly string Picture50Url;
+
+        public UserSocialData(string uid, string firstName, string lastName, string picture50Url)
+        {
+            Uid = uid;
+            FirstName = firstName;
+            LastName = lastName;
+            Picture50Url = picture50Url;
+        }
     }
 }

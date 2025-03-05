@@ -1,35 +1,40 @@
 using Newtonsoft.Json;
+using Src.Model;
+using Src.Net;
 using UnityEngine;
 
-public struct CreateUserModelCommand
+namespace Src.Commands.LoadSave
 {
-    public UserModel Execute(string userDataStr)
+    public struct CreateUserModelCommand
     {
-        UserModel result = null;
-        if (userDataStr != null)
+        public UserModel Execute(string userDataStr)
         {
-            var dataImporter = DataImporter.Instance;
-            var responseDto = JsonConvert.DeserializeObject<CommonResponseDto>(userDataStr);
-            switch (responseDto.v)
+            UserModel result = null;
+            if (userDataStr != null)
             {
-                case 0:
-                    var deserializedDataOld = JsonConvert.DeserializeObject<GetDataOldResponseDto>(userDataStr);
-                    result = dataImporter.ImportOld(deserializedDataOld);
-                    break;
-                case 1:
-                    if (ResponseValidator.Validate(responseDto))
-                    {
-                        var deserializedData = JsonConvert.DeserializeObject<GetDataResponseDto>(responseDto.response);
-                        result = dataImporter.Import(deserializedData);
-                    }
-                    else
-                    {
-                        Debug.Log($"{nameof(CreateUserModelCommand)}: invalid data hash");
-                    }
-                    break;
+                var dataImporter = DataImporter.Instance;
+                var responseDto = JsonConvert.DeserializeObject<CommonResponseDto>(userDataStr);
+                switch (responseDto.v)
+                {
+                    case 0:
+                        var deserializedDataOld = JsonConvert.DeserializeObject<GetDataOldResponseDto>(userDataStr);
+                        result = dataImporter.ImportOld(deserializedDataOld);
+                        break;
+                    case 1:
+                        if (ResponseValidator.Validate(responseDto))
+                        {
+                            var deserializedData = JsonConvert.DeserializeObject<GetDataResponseDto>(responseDto.response);
+                            result = dataImporter.Import(deserializedData);
+                        }
+                        else
+                        {
+                            Debug.Log($"{nameof(CreateUserModelCommand)}: invalid data hash");
+                        }
+                        break;
+                }
             }
-        }
 
-        return result;
+            return result;
+        }
     }
 }

@@ -1,27 +1,33 @@
-public struct PutWarehouseProductOnShelfCommand
+using Src.Model;
+using Src.Model.ShopObjects;
+
+namespace Src.Commands
 {
-    public int Execute(int warehouseSlotIndex, UserModel targetUserModel, ShelfModel shelfModel, int shelfSlotIndex)
+    public struct PutWarehouseProductOnShelfCommand
     {
-        var playerModelHolder = PlayerModelHolder.Instance;
-        var playerModel = playerModelHolder.UserModel;
-        var playerShopModel = playerModelHolder.ShopModel;
-        var warehouseSlot = playerShopModel.WarehouseModel.Slots[warehouseSlotIndex];
-
-        var placedProductsCount = 0;
-        if (warehouseSlot.HasProduct)
+        public int Execute(int warehouseSlotIndex, UserModel targetUserModel, ShelfModel shelfModel, int shelfSlotIndex)
         {
-            var shelfSlot = shelfModel.Slots[shelfSlotIndex];
-            var isPlayerShop = playerModel == targetUserModel;
-            var placingProductConfig = warehouseSlot.Product.Config;
+            var playerModelHolder = PlayerModelHolder.Instance;
+            var playerModel = playerModelHolder.UserModel;
+            var playerShopModel = playerModelHolder.ShopModel;
+            var warehouseSlot = playerShopModel.WarehouseModel.Slots[warehouseSlotIndex];
 
-            placedProductsCount = new PutProductFromSlotToSlotCommand().Execute(warehouseSlot, shelfSlot);
-
-            if (isPlayerShop == false && placedProductsCount > 0)
+            var placedProductsCount = 0;
+            if (warehouseSlot.HasProduct)
             {
-                targetUserModel.ExternalActionsModel.AddAction(new ExternalActionAddProduct(playerModel.Uid, shelfModel.Coords, shelfSlotIndex, placingProductConfig, placedProductsCount));
-            }
-        }
+                var shelfSlot = shelfModel.Slots[shelfSlotIndex];
+                var isPlayerShop = playerModel == targetUserModel;
+                var placingProductConfig = warehouseSlot.Product.Config;
 
-        return placedProductsCount;
+                placedProductsCount = new PutProductFromSlotToSlotCommand().Execute(warehouseSlot, shelfSlot);
+
+                if (isPlayerShop == false && placedProductsCount > 0)
+                {
+                    targetUserModel.ExternalActionsModel.AddAction(new ExternalActionAddProduct(playerModel.Uid, shelfModel.Coords, shelfSlotIndex, placingProductConfig, placedProductsCount));
+                }
+            }
+
+            return placedProductsCount;
+        }
     }
 }

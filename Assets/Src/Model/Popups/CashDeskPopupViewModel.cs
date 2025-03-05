@@ -1,11 +1,16 @@
-public class CashDeskPopupViewModel : PopupViewModelBase
+using Src.Model.ShopObjects;
+
+namespace Src.Model.Popups
 {
-    public readonly CashDeskModel CashDeskModel;
-
-    public CashDeskPopupViewModel(CashDeskModel cashDeskModel)
+    public class CashDeskPopupViewModel : PopupViewModelBase
     {
-        CashDeskModel = cashDeskModel;
-    }
+        public readonly CashDeskModel CashDeskModel;
 
-    public override PopupType PopupType => PopupType.CashDesk;
+        public CashDeskPopupViewModel(CashDeskModel cashDeskModel)
+        {
+            CashDeskModel = cashDeskModel;
+        }
+
+        public override PopupType PopupType => PopupType.CashDesk;
+    }
 }

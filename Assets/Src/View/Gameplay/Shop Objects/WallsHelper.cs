@@ -1,46 +1,49 @@
 using UnityEngine;
 
-public class WallsHelper
+namespace Src.View.Gameplay.Shop_Objects
 {
-    public static void PlaceAsWallLike(Transform transform, Vector2Int cellCoords)
+    public class WallsHelper
     {
-        var gridCalculator = GridCalculator.Instance;
-        var irRight = cellCoords.y < cellCoords.x;
-        transform.position = irRight ? gridCalculator.GetCellLeftCorner(cellCoords) : gridCalculator.GetCellRightCorner(cellCoords);
-        if (irRight)
+        public static void PlaceAsWallLike(Transform transform, Vector2Int cellCoords)
         {
-            ToRightState(transform);
+            var gridCalculator = GridCalculator.Instance;
+            var irRight = cellCoords.y < cellCoords.x;
+            transform.position = irRight ? gridCalculator.GetCellLeftCorner(cellCoords) : gridCalculator.GetCellRightCorner(cellCoords);
+            if (irRight)
+            {
+                ToRightState(transform);
+            }
+            else
+            {
+                ToLeftState(transform);
+            }
         }
-        else
+
+        public static void ToRightState(Transform transform)
         {
-            ToLeftState(transform);
+            var euler = transform.eulerAngles;
+            euler.x = 225;
+            euler.y = 270;
+            euler.z = 90;
+            transform.eulerAngles = euler;
         }
-    }
 
-    public static void ToRightState(Transform transform)
-    {
-        var euler = transform.eulerAngles;
-        euler.x = 225;
-        euler.y = 270;
-        euler.z = 90;
-        transform.eulerAngles = euler;
-    }
+        public static void ToLeftState(Transform transform)
+        {
+            var euler = transform.eulerAngles;
+            euler.x = 135;
+            euler.y = 270;
+            euler.z = 90;
+            transform.eulerAngles = euler;
+        }
 
-    public static void ToLeftState(Transform transform)
-    {
-        var euler = transform.eulerAngles;
-        euler.x = 135;
-        euler.y = 270;
-        euler.z = 90;
-        transform.eulerAngles = euler;
-    }
-
-    public static void PlaceVertical(Transform transform)
-    {
-        var euler = transform.eulerAngles;
-        euler.x = -70;
-        euler.y = 0;
-        euler.z = 0;
-        transform.eulerAngles = euler;
+        public static void PlaceVertical(Transform transform)
+        {
+            var euler = transform.eulerAngles;
+            euler.x = -70;
+            euler.y = 0;
+            euler.z = 0;
+            transform.eulerAngles = euler;
+        }
     }
 }

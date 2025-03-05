@@ -1,41 +1,45 @@
 using System;
 using System.Collections.Generic;
+using Src.Model.Configs;
 
-public class OrderProductPopupViewModel : PopupViewModelBase
+namespace Src.Model.Popups
 {
-    public event Action<int> TabSelected = delegate { };
-
-    public override PopupType PopupType => PopupType.OrderProduct;
-
-    public int SelectedTabIndex { get; private set; } = 0;
-    public int TargetWarehouseSlotIndex { get; private set; }
-    public int[] TabIds { get; private set; }
-    public Dictionary<int, ProductConfig[]> ProductsByGroupId { get; private set; }
-
-    public void Setup(int targetWarehouseSlotIndex, int[] tabIds, Dictionary<int, ProductConfig[]> productsByGroupId)
+    public class OrderProductPopupViewModel : PopupViewModelBase
     {
-        TargetWarehouseSlotIndex = targetWarehouseSlotIndex;
-        TabIds = tabIds;
-        ProductsByGroupId = productsByGroupId;
-    }
+        public event Action<int> TabSelected = delegate { };
 
-    public ProductConfig[] GetProductsByTabIndex(int tabIndex)
-    {
-        if (tabIndex < TabIds.Length)
+        public override PopupType PopupType => PopupType.OrderProduct;
+
+        public int SelectedTabIndex { get; private set; } = 0;
+        public int TargetWarehouseSlotIndex { get; private set; }
+        public int[] TabIds { get; private set; }
+        public Dictionary<int, ProductConfig[]> ProductsByGroupId { get; private set; }
+
+        public void Setup(int targetWarehouseSlotIndex, int[] tabIds, Dictionary<int, ProductConfig[]> productsByGroupId)
         {
-            return ProductsByGroupId[TabIds[tabIndex]];
+            TargetWarehouseSlotIndex = targetWarehouseSlotIndex;
+            TabIds = tabIds;
+            ProductsByGroupId = productsByGroupId;
         }
-        return new ProductConfig[0];
-    }
 
-    public void OnViewTabClicked(int tabIndex)
-    {
-        SetSelectedTabIndex(tabIndex);
-    }
+        public ProductConfig[] GetProductsByTabIndex(int tabIndex)
+        {
+            if (tabIndex < TabIds.Length)
+            {
+                return ProductsByGroupId[TabIds[tabIndex]];
+            }
+            return new ProductConfig[0];
+        }
 
-    private void SetSelectedTabIndex(int tabIndex)
-    {
-        SelectedTabIndex = tabIndex;
-        TabSelected(SelectedTabIndex);
+        public void OnViewTabClicked(int tabIndex)
+        {
+            SetSelectedTabIndex(tabIndex);
+        }
+
+        private void SetSelectedTabIndex(int tabIndex)
+        {
+            SelectedTabIndex = tabIndex;
+            TabSelected(SelectedTabIndex);
+        }
     }
 }

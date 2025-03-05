@@ -1,28 +1,33 @@
-public class DailyMissionAddGoldProcessor : DailyMissionProcessorBase
+using Src.Model;
+
+namespace Src.Systems.DailyMIssions.Processors
 {
-    private readonly PlayerModelHolder _playerModelHolder;
-
-    public DailyMissionAddGoldProcessor()
+    public class DailyMissionAddGoldProcessor : DailyMissionProcessorBase
     {
-        _playerModelHolder = PlayerModelHolder.Instance;
-    }
+        private readonly PlayerModelHolder _playerModelHolder;
 
-    public override void Start()
-    {
-        _playerModelHolder.UserModel.ProgressModel.GoldChanged += OnGoldChanged;
-    }
-
-    public override void Stop()
-    {
-        _playerModelHolder.UserModel.ProgressModel.GoldChanged -= OnGoldChanged;
-    }
-
-    private void OnGoldChanged(int prevValue, int currentValue)
-    {
-        var delta = currentValue - prevValue;
-        if (delta > 0)
+        public DailyMissionAddGoldProcessor()
         {
-            MissionModel.AddValue(delta);
+            _playerModelHolder = PlayerModelHolder.Instance;
+        }
+
+        public override void Start()
+        {
+            _playerModelHolder.UserModel.ProgressModel.GoldChanged += OnGoldChanged;
+        }
+
+        public override void Stop()
+        {
+            _playerModelHolder.UserModel.ProgressModel.GoldChanged -= OnGoldChanged;
+        }
+
+        private void OnGoldChanged(int prevValue, int currentValue)
+        {
+            var delta = currentValue - prevValue;
+            if (delta > 0)
+            {
+                MissionModel.AddValue(delta);
+            }
         }
     }
 }

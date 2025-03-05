@@ -1,32 +1,35 @@
 using System;
 
-public class UpdatesProvider
+namespace Src.Common
 {
-    private static Lazy<UpdatesProvider> _instance = new Lazy<UpdatesProvider>();
-    public static UpdatesProvider Instance => _instance.Value;
-
-    public event Action RealtimeUpdate = delegate { };
-    public event Action GametimeUpdate = delegate { };
-    public event Action RealtimeSecondUpdate = delegate { };
-    public event Action GameplaySecondUpdate = delegate { };
-
-    public void CallRealtimeUpdate()
+    public class UpdatesProvider
     {
-        RealtimeUpdate();
-    }
+        private static Lazy<UpdatesProvider> _instance = new Lazy<UpdatesProvider>();
+        public static UpdatesProvider Instance => _instance.Value;
 
-    public void CallGameplayUpdate()
-    {
-        GametimeUpdate();
-    }
+        public event Action RealtimeUpdate = delegate { };
+        public event Action GametimeUpdate = delegate { };
+        public event Action RealtimeSecondUpdate = delegate { };
+        public event Action GameplaySecondUpdate = delegate { };
 
-    public void CallRealtimeSecondUpdate()
-    {
-        RealtimeSecondUpdate();
-    }
+        public void CallRealtimeUpdate()
+        {
+            RealtimeUpdate();
+        }
 
-    public void CallGameplaySecondUpdate()
-    {
-        GameplaySecondUpdate();
+        public void CallGameplayUpdate()
+        {
+            GametimeUpdate();
+        }
+
+        public void CallRealtimeSecondUpdate()
+        {
+            RealtimeSecondUpdate();
+        }
+
+        public void CallGameplaySecondUpdate()
+        {
+            GameplaySecondUpdate();
+        }
     }
 }

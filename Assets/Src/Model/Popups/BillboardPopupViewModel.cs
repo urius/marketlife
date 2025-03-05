@@ -1,12 +1,15 @@
 
-public class BillboardPopupViewModel : PopupViewModelBase
+namespace Src.Model.Popups
 {
-    public readonly string InitialText;
-
-    public BillboardPopupViewModel(ShopBillboardModel model)
+    public class BillboardPopupViewModel : PopupViewModelBase
     {
-        InitialText = model.Text;
-    }
+        public readonly string InitialText;
 
-    public override PopupType PopupType => PopupType.Billboard;
+        public BillboardPopupViewModel(ShopBillboardModel model)
+        {
+            InitialText = model.Text;
+        }
+
+        public override PopupType PopupType => PopupType.Billboard;
+    }
 }

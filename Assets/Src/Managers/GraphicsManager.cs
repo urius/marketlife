@@ -4,112 +4,115 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.U2D;
 
-[CreateAssetMenu(fileName = "GraphicsManager", menuName = "Scriptable Objects/Managers/GraphicsManager")]
-public class GraphicsManager : ScriptableObject
+namespace Src.Managers
 {
-    public static GraphicsManager Instance { get; private set; }
-
-    private readonly Dictionary<SpriteAtlasId, SpriteAtlasData> _atlasDataById = new Dictionary<SpriteAtlasId, SpriteAtlasData>();
-
-    public void SetupAtlas(SpriteAtlasId atlasId, SpriteAtlas atlas, Sprite[] sprites)
+    [CreateAssetMenu(fileName = "GraphicsManager", menuName = "Scriptable Objects/Managers/GraphicsManager")]
+    public class GraphicsManager : ScriptableObject
     {
-        var atlasData = new SpriteAtlasData(atlas, sprites);
-        _atlasDataById[atlasId] = atlasData;
-    }
+        public static GraphicsManager Instance { get; private set; }
 
-    public Sprite GetSprite(SpriteAtlasId atlasId, string spriteName)
-    {
-        if (TryGetAtlasData(atlasId, out var atlasData))
+        private readonly Dictionary<SpriteAtlasId, SpriteAtlasData> _atlasDataById = new Dictionary<SpriteAtlasId, SpriteAtlasData>();
+
+        public void SetupAtlas(SpriteAtlasId atlasId, SpriteAtlas atlas, Sprite[] sprites)
         {
-            if (atlasData.Sprites.TryGetValue(spriteName, out var sprite))
+            var atlasData = new SpriteAtlasData(atlas, sprites);
+            _atlasDataById[atlasId] = atlasData;
+        }
+
+        public Sprite GetSprite(SpriteAtlasId atlasId, string spriteName)
+        {
+            if (TryGetAtlasData(atlasId, out var atlasData))
             {
-                return sprite;
+                if (atlasData.Sprites.TryGetValue(spriteName, out var sprite))
+                {
+                    return sprite;
+                }
+                else
+                {
+                    Debug.Log($"[ GraphicsManager ] GetSprite: unable to find sprite {spriteName} in atlas {atlasId.ToString()}");
+                }
+            }
+
+            return null;
+        }
+
+        public Sprite[] GetAllIncrementiveSprites(SpriteAtlasId atlasId, string spriteNamePrefix, string spriteNamePostfix = "")
+        {
+            var result = new List<Sprite>();
+            if (TryGetAtlasData(atlasId, out var atlasData))
+            {
+                var spriteNum = 1;
+                while (atlasData.Sprites.TryGetValue($"{spriteNamePrefix}{spriteNum}{spriteNamePostfix}", out var sprite))
+                {
+                    result.Add(sprite);
+                    spriteNum++;
+                }
+            }
+
+            return result.ToArray();
+        }
+
+        private bool TryGetAtlasData(SpriteAtlasId atlasId, out SpriteAtlasData atlasData)
+        {
+            if (_atlasDataById.TryGetValue(atlasId, out atlasData))
+            {
+                return true;
             }
             else
             {
-                Debug.Log($"[ GraphicsManager ] GetSprite: unable to find sprite {spriteName} in atlas {atlasId.ToString()}");
+                Debug.Log($"[ GraphicsManager ] GetSprite: unable to atlas {atlasId.ToString()}");
             }
+
+            return false;
         }
 
-        return null;
-    }
-
-    public Sprite[] GetAllIncrementiveSprites(SpriteAtlasId atlasId, string spriteNamePrefix, string spriteNamePostfix = "")
-    {
-        var result = new List<Sprite>();
-        if (TryGetAtlasData(atlasId, out var atlasData))
+        private void OnEnable()
         {
-            var spriteNum = 1;
-            while (atlasData.Sprites.TryGetValue($"{spriteNamePrefix}{spriteNum}{spriteNamePostfix}", out var sprite))
+            Instance = this;
+
+            SpriteAtlasManager.atlasRequested += OnAtlasRequested;
+        }
+
+        private void OnDisable()
+        {
+            SpriteAtlasManager.atlasRequested -= OnAtlasRequested;
+        }
+
+        private void OnAtlasRequested(string atlasName, Action<SpriteAtlas> callback)
+        {
+            var atlasData = _atlasDataById.Values.FirstOrDefault(v => v.Atlasname == atlasName);
+            if (atlasData != null)
             {
-                result.Add(sprite);
-                spriteNum++;
+                callback(atlasData.Atlas);
+            }
+            else
+            {
+                Debug.Log($"[ GraphicsManager ] OnAtlasRequested: Unable to find Atlas {atlasName}");
+            }
+        }
+    }
+
+    public class SpriteAtlasData
+    {
+        public readonly SpriteAtlas Atlas;
+        public readonly Dictionary<string, Sprite> Sprites = new Dictionary<string, Sprite>();
+
+        public SpriteAtlasData(SpriteAtlas atlas, Sprite[] sprites)
+        {
+            Atlas = atlas;
+            foreach (var sprite in sprites)
+            {
+                Sprites[sprite.name] = sprite;
             }
         }
 
-        return result.ToArray();
+        public string Atlasname => Atlas.name;
     }
 
-    private bool TryGetAtlasData(SpriteAtlasId atlasId, out SpriteAtlasData atlasData)
+    public enum SpriteAtlasId
     {
-        if (_atlasDataById.TryGetValue(atlasId, out atlasData))
-        {
-            return true;
-        }
-        else
-        {
-            Debug.Log($"[ GraphicsManager ] GetSprite: unable to atlas {atlasId.ToString()}");
-        }
-
-        return false;
+        Undefined,
+        GameplayAtlas,
+        InterfaceAtlas,
     }
-
-    private void OnEnable()
-    {
-        Instance = this;
-
-        SpriteAtlasManager.atlasRequested += OnAtlasRequested;
-    }
-
-    private void OnDisable()
-    {
-        SpriteAtlasManager.atlasRequested -= OnAtlasRequested;
-    }
-
-    private void OnAtlasRequested(string atlasName, Action<SpriteAtlas> callback)
-    {
-        var atlasData = _atlasDataById.Values.FirstOrDefault(v => v.Atlasname == atlasName);
-        if (atlasData != null)
-        {
-            callback(atlasData.Atlas);
-        }
-        else
-        {
-            Debug.Log($"[ GraphicsManager ] OnAtlasRequested: Unable to find Atlas {atlasName}");
-        }
-    }
-}
-
-public class SpriteAtlasData
-{
-    public readonly SpriteAtlas Atlas;
-    public readonly Dictionary<string, Sprite> Sprites = new Dictionary<string, Sprite>();
-
-    public SpriteAtlasData(SpriteAtlas atlas, Sprite[] sprites)
-    {
-        Atlas = atlas;
-        foreach (var sprite in sprites)
-        {
-            Sprites[sprite.name] = sprite;
-        }
-    }
-
-    public string Atlasname => Atlas.name;
-}
-
-public enum SpriteAtlasId
-{
-    Undefined,
-    GameplayAtlas,
-    InterfaceAtlas,
 }

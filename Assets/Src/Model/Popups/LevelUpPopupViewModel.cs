@@ -1,36 +1,40 @@
 using System.Collections.Generic;
+using Src.Model.Configs;
 
-public class LevelUpPopupViewModel : PopupViewModelBase
+namespace Src.Model.Popups
 {
-    public IReadOnlyList<ProductConfig> NewProducts;
-    public IReadOnlyList<ItemConfig<ShelfConfigDto>> NewShelfs;
-    public IReadOnlyList<ItemConfig<ShopDecorationConfigDto>> NewFloors;
-    public IReadOnlyList<ItemConfig<ShopDecorationConfigDto>> NewWalls;
-    public IReadOnlyList<ItemConfig<ShopDecorationConfigDto>> NewWindows;
-    public IReadOnlyList<ItemConfig<ShopDecorationConfigDto>> NewDoors;
-    public IReadOnlyList<PersonalConfig> NewPersonal;
-    public IReadOnlyList<UpgradeConfig> NewUpgrades;
-
-    public LevelUpPopupViewModel(
-        IReadOnlyList<ProductConfig> newProducts,
-        IReadOnlyList<ItemConfig<ShelfConfigDto>> newShelfs,
-        IReadOnlyList<ItemConfig<ShopDecorationConfigDto>> newFloors,
-        IReadOnlyList<ItemConfig<ShopDecorationConfigDto>> newWalls,
-        IReadOnlyList<ItemConfig<ShopDecorationConfigDto>> newWindows,
-        IReadOnlyList<ItemConfig<ShopDecorationConfigDto>> newDoors,
-        IReadOnlyList<PersonalConfig> newPersonal,
-        IReadOnlyList<UpgradeConfig> newUpgrades)
+    public class LevelUpPopupViewModel : PopupViewModelBase
     {
-        NewProducts = newProducts;
-        NewShelfs = newShelfs;
-        NewFloors = newFloors;
-        NewWalls = newWalls;
-        NewWindows = newWindows;
-        NewDoors = newDoors;
-        NewPersonal = newPersonal;
-        NewUpgrades = newUpgrades;
-    }
+        public IReadOnlyList<ProductConfig> NewProducts;
+        public IReadOnlyList<ItemConfig<ShelfConfigDto>> NewShelfs;
+        public IReadOnlyList<ItemConfig<ShopDecorationConfigDto>> NewFloors;
+        public IReadOnlyList<ItemConfig<ShopDecorationConfigDto>> NewWalls;
+        public IReadOnlyList<ItemConfig<ShopDecorationConfigDto>> NewWindows;
+        public IReadOnlyList<ItemConfig<ShopDecorationConfigDto>> NewDoors;
+        public IReadOnlyList<PersonalConfig> NewPersonal;
+        public IReadOnlyList<UpgradeConfig> NewUpgrades;
 
-    public bool HasNewDecor => NewFloors.Count > 0 || NewWalls.Count > 0 || NewWindows.Count > 0 || NewDoors.Count > 0;
-    public override PopupType PopupType => PopupType.LevelUp;
+        public LevelUpPopupViewModel(
+            IReadOnlyList<ProductConfig> newProducts,
+            IReadOnlyList<ItemConfig<ShelfConfigDto>> newShelfs,
+            IReadOnlyList<ItemConfig<ShopDecorationConfigDto>> newFloors,
+            IReadOnlyList<ItemConfig<ShopDecorationConfigDto>> newWalls,
+            IReadOnlyList<ItemConfig<ShopDecorationConfigDto>> newWindows,
+            IReadOnlyList<ItemConfig<ShopDecorationConfigDto>> newDoors,
+            IReadOnlyList<PersonalConfig> newPersonal,
+            IReadOnlyList<UpgradeConfig> newUpgrades)
+        {
+            NewProducts = newProducts;
+            NewShelfs = newShelfs;
+            NewFloors = newFloors;
+            NewWalls = newWalls;
+            NewWindows = newWindows;
+            NewDoors = newDoors;
+            NewPersonal = newPersonal;
+            NewUpgrades = newUpgrades;
+        }
+
+        public bool HasNewDecor => NewFloors.Count > 0 || NewWalls.Count > 0 || NewWindows.Count > 0 || NewDoors.Count > 0;
+        public override PopupType PopupType => PopupType.LevelUp;
+    }
 }

@@ -4,19 +4,22 @@ using UnityEngine.Networking;
 using UnityEngine.U2D;
 using UnityEngine.UI;
 
-public class Test : MonoBehaviour
+namespace Src
 {
-    [SerializeField] private string _adressableSpriteAtlasName;
-    [SerializeField] private Image _testImage;
-
-    async void Start()
+    public class Test : MonoBehaviour
     {
-        using (UnityWebRequest webRequest = UnityWebRequestAssetBundle.GetAssetBundle("http://shoplife.01sh.ru/AssetBundles/graphicsgameplay", 1, 0))
-        {
-            var webRequestResult = await webRequest.SendWebRequest();
-            var assetBundle = DownloadHandlerAssetBundle.GetContent(webRequestResult);
+        [SerializeField] private string _adressableSpriteAtlasName;
+        [SerializeField] private Image _testImage;
 
-            var spriteAtlas = await assetBundle.LoadAssetAsync<AssetBundleManifest>("GameplayGraphicsAtlas") as SpriteAtlas;
+        async void Start()
+        {
+            using (UnityWebRequest webRequest = UnityWebRequestAssetBundle.GetAssetBundle("http://shoplife.01sh.ru/AssetBundles/graphicsgameplay", 1, 0))
+            {
+                var webRequestResult = await webRequest.SendWebRequest();
+                var assetBundle = DownloadHandlerAssetBundle.GetContent(webRequestResult);
+
+                var spriteAtlas = await assetBundle.LoadAssetAsync<AssetBundleManifest>("GameplayGraphicsAtlas") as SpriteAtlas;
+            }
         }
     }
 }

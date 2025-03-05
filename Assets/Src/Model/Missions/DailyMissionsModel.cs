@@ -1,38 +1,41 @@
 using System;
 using System.Collections.Generic;
 
-public class DailyMissionsModel
+namespace Src.Model.Missions
 {
-    public event Action<DailyMissionModel> MissionAdded = delegate { };
-    public event Action<DailyMissionModel> MissionRemoved = delegate { };
-
-    private readonly List<DailyMissionModel> _missionsList = new List<DailyMissionModel>();
-
-    public DailyMissionsModel()
+    public class DailyMissionsModel
     {
-    }
+        public event Action<DailyMissionModel> MissionAdded = delegate { };
+        public event Action<DailyMissionModel> MissionRemoved = delegate { };
 
-    public IReadOnlyList<DailyMissionModel> MissionsList => _missionsList;
+        private readonly List<DailyMissionModel> _missionsList = new List<DailyMissionModel>();
 
-    public void AddMission(DailyMissionModel mission)
-    {
-        _missionsList.Add(mission);
-        MissionAdded(mission);
-    }
-
-    public void RemoveMission(DailyMissionModel mission)
-    {
-        if (_missionsList.Remove(mission))
+        public DailyMissionsModel()
         {
-            MissionRemoved(mission);
         }
-    }
 
-    public void Clear()
-    {
-        while (_missionsList.Count > 0)
+        public IReadOnlyList<DailyMissionModel> MissionsList => _missionsList;
+
+        public void AddMission(DailyMissionModel mission)
         {
-            RemoveMission(_missionsList[0]);
+            _missionsList.Add(mission);
+            MissionAdded(mission);
+        }
+
+        public void RemoveMission(DailyMissionModel mission)
+        {
+            if (_missionsList.Remove(mission))
+            {
+                MissionRemoved(mission);
+            }
+        }
+
+        public void Clear()
+        {
+            while (_missionsList.Count > 0)
+            {
+                RemoveMission(_missionsList[0]);
+            }
         }
     }
 }

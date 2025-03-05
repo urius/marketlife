@@ -1,28 +1,34 @@
 using Newtonsoft.Json;
 using Src.Common;
-using UnityEngine;
+using Src.Common_Utils;
+using Src.Model;
+using Src.Model.Debug;
+using Src.Net;
 
-public struct SaveLeaderboardDataCommand
+namespace Src.Commands.LoadSave
 {
-    public async void Execute()
+    public struct SaveLeaderboardDataCommand
     {
-#if UNITY_EDITOR
-        if (DebugDataHolder.Instance.IsSaveDisabled == true) return;
-#endif
-        var playerModel = PlayerModelHolder.Instance.UserModel;
-        var friendsDataHolder = FriendsDataHolder.Instance;
-        var dataExporter = DataExporter.Instance;
-        var urlsHolder = Urls.Instance;
-        var url = string.Format(Urls.SaveLeaderboardDataURL, playerModel.Uid);
-
-        var dataToSave = dataExporter.ExportLeaderboardPlayerData(playerModel.ProgressModel, friendsDataHolder.InGameFriendsCount);
-        var dataToSaveStr = JsonConvert.SerializeObject(dataToSave);
-
-        var resultOperation = await new WebRequestsSender().PostAsync<CommonResponseDto>(url, dataToSaveStr);
-
-        if (resultOperation.IsSuccess == false)
+        public async void Execute()
         {
-            Debug.Log($"{nameof(SaveLeaderboardDataCommand)} Save leaderboard data failed");
+#if UNITY_EDITOR
+            if (DebugDataHolder.Instance.IsSaveDisabled == true) return;
+#endif
+            var playerModel = PlayerModelHolder.Instance.UserModel;
+            var friendsDataHolder = FriendsDataHolder.Instance;
+            var dataExporter = DataExporter.Instance;
+            var urlsHolder = Urls.Instance;
+            var url = string.Format(Urls.SaveLeaderboardDataURL, playerModel.Uid);
+
+            var dataToSave = dataExporter.ExportLeaderboardPlayerData(playerModel.ProgressModel, friendsDataHolder.InGameFriendsCount);
+            var dataToSaveStr = JsonConvert.SerializeObject(dataToSave);
+
+            var resultOperation = await new WebRequestsSender().PostAsync<CommonResponseDto>(url, dataToSaveStr);
+
+            if (resultOperation.IsSuccess == false)
+            {
+                UnityEngine.Debug.Log($"{nameof(SaveLeaderboardDataCommand)} Save leaderboard data failed");
+            }
         }
     }
 }

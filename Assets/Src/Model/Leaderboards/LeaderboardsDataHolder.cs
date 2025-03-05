@@ -1,44 +1,47 @@
 using System.Collections.Generic;
 
-public class LeaderboardsDataHolder
+namespace Src.Model.Leaderboards
 {
-    public static LeaderboardsDataHolder Instance = new LeaderboardsDataHolder();
-
-    private Dictionary<LeaderboardType, LeaderboardUserData[]> _leaderboardsData = new Dictionary<LeaderboardType, LeaderboardUserData[]>();
-
-    public bool IsLeaderboardsSet => _leaderboardsData.Count > 0;
-
-    public void SetLeaderboardData(LeaderboardType type, LeaderboardUserData[] data)
+    public class LeaderboardsDataHolder
     {
-        _leaderboardsData[type] = data;
+        public static LeaderboardsDataHolder Instance = new LeaderboardsDataHolder();
+
+        private Dictionary<LeaderboardType, LeaderboardUserData[]> _leaderboardsData = new Dictionary<LeaderboardType, LeaderboardUserData[]>();
+
+        public bool IsLeaderboardsSet => _leaderboardsData.Count > 0;
+
+        public void SetLeaderboardData(LeaderboardType type, LeaderboardUserData[] data)
+        {
+            _leaderboardsData[type] = data;
+        }
+
+        public LeaderboardUserData[] GetLeaderboardData(LeaderboardType type)
+        {
+            _leaderboardsData.TryGetValue(type, out var result);
+            return result;
+        }
     }
 
-    public LeaderboardUserData[] GetLeaderboardData(LeaderboardType type)
+    public enum LeaderboardType
     {
-        _leaderboardsData.TryGetValue(type, out var result);
-        return result;
+        None,
+        Exp,
+        Friends,
+        Cash,
+        Gold,
     }
-}
 
-public enum LeaderboardType
-{
-    None,
-    Exp,
-    Friends,
-    Cash,
-    Gold,
-}
-
-public class LeaderboardUserData
-{
-    public readonly int Rank;
-    public readonly int LeaderboardValue;
-    public readonly UserSocialData UserSocialData;
-
-    public LeaderboardUserData(int rank, int leaderboardValue, UserSocialData userSocialData)
+    public class LeaderboardUserData
     {
-        Rank = rank;
-        LeaderboardValue = leaderboardValue;
-        UserSocialData = userSocialData;
+        public readonly int Rank;
+        public readonly int LeaderboardValue;
+        public readonly UserSocialData UserSocialData;
+
+        public LeaderboardUserData(int rank, int leaderboardValue, UserSocialData userSocialData)
+        {
+            Rank = rank;
+            LeaderboardValue = leaderboardValue;
+            UserSocialData = userSocialData;
+        }
     }
 }

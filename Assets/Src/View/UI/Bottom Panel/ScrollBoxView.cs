@@ -1,167 +1,171 @@
 using System;
 using Cysharp.Threading.Tasks;
+using Src.Common_Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ScrollBoxView : MonoBehaviour
+namespace Src.View.UI.Bottom_Panel
 {
-    private const float DefaultDuration = 0.2f;
-    private const float DefaultFastDuration = 0.1f;
-
-    [SerializeField] private RectTransform _contentTransform;
-    public RectTransform Content => _contentTransform;
-
-    [SerializeField] private RectTransform _viewportTransform;
-    [SerializeField] private ScrollRect _scrollRect;
-    [SerializeField] private Button _scrollLeft;
-    [SerializeField] private Button _rewindLeft;
-    [SerializeField] private Button _scrollRight;
-    [SerializeField] private Button _rewindRight;
-    [SerializeField] private float _slotWidth;
-    public float SlotWidth => _slotWidth;
-
-    private float _viewportWidth;
-
-    //private List<RectTransform> _items = new List<RectTransform>(10);
-
-    public void Awake()
+    public class ScrollBoxView : MonoBehaviour
     {
-        _viewportWidth = _viewportTransform.rect.width;
+        private const float DefaultDuration = 0.2f;
+        private const float DefaultFastDuration = 0.1f;
 
-        _scrollRight.onClick.AddListener(OnScrollRigthClick);
-        _rewindRight.onClick.AddListener(OnRewindRigthClick);
-        _scrollLeft.onClick.AddListener(OnScrollLeftClick);
-        _rewindLeft.onClick.AddListener(OnRewindLeftClick);
-    }
+        [SerializeField] private RectTransform _contentTransform;
+        public RectTransform Content => _contentTransform;
 
-    public void AddItem(RectTransform itemTransform)
-    {
-        itemTransform.parent = _contentTransform;
-        //_items.Add(itemTransform);
-    }
+        [SerializeField] private RectTransform _viewportTransform;
+        [SerializeField] private ScrollRect _scrollRect;
+        [SerializeField] private Button _scrollLeft;
+        [SerializeField] private Button _rewindLeft;
+        [SerializeField] private Button _scrollRight;
+        [SerializeField] private Button _rewindRight;
+        [SerializeField] private float _slotWidth;
+        public float SlotWidth => _slotWidth;
 
-    public void SetContentWidth(float width)
-    {
-        var size = _contentTransform.sizeDelta;
-        size.x = width;
-        _contentTransform.sizeDelta = size;
-    }
+        private float _viewportWidth;
 
-    public void SetContentPosition(float position)
-    {
-        var pos = _contentTransform.anchoredPosition;
-        pos.x = position;
-        _contentTransform.anchoredPosition = pos;
-    }
+        //private List<RectTransform> _items = new List<RectTransform>(10);
 
-    public float GetContentPosition()
-    {
-        return _contentTransform.anchoredPosition.x;
-    }
-
-    public void OnDragEnded()
-    {
-        var currentContentPos = _contentTransform.anchoredPosition.x;
-
-        if (!IsOutOfBounds(currentContentPos))
+        public void Awake()
         {
-            var correctedContentPos = -currentContentPos + _slotWidth * 0.5f;
-            var closestItemIndex = (int)Math.Floor(correctedContentPos / _slotWidth);
+            _viewportWidth = _viewportTransform.rect.width;
 
-            ScrollToIndex(closestItemIndex, DefaultFastDuration);
-        }
-    }
-
-    private void ScrollToIndex(int closestItemIndex, float duration = DefaultDuration)
-    {
-        var newContentPos = -closestItemIndex * _slotWidth;
-        LeanTween.cancel(_contentTransform);
-        LeanTween.moveX(_contentTransform, newContentPos, duration);
-    }
-
-    private void OnScrollRigthClick()
-    {
-        AnimateScrollButton(_scrollRight, 15);
-        var _ = ProcessScrollAsync(6);
-    }
-
-    private void OnRewindRigthClick()
-    {
-        AnimateScrollButton(_rewindRight, 15);
-        var _ = ProcessScrollAsync(9999);
-    }
-
-    private void OnScrollLeftClick()
-    {
-        AnimateScrollButton(_scrollLeft, -15);
-        var _ = ProcessScrollAsync(-6);
-    }
-
-    private void OnRewindLeftClick()
-    {
-        AnimateScrollButton(_rewindLeft, -15);
-        var _ = ProcessScrollAsync(-9999);
-    }
-
-    private async UniTaskVoid ProcessScrollAsync(int delta)
-    {
-        if (LeanTween.isTweening(_contentTransform) || delta == 0)
-        {
-            return;
+            _scrollRight.onClick.AddListener(OnScrollRigthClick);
+            _rewindRight.onClick.AddListener(OnRewindRigthClick);
+            _scrollLeft.onClick.AddListener(OnScrollLeftClick);
+            _rewindLeft.onClick.AddListener(OnRewindLeftClick);
         }
 
-        var direction = delta > 0 ? 1 : -1;
-        var currentContentPos = _contentTransform.anchoredPosition.x;
-        var newContentPos = currentContentPos - _slotWidth * delta;
-
-        LeanTween.cancel(_contentTransform);
-        if ((direction > 0 && IsPositionOutOfRightBound(currentContentPos, 1)) || (direction < 0 && IsPositionOutOfLeftBound(currentContentPos, 1)))
+        public void AddItem(RectTransform itemTransform)
         {
-            _scrollRect.enabled = false;
-            await LeanTweenHelper.BounceXAsync(_contentTransform, -1 * direction * _slotWidth * 0.5f);
-            _scrollRect.enabled = true;
+            itemTransform.parent = _contentTransform;
+            //_items.Add(itemTransform);
         }
-        else
+
+        public void SetContentWidth(float width)
         {
-            newContentPos = ClampPosition(newContentPos);
-            if (Math.Abs(newContentPos - currentContentPos) < 1)
+            var size = _contentTransform.sizeDelta;
+            size.x = width;
+            _contentTransform.sizeDelta = size;
+        }
+
+        public void SetContentPosition(float position)
+        {
+            var pos = _contentTransform.anchoredPosition;
+            pos.x = position;
+            _contentTransform.anchoredPosition = pos;
+        }
+
+        public float GetContentPosition()
+        {
+            return _contentTransform.anchoredPosition.x;
+        }
+
+        public void OnDragEnded()
+        {
+            var currentContentPos = _contentTransform.anchoredPosition.x;
+
+            if (!IsOutOfBounds(currentContentPos))
             {
-                _contentTransform.anchoredPosition = new Vector2(newContentPos, _contentTransform.anchoredPosition.y);
+                var correctedContentPos = -currentContentPos + _slotWidth * 0.5f;
+                var closestItemIndex = (int)Math.Floor(correctedContentPos / _slotWidth);
+
+                ScrollToIndex(closestItemIndex, DefaultFastDuration);
+            }
+        }
+
+        private void ScrollToIndex(int closestItemIndex, float duration = DefaultDuration)
+        {
+            var newContentPos = -closestItemIndex * _slotWidth;
+            LeanTween.cancel(_contentTransform);
+            LeanTween.moveX(_contentTransform, newContentPos, duration);
+        }
+
+        private void OnScrollRigthClick()
+        {
+            AnimateScrollButton(_scrollRight, 15);
+            var _ = ProcessScrollAsync(6);
+        }
+
+        private void OnRewindRigthClick()
+        {
+            AnimateScrollButton(_rewindRight, 15);
+            var _ = ProcessScrollAsync(9999);
+        }
+
+        private void OnScrollLeftClick()
+        {
+            AnimateScrollButton(_scrollLeft, -15);
+            var _ = ProcessScrollAsync(-6);
+        }
+
+        private void OnRewindLeftClick()
+        {
+            AnimateScrollButton(_rewindLeft, -15);
+            var _ = ProcessScrollAsync(-9999);
+        }
+
+        private async UniTaskVoid ProcessScrollAsync(int delta)
+        {
+            if (LeanTween.isTweening(_contentTransform) || delta == 0)
+            {
+                return;
+            }
+
+            var direction = delta > 0 ? 1 : -1;
+            var currentContentPos = _contentTransform.anchoredPosition.x;
+            var newContentPos = currentContentPos - _slotWidth * delta;
+
+            LeanTween.cancel(_contentTransform);
+            if ((direction > 0 && IsPositionOutOfRightBound(currentContentPos, 1)) || (direction < 0 && IsPositionOutOfLeftBound(currentContentPos, 1)))
+            {
+                _scrollRect.enabled = false;
+                await LeanTweenHelper.BounceXAsync(_contentTransform, -1 * direction * _slotWidth * 0.5f);
+                _scrollRect.enabled = true;
             }
             else
             {
-                LeanTween.moveX(_contentTransform, newContentPos, DefaultDuration);
+                newContentPos = ClampPosition(newContentPos);
+                if (Math.Abs(newContentPos - currentContentPos) < 1)
+                {
+                    _contentTransform.anchoredPosition = new Vector2(newContentPos, _contentTransform.anchoredPosition.y);
+                }
+                else
+                {
+                    LeanTween.moveX(_contentTransform, newContentPos, DefaultDuration);
+                }
             }
         }
-    }
 
-    private float ClampPosition(float contentPos)
-    {
-        return Mathf.Clamp(contentPos, _viewportWidth - _contentTransform.rect.width, 0);
-    }
+        private float ClampPosition(float contentPos)
+        {
+            return Mathf.Clamp(contentPos, _viewportWidth - _contentTransform.rect.width, 0);
+        }
 
-    private bool IsPositionOutOfRightBound(float position, float offset = 0)
-    {
-        return position + _contentTransform.rect.width < _viewportWidth + offset;
-    }
+        private bool IsPositionOutOfRightBound(float position, float offset = 0)
+        {
+            return position + _contentTransform.rect.width < _viewportWidth + offset;
+        }
 
-    private bool IsPositionOutOfLeftBound(float position, float offset = 0)
-    {
-        return position > 0 - offset;
-    }
+        private bool IsPositionOutOfLeftBound(float position, float offset = 0)
+        {
+            return position > 0 - offset;
+        }
 
-    private bool IsOutOfBounds(float position, float offset = 0)
-    {
-        return IsPositionOutOfRightBound(position, offset) || IsPositionOutOfLeftBound(position, offset);
-    }
+        private bool IsOutOfBounds(float position, float offset = 0)
+        {
+            return IsPositionOutOfRightBound(position, offset) || IsPositionOutOfLeftBound(position, offset);
+        }
 
-    private void AnimateScrollButton(Button scrollButton, int deltaX)
-    {
-        var rectTransform = scrollButton.transform as RectTransform;
+        private void AnimateScrollButton(Button scrollButton, int deltaX)
+        {
+            var rectTransform = scrollButton.transform as RectTransform;
 
-        if (LeanTween.isTweening(rectTransform)) return;
+            if (LeanTween.isTweening(rectTransform)) return;
 
-        LeanTween.cancel(rectTransform);
-        LeanTweenHelper.BounceX(rectTransform, deltaX, 0.2f, 0.6f);
+            LeanTween.cancel(rectTransform);
+            LeanTweenHelper.BounceX(rectTransform, deltaX, 0.2f, 0.6f);
+        }
     }
 }

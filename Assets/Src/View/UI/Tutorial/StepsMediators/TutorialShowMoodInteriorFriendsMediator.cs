@@ -1,96 +1,100 @@
 using Src.Common;
+using Src.Managers;
 using UnityEngine;
 
-public class TutorialShowMoodInteriorFriendsMediator : TutorialStepMediatorBase
+namespace Src.View.UI.Tutorial.StepsMediators
 {
-    private readonly LocalizationManager _loc;
-
-    private int _phaseIndex = 0;
-
-    public TutorialShowMoodInteriorFriendsMediator(RectTransform parentTransform)
-        : base(parentTransform)
+    public class TutorialShowMoodInteriorFriendsMediator : TutorialStepMediatorBase
     {
-        _loc = LocalizationManager.Instance;
-    }
+        private readonly LocalizationManager _loc;
 
-    public override void Mediate()
-    {
-        base.Mediate();
+        private int _phaseIndex = 0;
 
-        View.SetButtonText(_loc.GetLocalization($"{LocalizationKeys.TutorialButtonPrefix}{ViewModel.StepIndex}"));
-        View.SetQuadrant(1);
-        HighlightMoodBar();
-    }
-
-    protected override void OnViewButtonClicked()
-    {
-        ProcessNextPhase();
-    }
-
-    private void ProcessNextPhase()
-    {
-        _phaseIndex++;
-        switch (_phaseIndex)
+        public TutorialShowMoodInteriorFriendsMediator(RectTransform parentTransform)
+            : base(parentTransform)
         {
-            case 1:
-                HandleInteriorPhase();
-                break;
-            case 2:
-                if (DisabledLogicFlags.IsFriendsLogicDisabled)
-                {
-                    ProcessNextPhase();
-                }
-                else
-                {
-                    HandleFriendsPhase();
-                }
-
-                break;
-            case 3:
-                HandleManagePhase();
-                break;
-            default:
-                base.OnViewButtonClicked();
-                break;
+            _loc = LocalizationManager.Instance;
         }
-    }
 
-    private void HandleInteriorPhase()
-    {
-        var (message, buttonText) = GetTextsForCurrentPhase();
-        View.SetMessageText(string.Format(message, _loc.GetLocalization(LocalizationKeys.BottomPanelInteriorButton)));
-        View.SetButtonText(buttonText);
-        View.ToRight();
-        HighlightUIElement(TutorialUIElement.BottomPanelInteriorButton);
-    }
+        public override void Mediate()
+        {
+            base.Mediate();
 
-    private void HandleFriendsPhase()
-    {
-        var (message, buttonText) = GetTextsForCurrentPhase();
-        View.SetMessageText(string.Format(message, _loc.GetLocalization(LocalizationKeys.BottomPanelFriendsButton)));
-        View.SetButtonText(buttonText);
-        View.ToLeft();
-        HighlightUIElement(TutorialUIElement.BottomPanelFriendsButton);
-    }
+            View.SetButtonText(_loc.GetLocalization($"{LocalizationKeys.TutorialButtonPrefix}{ViewModel.StepIndex}"));
+            View.SetQuadrant(1);
+            HighlightMoodBar();
+        }
 
-    private void HandleManagePhase()
-    {
-        var (message, buttonText) = GetTextsForCurrentPhase();
-        View.SetMessageText(string.Format(message, _loc.GetLocalization(LocalizationKeys.BottomPanelManageButton)));
-        View.SetButtonText(buttonText);
-        View.ToRight();
-        HighlightUIElement(TutorialUIElement.BottomPanelManageButton);
-    }
+        protected override void OnViewButtonClicked()
+        {
+            ProcessNextPhase();
+        }
 
-    private (string message, string buttonText) GetTextsForCurrentPhase()
-    {
-        var message = _loc.GetLocalization($"{LocalizationKeys.TutorialMessagePrefix}{ViewModel.StepIndex}_phase_{_phaseIndex}");
-        var buttonText = _loc.GetLocalization($"{LocalizationKeys.TutorialButtonPrefix}{ViewModel.StepIndex}_phase_{_phaseIndex}");
-        return (message, buttonText);
-    }
+        private void ProcessNextPhase()
+        {
+            _phaseIndex++;
+            switch (_phaseIndex)
+            {
+                case 1:
+                    HandleInteriorPhase();
+                    break;
+                case 2:
+                    if (DisabledLogicFlags.IsFriendsLogicDisabled)
+                    {
+                        ProcessNextPhase();
+                    }
+                    else
+                    {
+                        HandleFriendsPhase();
+                    }
 
-    private void HighlightMoodBar()
-    {
-        HighlightUIElement(TutorialUIElement.TopPanelMoodBar, 2.5f);
+                    break;
+                case 3:
+                    HandleManagePhase();
+                    break;
+                default:
+                    base.OnViewButtonClicked();
+                    break;
+            }
+        }
+
+        private void HandleInteriorPhase()
+        {
+            var (message, buttonText) = GetTextsForCurrentPhase();
+            View.SetMessageText(string.Format(message, _loc.GetLocalization(LocalizationKeys.BottomPanelInteriorButton)));
+            View.SetButtonText(buttonText);
+            View.ToRight();
+            HighlightUIElement(TutorialUIElement.BottomPanelInteriorButton);
+        }
+
+        private void HandleFriendsPhase()
+        {
+            var (message, buttonText) = GetTextsForCurrentPhase();
+            View.SetMessageText(string.Format(message, _loc.GetLocalization(LocalizationKeys.BottomPanelFriendsButton)));
+            View.SetButtonText(buttonText);
+            View.ToLeft();
+            HighlightUIElement(TutorialUIElement.BottomPanelFriendsButton);
+        }
+
+        private void HandleManagePhase()
+        {
+            var (message, buttonText) = GetTextsForCurrentPhase();
+            View.SetMessageText(string.Format(message, _loc.GetLocalization(LocalizationKeys.BottomPanelManageButton)));
+            View.SetButtonText(buttonText);
+            View.ToRight();
+            HighlightUIElement(TutorialUIElement.BottomPanelManageButton);
+        }
+
+        private (string message, string buttonText) GetTextsForCurrentPhase()
+        {
+            var message = _loc.GetLocalization($"{LocalizationKeys.TutorialMessagePrefix}{ViewModel.StepIndex}_phase_{_phaseIndex}");
+            var buttonText = _loc.GetLocalization($"{LocalizationKeys.TutorialButtonPrefix}{ViewModel.StepIndex}_phase_{_phaseIndex}");
+            return (message, buttonText);
+        }
+
+        private void HighlightMoodBar()
+        {
+            HighlightUIElement(TutorialUIElement.TopPanelMoodBar, 2.5f);
+        }
     }
 }

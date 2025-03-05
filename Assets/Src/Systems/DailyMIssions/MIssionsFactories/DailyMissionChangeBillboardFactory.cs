@@ -1,16 +1,23 @@
-public class DailyMissionChangeBillboardFactory : DailyMissionFactoryBase<DailyMissionChangeBillboardProcessor>
+using Src.Model;
+using Src.Model.Missions;
+using Src.Systems.DailyMIssions.Processors;
+
+namespace Src.Systems.DailyMIssions.MIssionsFactories
 {
-    protected override string Key => MissionKeys.ChangeBillboard;
-
-    public override bool CanAdd()
+    public class DailyMissionChangeBillboardFactory : DailyMissionFactoryBase<DailyMissionChangeBillboardProcessor>
     {
-        var playerShopModel = PlayerModelHolder.Instance.ShopModel;        
-        return base.CanAdd()
-            && playerShopModel.BillboardModel.IsAvailable;
-    }
+        protected override string Key => MissionKeys.ChangeBillboard;
 
-    public override DailyMissionModel CreateModel(float complexityMultiplier)
-    {
-        return new DailyMissionModel(Key, 0, 1, 0, ChooseReward(complexityMultiplier));
+        public override bool CanAdd()
+        {
+            var playerShopModel = PlayerModelHolder.Instance.ShopModel;        
+            return base.CanAdd()
+                   && playerShopModel.BillboardModel.IsAvailable;
+        }
+
+        public override DailyMissionModel CreateModel(float complexityMultiplier)
+        {
+            return new DailyMissionModel(Key, 0, 1, 0, ChooseReward(complexityMultiplier));
+        }
     }
 }

@@ -1,21 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlacingProductView : MonoBehaviour
+namespace Src.View.UI.GameView_Panel
 {
-    [SerializeField] private Image _productImage;
-    [SerializeField] private TMP_Text _amountText;
-
-    public void SetImageSprite(Sprite sprite)
+    public class PlacingProductView : MonoBehaviour
     {
-        _productImage.sprite = sprite;
-    }
+        [SerializeField] private Image _productImage;
+        [SerializeField] private TMP_Text _amountText;
 
-    public void SetText(string text)
-    {
-        _amountText.text = text;
+        public void SetImageSprite(Sprite sprite)
+        {
+            _productImage.sprite = sprite;
+        }
+
+        public void SetText(string text)
+        {
+            _amountText.text = text;
+        }
     }
 }

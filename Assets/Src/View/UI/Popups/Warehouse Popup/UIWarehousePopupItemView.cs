@@ -1,39 +1,44 @@
 using System;
+using Src.Common_Utils;
+using Src.View.UI.Common;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIWarehousePopupItemView : MonoBehaviour
+namespace Src.View.UI.Popups.Warehouse_Popup
 {
-    public event Action<UIWarehousePopupItemView> Clicked = delegate{};
-
-    [SerializeField] private Button _button;
-    [SerializeField] private Image _iconImage;
-    [SerializeField] private TMP_Text _amountText;
-    [SerializeField] private UIHintableView _hintableView;
-
-    public void Awake()
+    public class UIWarehousePopupItemView : MonoBehaviour
     {
-        _button.AddOnClickListener(OnButtonClick);
-    }
+        public event Action<UIWarehousePopupItemView> Clicked = delegate{};
 
-    public void SetIconSprite(Sprite sprite)
-    {
-        _iconImage.sprite = sprite;
-    }
+        [SerializeField] private Button _button;
+        [SerializeField] private Image _iconImage;
+        [SerializeField] private TMP_Text _amountText;
+        [SerializeField] private UIHintableView _hintableView;
 
-    public void SetAmountText(string text)
-    {
-        _amountText.text = text;
-    }
+        public void Awake()
+        {
+            _button.AddOnClickListener(OnButtonClick);
+        }
 
-    public void SetupHint(string text)
-    {
-        _hintableView.DisplayText = text;
-    }
+        public void SetIconSprite(Sprite sprite)
+        {
+            _iconImage.sprite = sprite;
+        }
 
-    private void OnButtonClick()
-    {
-        Clicked(this);
+        public void SetAmountText(string text)
+        {
+            _amountText.text = text;
+        }
+
+        public void SetupHint(string text)
+        {
+            _hintableView.DisplayText = text;
+        }
+
+        private void OnButtonClick()
+        {
+            Clicked(this);
+        }
     }
 }

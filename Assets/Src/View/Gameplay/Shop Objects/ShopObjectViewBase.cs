@@ -1,22 +1,26 @@
+using Src.Common_Utils;
 using UnityEngine;
 
-public class ShopObjectViewBase : MonoBehaviour
+namespace Src.View.Gameplay.Shop_Objects
 {
-    [SerializeField] private SpriteRenderer[] _allSprites;
-
-    public void SetAllSpritesAlpha(float alpha)
+    public class ShopObjectViewBase : MonoBehaviour
     {
-        foreach (var sprite in _allSprites)
+        [SerializeField] private SpriteRenderer[] _allSprites;
+
+        public void SetAllSpritesAlpha(float alpha)
         {
-            sprite.color = sprite.color.SetAlpha(alpha);
+            foreach (var sprite in _allSprites)
+            {
+                sprite.color = sprite.color.SetAlpha(alpha);
+            }
         }
-    }
 
-    public void SetAllSpritesColor(Color color)
-    {
-        foreach (var sprite in _allSprites)
+        public void SetAllSpritesColor(Color color)
         {
-            sprite.color = color;
+            foreach (var sprite in _allSprites)
+            {
+                sprite.color = color;
+            }
         }
     }
 }

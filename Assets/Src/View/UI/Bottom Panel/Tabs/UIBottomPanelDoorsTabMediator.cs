@@ -1,47 +1,54 @@
 using System.Collections.Generic;
+using Src.Common;
+using Src.Managers;
+using Src.Model;
+using Src.Model.Configs;
 
-public class UIBottomPanelDoorsTabMediator : UIBottomPanelInteriorModeScrollItemsTabMediatorBase<ItemConfig<ShopDecorationConfigDto>>
+namespace Src.View.UI.Bottom_Panel.Tabs
 {
-    private readonly IDoorsConfig doorsConfig;
-    private readonly SpritesProvider _spritesProvider;
-    private readonly Dispatcher _dispatcher;
-    private readonly UserModel _playerModel;
-
-    public UIBottomPanelDoorsTabMediator(BottomPanelView view)
-        : base(view)
+    public class UIBottomPanelDoorsTabMediator : UIBottomPanelInteriorModeScrollItemsTabMediatorBase<ItemConfig<ShopDecorationConfigDto>>
     {
-        doorsConfig = GameConfigManager.Instance.MainConfig;
-        _spritesProvider = SpritesProvider.Instance;
-        _dispatcher = Dispatcher.Instance;
-        _playerModel = PlayerModelHolder.Instance.UserModel;
-    }
+        private readonly IDoorsConfig doorsConfig;
+        private readonly SpritesProvider _spritesProvider;
+        private readonly Dispatcher _dispatcher;
+        private readonly UserModel _playerModel;
 
-    public override void Mediate()
-    {
-        base.Mediate();
-        View.SetButtonSelected(View.InteriorDoorsButton);
-    }
+        public UIBottomPanelDoorsTabMediator(BottomPanelView view)
+            : base(view)
+        {
+            doorsConfig = GameConfigManager.Instance.MainConfig;
+            _spritesProvider = SpritesProvider.Instance;
+            _dispatcher = Dispatcher.Instance;
+            _playerModel = PlayerModelHolder.Instance.UserModel;
+        }
 
-    public override void Unmediate()
-    {
-        View.SetButtonUnselected(View.InteriorDoorsButton);
-        base.Unmediate();
-    }
+        public override void Mediate()
+        {
+            base.Mediate();
+            View.SetButtonSelected(View.InteriorDoorsButton);
+        }
 
-    protected override IEnumerable<ItemConfig<ShopDecorationConfigDto>> GetViewModelsToShow()
-    {
-        return doorsConfig.GetDoorsConfigsForLevel(_playerModel.ProgressModel.Level);
-    }
+        public override void Unmediate()
+        {
+            View.SetButtonUnselected(View.InteriorDoorsButton);
+            base.Unmediate();
+        }
 
-    protected override void SetupItem(UIBottomPanelScrollItemView itemView, ItemConfig<ShopDecorationConfigDto> viewModel)
-    {
-        itemView.SetupIconSize(110);
-        itemView.SetImage(_spritesProvider.GetDoorIcon(viewModel.NumericId));
-        itemView.SetPrice(viewModel.Price);
-    }
+        protected override IEnumerable<ItemConfig<ShopDecorationConfigDto>> GetViewModelsToShow()
+        {
+            return doorsConfig.GetDoorsConfigsForLevel(_playerModel.ProgressModel.Level);
+        }
 
-    protected override void HandleClick(ItemConfig<ShopDecorationConfigDto> viewModel)
-    {
-        _dispatcher.UIBottomPanelPlaceDoorClicked(viewModel.NumericId);
+        protected override void SetupItem(UIBottomPanelScrollItemView itemView, ItemConfig<ShopDecorationConfigDto> viewModel)
+        {
+            itemView.SetupIconSize(110);
+            itemView.SetImage(_spritesProvider.GetDoorIcon(viewModel.NumericId));
+            itemView.SetPrice(viewModel.Price);
+        }
+
+        protected override void HandleClick(ItemConfig<ShopDecorationConfigDto> viewModel)
+        {
+            _dispatcher.UIBottomPanelPlaceDoorClicked(viewModel.NumericId);
+        }
     }
 }

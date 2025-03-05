@@ -1,9 +1,14 @@
-public struct ToggleMuteAudioCommand
+using Src.Model;
+
+namespace Src.Commands
 {
-    public void Execute()
+    public struct ToggleMuteAudioCommand
     {
-        var playerModel = PlayerModelHolder.Instance.UserModel;
-        var settingsModel = playerModel.UserSettingsModel;
-        settingsModel.SetAudioMutedState(!settingsModel.IsAudioMuted);
+        public void Execute()
+        {
+            var playerModel = PlayerModelHolder.Instance.UserModel;
+            var settingsModel = playerModel.UserSettingsModel;
+            settingsModel.SetAudioMutedState(!settingsModel.IsAudioMuted);
+        }
     }
 }

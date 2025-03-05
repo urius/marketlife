@@ -1,59 +1,68 @@
 using System.Collections.Generic;
 using System.Linq;
+using Src.Managers;
+using Src.Model;
+using Src.Model.Configs;
+using Src.Model.Missions;
+using Src.Model.ShopObjects;
+using Src.Systems.DailyMIssions.Processors;
 using UnityEngine;
 
-public class DailyMissionAddCashFactory : DailyMissionFactoryBase<DailyMissionAddCashProcessor>
+namespace Src.Systems.DailyMIssions.MIssionsFactories
 {
-    protected override string Key => MissionKeys.AddCash;
-
-    public override DailyMissionModel CreateModel(float complexityMultiplier)
+    public class DailyMissionAddCashFactory : DailyMissionFactoryBase<DailyMissionAddCashProcessor>
     {
-        var playerModel = PlayerModelHolder.Instance.UserModel;
-        var shopModel = playerModel.ShopModel;
-        var productsConfig = GameConfigManager.Instance.ProductsConfig;
+        protected override string Key => MissionKeys.AddCash;
 
-        var availableVolume = shopModel.ShopObjects.Values
-            .Where(so => so.Type == ShopObjectType.Shelf)
-            .Sum(s => (s as ShelfModel).TotalVolume);
-        var availableProductConfigs = productsConfig.GetProductConfigsForLevel(playerModel.ProgressModel.Level).ToList();
-        var productConfigsToUse = new List<ProductConfig>(availableProductConfigs.Count);
+        public override DailyMissionModel CreateModel(float complexityMultiplier)
+        {
+            var playerModel = PlayerModelHolder.Instance.UserModel;
+            var shopModel = playerModel.ShopModel;
+            var productsConfig = GameConfigManager.Instance.ProductsConfig;
 
-        while (availableVolume > 0 && availableProductConfigs.Count > 0)
-        {
-            var maxRevenueConfig = GetMaxRevenueConfig(availableProductConfigs);
-            productConfigsToUse.Add(maxRevenueConfig);
-            availableProductConfigs.Remove(maxRevenueConfig);
-            availableVolume -= (int)(maxRevenueConfig.DemandPer1000v * 1000);
-        }
+            var availableVolume = shopModel.ShopObjects.Values
+                .Where(so => so.Type == ShopObjectType.Shelf)
+                .Sum(s => (s as ShelfModel).TotalVolume);
+            var availableProductConfigs = productsConfig.GetProductConfigsForLevel(playerModel.ProgressModel.Level).ToList();
+            var productConfigsToUse = new List<ProductConfig>(availableProductConfigs.Count);
 
-        var targetProfitPerHour = productConfigsToUse.Sum(p => p.ProfitPer1000v);
-        if (targetProfitPerHour > 0)
-        {
-            var targetValue = targetProfitPerHour * (int)Mathf.Max(1, Mathf.Lerp(1, MissionConfig.MaxComplexityFactor, complexityMultiplier));
-            var reward = ChooseReward(complexityMultiplier);
-            return new DailyMissionModel(Key, 0, targetValue, 0, reward);
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    private ProductConfig GetMaxRevenueConfig(List<ProductConfig> availableProductConfigs)
-    {
-        ProductConfig result = null;
-        if (availableProductConfigs.Count > 0)
-        {
-            result = availableProductConfigs[0];
-            foreach (var config in availableProductConfigs)
+            while (availableVolume > 0 && availableProductConfigs.Count > 0)
             {
-                if (config.DemandPer1000v * config.ProfitPer1000v > result.DemandPer1000v * result.ProfitPer1000v)
-                {
-                    result = config;
-                }
+                var maxRevenueConfig = GetMaxRevenueConfig(availableProductConfigs);
+                productConfigsToUse.Add(maxRevenueConfig);
+                availableProductConfigs.Remove(maxRevenueConfig);
+                availableVolume -= (int)(maxRevenueConfig.DemandPer1000v * 1000);
+            }
+
+            var targetProfitPerHour = productConfigsToUse.Sum(p => p.ProfitPer1000v);
+            if (targetProfitPerHour > 0)
+            {
+                var targetValue = targetProfitPerHour * (int)Mathf.Max(1, Mathf.Lerp(1, MissionConfig.MaxComplexityFactor, complexityMultiplier));
+                var reward = ChooseReward(complexityMultiplier);
+                return new DailyMissionModel(Key, 0, targetValue, 0, reward);
+            }
+            else
+            {
+                return null;
             }
         }
 
-        return result;
+        private ProductConfig GetMaxRevenueConfig(List<ProductConfig> availableProductConfigs)
+        {
+            ProductConfig result = null;
+            if (availableProductConfigs.Count > 0)
+            {
+                result = availableProductConfigs[0];
+                foreach (var config in availableProductConfigs)
+                {
+                    if (config.DemandPer1000v * config.ProfitPer1000v > result.DemandPer1000v * result.ProfitPer1000v)
+                    {
+                        result = config;
+                    }
+                }
+            }
+
+            return result;
+        }
     }
 }

@@ -1,6 +1,9 @@
 using Cysharp.Threading.Tasks;
 using Src.Commands.JsHandle;
 using Src.Common;
+using Src.Managers;
+using Src.Model;
+using Src.Model.Popups;
 
 namespace Src.Systems.PlatformModules
 {

@@ -1,9 +1,14 @@
-public struct HandleAddMoneyClickCommand
-{
-    public void Execute(bool isGold)
-    {
-        new OpenBankPopupCommand().Execute(isGold);
+using Src.Managers;
 
-        AnalyticsManager.Instance.SendStoreOpened(isGold);
+namespace Src.Commands
+{
+    public struct HandleAddMoneyClickCommand
+    {
+        public void Execute(bool isGold)
+        {
+            new OpenBankPopupCommand().Execute(isGold);
+
+            AnalyticsManager.Instance.SendStoreOpened(isGold);
+        }
     }
 }

@@ -1,84 +1,87 @@
 using System;
 using Cysharp.Threading.Tasks;
 
-public static class UniTaskExtensions
+namespace Src.Common_Utils
 {
-    public static UniTask ToUniTask(this Action @event)
+    public static class UniTaskExtensions
     {
-        var uniTaskTcs = new UniTaskCompletionSource();
-        void OnEvent()
+        public static UniTask ToUniTask(this Action @event)
         {
-            uniTaskTcs.TrySetResult();
-            @event -= OnEvent;
+            var uniTaskTcs = new UniTaskCompletionSource();
+            void OnEvent()
+            {
+                uniTaskTcs.TrySetResult();
+                @event -= OnEvent;
+            }
+            @event += OnEvent;
+
+            return uniTaskTcs.Task;
         }
-        @event += OnEvent;
 
-        return uniTaskTcs.Task;
-    }
-
-    public static UniTask<T> ToUniTask<T>(this Action<T> @event)
-    {
-        var uniTaskTcs = new UniTaskCompletionSource<T>();
-        void OnEvent(T param)
+        public static UniTask<T> ToUniTask<T>(this Action<T> @event)
         {
-            uniTaskTcs.TrySetResult(param);
-            @event -= OnEvent;
+            var uniTaskTcs = new UniTaskCompletionSource<T>();
+            void OnEvent(T param)
+            {
+                uniTaskTcs.TrySetResult(param);
+                @event -= OnEvent;
+            }
+            @event += OnEvent;
+
+            return uniTaskTcs.Task;
         }
-        @event += OnEvent;
 
-        return uniTaskTcs.Task;
-    }
-
-    public static UniTask<(T1, T2)> ToUniTask<T1, T2>(this Action<T1, T2> @event)
-    {
-        var uniTaskTcs = new UniTaskCompletionSource<(T1, T2)>();
-        void OnEvent(T1 param1, T2 param2)
+        public static UniTask<(T1, T2)> ToUniTask<T1, T2>(this Action<T1, T2> @event)
         {
-            uniTaskTcs.TrySetResult((param1, param2));
-            @event -= OnEvent;
+            var uniTaskTcs = new UniTaskCompletionSource<(T1, T2)>();
+            void OnEvent(T1 param1, T2 param2)
+            {
+                uniTaskTcs.TrySetResult((param1, param2));
+                @event -= OnEvent;
+            }
+            @event += OnEvent;
+
+            return uniTaskTcs.Task;
         }
-        @event += OnEvent;
 
-        return uniTaskTcs.Task;
-    }
-
-    public static UniTask<(T1, T2, T3)> ToUniTask<T1, T2, T3>(this Action<T1, T2, T3> @event)
-    {
-        var uniTaskTcs = new UniTaskCompletionSource<(T1, T2, T3)>();
-        void OnEvent(T1 param1, T2 param2, T3 param3)
+        public static UniTask<(T1, T2, T3)> ToUniTask<T1, T2, T3>(this Action<T1, T2, T3> @event)
         {
-            uniTaskTcs.TrySetResult((param1, param2, param3));
-            @event -= OnEvent;
+            var uniTaskTcs = new UniTaskCompletionSource<(T1, T2, T3)>();
+            void OnEvent(T1 param1, T2 param2, T3 param3)
+            {
+                uniTaskTcs.TrySetResult((param1, param2, param3));
+                @event -= OnEvent;
+            }
+            @event += OnEvent;
+
+            return uniTaskTcs.Task;
         }
-        @event += OnEvent;
 
-        return uniTaskTcs.Task;
-    }
-
-    public static UniTask<(T1, T2, T3, T4)> ToUniTask<T1, T2, T3, T4>(this Action<T1, T2, T3, T4> @event)
-    {
-        var uniTaskTcs = new UniTaskCompletionSource<(T1, T2, T3, T4)>();
-        void OnEvent(T1 param1, T2 param2, T3 param3, T4 param4)
+        public static UniTask<(T1, T2, T3, T4)> ToUniTask<T1, T2, T3, T4>(this Action<T1, T2, T3, T4> @event)
         {
-            uniTaskTcs.TrySetResult((param1, param2, param3, param4));
-            @event -= OnEvent;
+            var uniTaskTcs = new UniTaskCompletionSource<(T1, T2, T3, T4)>();
+            void OnEvent(T1 param1, T2 param2, T3 param3, T4 param4)
+            {
+                uniTaskTcs.TrySetResult((param1, param2, param3, param4));
+                @event -= OnEvent;
+            }
+            @event += OnEvent;
+
+            return uniTaskTcs.Task;
         }
-        @event += OnEvent;
-
-        return uniTaskTcs.Task;
-    }
 
 
-    public static UniTask<(T1, T2, T3, T4, T5)> ToUniTask<T1, T2, T3, T4, T5>(this Action<T1, T2, T3, T4, T5> @event)
-    {
-        var uniTaskTcs = new UniTaskCompletionSource<(T1, T2, T3, T4, T5)>();
-        void OnEvent(T1 param1, T2 param2, T3 param3, T4 param4, T5 param5)
+        public static UniTask<(T1, T2, T3, T4, T5)> ToUniTask<T1, T2, T3, T4, T5>(this Action<T1, T2, T3, T4, T5> @event)
         {
-            uniTaskTcs.TrySetResult((param1, param2, param3, param4, param5));
-            @event -= OnEvent;
-        }
-        @event += OnEvent;
+            var uniTaskTcs = new UniTaskCompletionSource<(T1, T2, T3, T4, T5)>();
+            void OnEvent(T1 param1, T2 param2, T3 param3, T4 param4, T5 param5)
+            {
+                uniTaskTcs.TrySetResult((param1, param2, param3, param4, param5));
+                @event -= OnEvent;
+            }
+            @event += OnEvent;
 
-        return uniTaskTcs.Task;
+            return uniTaskTcs.Task;
+        }
     }
 }

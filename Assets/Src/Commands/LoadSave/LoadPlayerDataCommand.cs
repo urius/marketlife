@@ -1,31 +1,36 @@
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
+using Src.Model;
+using Src.Net;
 
-public struct LoadPlayerDataCommand : IAsyncGameLoadCommand
+namespace Src.Commands.LoadSave
 {
-    public async UniTask<bool> ExecuteAsync()
+    public struct LoadPlayerDataCommand : IAsyncGameLoadCommand
     {
-        var result = false;
-        var playerModelHolder = PlayerModelHolder.Instance;
-
-        var playerDataStr = await new LoadUserDataCommand().ExecuteAsync(playerModelHolder.Uid);
-        if (playerDataStr != null)
+        public async UniTask<bool> ExecuteAsync()
         {
-            playerModelHolder.SetUserDataRaw(playerDataStr);
-            InitializeABData(playerDataStr);
+            var result = false;
+            var playerModelHolder = PlayerModelHolder.Instance;
 
-            result = true;
+            var playerDataStr = await new LoadUserDataCommand().ExecuteAsync(playerModelHolder.Uid);
+            if (playerDataStr != null)
+            {
+                playerModelHolder.SetUserDataRaw(playerDataStr);
+                InitializeABData(playerDataStr);
+
+                result = true;
+            }
+
+            return result;
         }
 
-        return result;
-    }
+        private void InitializeABData(string playerDataStr)
+        {
+            var responseInnerStr = JsonConvert.DeserializeObject<CommonResponseDto>(playerDataStr).response;
+            var abResponseDto = JsonConvert.DeserializeObject<GetDataResponseABDto>(responseInnerStr);
+            var abDto = abResponseDto.data.ab;
 
-    private void InitializeABData(string playerDataStr)
-    {
-        var responseInnerStr = JsonConvert.DeserializeObject<CommonResponseDto>(playerDataStr).response;
-        var abResponseDto = JsonConvert.DeserializeObject<GetDataResponseABDto>(responseInnerStr);
-        var abDto = abResponseDto.data.ab;
-
-        ABDataHolder.Instance.Setup(mainConfigPostfix: abDto.config_postfix);
+            ABDataHolder.Instance.Setup(mainConfigPostfix: abDto.config_postfix);
+        }
     }
 }

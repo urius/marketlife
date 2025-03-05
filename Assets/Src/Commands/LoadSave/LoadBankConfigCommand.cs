@@ -3,86 +3,90 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using Src.Common;
+using Src.Common_Utils;
+using Src.Model;
+using Src.Model.Configs;
 
-public struct LoadBankConfigCommand
+namespace Src.Commands.LoadSave
 {
-    public async UniTask<bool> ExecuteAsync()
+    public struct LoadBankConfigCommand
     {
-        var playerModelHolder = PlayerModelHolder.Instance;
-        var getBankURL = Urls.Instance.GetBankDataURL(playerModelHolder.SocialType);
-        var bankConfig = BankConfig.Instance;
-
-        var getConfigOperation = await new WebRequestsSender().GetAsync(URLHelper.AddAntiCachePostfix(getBankURL));
-        if (getConfigOperation.IsSuccess)
+        public async UniTask<bool> ExecuteAsync()
         {
-            var bankConfigDto = JsonConvert.DeserializeObject<Dictionary<string, BankItemValueDto>>(getConfigOperation.Result);
-            var items = ConvertToBankItems(bankConfigDto);
-            bankConfig.SetItems(items);
-        }
+            var playerModelHolder = PlayerModelHolder.Instance;
+            var getBankURL = Urls.Instance.GetBankDataURL(playerModelHolder.SocialType);
+            var bankConfig = BankConfig.Instance;
 
-        return getConfigOperation.IsSuccess;
-    }
-
-    private List<BankConfigItem> ConvertToBankItems(Dictionary<string, BankItemValueDto> bankConfigDto)
-    {
-        var result = new List<BankConfigItem>(bankConfigDto.Count);
-        foreach (var kvp in bankConfigDto)
-        {
-            var item = ConvertItem(kvp.Key, kvp.Value);
-            result.Add(item);
-        }
-
-        var minGoldItem = result.Where(i => i.IsGold).First();
-        var minCashItem = result.Where(i => !i.IsGold).First();
-        foreach (var item in result)
-        {
-            if (item.IsGold)
+            var getConfigOperation = await new WebRequestsSender().GetAsync(URLHelper.AddAntiCachePostfix(getBankURL));
+            if (getConfigOperation.IsSuccess)
             {
-                if (item.Price < minGoldItem.Price) minGoldItem = item;
+                var bankConfigDto = JsonConvert.DeserializeObject<Dictionary<string, BankItemValueDto>>(getConfigOperation.Result);
+                var items = ConvertToBankItems(bankConfigDto);
+                bankConfig.SetItems(items);
             }
-            else if (item.Price < minCashItem.Price)
+
+            return getConfigOperation.IsSuccess;
+        }
+
+        private List<BankConfigItem> ConvertToBankItems(Dictionary<string, BankItemValueDto> bankConfigDto)
+        {
+            var result = new List<BankConfigItem>(bankConfigDto.Count);
+            foreach (var kvp in bankConfigDto)
             {
-                if (item.Price < minCashItem.Price) minCashItem = item;
+                var item = ConvertItem(kvp.Key, kvp.Value);
+                result.Add(item);
+            }
+
+            var minGoldItem = result.Where(i => i.IsGold).First();
+            var minCashItem = result.Where(i => !i.IsGold).First();
+            foreach (var item in result)
+            {
+                if (item.IsGold)
+                {
+                    if (item.Price < minGoldItem.Price) minGoldItem = item;
+                }
+                else if (item.Price < minCashItem.Price)
+                {
+                    if (item.Price < minCashItem.Price) minCashItem = item;
+                }
+            }
+
+            foreach (var item in result)
+            {
+                item.ExtraPercent = CalculateExtraPercent(item, item.IsGold ? minGoldItem : minCashItem);
+            }
+
+            return result;
+        }
+
+        private int CalculateExtraPercent(BankConfigItem item, BankConfigItem minItem)
+        {
+            var multiplier = (float)item.Price / minItem.Price;
+            var calculatedValue = multiplier * minItem.Value;
+            var extraPercent = (int)(100 * (item.Value - calculatedValue) / calculatedValue);
+            if (extraPercent > 0)
+            {
+                return extraPercent;
+            }
+            else
+            {
+                return 0;
             }
         }
 
-        foreach (var item in result)
+        private BankConfigItem ConvertItem(string key, BankItemValueDto value)
         {
-            item.ExtraPercent = CalculateExtraPercent(item, item.IsGold ? minGoldItem : minCashItem);
-        }
+            var splitted = key.Split('_');
+            var isGold = splitted[0].IndexOf('g') >= 0;
+            var amount = int.Parse(splitted[1]);
+            var price = value.price;
 
-        return result;
-    }
-
-    private int CalculateExtraPercent(BankConfigItem item, BankConfigItem minItem)
-    {
-        var multiplier = (float)item.Price / minItem.Price;
-        var calculatedValue = multiplier * minItem.Value;
-        var extraPercent = (int)(100 * (item.Value - calculatedValue) / calculatedValue);
-        if (extraPercent > 0)
-        {
-            return extraPercent;
-        }
-        else
-        {
-            return 0;
+            return new BankConfigItem { Id = key, IsGold = isGold, Value = amount, Price = price };
         }
     }
 
-    private BankConfigItem ConvertItem(string key, BankItemValueDto value)
+    public struct BankItemValueDto
     {
-        var splitted = key.Split('_');
-        var isGold = splitted[0].IndexOf('g') >= 0;
-        var amount = int.Parse(splitted[1]);
-        var price = value.price;
-
-        return new BankConfigItem { Id = key, IsGold = isGold, Value = amount, Price = price };
+        public int price;
     }
 }
-
-public struct BankItemValueDto
-{
-    public int price;
-}
-
-

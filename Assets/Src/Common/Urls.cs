@@ -1,3 +1,4 @@
+using Src.Model;
 using UnityEngine;
 
 namespace Src.Common

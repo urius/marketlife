@@ -1,61 +1,70 @@
 using System;
 using System.Linq;
+using Src.Managers;
+using Src.Model;
+using Src.Model.Common;
+using Src.Model.Configs;
+using Src.Model.Missions;
+using Src.Systems.DailyMIssions.Processors;
 using UnityEngine;
 
-public abstract class DailyMissionFactoryBase<TProcessor> : IDailyMissionFactory
-    where TProcessor : DailyMissionProcessorBase, new()
+namespace Src.Systems.DailyMIssions.MIssionsFactories
 {
-    private readonly GameConfigManager _configManager;
-    private readonly PlayerModelHolder _playerModelHolder;
-    private readonly System.Random _random;
-
-    public DailyMissionFactoryBase()
+    public abstract class DailyMissionFactoryBase<TProcessor> : IDailyMissionFactory
+        where TProcessor : DailyMissionProcessorBase, new()
     {
-        _configManager = GameConfigManager.Instance;
-        _playerModelHolder = PlayerModelHolder.Instance;
-        _random = new System.Random();
-    }
+        private readonly GameConfigManager _configManager;
+        private readonly PlayerModelHolder _playerModelHolder;
+        private readonly System.Random _random;
 
-    public abstract DailyMissionModel CreateModel(float complexityMultiplier);
-
-    protected virtual bool IsMultipleAllowed => false;
-    protected abstract string Key { get; }
-    protected MissionConfig MissionConfig => _configManager.DailyMissionsConfig.GetMissionConfig(Key);
-    protected System.Random Random => _random;
-
-    public virtual bool CanAdd()
-    {
-        if (IsMultipleAllowed == false)
+        public DailyMissionFactoryBase()
         {
-            return _playerModelHolder.UserModel.DailyMissionsModel.MissionsList
-               .Any(m => m.Key == Key) == false;
+            _configManager = GameConfigManager.Instance;
+            _playerModelHolder = PlayerModelHolder.Instance;
+            _random = new System.Random();
         }
-        else
+
+        public abstract DailyMissionModel CreateModel(float complexityMultiplier);
+
+        protected virtual bool IsMultipleAllowed => false;
+        protected abstract string Key { get; }
+        protected MissionConfig MissionConfig => _configManager.DailyMissionsConfig.GetMissionConfig(Key);
+        protected System.Random Random => _random;
+
+        public virtual bool CanAdd()
         {
-            return true;
+            if (IsMultipleAllowed == false)
+            {
+                return _playerModelHolder.UserModel.DailyMissionsModel.MissionsList
+                    .Any(m => m.Key == Key) == false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public DailyMissionProcessorBase CreateProcessor(DailyMissionModel mission)
+        {
+            var result = new TProcessor();
+            result.SetupMissionModel(mission);
+            return result;
+        }
+
+        protected Reward ChooseReward(float complexityMultiplier)
+        {
+            var rewardConfigs = MissionConfig.RewardConfigs;
+            var rewardConfig = rewardConfigs[_random.Next(0, rewardConfigs.Length)];
+            var amount = Math.Max(rewardConfig.MinReward.Amount, (int)Mathf.Lerp(rewardConfig.MinReward.Amount, rewardConfig.MaxReward.Amount, complexityMultiplier));
+            amount += amount * rewardConfig.RewardLevelMultiplier * _playerModelHolder.UserModel.ProgressModel.Level;
+            return new Reward(amount, rewardConfig.MinReward.Type);
         }
     }
 
-    public DailyMissionProcessorBase CreateProcessor(DailyMissionModel mission)
+    public interface IDailyMissionFactory
     {
-        var result = new TProcessor();
-        result.SetupMissionModel(mission);
-        return result;
+        bool CanAdd();
+        DailyMissionModel CreateModel(float complexityMultiplier);
+        DailyMissionProcessorBase CreateProcessor(DailyMissionModel mission);
     }
-
-    protected Reward ChooseReward(float complexityMultiplier)
-    {
-        var rewardConfigs = MissionConfig.RewardConfigs;
-        var rewardConfig = rewardConfigs[_random.Next(0, rewardConfigs.Length)];
-        var amount = Math.Max(rewardConfig.MinReward.Amount, (int)Mathf.Lerp(rewardConfig.MinReward.Amount, rewardConfig.MaxReward.Amount, complexityMultiplier));
-        amount += amount * rewardConfig.RewardLevelMultiplier * _playerModelHolder.UserModel.ProgressModel.Level;
-        return new Reward(amount, rewardConfig.MinReward.Type);
-    }
-}
-
-public interface IDailyMissionFactory
-{
-    bool CanAdd();
-    DailyMissionModel CreateModel(float complexityMultiplier);
-    DailyMissionProcessorBase CreateProcessor(DailyMissionModel mission);
 }

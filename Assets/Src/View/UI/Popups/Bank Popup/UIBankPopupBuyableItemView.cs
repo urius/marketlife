@@ -1,22 +1,25 @@
 using TMPro;
 using UnityEngine;
 
-public class UIBankPopupBuyableItemView : UIBankPopupItemViewBase
+namespace Src.View.UI.Popups.Bank_Popup
 {
-    [SerializeField] private TMP_Text _extraPercentText;
-    [SerializeField] private TMP_Text _unavailableText;
-
-    override public void SetAvailable(bool isAvailable)
+    public class UIBankPopupBuyableItemView : UIBankPopupItemViewBase
     {
-        base.SetAvailable(isAvailable);
+        [SerializeField] private TMP_Text _extraPercentText;
+        [SerializeField] private TMP_Text _unavailableText;
 
-        BuyButton.gameObject.SetActive(isAvailable);
-        PriceText.gameObject.SetActive(isAvailable);
-        _unavailableText?.gameObject.SetActive(!isAvailable);
-    }
+        override public void SetAvailable(bool isAvailable)
+        {
+            base.SetAvailable(isAvailable);
 
-    public void SetExtraPercentText(string text)
-    {
-        _extraPercentText.text = text;
+            BuyButton.gameObject.SetActive(isAvailable);
+            PriceText.gameObject.SetActive(isAvailable);
+            _unavailableText?.gameObject.SetActive(!isAvailable);
+        }
+
+        public void SetExtraPercentText(string text)
+        {
+            _extraPercentText.text = text;
+        }
     }
 }

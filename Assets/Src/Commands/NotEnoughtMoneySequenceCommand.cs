@@ -1,11 +1,16 @@
-public struct NotEnoughtMoneySequenceCommand
+using Src.Common;
+
+namespace Src.Commands
 {
-    public void Execute(bool isGold)
+    public struct NotEnoughtMoneySequenceCommand
     {
-        var dispatcher = Dispatcher.Instance;
+        public void Execute(bool isGold)
+        {
+            var dispatcher = Dispatcher.Instance;
 
-        dispatcher.UIRequestBlinkMoney(isGold);
+            dispatcher.UIRequestBlinkMoney(isGold);
 
-        new OpenBankPopupCommand().Execute(isGold);
+            new OpenBankPopupCommand().Execute(isGold);
+        }
     }
 }

@@ -1,44 +1,50 @@
 using System.Linq;
+using Src.Managers;
+using Src.Model;
+using Src.Model.Popups;
 
-public struct UIProcessWarehouseSlotClickCommand
+namespace Src.Commands
 {
-    public void Execute(int slotIndex)
+    public struct UIProcessWarehouseSlotClickCommand
     {
-        var gameStateModel = GameStateModel.Instance;
-        var playerModelHolder = PlayerModelHolder.Instance;
-        var warehouseModel = playerModelHolder.ShopModel.WarehouseModel;
-
-        var slotModel = warehouseModel.Slots[slotIndex];
-        if (slotModel.Product != null)
+        public void Execute(int slotIndex)
         {
-            if (slotModel.Product.DeliverTime <= gameStateModel.ServerTime)
+            var gameStateModel = GameStateModel.Instance;
+            var playerModelHolder = PlayerModelHolder.Instance;
+            var warehouseModel = playerModelHolder.ShopModel.WarehouseModel;
+
+            var slotModel = warehouseModel.Slots[slotIndex];
+            if (slotModel.Product != null)
             {
-                gameStateModel.SetPlacingProductOnPlayersShop(slotIndex);
+                if (slotModel.Product.DeliverTime <= gameStateModel.ServerTime)
+                {
+                    gameStateModel.SetPlacingProductOnPlayersShop(slotIndex);
+                }
+            }
+            else
+            {
+                var popupModel = GetOrderProductPopupModel(slotIndex);
+                gameStateModel.CachePopup(popupModel);
+                gameStateModel.ShowPopup(popupModel);
             }
         }
-        else
+
+        private OrderProductPopupViewModel GetOrderProductPopupModel(int slotIndex)
         {
-            var popupModel = GetOrderProductPopupModel(slotIndex);
-            gameStateModel.CachePopup(popupModel);
-            gameStateModel.ShowPopup(popupModel);
+            var gameStateModel = GameStateModel.Instance;
+            var playerModel = PlayerModelHolder.Instance.UserModel;
+            var productsConfig = GameConfigManager.Instance.ProductsConfig;
+
+            var result = (gameStateModel.GetPopupFromCache(PopupType.OrderProduct) ?? new OrderProductPopupViewModel()) as OrderProductPopupViewModel;
+
+            var productsByGroupId = productsConfig.GetProductConfigsForLevel(playerModel.ProgressModel.Level)
+                .GroupBy(p => p.GroupId)
+                .OrderBy(g => g.Key)
+                .ToDictionary(g => g.Key, g => g.OrderByDescending(c => c.UnlockLevel).ToArray());
+
+            result.Setup(slotIndex, productsByGroupId.Keys.ToArray(), productsByGroupId);
+
+            return result;
         }
-    }
-
-    private OrderProductPopupViewModel GetOrderProductPopupModel(int slotIndex)
-    {
-        var gameStateModel = GameStateModel.Instance;
-        var playerModel = PlayerModelHolder.Instance.UserModel;
-        var productsConfig = GameConfigManager.Instance.ProductsConfig;
-
-        var result = (gameStateModel.GetPopupFromCache(PopupType.OrderProduct) ?? new OrderProductPopupViewModel()) as OrderProductPopupViewModel;
-
-        var productsByGroupId = productsConfig.GetProductConfigsForLevel(playerModel.ProgressModel.Level)
-            .GroupBy(p => p.GroupId)
-            .OrderBy(g => g.Key)
-            .ToDictionary(g => g.Key, g => g.OrderByDescending(c => c.UnlockLevel).ToArray());
-
-        result.Setup(slotIndex, productsByGroupId.Keys.ToArray(), productsByGroupId);
-
-        return result;
     }
 }

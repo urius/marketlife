@@ -1,190 +1,195 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Src.Common;
+using Src.Model.Configs;
 using UnityEngine;
 
-public class CustomerModel : PositionableObjectModelBase
+namespace Src.Model.Humans
 {
-    public event Action AnimationStateChanged = delegate { };
-    public event Action MoodChanged = delegate { };
-
-    private static int[][] _matrix = new int[][] { new int[] { 1 } };
-
-    public CustomerLifetimeState LifetimeState;
-    public int ShelfsVisited = 0;
-    public Vector2Int TargetCell;
-    public int ChangeMoodCooldown = 3;
-
-    private readonly List<ProductModel> _products = new List<ProductModel>(5);
-
-    private int _hairId;
-    private int _topClothesId;
-    private int _bottomClothesId;
-    private int _glassesId;
-    private Mood _mood;
-    private CustomerAnimationState _animationState;
-    private Vector2Int[] _path;
-    private int _pathStepIndex;
-
-    public CustomerModel(
-        int hairId,
-        int topClothesId,
-        int bottomClothesId,
-        int glassesId,
-        Mood mood,
-        Vector2Int coords,
-        int side)
-        : base(_matrix, false, coords, side)
+    public class CustomerModel : PositionableObjectModelBase
     {
-        _hairId = hairId;
-        _topClothesId = topClothesId;
-        _bottomClothesId = bottomClothesId;
-        _glassesId = glassesId;
-        _mood = mood;
-    }
+        public event Action AnimationStateChanged = delegate { };
+        public event Action MoodChanged = delegate { };
 
-    public int HairId => _hairId;
-    public int TopClothesId => _topClothesId;
-    public int BottomClothesId => _bottomClothesId;
-    public int GlassesId => _glassesId;
-    public Mood Mood => _mood;
-    public CustomerAnimationState AnimationState => _animationState;
-    public bool HaveUnwalkedPath => _path != null && _pathStepIndex < _path.Length - 1;
-    public Vector2Int[] Path => _path;
-    public IReadOnlyList<ProductModel> Products => _products;
+        private static int[][] _matrix = new int[][] { new int[] { 1 } };
 
-    public void SetPath(Vector2Int[] path)
-    {
-        _path = path;
-        _pathStepIndex = 0;
-        Coords = _path[_pathStepIndex];
-    }
+        public CustomerLifetimeState LifetimeState;
+        public int ShelfsVisited = 0;
+        public Vector2Int TargetCell;
+        public int ChangeMoodCooldown = 3;
 
-    public void ChangeMood(Mood mood)
-    {
-        _mood = mood;
-        ChangeMoodCooldown = UnityEngine.Random.Range(2, 5);
-        MoodChanged();
-    }
+        private readonly List<ProductModel> _products = new List<ProductModel>(5);
 
-    public bool TryGetNextStepCoords(out Vector2Int result)
-    {
-        result = Vector2Int.zero;
-        if (HaveUnwalkedPath)
+        private int _hairId;
+        private int _topClothesId;
+        private int _bottomClothesId;
+        private int _glassesId;
+        private Mood _mood;
+        private CustomerAnimationState _animationState;
+        private Vector2Int[] _path;
+        private int _pathStepIndex;
+
+        public CustomerModel(
+            int hairId,
+            int topClothesId,
+            int bottomClothesId,
+            int glassesId,
+            Mood mood,
+            Vector2Int coords,
+            int side)
+            : base(_matrix, false, coords, side)
         {
-            result = _path[_pathStepIndex + 1];
-            return true;
+            _hairId = hairId;
+            _topClothesId = topClothesId;
+            _bottomClothesId = bottomClothesId;
+            _glassesId = glassesId;
+            _mood = mood;
         }
 
-        return false;
-    }
+        public int HairId => _hairId;
+        public int TopClothesId => _topClothesId;
+        public int BottomClothesId => _bottomClothesId;
+        public int GlassesId => _glassesId;
+        public Mood Mood => _mood;
+        public CustomerAnimationState AnimationState => _animationState;
+        public bool HaveUnwalkedPath => _path != null && _pathStepIndex < _path.Length - 1;
+        public Vector2Int[] Path => _path;
+        public IReadOnlyList<ProductModel> Products => _products;
 
-    public void AddProduct(ProductConfig config, int amount)
-    {
-        foreach (var product in _products)
+        public void SetPath(Vector2Int[] path)
         {
-            if (product.Config.NumericId == config.NumericId)
+            _path = path;
+            _pathStepIndex = 0;
+            Coords = _path[_pathStepIndex];
+        }
+
+        public void ChangeMood(Mood mood)
+        {
+            _mood = mood;
+            ChangeMoodCooldown = UnityEngine.Random.Range(2, 5);
+            MoodChanged();
+        }
+
+        public bool TryGetNextStepCoords(out Vector2Int result)
+        {
+            result = Vector2Int.zero;
+            if (HaveUnwalkedPath)
             {
-                product.Amount += amount;
-                return;
+                result = _path[_pathStepIndex + 1];
+                return true;
+            }
+
+            return false;
+        }
+
+        public void AddProduct(ProductConfig config, int amount)
+        {
+            foreach (var product in _products)
+            {
+                if (product.Config.NumericId == config.NumericId)
+                {
+                    product.Amount += amount;
+                    return;
+                }
+            }
+            _products.Add(new ProductModel(config, amount));
+        }
+
+        public ProductModel TakeNextProduct()
+        {
+            if (_products.Count > 0)
+            {
+                var result = _products[0];
+                _products.Remove(_products[0]);
+                return result;
+            }
+            return null;
+        }
+
+        public bool MakeStep()
+        {
+            if (HaveUnwalkedPath)
+            {
+                _pathStepIndex++;
+                var newCoords = _path[_pathStepIndex];
+                Side = SideHelper.VectorToSide(newCoords - Coords);
+                Coords = newCoords;
+                SetAnimationState(CustomerAnimationState.Moving);
+                return true;
+            }
+            SetAnimationState(CustomerAnimationState.Idle);
+            return false;
+        }
+
+        public void ToIdleState()
+        {
+            SetAnimationState(CustomerAnimationState.Idle);
+        }
+
+        public void ToThinkingState()
+        {
+            SetAnimationState(CustomerAnimationState.Thinking);
+        }
+
+        public void ToTakingProductState()
+        {
+            SetAnimationState(CustomerAnimationState.TakingProduct);
+        }
+
+        public void ToPayingState()
+        {
+            SetAnimationState(CustomerAnimationState.Paying);
+        }
+
+        public void InsertNextStep(Vector2Int stepcoords)
+        {
+            var restPath = _path.Skip(_pathStepIndex).ToArray();
+            var newpath = new Vector2Int[] { Coords, stepcoords }.Concat(restPath).ToArray();
+            SetPath(newpath);
+        }
+
+        private void SetAnimationState(CustomerAnimationState newAnimationState)
+        {
+            if (_animationState != newAnimationState)
+            {
+                _animationState = newAnimationState;
+                AnimationStateChanged();
             }
         }
-        _products.Add(new ProductModel(config, amount));
     }
 
-    public ProductModel TakeNextProduct()
+    public enum CustomerAnimationState
     {
-        if (_products.Count > 0)
-        {
-            var result = _products[0];
-            _products.Remove(_products[0]);
-            return result;
-        }
-        return null;
+        Idle,
+        Moving,
+        Thinking,
+        TakingProduct,
+        Paying,
     }
 
-    public bool MakeStep()
+    public enum CustomerLifetimeState
     {
-        if (HaveUnwalkedPath)
-        {
-            _pathStepIndex++;
-            var newCoords = _path[_pathStepIndex];
-            Side = SideHelper.VectorToSide(newCoords - Coords);
-            Coords = newCoords;
-            SetAnimationState(CustomerAnimationState.Moving);
-            return true;
-        }
-        SetAnimationState(CustomerAnimationState.Idle);
-        return false;
+        Default,
+        MovingToShelf,
+        WatchingShelf,
+        TakingProductFromShelf,
+        MovingToCashDesk,
+        PayingOnCashDesk,
+        MovingToExit,
     }
 
-    public void ToIdleState()
+    public enum Mood
     {
-        SetAnimationState(CustomerAnimationState.Idle);
+        Default = 0,
+        SmileNorm = 1,
+        SmileLite = 2,
+        SmileGood = 3,
+        o_O = 4,
+        EvilPlan = 5,
+        EvilNorm = 6,
+        EvilAngry = 7,
+        Evil1 = 8,
+        Dream1 = 9,
     }
-
-    public void ToThinkingState()
-    {
-        SetAnimationState(CustomerAnimationState.Thinking);
-    }
-
-    public void ToTakingProductState()
-    {
-        SetAnimationState(CustomerAnimationState.TakingProduct);
-    }
-
-    public void ToPayingState()
-    {
-        SetAnimationState(CustomerAnimationState.Paying);
-    }
-
-    public void InsertNextStep(Vector2Int stepcoords)
-    {
-        var restPath = _path.Skip(_pathStepIndex).ToArray();
-        var newpath = new Vector2Int[] { Coords, stepcoords }.Concat(restPath).ToArray();
-        SetPath(newpath);
-    }
-
-    private void SetAnimationState(CustomerAnimationState newAnimationState)
-    {
-        if (_animationState != newAnimationState)
-        {
-            _animationState = newAnimationState;
-            AnimationStateChanged();
-        }
-    }
-}
-
-public enum CustomerAnimationState
-{
-    Idle,
-    Moving,
-    Thinking,
-    TakingProduct,
-    Paying,
-}
-
-public enum CustomerLifetimeState
-{
-    Default,
-    MovingToShelf,
-    WatchingShelf,
-    TakingProductFromShelf,
-    MovingToCashDesk,
-    PayingOnCashDesk,
-    MovingToExit,
-}
-
-public enum Mood
-{
-    Default = 0,
-    SmileNorm = 1,
-    SmileLite = 2,
-    SmileGood = 3,
-    o_O = 4,
-    EvilPlan = 5,
-    EvilNorm = 6,
-    EvilAngry = 7,
-    Evil1 = 8,
-    Dream1 = 9,
 }

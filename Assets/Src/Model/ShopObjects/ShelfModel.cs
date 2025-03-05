@@ -1,117 +1,122 @@
 using System;
 using System.Linq;
+using Src.Common;
+using Src.Model.Configs;
 using UnityEngine;
 
-public class ShelfModel : ShopObjectModelBase
+namespace Src.Model.ShopObjects
 {
-    public event Action<ShelfModel, int> ProductIsSetOnSlot = delegate { };
-    public event Action<ShelfModel, int, ProductModel> ProductRemovedFromSlot = delegate { };
-    public event Action<ShelfModel, int, int> ProductAmountChangedOnSlot = delegate { };
-
-    public readonly int PartVolume;
-    public readonly int PartsCount;
-    public readonly int TotalVolume;
-    public readonly ProductSlotModel[] Slots;
-
-    public ShelfModel(int numericId, ShelfConfigDto shelfConfig, Vector2Int coords, int side = 3)
-        : base(numericId, shelfConfig, coords, side)
+    public class ShelfModel : ShopObjectModelBase
     {
-        PartVolume = shelfConfig.part_volume;
-        PartsCount = shelfConfig.parts_num;
-        TotalVolume = PartVolume * PartsCount;
+        public event Action<ShelfModel, int> ProductIsSetOnSlot = delegate { };
+        public event Action<ShelfModel, int, ProductModel> ProductRemovedFromSlot = delegate { };
+        public event Action<ShelfModel, int, int> ProductAmountChangedOnSlot = delegate { };
 
-        Slots = new ProductSlotModel[PartsCount];
+        public readonly int PartVolume;
+        public readonly int PartsCount;
+        public readonly int TotalVolume;
+        public readonly ProductSlotModel[] Slots;
 
-        for (var i = 0; i < Slots.Length; i++)
+        public ShelfModel(int numericId, ShelfConfigDto shelfConfig, Vector2Int coords, int side = 3)
+            : base(numericId, shelfConfig, coords, side)
         {
-            var slot = new ProductSlotModel(i, PartVolume);
-            slot.ProductIsSet += OnSlotProductSet;
-            slot.ProductRemoved += OnSlotProductRemoved;
-            slot.ProductAmountChanged += OnSlotProductAmountChanged;
-            Slots[i] = slot;
-        }
-    }
+            PartVolume = shelfConfig.part_volume;
+            PartsCount = shelfConfig.parts_num;
+            TotalVolume = PartVolume * PartsCount;
 
-    public Vector2Int EntryCoords => Coords + SideHelper.SideToVector(Side);
+            Slots = new ProductSlotModel[PartsCount];
 
-    public bool IsEmpty()
-    {
-        foreach (var slot in Slots)
-        {
-            if (slot.HasProduct) return false;
-        }
-        return true;
-    }
-
-    private void OnSlotProductSet(int slotIndex)
-    {
-        ProductIsSetOnSlot(this, slotIndex);
-    }
-
-    private void OnSlotProductRemoved(int slotIndex, ProductModel removedProduct)
-    {
-        ProductRemovedFromSlot(this, slotIndex, removedProduct);
-    }
-
-    private void OnSlotProductAmountChanged(int slotIndex, int amountDelta)
-    {
-        ProductAmountChangedOnSlot(this, slotIndex, amountDelta);
-    }
-
-    public float GetFullnessOnFloor(int partIndex)
-    {
-        return Slots[partIndex].GetFullness();
-    }
-
-    public bool RemoveProductAt(int partIndex)
-    {
-        if (partIndex < Slots.Length)
-        {
-            return Slots[partIndex].RemoveProduct();
+            for (var i = 0; i < Slots.Length; i++)
+            {
+                var slot = new ProductSlotModel(i, PartVolume);
+                slot.ProductIsSet += OnSlotProductSet;
+                slot.ProductRemoved += OnSlotProductRemoved;
+                slot.ProductAmountChanged += OnSlotProductAmountChanged;
+                Slots[i] = slot;
+            }
         }
 
-        return false;
-    }
+        public Vector2Int EntryCoords => Coords + SideHelper.SideToVector(Side);
 
-    public bool TrySetProductOn(int partIndex, ProductModel productModel)
-    {
-        if (partIndex < Slots.Length)
+        public bool IsEmpty()
         {
-            Slots[partIndex].SetProduct(productModel);
+            foreach (var slot in Slots)
+            {
+                if (slot.HasProduct) return false;
+            }
             return true;
         }
 
-        return false;
-    }
-
-    public bool TryGetProductAt(int partIndex, out ProductModel productModel)
-    {
-        productModel = null;
-        if (partIndex < Slots.Length
-           && Slots[partIndex].HasProduct)
+        private void OnSlotProductSet(int slotIndex)
         {
-            productModel = Slots[partIndex].Product;
-            return true;
+            ProductIsSetOnSlot(this, slotIndex);
         }
 
-        return false;
-    }
-
-    public int GetRestAmountOn(int partIndex)
-    {
-        if (partIndex < Slots.Length)
+        private void OnSlotProductRemoved(int slotIndex, ProductModel removedProduct)
         {
-            return Slots[partIndex].GetRestAmount();
+            ProductRemovedFromSlot(this, slotIndex, removedProduct);
         }
-        return -1;
-    }
 
-    public override ShopObjectType Type => ShopObjectType.Shelf;
+        private void OnSlotProductAmountChanged(int slotIndex, int amountDelta)
+        {
+            ProductAmountChangedOnSlot(this, slotIndex, amountDelta);
+        }
 
-    public override ShopObjectModelBase Clone()
-    {
-        var products = Slots.Select(s => s.Product).ToArray();
-        return new ShopObjectModelFactory().CreateShelf(NumericId, Coords, Side, products);
+        public float GetFullnessOnFloor(int partIndex)
+        {
+            return Slots[partIndex].GetFullness();
+        }
+
+        public bool RemoveProductAt(int partIndex)
+        {
+            if (partIndex < Slots.Length)
+            {
+                return Slots[partIndex].RemoveProduct();
+            }
+
+            return false;
+        }
+
+        public bool TrySetProductOn(int partIndex, ProductModel productModel)
+        {
+            if (partIndex < Slots.Length)
+            {
+                Slots[partIndex].SetProduct(productModel);
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool TryGetProductAt(int partIndex, out ProductModel productModel)
+        {
+            productModel = null;
+            if (partIndex < Slots.Length
+                && Slots[partIndex].HasProduct)
+            {
+                productModel = Slots[partIndex].Product;
+                return true;
+            }
+
+            return false;
+        }
+
+        public int GetRestAmountOn(int partIndex)
+        {
+            if (partIndex < Slots.Length)
+            {
+                return Slots[partIndex].GetRestAmount();
+            }
+            return -1;
+        }
+
+        public override ShopObjectType Type => ShopObjectType.Shelf;
+
+        public override ShopObjectModelBase Clone()
+        {
+            var products = Slots.Select(s => s.Product).ToArray();
+            return new ShopObjectModelFactory().CreateShelf(NumericId, Coords, Side, products);
+        }
     }
 }
 

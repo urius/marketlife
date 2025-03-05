@@ -1,10 +1,13 @@
-public class NotifyInactiveFriendPopupViewModel : ConfirmPopupViewModel
+namespace Src.Model.Popups
 {
-    public readonly string FriendUid;
-
-    public NotifyInactiveFriendPopupViewModel(string friendUid, string titleText, string messageText)
-        : base(titleText, messageText)
+    public class NotifyInactiveFriendPopupViewModel : ConfirmPopupViewModel
     {
-        FriendUid = friendUid;
+        public readonly string FriendUid;
+
+        public NotifyInactiveFriendPopupViewModel(string friendUid, string titleText, string messageText)
+            : base(titleText, messageText)
+        {
+            FriendUid = friendUid;
+        }
     }
 }

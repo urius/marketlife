@@ -1,12 +1,15 @@
 using TMPro;
 using UnityEngine;
 
-public class UIDailyMissionsPopupView : UIContentPopupView
+namespace Src.View.UI.Popups.DailyMIssionsPopup
 {
-    [SerializeField] private TMP_Text _statusText;
-
-    public void SetStatusText(string text)
+    public class UIDailyMissionsPopupView : UIContentPopupView
     {
-        _statusText.text = text;
+        [SerializeField] private TMP_Text _statusText;
+
+        public void SetStatusText(string text)
+        {
+            _statusText.text = text;
+        }
     }
 }

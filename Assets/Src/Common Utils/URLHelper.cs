@@ -1,11 +1,14 @@
 using System;
 
-public class URLHelper
+namespace Src.Common_Utils
 {
-    public static string AddAntiCachePostfix(string url)
+    public class URLHelper
     {
-        var timestamp = new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds();
-        var charStr = (url.IndexOf('?') > 0) ? "&" : "?";
-        return $"{url}{charStr}anticache={timestamp.ToString()}";
+        public static string AddAntiCachePostfix(string url)
+        {
+            var timestamp = new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds();
+            var charStr = (url.IndexOf('?') > 0) ? "&" : "?";
+            return $"{url}{charStr}anticache={timestamp.ToString()}";
+        }
     }
 }

@@ -1,232 +1,238 @@
 using System.Collections.Generic;
-using Src.View.UI.Popups;
+using Src.Common;
+using Src.Managers;
+using Src.Model;
+using Src.Model.Popups;
 using UnityEngine;
 
-public class UIBankPopupMediator : UIContentPopupMediator
+namespace Src.View.UI.Popups.Bank_Popup
 {
-    private readonly RectTransform _parentTransform;
-    private readonly PrefabsHolder _prefabsHolder;
-    private readonly LocalizationManager _loc;
-    private readonly SpritesProvider _spritesProvider;
-    private readonly Dispatcher _dispatcher;
-    private readonly GameStateModel _gameStateModel;
-    private readonly UpdatesProvider _updatesProvider;
-    private readonly Dictionary<UIBankPopupItemViewBase, IBankItemViewModel> _modelByViewDict = new Dictionary<UIBankPopupItemViewBase, IBankItemViewModel>();
-
-    private UITabbedContentPopupView _popupView;
-    private int _currentTabIndex;
-    private IEnumerable<IBankItemViewModel> _viewModelsToDisplay;
-    private BankPopupViewModel _viewModel;
-
-    public UIBankPopupMediator(RectTransform parentTransform)
+    public class UIBankPopupMediator : UIContentPopupMediator
     {
-        _parentTransform = parentTransform;
+        private readonly RectTransform _parentTransform;
+        private readonly PrefabsHolder _prefabsHolder;
+        private readonly LocalizationManager _loc;
+        private readonly SpritesProvider _spritesProvider;
+        private readonly Dispatcher _dispatcher;
+        private readonly GameStateModel _gameStateModel;
+        private readonly UpdatesProvider _updatesProvider;
+        private readonly Dictionary<UIBankPopupItemViewBase, IBankItemViewModel> _modelByViewDict = new Dictionary<UIBankPopupItemViewBase, IBankItemViewModel>();
 
-        _gameStateModel = GameStateModel.Instance;
-        _prefabsHolder = PrefabsHolder.Instance;
-        _loc = LocalizationManager.Instance;
-        _spritesProvider = SpritesProvider.Instance;
-        _dispatcher = Dispatcher.Instance;
-        _updatesProvider = UpdatesProvider.Instance;
-    }
+        private UITabbedContentPopupView _popupView;
+        private int _currentTabIndex;
+        private IEnumerable<IBankItemViewModel> _viewModelsToDisplay;
+        private BankPopupViewModel _viewModel;
 
-    protected override UIContentPopupView PopupView => _popupView;
-
-    public async override void Mediate()
-    {
-        _viewModel = _gameStateModel.ShowingPopupModel as BankPopupViewModel;
-        TopPadding = 5;
-        var popupGo = GameObject.Instantiate(_prefabsHolder.UITabbedContentPopupPrefab, _parentTransform);
-        _popupView = popupGo.GetComponent<UITabbedContentPopupView>();
-        _popupView.SetTitleText(_loc.GetLocalization(LocalizationKeys.PopupBankTitle));
-        _popupView.SetSize(1050, 835);
-        _popupView.SetupTabButtons(new string[] { _loc.GetLocalization(LocalizationKeys.PopupBankGoldTab), _loc.GetLocalization(LocalizationKeys.PopupBankCashTab) });
-
-        ShowTab(_viewModel.InitialTabIndex);
-        Activate();
-
-        await _popupView.Appear2Async();
-    }
-
-    public async override void Unmediate()
-    {
-        base.Unmediate();
-        Deactivate();
-
-        await _popupView.Disppear2Async();
-
-        ClearDisplayedItems();
-        GameObject.Destroy(_popupView.gameObject);
-    }
-
-    protected override void ClearDisplayedItems()
-    {
-        foreach (var kvp in _modelByViewDict)
+        public UIBankPopupMediator(RectTransform parentTransform)
         {
-            DeactivateItemView(kvp.Key);
+            _parentTransform = parentTransform;
+
+            _gameStateModel = GameStateModel.Instance;
+            _prefabsHolder = PrefabsHolder.Instance;
+            _loc = LocalizationManager.Instance;
+            _spritesProvider = SpritesProvider.Instance;
+            _dispatcher = Dispatcher.Instance;
+            _updatesProvider = UpdatesProvider.Instance;
         }
-        _modelByViewDict.Clear();
 
-        base.ClearDisplayedItems();
-    }
+        protected override UIContentPopupView PopupView => _popupView;
 
-    private void Activate()
-    {
-        _popupView.TabButtonClicked += OnTabButtonClicked;
-        _popupView.ButtonCloseClicked += OnCloseClicked;
-        _viewModel.ItemsUpdated += OnItemsUpdated;
-        _viewModel.RestWatchesCountChanged += OnRestWatchesCountChanged;
-        _viewModel.AdvertWatchTimeChanged += OnAdvertWatchTimeChanged;
-        _updatesProvider.RealtimeSecondUpdate += OnRealtimeSecondUpdate;
-    }
-
-    private void Deactivate()
-    {
-        _popupView.TabButtonClicked -= OnTabButtonClicked;
-        _popupView.ButtonCloseClicked -= OnCloseClicked;
-        _viewModel.ItemsUpdated -= OnItemsUpdated;
-        _viewModel.RestWatchesCountChanged -= OnRestWatchesCountChanged;
-        _viewModel.AdvertWatchTimeChanged -= OnAdvertWatchTimeChanged;
-        _updatesProvider.RealtimeSecondUpdate -= OnRealtimeSecondUpdate;
-    }
-
-    private void OnRealtimeSecondUpdate()
-    {
-        UpdateAdvertItems();
-    }
-
-    private void OnAdvertWatchTimeChanged()
-    {
-        UpdateAdvertItems();
-    }
-
-    private void OnRestWatchesCountChanged()
-    {
-        UpdateAdvertItems();
-    }
-
-    private void UpdateAdvertItems()
-    {
-        foreach (var kvp in _modelByViewDict)
+        public async override void Mediate()
         {
-            if (kvp.Value.RetrieveMethodType == BankItemRetrieveMethodType.Advert)
+            _viewModel = _gameStateModel.ShowingPopupModel as BankPopupViewModel;
+            TopPadding = 5;
+            var popupGo = GameObject.Instantiate(_prefabsHolder.UITabbedContentPopupPrefab, _parentTransform);
+            _popupView = popupGo.GetComponent<UITabbedContentPopupView>();
+            _popupView.SetTitleText(_loc.GetLocalization(LocalizationKeys.PopupBankTitle));
+            _popupView.SetSize(1050, 835);
+            _popupView.SetupTabButtons(new string[] { _loc.GetLocalization(LocalizationKeys.PopupBankGoldTab), _loc.GetLocalization(LocalizationKeys.PopupBankCashTab) });
+
+            ShowTab(_viewModel.InitialTabIndex);
+            Activate();
+
+            await _popupView.Appear2Async();
+        }
+
+        public async override void Unmediate()
+        {
+            base.Unmediate();
+            Deactivate();
+
+            await _popupView.Disppear2Async();
+
+            ClearDisplayedItems();
+            GameObject.Destroy(_popupView.gameObject);
+        }
+
+        protected override void ClearDisplayedItems()
+        {
+            foreach (var kvp in _modelByViewDict)
             {
-                UpdateItemView(kvp.Key, kvp.Value);
+                DeactivateItemView(kvp.Key);
+            }
+            _modelByViewDict.Clear();
+
+            base.ClearDisplayedItems();
+        }
+
+        private void Activate()
+        {
+            _popupView.TabButtonClicked += OnTabButtonClicked;
+            _popupView.ButtonCloseClicked += OnCloseClicked;
+            _viewModel.ItemsUpdated += OnItemsUpdated;
+            _viewModel.RestWatchesCountChanged += OnRestWatchesCountChanged;
+            _viewModel.AdvertWatchTimeChanged += OnAdvertWatchTimeChanged;
+            _updatesProvider.RealtimeSecondUpdate += OnRealtimeSecondUpdate;
+        }
+
+        private void Deactivate()
+        {
+            _popupView.TabButtonClicked -= OnTabButtonClicked;
+            _popupView.ButtonCloseClicked -= OnCloseClicked;
+            _viewModel.ItemsUpdated -= OnItemsUpdated;
+            _viewModel.RestWatchesCountChanged -= OnRestWatchesCountChanged;
+            _viewModel.AdvertWatchTimeChanged -= OnAdvertWatchTimeChanged;
+            _updatesProvider.RealtimeSecondUpdate -= OnRealtimeSecondUpdate;
+        }
+
+        private void OnRealtimeSecondUpdate()
+        {
+            UpdateAdvertItems();
+        }
+
+        private void OnAdvertWatchTimeChanged()
+        {
+            UpdateAdvertItems();
+        }
+
+        private void OnRestWatchesCountChanged()
+        {
+            UpdateAdvertItems();
+        }
+
+        private void UpdateAdvertItems()
+        {
+            foreach (var kvp in _modelByViewDict)
+            {
+                if (kvp.Value.RetrieveMethodType == BankItemRetrieveMethodType.Advert)
+                {
+                    UpdateItemView(kvp.Key, kvp.Value);
+                }
             }
         }
-    }
 
-    private void OnItemsUpdated()
-    {
-        ShowTab(_currentTabIndex);
-    }
-
-    private void OnCloseClicked()
-    {
-        _dispatcher.UIRequestRemoveCurrentPopup();
-    }
-
-    private void OnTabButtonClicked(int tabIndex)
-    {
-        ShowTab(tabIndex);
-    }
-
-    private void ShowTab(int tabIndex)
-    {
-        _popupView.SetTabButtonSelected(tabIndex);
-        ClearDisplayedItems();
-
-        _currentTabIndex = tabIndex;
-        _viewModelsToDisplay = _currentTabIndex == 0 ? _viewModel.GoldItems : _viewModel.CashItems;
-        foreach (var viewModel in _viewModelsToDisplay)
+        private void OnItemsUpdated()
         {
-            PutItem(viewModel);
+            ShowTab(_currentTabIndex);
         }
-    }
 
-    private void PutItem(IBankItemViewModel viewModel)
-    {
-        var isAdvertItem = viewModel.RetrieveMethodType == BankItemRetrieveMethodType.Advert;
-        var rectTransform = GetOrCreateItemToDisplay(isAdvertItem ? _prefabsHolder.UIBankPopupAdsItemPrefab : _prefabsHolder.UIBankPopupItemPrefab);
-        var itemView = rectTransform.GetComponent<UIBankPopupItemViewBase>();
-        UpdateItemView(itemView, viewModel);
-        ActivateItemView(itemView);
-        _modelByViewDict[itemView] = viewModel;
-    }
-
-    private void UpdateItemView(UIBankPopupItemViewBase itemView, IBankItemViewModel viewModel)
-    {
-        if (viewModel.RetrieveMethodType == BankItemRetrieveMethodType.Advert)
+        private void OnCloseClicked()
         {
-            UpdateAdvertItem(itemView as UIBankPopupAdvertItemView, viewModel as BankAdvertItemViewModel);
+            _dispatcher.UIRequestRemoveCurrentPopup();
         }
-        else if (viewModel.RetrieveMethodType == BankItemRetrieveMethodType.RealBuy)
-        {
-            UpdateBuyableItem(itemView as UIBankPopupBuyableItemView, viewModel as BankBuyableItemViewModel);
-        }
-    }
 
-    private void UpdateAdvertItem(UIBankPopupAdvertItemView itemView, BankAdvertItemViewModel bankAdvertItemViewModel)
-    {
-        UpdateBaseItem(itemView, bankAdvertItemViewModel);
-        var canWatch = bankAdvertItemViewModel.RestWatchesCount > 0;
-        itemView.SetAvailable(canWatch);
-        if (canWatch)
+        private void OnTabButtonClicked(int tabIndex)
         {
-            itemView.SetPriceText(_loc.GetLocalization(LocalizationKeys.PopupBankAdsItemText));
-            itemView.NotificationCounter.SetCounterText(bankAdvertItemViewModel.RestWatchesCount.ToString());
+            ShowTab(tabIndex);
         }
-        else
+
+        private void ShowTab(int tabIndex)
         {
-            var timeRestStr = FormattingHelper.ToSeparatedTimeFormat(Mathf.Max(0, bankAdvertItemViewModel.ResetWatchesCountTime - _gameStateModel.ServerTime));
-            var priceText = string.Format(_loc.GetLocalization(LocalizationKeys.PopupBankAdvertAvailableAfterFormat), timeRestStr);
-            itemView.SetPriceText(priceText);
+            _popupView.SetTabButtonSelected(tabIndex);
+            ClearDisplayedItems();
+
+            _currentTabIndex = tabIndex;
+            _viewModelsToDisplay = _currentTabIndex == 0 ? _viewModel.GoldItems : _viewModel.CashItems;
+            foreach (var viewModel in _viewModelsToDisplay)
+            {
+                PutItem(viewModel);
+            }
         }
-    }
 
-    private void UpdateBuyableItem(UIBankPopupBuyableItemView itemView, BankBuyableItemViewModel viewModel)
-    {
-        UpdateBaseItem(itemView, viewModel);
-        itemView.SetAvailable(viewModel.IsAvailable);
-        itemView.SetPriceText(FormattingHelper.ToCommaSeparatedNumber(viewModel.Price) + $" {_loc.GetLocalization($"{LocalizationKeys.CommonPayCurrencyNamePlural}{PluralsHelper.GetPlural(viewModel.Price)}")}");
-        itemView.SetExtraPercentText(string.Empty);
-
-        if (viewModel.ExtraPercent > 0)
+        private void PutItem(IBankItemViewModel viewModel)
         {
-            itemView.SetExtraPercentText($"(+{viewModel.ExtraPercent}%)");
+            var isAdvertItem = viewModel.RetrieveMethodType == BankItemRetrieveMethodType.Advert;
+            var rectTransform = GetOrCreateItemToDisplay(isAdvertItem ? _prefabsHolder.UIBankPopupAdsItemPrefab : _prefabsHolder.UIBankPopupItemPrefab);
+            var itemView = rectTransform.GetComponent<UIBankPopupItemViewBase>();
+            UpdateItemView(itemView, viewModel);
+            ActivateItemView(itemView);
+            _modelByViewDict[itemView] = viewModel;
         }
-    }
 
-    private void UpdateBaseItem(UIBankPopupItemViewBase itemView, IBankItemViewModel viewModel)
-    {
-        ColorUtility.TryParseHtmlString(
-            viewModel.IsGold ? Constants.GoldAmountTextRedColor : Constants.CashAmountTextGreenColor, out var color);
+        private void UpdateItemView(UIBankPopupItemViewBase itemView, IBankItemViewModel viewModel)
+        {
+            if (viewModel.RetrieveMethodType == BankItemRetrieveMethodType.Advert)
+            {
+                UpdateAdvertItem(itemView as UIBankPopupAdvertItemView, viewModel as BankAdvertItemViewModel);
+            }
+            else if (viewModel.RetrieveMethodType == BankItemRetrieveMethodType.RealBuy)
+            {
+                UpdateBuyableItem(itemView as UIBankPopupBuyableItemView, viewModel as BankBuyableItemViewModel);
+            }
+        }
+
+        private void UpdateAdvertItem(UIBankPopupAdvertItemView itemView, BankAdvertItemViewModel bankAdvertItemViewModel)
+        {
+            UpdateBaseItem(itemView, bankAdvertItemViewModel);
+            var canWatch = bankAdvertItemViewModel.RestWatchesCount > 0;
+            itemView.SetAvailable(canWatch);
+            if (canWatch)
+            {
+                itemView.SetPriceText(_loc.GetLocalization(LocalizationKeys.PopupBankAdsItemText));
+                itemView.NotificationCounter.SetCounterText(bankAdvertItemViewModel.RestWatchesCount.ToString());
+            }
+            else
+            {
+                var timeRestStr = FormattingHelper.ToSeparatedTimeFormat(Mathf.Max(0, bankAdvertItemViewModel.ResetWatchesCountTime - _gameStateModel.ServerTime));
+                var priceText = string.Format(_loc.GetLocalization(LocalizationKeys.PopupBankAdvertAvailableAfterFormat), timeRestStr);
+                itemView.SetPriceText(priceText);
+            }
+        }
+
+        private void UpdateBuyableItem(UIBankPopupBuyableItemView itemView, BankBuyableItemViewModel viewModel)
+        {
+            UpdateBaseItem(itemView, viewModel);
+            itemView.SetAvailable(viewModel.IsAvailable);
+            itemView.SetPriceText(FormattingHelper.ToCommaSeparatedNumber(viewModel.Price) + $" {_loc.GetLocalization($"{LocalizationKeys.CommonPayCurrencyNamePlural}{PluralsHelper.GetPlural(viewModel.Price)}")}");
+            itemView.SetExtraPercentText(string.Empty);
+
+            if (viewModel.ExtraPercent > 0)
+            {
+                itemView.SetExtraPercentText($"(+{viewModel.ExtraPercent}%)");
+            }
+        }
+
+        private void UpdateBaseItem(UIBankPopupItemViewBase itemView, IBankItemViewModel viewModel)
+        {
+            ColorUtility.TryParseHtmlString(
+                viewModel.IsGold ? Constants.GoldAmountTextRedColor : Constants.CashAmountTextGreenColor, out var color);
         
-        itemView.SetIconSprite(viewModel.IsGold ? _spritesProvider.GetGoldIcon() : _spritesProvider.GetCashIcon());
-        itemView.SetAmountTextColor(color);
-        itemView.SetAmountText(FormattingHelper.ToCommaSeparatedNumber(viewModel.Value));
-    }
-
-    private void ActivateItemView(UIBankPopupItemViewBase view)
-    {
-        view.Clicked += OnViewClicked;
-    }
-
-    private void DeactivateItemView(UIBankPopupItemViewBase view)
-    {
-        view.Clicked -= OnViewClicked;
-    }
-
-    private void OnViewClicked(UIBankPopupItemViewBase view)
-    {
-        var viewModel = _modelByViewDict[view];
-        if (viewModel.RetrieveMethodType == BankItemRetrieveMethodType.Advert)
-        {
-            _dispatcher.UIBankAdsItemClicked(viewModel.IsGold);
+            itemView.SetIconSprite(viewModel.IsGold ? _spritesProvider.GetGoldIcon() : _spritesProvider.GetCashIcon());
+            itemView.SetAmountTextColor(color);
+            itemView.SetAmountText(FormattingHelper.ToCommaSeparatedNumber(viewModel.Value));
         }
-        else
+
+        private void ActivateItemView(UIBankPopupItemViewBase view)
         {
-            _dispatcher.UIBankItemClicked((viewModel as BankBuyableItemViewModel).GetBankconfigItem());
+            view.Clicked += OnViewClicked;
+        }
+
+        private void DeactivateItemView(UIBankPopupItemViewBase view)
+        {
+            view.Clicked -= OnViewClicked;
+        }
+
+        private void OnViewClicked(UIBankPopupItemViewBase view)
+        {
+            var viewModel = _modelByViewDict[view];
+            if (viewModel.RetrieveMethodType == BankItemRetrieveMethodType.Advert)
+            {
+                _dispatcher.UIBankAdsItemClicked(viewModel.IsGold);
+            }
+            else
+            {
+                _dispatcher.UIBankItemClicked((viewModel as BankBuyableItemViewModel).GetBankconfigItem());
+            }
         }
     }
 }

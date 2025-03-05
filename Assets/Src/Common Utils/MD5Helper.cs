@@ -1,26 +1,29 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-public class MD5Helper
+namespace Src.Common_Utils
 {
-    public static string MD5Hash(string text)
+    public class MD5Helper
     {
-        MD5 md5 = new MD5CryptoServiceProvider();
-
-        //compute hash from the bytes of text  
-        md5.ComputeHash(ASCIIEncoding.ASCII.GetBytes(text));
-
-        //get hash result after compute it  
-        byte[] result = md5.Hash;
-
-        StringBuilder strBuilder = new StringBuilder();
-        for (int i = 0; i < result.Length; i++)
+        public static string MD5Hash(string text)
         {
-            //change it into 2 hexadecimal digits  
-            //for each byte  
-            strBuilder.Append(result[i].ToString("x2"));
-        }
+            MD5 md5 = new MD5CryptoServiceProvider();
 
-        return strBuilder.ToString();
+            //compute hash from the bytes of text  
+            md5.ComputeHash(ASCIIEncoding.ASCII.GetBytes(text));
+
+            //get hash result after compute it  
+            byte[] result = md5.Hash;
+
+            StringBuilder strBuilder = new StringBuilder();
+            for (int i = 0; i < result.Length; i++)
+            {
+                //change it into 2 hexadecimal digits  
+                //for each byte  
+                strBuilder.Append(result[i].ToString("x2"));
+            }
+
+            return strBuilder.ToString();
+        }
     }
 }

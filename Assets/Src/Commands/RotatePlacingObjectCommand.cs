@@ -1,13 +1,19 @@
-public struct RotatePlacingObjectCommand
+using Src.Managers;
+using Src.Model;
+
+namespace Src.Commands
 {
-    public void Execute(bool isRightRotation)
+    public struct RotatePlacingObjectCommand
     {
-        var gameStateModel = GameStateModel.Instance;
-        var audioManager = AudioManager.Instance;
-        if (gameStateModel.PlacingShopObjectModel != null)
+        public void Execute(bool isRightRotation)
         {
-            gameStateModel.PlacingShopObjectModel.Side += isRightRotation ? 1 : -1;
-            audioManager.PlaySound(SoundNames.Rotate);
+            var gameStateModel = GameStateModel.Instance;
+            var audioManager = AudioManager.Instance;
+            if (gameStateModel.PlacingShopObjectModel != null)
+            {
+                gameStateModel.PlacingShopObjectModel.Side += isRightRotation ? 1 : -1;
+                audioManager.PlaySound(SoundNames.Rotate);
+            }
         }
     }
 }

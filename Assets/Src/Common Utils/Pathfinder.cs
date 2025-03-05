@@ -1,75 +1,78 @@
 ﻿using System.Collections.Generic;
 
-public class Pathfinder
+namespace Src.Common_Utils
 {
-    public static TCell[] FindPath<TCell>(ICellsProvider<TCell> cellsProvider, TCell start, TCell end)
+    public class Pathfinder
     {
-        var openList = new Queue<TCell>(new[] { start });
-        var cellsInfo = new Dictionary<TCell, CellInfo<TCell>>();
-        cellsInfo[start] = new CellInfo<TCell>(start, start, 0);
-
-        while (openList.Count > 0)
+        public static TCell[] FindPath<TCell>(ICellsProvider<TCell> cellsProvider, TCell start, TCell end)
         {
-            var currentCellInfo = cellsInfo[openList.Dequeue()];
+            var openList = new Queue<TCell>(new[] { start });
+            var cellsInfo = new Dictionary<TCell, CellInfo<TCell>>();
+            cellsInfo[start] = new CellInfo<TCell>(start, start, 0);
 
-            var nearCells = cellsProvider.GetWalkableNearCells(currentCellInfo.Current);
-            foreach (var cell in nearCells)
+            while (openList.Count > 0)
             {
-                if (!cellsInfo.ContainsKey(cell))
+                var currentCellInfo = cellsInfo[openList.Dequeue()];
+
+                var nearCells = cellsProvider.GetWalkableNearCells(currentCellInfo.Current);
+                foreach (var cell in nearCells)
                 {
-                    cellsInfo[cell] = new CellInfo<TCell>(cell, currentCellInfo.Current, currentCellInfo.TotalMoveCost + cellsProvider.GetCellMoveCost(cell));
-                    openList.Enqueue(cell);
-                }
-                else
-                {
-                    var cellInfo = cellsInfo[cell];
-                    var totalMoveCost = currentCellInfo.TotalMoveCost + cellsProvider.GetCellMoveCost(cell);
-                    if (totalMoveCost < cellInfo.TotalMoveCost)
+                    if (!cellsInfo.ContainsKey(cell))
                     {
-                        cellInfo.Back = currentCellInfo.Current;
-                        cellInfo.TotalMoveCost = totalMoveCost;
+                        cellsInfo[cell] = new CellInfo<TCell>(cell, currentCellInfo.Current, currentCellInfo.TotalMoveCost + cellsProvider.GetCellMoveCost(cell));
+                        openList.Enqueue(cell);
+                    }
+                    else
+                    {
+                        var cellInfo = cellsInfo[cell];
+                        var totalMoveCost = currentCellInfo.TotalMoveCost + cellsProvider.GetCellMoveCost(cell);
+                        if (totalMoveCost < cellInfo.TotalMoveCost)
+                        {
+                            cellInfo.Back = currentCellInfo.Current;
+                            cellInfo.TotalMoveCost = totalMoveCost;
+                        }
                     }
                 }
             }
-        }
 
-        var result = new List<TCell>() { end };
-        if (cellsInfo.TryGetValue(end, out var tempCellInfo))
-        {
-
-            while (!cellsProvider.IsCellEquals(tempCellInfo.Back, tempCellInfo.Current))
+            var result = new List<TCell>() { end };
+            if (cellsInfo.TryGetValue(end, out var tempCellInfo))
             {
-                result.Add(tempCellInfo.Back);
-                tempCellInfo = cellsInfo[tempCellInfo.Back];
+
+                while (!cellsProvider.IsCellEquals(tempCellInfo.Back, tempCellInfo.Current))
+                {
+                    result.Add(tempCellInfo.Back);
+                    tempCellInfo = cellsInfo[tempCellInfo.Back];
+                }
+                result.Reverse();
+                return result.ToArray();
             }
-            result.Reverse();
-            return result.ToArray();
+            else
+            {
+                return new TCell[0];
+            }
         }
-        else
+
+        private class CellInfo<TCell>
         {
-            return new TCell[0];
+            public CellInfo(TCell current, TCell back, int totalMoveCost)
+            {
+                Current = current;
+                Back = back;
+                TotalMoveCost = totalMoveCost;
+            }
+
+            public TCell Current;
+            public TCell Back;
+            public int TotalMoveCost;
         }
     }
 
-    private class CellInfo<TCell>
+
+    public interface ICellsProvider<TCell>
     {
-        public CellInfo(TCell current, TCell back, int totalMoveCost)
-        {
-            Current = current;
-            Back = back;
-            TotalMoveCost = totalMoveCost;
-        }
-
-        public TCell Current;
-        public TCell Back;
-        public int TotalMoveCost;
+        IEnumerable<TCell> GetWalkableNearCells(TCell cell);
+        int GetCellMoveCost(TCell cell);
+        bool IsCellEquals(TCell cellA, TCell cellB);
     }
-}
-
-
-public interface ICellsProvider<TCell>
-{
-    IEnumerable<TCell> GetWalkableNearCells(TCell cell);
-    int GetCellMoveCost(TCell cell);
-    bool IsCellEquals(TCell cellA, TCell cellB);
 }

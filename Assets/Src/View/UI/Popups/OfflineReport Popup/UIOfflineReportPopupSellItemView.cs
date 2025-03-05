@@ -2,31 +2,34 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIOfflineReportPopupSellItemView : MonoBehaviour
+namespace Src.View.UI.Popups.OfflineReport_Popup
 {
-    [SerializeField] private Image _image;
-    [SerializeField] private TMP_Text _amountText;
-    [SerializeField] private TMP_Text _cashText;
-    [SerializeField] private TMP_Text _expText;
-
-    public void SetImageSprite(Sprite sprite)
+    public class UIOfflineReportPopupSellItemView : MonoBehaviour
     {
-        _image.gameObject.SetActive(sprite != null);
-        _image.sprite = sprite;
-    }
+        [SerializeField] private Image _image;
+        [SerializeField] private TMP_Text _amountText;
+        [SerializeField] private TMP_Text _cashText;
+        [SerializeField] private TMP_Text _expText;
 
-    public void SetAmountText(string text)
-    {
-        _amountText.text = text;
-    }
+        public void SetImageSprite(Sprite sprite)
+        {
+            _image.gameObject.SetActive(sprite != null);
+            _image.sprite = sprite;
+        }
 
-    public void SetCashText(string text)
-    {
-        _cashText.text = text;
-    }
+        public void SetAmountText(string text)
+        {
+            _amountText.text = text;
+        }
 
-    public void SetExpText(string text)
-    {
-        _expText.text = text;
+        public void SetCashText(string text)
+        {
+            _cashText.text = text;
+        }
+
+        public void SetExpText(string text)
+        {
+            _expText.text = text;
+        }
     }
 }

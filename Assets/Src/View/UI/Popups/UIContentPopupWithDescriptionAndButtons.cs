@@ -1,42 +1,46 @@
 using System;
+using Src.Common_Utils;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIContentPopupWithDescriptionAndButtons : UIContentPopupView
+namespace Src.View.UI.Popups
 {
-    public event Action<int> ButtonClicked = delegate { };
-
-    [SerializeField] private TMP_Text _descrriptionText;
-    [SerializeField] private Button[] _buttons;
-    [SerializeField] private TMP_Text[] _buttonsTexts;
-
-    protected Button[] Buttons => _buttons;
-
-    public override void Awake()
+    public class UIContentPopupWithDescriptionAndButtons : UIContentPopupView
     {
-        base.Awake();
+        public event Action<int> ButtonClicked = delegate { };
 
-        for (var i = 0; i < _buttons.Length; i++)
+        [SerializeField] private TMP_Text _descrriptionText;
+        [SerializeField] private Button[] _buttons;
+        [SerializeField] private TMP_Text[] _buttonsTexts;
+
+        protected Button[] Buttons => _buttons;
+
+        public override void Awake()
         {
-            var index = i;
-            _buttons[i].AddOnClickListener(() => OnButtonClicked(index));
+            base.Awake();
+
+            for (var i = 0; i < _buttons.Length; i++)
+            {
+                var index = i;
+                _buttons[i].AddOnClickListener(() => OnButtonClicked(index));
+            }
         }
-    }
 
-    public void SetDescriptionText(string text)
-    {
-        _descrriptionText.text = text;
-    }
+        public void SetDescriptionText(string text)
+        {
+            _descrriptionText.text = text;
+        }
 
-    public void SetupButton(int buttonIndex, Sprite sprite, string text)
-    {
-        _buttons[buttonIndex].image.sprite = sprite;
-        _buttonsTexts[buttonIndex].text = text;
-    }
+        public void SetupButton(int buttonIndex, Sprite sprite, string text)
+        {
+            _buttons[buttonIndex].image.sprite = sprite;
+            _buttonsTexts[buttonIndex].text = text;
+        }
 
-    private void OnButtonClicked(int buttonIndex)
-    {
-        ButtonClicked(buttonIndex);
+        private void OnButtonClicked(int buttonIndex)
+        {
+            ButtonClicked(buttonIndex);
+        }
     }
 }

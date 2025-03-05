@@ -1,78 +1,81 @@
 using System;
-using Src.View.UI.Popups;
+using Src.Common_Utils;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIOfflineReportPopupView : UITabbedContentPopupView
+namespace Src.View.UI.Popups.OfflineReport_Popup
 {
-    public event Action ShareClicked = delegate { };
-    public event Action AdsClicked = delegate { };
-
-    [Space()]
-    [SerializeField] private Button _adsButton;
-    [SerializeField] private TMP_Text _adsButtonText;
-    [SerializeField] private Button _shareButton;
-    [SerializeField] private TMP_Text _shareButtonText;
-    [SerializeField] private TMP_Text _shareRevenueAmountText;
-
-    public Transform ShareButtonTransform => _shareButton.transform;
-
-    public override void Awake()
+    public class UIOfflineReportPopupView : UITabbedContentPopupView
     {
-        base.Awake();
+        public event Action ShareClicked = delegate { };
+        public event Action AdsClicked = delegate { };
 
-        _shareButton.AddOnClickListener(OnShareClicked);
-        _adsButton.AddOnClickListener(OnAdsClicked);
-    }
+        [Space()]
+        [SerializeField] private Button _adsButton;
+        [SerializeField] private TMP_Text _adsButtonText;
+        [SerializeField] private Button _shareButton;
+        [SerializeField] private TMP_Text _shareButtonText;
+        [SerializeField] private TMP_Text _shareRevenueAmountText;
 
-    public void SetShareButtonText(string text)
-    {
-        _shareButtonText.text = text;
-    }
+        public Transform ShareButtonTransform => _shareButton.transform;
 
-    public void SetShareRevenueButtonText(string text)
-    {
-        _shareRevenueAmountText.text = text;
-    }
+        public override void Awake()
+        {
+            base.Awake();
 
-    public void SetShareButtonVisiblity(bool isVisible)
-    {
-        _shareButton.gameObject.SetActive(isVisible);
-    }
+            _shareButton.AddOnClickListener(OnShareClicked);
+            _adsButton.AddOnClickListener(OnAdsClicked);
+        }
 
-    public void SetShareButtonInteractable(bool interactable)
-    {
-        _shareButton.interactable = interactable;
-    }
+        public void SetShareButtonText(string text)
+        {
+            _shareButtonText.text = text;
+        }
 
-    public void SetAdsButtonInteractable(bool interactable)
-    {
-        _adsButton.interactable = interactable;
-    }
+        public void SetShareRevenueButtonText(string text)
+        {
+            _shareRevenueAmountText.text = text;
+        }
 
-    public void SetAdsButtonText(string text)
-    {
-        _adsButtonText.text = text;
-    }
+        public void SetShareButtonVisiblity(bool isVisible)
+        {
+            _shareButton.gameObject.SetActive(isVisible);
+        }
 
-    public void SetAdsButtonSkinSprite(Sprite sprite)
-    {
-        _adsButton.image.sprite = sprite;
-    }
+        public void SetShareButtonInteractable(bool interactable)
+        {
+            _shareButton.interactable = interactable;
+        }
 
-    public void SetAdsButtonVisibility(bool isVisible)
-    {
-        _adsButton.gameObject.SetActive(isVisible);
-    }
+        public void SetAdsButtonInteractable(bool interactable)
+        {
+            _adsButton.interactable = interactable;
+        }
 
-    private void OnShareClicked()
-    {
-        ShareClicked();
-    }
+        public void SetAdsButtonText(string text)
+        {
+            _adsButtonText.text = text;
+        }
 
-    private void OnAdsClicked()
-    {
-        AdsClicked();
+        public void SetAdsButtonSkinSprite(Sprite sprite)
+        {
+            _adsButton.image.sprite = sprite;
+        }
+
+        public void SetAdsButtonVisibility(bool isVisible)
+        {
+            _adsButton.gameObject.SetActive(isVisible);
+        }
+
+        private void OnShareClicked()
+        {
+            ShareClicked();
+        }
+
+        private void OnAdsClicked()
+        {
+            AdsClicked();
+        }
     }
 }

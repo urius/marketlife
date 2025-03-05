@@ -1,3 +1,5 @@
+using Src.Model.Leaderboards;
+
 namespace Src.Model.Popups
 {
     public class LeaderboardsPopupViewModel : PopupViewModelBase

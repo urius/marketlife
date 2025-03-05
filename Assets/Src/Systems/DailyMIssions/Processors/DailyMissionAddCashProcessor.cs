@@ -1,28 +1,33 @@
-public class DailyMissionAddCashProcessor : DailyMissionProcessorBase
+using Src.Model;
+
+namespace Src.Systems.DailyMIssions.Processors
 {
-    private readonly PlayerModelHolder _playerModelHolder;
-
-    public DailyMissionAddCashProcessor()
+    public class DailyMissionAddCashProcessor : DailyMissionProcessorBase
     {
-        _playerModelHolder = PlayerModelHolder.Instance;
-    }
+        private readonly PlayerModelHolder _playerModelHolder;
 
-    public override void Start()
-    {
-        _playerModelHolder.UserModel.ProgressModel.CashChanged += OnCashChanged;
-    }
-
-    public override void Stop()
-    {
-        _playerModelHolder.UserModel.ProgressModel.CashChanged -= OnCashChanged;
-    }
-
-    private void OnCashChanged(int prevValue, int currentValue)
-    {
-        var delta = currentValue - prevValue;
-        if (delta > 0)
+        public DailyMissionAddCashProcessor()
         {
-            MissionModel.AddValue(delta);
+            _playerModelHolder = PlayerModelHolder.Instance;
+        }
+
+        public override void Start()
+        {
+            _playerModelHolder.UserModel.ProgressModel.CashChanged += OnCashChanged;
+        }
+
+        public override void Stop()
+        {
+            _playerModelHolder.UserModel.ProgressModel.CashChanged -= OnCashChanged;
+        }
+
+        private void OnCashChanged(int prevValue, int currentValue)
+        {
+            var delta = currentValue - prevValue;
+            if (delta > 0)
+            {
+                MissionModel.AddValue(delta);
+            }
         }
     }
 }

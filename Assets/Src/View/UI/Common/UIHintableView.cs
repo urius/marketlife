@@ -1,65 +1,68 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class UIHintableView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+namespace Src.View.UI.Common
 {
-    public string DisplayText;
-
-    [SerializeField] private HintPositionType _hintPositionType;
-    [SerializeField] private string _localizationKey;
-    [SerializeField] private RectTransform _hintContainer;
-    [SerializeField] private Vector2 _positionOffset;
-
-    private bool _isEnabled = true;
-    private bool _isShowing = false;
-
-    public void SetEnabled(bool isEnabled)
+    public class UIHintableView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        if (isEnabled == false)
-        {
-            Hide();
-        }
-        _isEnabled = isEnabled;
-    }
+        public string DisplayText;
 
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        if (_isEnabled
-            && !_isShowing
-            && (!string.IsNullOrEmpty(_localizationKey) || !string.IsNullOrEmpty(DisplayText)))
-        {
-            Show();
-        }
-    }
+        [SerializeField] private HintPositionType _hintPositionType;
+        [SerializeField] private string _localizationKey;
+        [SerializeField] private RectTransform _hintContainer;
+        [SerializeField] private Vector2 _positionOffset;
 
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        if (_isEnabled)
-        {
-            Hide();
-        }
-    }
+        private bool _isEnabled = true;
+        private bool _isShowing = false;
 
-    private void Show()
-    {
-        if (string.IsNullOrEmpty(DisplayText) == false)
+        public void SetEnabled(bool isEnabled)
         {
-            HintViewManager.Instance.ShowText(transform, _hintPositionType, DisplayText, _positionOffset);
+            if (isEnabled == false)
+            {
+                Hide();
+            }
+            _isEnabled = isEnabled;
         }
-        else
+
+        public void OnPointerEnter(PointerEventData eventData)
         {
-            HintViewManager.Instance.ShowLocalizable(transform, _hintPositionType, _localizationKey, _positionOffset);
+            if (_isEnabled
+                && !_isShowing
+                && (!string.IsNullOrEmpty(_localizationKey) || !string.IsNullOrEmpty(DisplayText)))
+            {
+                Show();
+            }
         }
-        _isShowing = true;
-    }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            if (_isEnabled)
+            {
+                Hide();
+            }
+        }
+
+        private void Show()
+        {
+            if (string.IsNullOrEmpty(DisplayText) == false)
+            {
+                HintViewManager.Instance.ShowText(transform, _hintPositionType, DisplayText, _positionOffset);
+            }
+            else
+            {
+                HintViewManager.Instance.ShowLocalizable(transform, _hintPositionType, _localizationKey, _positionOffset);
+            }
+            _isShowing = true;
+        }
 
 
-    private void Hide()
-    {
-        if (_isShowing)
+        private void Hide()
         {
-            HintViewManager.Instance.Hide();
-            _isShowing = false;
+            if (_isShowing)
+            {
+                HintViewManager.Instance.Hide();
+                _isShowing = false;
+            }
         }
     }
 }

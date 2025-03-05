@@ -1,19 +1,24 @@
+using Src.Model;
+using Src.Model.Popups;
 using UnityEngine;
 
-public class HandleBillboardClickCommand : MonoBehaviour
+namespace Src.Commands
 {
-    public void Execute()
+    public class HandleBillboardClickCommand : MonoBehaviour
     {
-        var gameStateModel = GameStateModel.Instance;
-        var playerModelHolder = PlayerModelHolder.Instance;
-
-        if (gameStateModel.IsPlayingState
-            && gameStateModel.ActionState == ActionStateName.None
-            && gameStateModel.ShowingPopupModel == null)
+        public void Execute()
         {
-            if (gameStateModel.GameState == GameStateName.PlayerShopSimulation)
+            var gameStateModel = GameStateModel.Instance;
+            var playerModelHolder = PlayerModelHolder.Instance;
+
+            if (gameStateModel.IsPlayingState
+                && gameStateModel.ActionState == ActionStateName.None
+                && gameStateModel.ShowingPopupModel == null)
             {
-                gameStateModel.ShowPopup(new BillboardPopupViewModel(playerModelHolder.ShopModel.BillboardModel));
+                if (gameStateModel.GameState == GameStateName.PlayerShopSimulation)
+                {
+                    gameStateModel.ShowPopup(new BillboardPopupViewModel(playerModelHolder.ShopModel.BillboardModel));
+                }
             }
         }
     }

@@ -1,62 +1,69 @@
 using Cysharp.Threading.Tasks;
+using Src.Common;
+using Src.Managers;
+using Src.Model;
+using Src.Model.Popups;
 using UnityEngine;
 
-public struct HandleTakeDailyBonusCommand
+namespace Src.Commands
 {
-    public async void Execute(Vector3[] itemsWorldPositions)
+    public struct HandleTakeDailyBonusCommand
     {
-        var playerModel = PlayerModelHolder.Instance.UserModel;
-        var gameStateModel = GameStateModel.Instance;
-        var bonusConfig = GameConfigManager.Instance.DailyBonusConfig;
-        var dispatcher = Dispatcher.Instance;
-        var screenCalculator = ScreenCalculator.Instance;
-        var advertStateModel = AdvertViewStateModel.Instance;
-
-        if (gameStateModel.ShowingPopupModel != null && gameStateModel.ShowingPopupModel.PopupType == PopupType.DailyBonus)
+        public async void Execute(Vector3[] itemsWorldPositions)
         {
-            var dailyBonusPopupViewModel = gameStateModel.ShowingPopupModel as DailyBonusPopupViewModel;
-            var lastBonusTakeTime = playerModel.BonusState.LastBonusTakeTimestamp;
-            if (DateTimeHelper.IsSameDays(lastBonusTakeTime, dailyBonusPopupViewModel.OpenTimestamp) == false)
+            var playerModel = PlayerModelHolder.Instance.UserModel;
+            var gameStateModel = GameStateModel.Instance;
+            var bonusConfig = GameConfigManager.Instance.DailyBonusConfig;
+            var dispatcher = Dispatcher.Instance;
+            var screenCalculator = ScreenCalculator.Instance;
+            var advertStateModel = AdvertViewStateModel.Instance;
+
+            if (gameStateModel.ShowingPopupModel != null && gameStateModel.ShowingPopupModel.PopupType == PopupType.DailyBonus)
             {
-                var bonusConfigItems = bonusConfig.DailyBonusConfig;
-                var totalCashReward = 0;
-                var totalGoldReward = 0;
-                for (var i = 0; i < bonusConfigItems.Length; i++)
+                var dailyBonusPopupViewModel = gameStateModel.ShowingPopupModel as DailyBonusPopupViewModel;
+                var lastBonusTakeTime = playerModel.BonusState.LastBonusTakeTimestamp;
+                if (DateTimeHelper.IsSameDays(lastBonusTakeTime, dailyBonusPopupViewModel.OpenTimestamp) == false)
                 {
-                    var bonusConfigItem = bonusConfigItems[i];
-                    if (dailyBonusPopupViewModel.CurrentBonusDay >= bonusConfigItem.DayNum)
+                    var bonusConfigItems = bonusConfig.DailyBonusConfig;
+                    var totalCashReward = 0;
+                    var totalGoldReward = 0;
+                    for (var i = 0; i < bonusConfigItems.Length; i++)
                     {
-                        var screenPoint = screenCalculator.WorldToScreenPoint(itemsWorldPositions[i]);
-                        var advertTarget = advertStateModel.GetAdvertTargetTypeByDailyBonusDayNum(bonusConfigItem.DayNum);
-                        var isDoubled = advertTarget != AdvertTargetType.None && advertStateModel.IsWatched(advertTarget);
-                        if (bonusConfigItem.Reward.IsGold)
+                        var bonusConfigItem = bonusConfigItems[i];
+                        if (dailyBonusPopupViewModel.CurrentBonusDay >= bonusConfigItem.DayNum)
                         {
-                            totalGoldReward += bonusConfigItem.Reward.Value * (isDoubled ? 2 : 1);
-                            dispatcher.UIRequestAddGoldFlyAnimation(screenPoint, bonusConfigItem.Reward.Value);
+                            var screenPoint = screenCalculator.WorldToScreenPoint(itemsWorldPositions[i]);
+                            var advertTarget = advertStateModel.GetAdvertTargetTypeByDailyBonusDayNum(bonusConfigItem.DayNum);
+                            var isDoubled = advertTarget != AdvertTargetType.None && advertStateModel.IsWatched(advertTarget);
+                            if (bonusConfigItem.Reward.IsGold)
+                            {
+                                totalGoldReward += bonusConfigItem.Reward.Value * (isDoubled ? 2 : 1);
+                                dispatcher.UIRequestAddGoldFlyAnimation(screenPoint, bonusConfigItem.Reward.Value);
+                            }
+                            else
+                            {
+                                totalCashReward += bonusConfigItem.Reward.Value * (isDoubled ? 2 : 1);
+                                dispatcher.UIRequestAddCashFlyAnimation(screenPoint, 5 * (i + 1));
+                            }
+                            advertStateModel.ResetTarget(advertTarget);
                         }
-                        else
-                        {
-                            totalCashReward += bonusConfigItem.Reward.Value * (isDoubled ? 2 : 1);
-                            dispatcher.UIRequestAddCashFlyAnimation(screenPoint, 5 * (i + 1));
-                        }
-                        advertStateModel.ResetTarget(advertTarget);
                     }
+
+                    if (totalCashReward > 0)
+                    {
+                        playerModel.AddCash(totalCashReward);
+                    }
+                    if (totalGoldReward > 0)
+                    {
+                        playerModel.AddGold(totalGoldReward);
+                    }
+
+                    playerModel.UpdateDailyBonus(dailyBonusPopupViewModel.OpenTimestamp, dailyBonusPopupViewModel.CurrentBonusDay);
+
+                    await UniTask.Delay(2000);
+
+                    gameStateModel.RemoveCurrentPopupIfNeeded();
                 }
-
-                if (totalCashReward > 0)
-                {
-                    playerModel.AddCash(totalCashReward);
-                }
-                if (totalGoldReward > 0)
-                {
-                    playerModel.AddGold(totalGoldReward);
-                }
-
-                playerModel.UpdateDailyBonus(dailyBonusPopupViewModel.OpenTimestamp, dailyBonusPopupViewModel.CurrentBonusDay);
-
-                await UniTask.Delay(2000);
-
-                gameStateModel.RemoveCurrentPopupIfNeeded();
             }
         }
     }

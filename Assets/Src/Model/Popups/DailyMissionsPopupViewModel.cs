@@ -1,11 +1,16 @@
-public class DailyMissionsPopupViewModel : PopupViewModelBase
+using Src.Model.Missions;
+
+namespace Src.Model.Popups
 {
-    public readonly DailyMissionsModel DailyMissionsModel;
-
-    public DailyMissionsPopupViewModel(DailyMissionsModel dailyMissionsModel)
+    public class DailyMissionsPopupViewModel : PopupViewModelBase
     {
-        DailyMissionsModel = dailyMissionsModel;
-    }
+        public readonly DailyMissionsModel DailyMissionsModel;
 
-    public override PopupType PopupType => PopupType.DailyMissions;
+        public DailyMissionsPopupViewModel(DailyMissionsModel dailyMissionsModel)
+        {
+            DailyMissionsModel = dailyMissionsModel;
+        }
+
+        public override PopupType PopupType => PopupType.DailyMissions;
+    }
 }

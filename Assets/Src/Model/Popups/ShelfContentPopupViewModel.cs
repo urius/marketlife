@@ -1,12 +1,17 @@
-public class ShelfContentPopupViewModel : PopupViewModelBase
+using Src.Model.ShopObjects;
+
+namespace Src.Model.Popups
 {
-    public readonly ShelfModel ShelfModel;
-
-    public ShelfContentPopupViewModel(ShelfModel shelfModel)
+    public class ShelfContentPopupViewModel : PopupViewModelBase
     {
-        ShelfModel = shelfModel;
+        public readonly ShelfModel ShelfModel;
+
+        public ShelfContentPopupViewModel(ShelfModel shelfModel)
+        {
+            ShelfModel = shelfModel;
+        }
+
+        public override PopupType PopupType => PopupType.ShelfContent;
+
     }
-
-    public override PopupType PopupType => PopupType.ShelfContent;
-
 }

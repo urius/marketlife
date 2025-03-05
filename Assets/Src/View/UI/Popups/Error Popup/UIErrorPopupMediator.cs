@@ -1,65 +1,72 @@
+using Src.Common;
+using Src.Managers;
+using Src.Model;
+using Src.Model.Popups;
 using UnityEngine;
 
-public class UIErrorPopupMediator : IMediator
+namespace Src.View.UI.Popups.Error_Popup
 {
-    private readonly RectTransform _contentTransform;
-    private readonly ErrorPopupViewModel _popupModel;
-    private readonly PrefabsHolder _prefabsHolder;
-    private readonly LocalizationManager _loc;
-    private readonly Dispatcher _dispatcher;
-    private readonly SpritesProvider _spritesProvider;
-
-    //
-    private UITextPopupView _popupView;
-
-    public UIErrorPopupMediator(RectTransform contentTransform)
+    public class UIErrorPopupMediator : IMediator
     {
-        _contentTransform = contentTransform;
+        private readonly RectTransform _contentTransform;
+        private readonly ErrorPopupViewModel _popupModel;
+        private readonly PrefabsHolder _prefabsHolder;
+        private readonly LocalizationManager _loc;
+        private readonly Dispatcher _dispatcher;
+        private readonly SpritesProvider _spritesProvider;
 
-        _popupModel = GameStateModel.Instance.ShowingPopupModel as ErrorPopupViewModel;
-        _prefabsHolder = PrefabsHolder.Instance;
-        _loc = LocalizationManager.Instance;
-        _dispatcher = Dispatcher.Instance;
-        _spritesProvider = SpritesProvider.Instance;
-    }
+        //
+        private UITextPopupView _popupView;
 
-    public async void Mediate()
-    {
-        var popupGo = GameObject.Instantiate(_prefabsHolder.UITextPopupPrefab, _contentTransform);
-        _popupView = popupGo.GetComponent<UITextPopupView>();
-        _popupView.Setup(haveCloseButton: false, bottomButtonsAmount: 1);
-        _popupView.SetTitleText(_loc.GetLocalization(LocalizationKeys.PopupErrorTitle));
-        _popupView.SetMessageText(_popupModel.ErrorText);
-        _popupView.SetupButton(0, _spritesProvider.GetBlueButtonSprite(), _loc.GetLocalization(LocalizationKeys.PopupErrorOk));
+        public UIErrorPopupMediator(RectTransform contentTransform)
+        {
+            _contentTransform = contentTransform;
 
-        await _popupView.AppearAsync();
+            _popupModel = GameStateModel.Instance.ShowingPopupModel as ErrorPopupViewModel;
+            _prefabsHolder = PrefabsHolder.Instance;
+            _loc = LocalizationManager.Instance;
+            _dispatcher = Dispatcher.Instance;
+            _spritesProvider = SpritesProvider.Instance;
+        }
 
-        Activate();
-    }
+        public async void Mediate()
+        {
+            var popupGo = GameObject.Instantiate(_prefabsHolder.UITextPopupPrefab, _contentTransform);
+            _popupView = popupGo.GetComponent<UITextPopupView>();
+            _popupView.Setup(haveCloseButton: false, bottomButtonsAmount: 1);
+            _popupView.SetTitleText(_loc.GetLocalization(LocalizationKeys.PopupErrorTitle));
+            _popupView.SetMessageText(_popupModel.ErrorText);
+            _popupView.SetupButton(0, _spritesProvider.GetBlueButtonSprite(), _loc.GetLocalization(LocalizationKeys.PopupErrorOk));
 
-    public async void Unmediate()
-    {
-        Deactivate();
+            await _popupView.AppearAsync();
 
-        await _popupView.DisppearAsync();
+            Activate();
+        }
 
-        GameObject.Destroy(_popupView.gameObject);
-    }
+        public async void Unmediate()
+        {
+            Deactivate();
 
-    private void Activate()
-    {
-        _popupView.Button1Clicked += OnCloseClicked;
-        _popupView.ButtonCloseClicked += OnCloseClicked;
-    }
+            await _popupView.DisppearAsync();
 
-    private void Deactivate()
-    {
-        _popupView.Button1Clicked -= OnCloseClicked;
-        _popupView.ButtonCloseClicked -= OnCloseClicked;
-    }
+            GameObject.Destroy(_popupView.gameObject);
+        }
 
-    private void OnCloseClicked()
-    {
-        _dispatcher.UIRequestRemoveCurrentPopup();
+        private void Activate()
+        {
+            _popupView.Button1Clicked += OnCloseClicked;
+            _popupView.ButtonCloseClicked += OnCloseClicked;
+        }
+
+        private void Deactivate()
+        {
+            _popupView.Button1Clicked -= OnCloseClicked;
+            _popupView.ButtonCloseClicked -= OnCloseClicked;
+        }
+
+        private void OnCloseClicked()
+        {
+            _dispatcher.UIRequestRemoveCurrentPopup();
+        }
     }
 }

@@ -1,48 +1,56 @@
 using System.Collections.Generic;
+using Src.Common;
+using Src.Managers;
+using Src.Model;
+using Src.Model.Common;
+using Src.Model.Configs;
 
-public class UIBottomPanelWindowsTabMediator : UIBottomPanelInteriorModeScrollItemsTabMediatorBase<ItemConfig<ShopDecorationConfigDto>>
+namespace Src.View.UI.Bottom_Panel.Tabs
 {
-    private readonly IWindowsConfig _windowsConfig;
-    private readonly SpritesProvider _spritesProvider;
-    private readonly Dispatcher _dispatcher;
-    private readonly UserModel _playerModel;
-
-    public UIBottomPanelWindowsTabMediator(BottomPanelView view)
-        : base(view)
+    public class UIBottomPanelWindowsTabMediator : UIBottomPanelInteriorModeScrollItemsTabMediatorBase<ItemConfig<ShopDecorationConfigDto>>
     {
-        _windowsConfig = GameConfigManager.Instance.MainConfig;
-        _spritesProvider = SpritesProvider.Instance;
-        _dispatcher = Dispatcher.Instance;
-        _playerModel = PlayerModelHolder.Instance.UserModel;
-    }
+        private readonly IWindowsConfig _windowsConfig;
+        private readonly SpritesProvider _spritesProvider;
+        private readonly Dispatcher _dispatcher;
+        private readonly UserModel _playerModel;
 
-    public override void Mediate()
-    {
-        base.Mediate();
-        View.SetButtonSelected(View.InteriorWindowsButton);
-    }
+        public UIBottomPanelWindowsTabMediator(BottomPanelView view)
+            : base(view)
+        {
+            _windowsConfig = GameConfigManager.Instance.MainConfig;
+            _spritesProvider = SpritesProvider.Instance;
+            _dispatcher = Dispatcher.Instance;
+            _playerModel = PlayerModelHolder.Instance.UserModel;
+        }
 
-    public override void Unmediate()
-    {
-        View.SetButtonUnselected(View.InteriorWindowsButton);
-        base.Unmediate();
-    }
+        public override void Mediate()
+        {
+            base.Mediate();
+            View.SetButtonSelected(View.InteriorWindowsButton);
+        }
 
-    protected override IEnumerable<ItemConfig<ShopDecorationConfigDto>> GetViewModelsToShow()
-    {
-        return _windowsConfig.GetWindowsConfigsForLevel(_playerModel.ProgressModel.Level);
-    }
+        public override void Unmediate()
+        {
+            View.SetButtonUnselected(View.InteriorWindowsButton);
+            base.Unmediate();
+        }
 
-    protected override void SetupItem(UIBottomPanelScrollItemView itemView, ItemConfig<ShopDecorationConfigDto> configData)
-    {
-        var configDto = configData.ConfigDto;
-        itemView.SetupIconSize(80);
-        itemView.SetImage(_spritesProvider.GetWindowIcon(configData.NumericId));
-        itemView.SetPrice(Price.FromString(configDto.price));
-    }
+        protected override IEnumerable<ItemConfig<ShopDecorationConfigDto>> GetViewModelsToShow()
+        {
+            return _windowsConfig.GetWindowsConfigsForLevel(_playerModel.ProgressModel.Level);
+        }
 
-    protected override void HandleClick(ItemConfig<ShopDecorationConfigDto> viewModel)
-    {
-        _dispatcher.UIBottomPanelPlaceWindowClicked(viewModel.NumericId);
+        protected override void SetupItem(UIBottomPanelScrollItemView itemView, ItemConfig<ShopDecorationConfigDto> configData)
+        {
+            var configDto = configData.ConfigDto;
+            itemView.SetupIconSize(80);
+            itemView.SetImage(_spritesProvider.GetWindowIcon(configData.NumericId));
+            itemView.SetPrice(Price.FromString(configDto.price));
+        }
+
+        protected override void HandleClick(ItemConfig<ShopDecorationConfigDto> viewModel)
+        {
+            _dispatcher.UIBottomPanelPlaceWindowClicked(viewModel.NumericId);
+        }
     }
 }

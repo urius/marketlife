@@ -1,38 +1,44 @@
 using Src.Commands;
+using Src.Managers;
+using Src.Model;
+using Src.Model.Debug;
 using UnityEngine;
 
-public class InitScript : MonoBehaviour
+namespace Src.Common
 {
-    [SerializeField] private string _debugUid;
-    [SerializeField] private bool _disableSave;
-    [SerializeField] private bool _disableTutorial;
-    [SerializeField] private bool _loadDebugConfigVersion;
-    [Space(20)]
-    [SerializeField] private PrefabsHolder _prefabsHolder;
-    [SerializeField] private GraphicsManager _graphicsManager;
-    [SerializeField] private LocalizationManager _localizationManager;
-    [SerializeField] private ColorsHolder _colorsHolder;
-
-    private void Awake()
+    public class InitScript : MonoBehaviour
     {
-        Application.targetFrameRate = 51;
+        [SerializeField] private string _debugUid;
+        [SerializeField] private bool _disableSave;
+        [SerializeField] private bool _disableTutorial;
+        [SerializeField] private bool _loadDebugConfigVersion;
+        [Space(20)]
+        [SerializeField] private PrefabsHolder _prefabsHolder;
+        [SerializeField] private GraphicsManager _graphicsManager;
+        [SerializeField] private LocalizationManager _localizationManager;
+        [SerializeField] private ColorsHolder _colorsHolder;
 
-        new InitializeSystemsCommand().Execute();
+        private void Awake()
+        {
+            Application.targetFrameRate = 51;
 
-        Debug.Log($"Application.absoluteURL: {Application.absoluteURL}");
-    }
+            new InitializeSystemsCommand().Execute();
 
-    private async void Start()
-    {
-        await PlayerModelHolder.Instance.SetUidTask;
-        await new InitializeAndLoadCommand().ExecuteAsync();
-    }
+            Debug.Log($"Application.absoluteURL: {Application.absoluteURL}");
+        }
 
-    private void OnValidate()
-    {
-        DebugDataHolder.Instance.DebugUid = _debugUid;
-        DebugDataHolder.Instance.IsSaveDisabled = _disableSave;
-        DebugDataHolder.Instance.UseTestConfigFile = _loadDebugConfigVersion;
-        DebugDataHolder.Instance.IsTutorialDisabled = _disableTutorial;
+        private async void Start()
+        {
+            await PlayerModelHolder.Instance.SetUidTask;
+            await new InitializeAndLoadCommand().ExecuteAsync();
+        }
+
+        private void OnValidate()
+        {
+            DebugDataHolder.Instance.DebugUid = _debugUid;
+            DebugDataHolder.Instance.IsSaveDisabled = _disableSave;
+            DebugDataHolder.Instance.UseTestConfigFile = _loadDebugConfigVersion;
+            DebugDataHolder.Instance.IsTutorialDisabled = _disableTutorial;
+        }
     }
 }

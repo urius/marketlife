@@ -1,142 +1,149 @@
 using System.Collections.Generic;
+using Src.Common;
+using Src.Model;
+using Src.Model.ShopObjects;
+using Src.View.Gameplay;
 using UnityEngine;
 
-public class TutorialPlacingProductStepMediator : TutorialStepMediatorBase
+namespace Src.View.UI.Tutorial.StepsMediators
 {
-    private readonly TutorialUIElementsProvider _tutorialUiElementsProvider;
-    private readonly GameStateModel _gameStateModel;
-    private readonly ShopModel _playerShopModel;
-    private readonly PrefabsHolder _prefabsHolder;
-    private readonly GridCalculator _gridCalculator;
-    private readonly Dictionary<Vector2Int, TutorialArrowPointerView> _pointerViewsByCoords = new Dictionary<Vector2Int, TutorialArrowPointerView>();
-
-    private ShelfModel[] _targetShelfModels;
-
-    public TutorialPlacingProductStepMediator(RectTransform parentTransform)
-        : base(parentTransform)
+    public class TutorialPlacingProductStepMediator : TutorialStepMediatorBase
     {
-        _tutorialUiElementsProvider = TutorialUIElementsProvider.Instance;
-        _gameStateModel = GameStateModel.Instance;
-        _playerShopModel = PlayerModelHolder.Instance.ShopModel;
-        _prefabsHolder = PrefabsHolder.Instance;
-        _gridCalculator = GridCalculator.Instance;
-    }
+        private readonly TutorialUIElementsProvider _tutorialUiElementsProvider;
+        private readonly GameStateModel _gameStateModel;
+        private readonly ShopModel _playerShopModel;
+        private readonly PrefabsHolder _prefabsHolder;
+        private readonly GridCalculator _gridCalculator;
+        private readonly Dictionary<Vector2Int, TutorialArrowPointerView> _pointerViewsByCoords = new Dictionary<Vector2Int, TutorialArrowPointerView>();
 
-    public override void Mediate()
-    {
-        base.Mediate();
+        private ShelfModel[] _targetShelfModels;
 
-        View.DisablePopup();
-        SetupHighlight();
-        _targetShelfModels = GetEmptyShelfModels();
-        DisplayArrowPointers();
-
-        Activate();
-    }
-
-    public override void Unmediate()
-    {
-        Deactivate();
-        RemoveArrowPointers();
-
-        base.Unmediate();
-    }
-
-    private void Activate()
-    {
-        foreach (var shelfModel in _targetShelfModels)
+        public TutorialPlacingProductStepMediator(RectTransform parentTransform)
+            : base(parentTransform)
         {
-            shelfModel.ProductIsSetOnSlot += OnShelfProductIsSetOnSlot;
+            _tutorialUiElementsProvider = TutorialUIElementsProvider.Instance;
+            _gameStateModel = GameStateModel.Instance;
+            _playerShopModel = PlayerModelHolder.Instance.ShopModel;
+            _prefabsHolder = PrefabsHolder.Instance;
+            _gridCalculator = GridCalculator.Instance;
         }
-        _gameStateModel.ActionStateChanged += OnActionStateChanged;
-    }
 
-    private void Deactivate()
-    {
-        foreach (var shelfModel in _targetShelfModels)
+        public override void Mediate()
         {
-            shelfModel.ProductIsSetOnSlot -= OnShelfProductIsSetOnSlot;
+            base.Mediate();
+
+            View.DisablePopup();
+            SetupHighlight();
+            _targetShelfModels = GetEmptyShelfModels();
+            DisplayArrowPointers();
+
+            Activate();
         }
-        _gameStateModel.ActionStateChanged -= OnActionStateChanged;
-    }
 
-    private void SetupHighlight()
-    {
-        var corners = new Vector3[4];
-        View.RootRect.GetWorldCorners(corners);
-        var rootTransformRect = View.RootRect.rect;
-        var center = (corners[0] + corners[2]) * 0.5f;
-        var size = new Vector2(rootTransformRect.width * 0.75f, rootTransformRect.height * 0.7f);
-        View.HighlightScreenSquareArea(center, size, animated: true);
-        AllowClickOnRectTransform(View.HighlightRect);
-    }
-
-    private void OnShelfProductIsSetOnSlot(ShelfModel shelfModel, int slotIndex)
-    {
-        RemoveArrowPointerSafeOn(shelfModel.Coords);
-        HandleEndOfStep();
-    }
-
-    private void HandleEndOfStep()
-    {
-        foreach (var shelf in _targetShelfModels)
+        public override void Unmediate()
         {
-            if (shelf.IsEmpty()) return;
-        }
-        DispatchTutorialActionPerformed();
-    }
+            Deactivate();
+            RemoveArrowPointers();
 
-    private void RemoveArrowPointerSafeOn(Vector2Int coords)
-    {
-        if (_pointerViewsByCoords.ContainsKey(coords))
+            base.Unmediate();
+        }
+
+        private void Activate()
         {
-            GameObject.Destroy(_pointerViewsByCoords[coords].gameObject);
-            _pointerViewsByCoords.Remove(coords);
+            foreach (var shelfModel in _targetShelfModels)
+            {
+                shelfModel.ProductIsSetOnSlot += OnShelfProductIsSetOnSlot;
+            }
+            _gameStateModel.ActionStateChanged += OnActionStateChanged;
         }
-    }
 
-    private void OnActionStateChanged(ActionStateName prevState, ActionStateName currentState)
-    {
-        if (currentState == ActionStateName.None)
+        private void Deactivate()
         {
-            DispatchTutorialActionPerformed();
+            foreach (var shelfModel in _targetShelfModels)
+            {
+                shelfModel.ProductIsSetOnSlot -= OnShelfProductIsSetOnSlot;
+            }
+            _gameStateModel.ActionStateChanged -= OnActionStateChanged;
         }
-    }
 
-    private void RemoveArrowPointers()
-    {
-        foreach (var shelfModel in _targetShelfModels)
+        private void SetupHighlight()
+        {
+            var corners = new Vector3[4];
+            View.RootRect.GetWorldCorners(corners);
+            var rootTransformRect = View.RootRect.rect;
+            var center = (corners[0] + corners[2]) * 0.5f;
+            var size = new Vector2(rootTransformRect.width * 0.75f, rootTransformRect.height * 0.7f);
+            View.HighlightScreenSquareArea(center, size, animated: true);
+            AllowClickOnRectTransform(View.HighlightRect);
+        }
+
+        private void OnShelfProductIsSetOnSlot(ShelfModel shelfModel, int slotIndex)
         {
             RemoveArrowPointerSafeOn(shelfModel.Coords);
+            HandleEndOfStep();
         }
-    }
 
-    private void DisplayArrowPointers()
-    {
-        var floorTranform = _tutorialUiElementsProvider.GetElementTransform(TutorialUIElement.ShopFloorTransform);
-        foreach (var emptyShelfModel in _targetShelfModels)
+        private void HandleEndOfStep()
         {
-            var pointerGo = GameObject.Instantiate(_prefabsHolder.TutorialCellPointerPrefab, floorTranform);
-            var pointerView = pointerGo.GetComponent<TutorialArrowPointerView>();
-            pointerView.transform.position = _gridCalculator.CellToWorld(emptyShelfModel.Coords);
-            _pointerViewsByCoords.Add(emptyShelfModel.Coords, pointerView);
-        }
-    }
-
-    private ShelfModel[] GetEmptyShelfModels()
-    {
-        var result = new List<ShelfModel>(_playerShopModel.ShopObjects.Count);
-        foreach (var shopObject in _playerShopModel.ShopObjects)
-        {
-            if (shopObject.Value.Type == ShopObjectType.Shelf)
+            foreach (var shelf in _targetShelfModels)
             {
-                var shelfModel = shopObject.Value as ShelfModel;
-                if (shelfModel.IsEmpty())
-                {
-                    result.Add(shelfModel);
-                }
+                if (shelf.IsEmpty()) return;
+            }
+            DispatchTutorialActionPerformed();
+        }
+
+        private void RemoveArrowPointerSafeOn(Vector2Int coords)
+        {
+            if (_pointerViewsByCoords.ContainsKey(coords))
+            {
+                GameObject.Destroy(_pointerViewsByCoords[coords].gameObject);
+                _pointerViewsByCoords.Remove(coords);
             }
         }
-        return result.ToArray();
+
+        private void OnActionStateChanged(ActionStateName prevState, ActionStateName currentState)
+        {
+            if (currentState == ActionStateName.None)
+            {
+                DispatchTutorialActionPerformed();
+            }
+        }
+
+        private void RemoveArrowPointers()
+        {
+            foreach (var shelfModel in _targetShelfModels)
+            {
+                RemoveArrowPointerSafeOn(shelfModel.Coords);
+            }
+        }
+
+        private void DisplayArrowPointers()
+        {
+            var floorTranform = _tutorialUiElementsProvider.GetElementTransform(TutorialUIElement.ShopFloorTransform);
+            foreach (var emptyShelfModel in _targetShelfModels)
+            {
+                var pointerGo = GameObject.Instantiate(_prefabsHolder.TutorialCellPointerPrefab, floorTranform);
+                var pointerView = pointerGo.GetComponent<TutorialArrowPointerView>();
+                pointerView.transform.position = _gridCalculator.CellToWorld(emptyShelfModel.Coords);
+                _pointerViewsByCoords.Add(emptyShelfModel.Coords, pointerView);
+            }
+        }
+
+        private ShelfModel[] GetEmptyShelfModels()
+        {
+            var result = new List<ShelfModel>(_playerShopModel.ShopObjects.Count);
+            foreach (var shopObject in _playerShopModel.ShopObjects)
+            {
+                if (shopObject.Value.Type == ShopObjectType.Shelf)
+                {
+                    var shelfModel = shopObject.Value as ShelfModel;
+                    if (shelfModel.IsEmpty())
+                    {
+                        result.Add(shelfModel);
+                    }
+                }
+            }
+            return result.ToArray();
+        }
     }
 }

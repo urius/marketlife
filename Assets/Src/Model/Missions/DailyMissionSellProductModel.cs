@@ -1,17 +1,23 @@
-public class DailyMissionSellProductModel : DailyMissionModel
-{
-    public readonly ProductConfig ProductConfig;
+using Src.Model.Common;
+using Src.Model.Configs;
 
-    public DailyMissionSellProductModel(
-        string key,
-        int startValue,
-        int targetValue,
-        int currentValue,
-        Reward reward,
-        bool isRewardTaken,
-        ProductConfig productConfig)
-        : base(key, startValue, targetValue, currentValue, reward, isRewardTaken)
+namespace Src.Model.Missions
+{
+    public class DailyMissionSellProductModel : DailyMissionModel
     {
-        ProductConfig = productConfig;
+        public readonly ProductConfig ProductConfig;
+
+        public DailyMissionSellProductModel(
+            string key,
+            int startValue,
+            int targetValue,
+            int currentValue,
+            Reward reward,
+            bool isRewardTaken,
+            ProductConfig productConfig)
+            : base(key, startValue, targetValue, currentValue, reward, isRewardTaken)
+        {
+            ProductConfig = productConfig;
+        }
     }
 }

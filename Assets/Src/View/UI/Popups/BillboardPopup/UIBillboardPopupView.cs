@@ -1,36 +1,40 @@
 using System;
+using Src.Common_Utils;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIBillboardPopupView : UIPopupBase
+namespace Src.View.UI.Popups.BillboardPopup
 {
-    public event Action ApplyClicked = delegate { };
-
-    [SerializeField] private TMP_Text _messageText;
-    [SerializeField] private TMP_InputField _inputField;
-    [SerializeField] private Button _applyButton;
-
-    public string InputFieldText => _inputField.text;
-
-    public override void Awake()
+    public class UIBillboardPopupView : UIPopupBase
     {
-        base.Awake();
-        _applyButton.AddOnClickListener(OnApplyClick);
-    }
+        public event Action ApplyClicked = delegate { };
 
-    public void SetMessageText(string text)
-    {
-        _messageText.text = text;
-    }
+        [SerializeField] private TMP_Text _messageText;
+        [SerializeField] private TMP_InputField _inputField;
+        [SerializeField] private Button _applyButton;
 
-    public void SetInputFieldText(string text)
-    {
-        _inputField.text = text;
-    }
+        public string InputFieldText => _inputField.text;
 
-    private void OnApplyClick()
-    {
-        ApplyClicked();
+        public override void Awake()
+        {
+            base.Awake();
+            _applyButton.AddOnClickListener(OnApplyClick);
+        }
+
+        public void SetMessageText(string text)
+        {
+            _messageText.text = text;
+        }
+
+        public void SetInputFieldText(string text)
+        {
+            _inputField.text = text;
+        }
+
+        private void OnApplyClick()
+        {
+            ApplyClicked();
+        }
     }
 }

@@ -1,20 +1,23 @@
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public static class UnityButtonExtensions
+namespace Src.Common_Utils
 {
-    public static void AddOnClickListener(this Button button, UnityAction handler)
+    public static class UnityButtonExtensions
     {
-        button.onClick.AddListener(handler);
-    }
+        public static void AddOnClickListener(this Button button, UnityAction handler)
+        {
+            button.onClick.AddListener(handler);
+        }
 
-    public static void RemoveOnClickListener(this Button button, UnityAction handler)
-    {
-        button.onClick.RemoveListener(handler);
-    }
+        public static void RemoveOnClickListener(this Button button, UnityAction handler)
+        {
+            button.onClick.RemoveListener(handler);
+        }
 
-    public static void RemoveAllOnClickListeners(this Button button)
-    {
-        button.onClick.RemoveAllListeners();
+        public static void RemoveAllOnClickListeners(this Button button)
+        {
+            button.onClick.RemoveAllListeners();
+        }
     }
 }

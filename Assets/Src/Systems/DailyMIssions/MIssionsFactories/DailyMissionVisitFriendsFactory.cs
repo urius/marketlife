@@ -1,28 +1,34 @@
+using Src.Model;
+using Src.Model.Missions;
+using Src.Systems.DailyMIssions.Processors;
 using UnityEngine;
 
-public class DailyMissionVisitFriendsFactory : DailyMissionFactoryBase<DailyMissionVisitFriendsProcessor>
+namespace Src.Systems.DailyMIssions.MIssionsFactories
 {
-    protected override string Key => MissionKeys.VisitFriends;
-
-    public override bool CanAdd()
+    public class DailyMissionVisitFriendsFactory : DailyMissionFactoryBase<DailyMissionVisitFriendsProcessor>
     {
-        return base.CanAdd()
-            && ExtraCanAddCondition();
-    }
+        protected override string Key => MissionKeys.VisitFriends;
 
-    public override DailyMissionModel CreateModel(float complexityMultiplier)
-    {
-        var friendsDataHolder = FriendsDataHolder.Instance;
-        var activeFriendsCount = friendsDataHolder.InGameActiveFriendsCount;
-        var targetValue = (int)Mathf.Max(1, Mathf.Lerp(1, activeFriendsCount, complexityMultiplier));
-        var reward = ChooseReward(complexityMultiplier);
-        return new DailyMissionModel(Key, 0, targetValue, 0, reward);
-    }
+        public override bool CanAdd()
+        {
+            return base.CanAdd()
+                   && ExtraCanAddCondition();
+        }
 
-    private bool ExtraCanAddCondition()
-    {
-        var friendsDataHolder = FriendsDataHolder.Instance;
-        var activeFriendsCount = friendsDataHolder.InGameActiveFriendsCount;
-        return activeFriendsCount > 0;
+        public override DailyMissionModel CreateModel(float complexityMultiplier)
+        {
+            var friendsDataHolder = FriendsDataHolder.Instance;
+            var activeFriendsCount = friendsDataHolder.InGameActiveFriendsCount;
+            var targetValue = (int)Mathf.Max(1, Mathf.Lerp(1, activeFriendsCount, complexityMultiplier));
+            var reward = ChooseReward(complexityMultiplier);
+            return new DailyMissionModel(Key, 0, targetValue, 0, reward);
+        }
+
+        private bool ExtraCanAddCondition()
+        {
+            var friendsDataHolder = FriendsDataHolder.Instance;
+            var activeFriendsCount = friendsDataHolder.InGameActiveFriendsCount;
+            return activeFriendsCount > 0;
+        }
     }
 }

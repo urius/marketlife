@@ -1,62 +1,63 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using Src.View.Gameplay.Human;
 using UnityEngine;
 
-public class DebugHumanMediator
+namespace Src.Debug_Scripts
 {
-    private readonly HumanView _humanView;
-
-    public DebugHumanMediator(GameObject humanGO)
+    public class DebugHumanMediator
     {
-        _humanView = humanGO.GetComponent<HumanView>();
+        private readonly HumanView _humanView;
 
-        Activate();
-    }
+        public DebugHumanMediator(GameObject humanGO)
+        {
+            _humanView = humanGO.GetComponent<HumanView>();
 
-    private void Activate()
-    {
-        DebugDispatcher.Instance.ShowHumanSide += OnRequestShowSide;
-        DebugDispatcher.Instance.ShowHumanAnimation += OnRequestShowHumanAnimation;
-        DebugDispatcher.Instance.ShowFaceAnimation += OnRequestShowFaceAnimation;
-        DebugDispatcher.Instance.ShowGlasses += OnRequestShowGlasses;
-        DebugDispatcher.Instance.ShowHair += OnRequestShowHair;
-        DebugDispatcher.Instance.ShowTopClothes += OnRequestTopClothes;
-        DebugDispatcher.Instance.ShowBottomClothes += OnRequestBottomClothes;
-    }
+            Activate();
+        }
 
-    private void OnRequestShowFaceAnimation(int animationIndex)
-    {
-        _humanView.ShowFaceAnimation(animationIndex);
-    }
+        private void Activate()
+        {
+            DebugDispatcher.Instance.ShowHumanSide += OnRequestShowSide;
+            DebugDispatcher.Instance.ShowHumanAnimation += OnRequestShowHumanAnimation;
+            DebugDispatcher.Instance.ShowFaceAnimation += OnRequestShowFaceAnimation;
+            DebugDispatcher.Instance.ShowGlasses += OnRequestShowGlasses;
+            DebugDispatcher.Instance.ShowHair += OnRequestShowHair;
+            DebugDispatcher.Instance.ShowTopClothes += OnRequestTopClothes;
+            DebugDispatcher.Instance.ShowBottomClothes += OnRequestBottomClothes;
+        }
 
-    private void OnRequestShowGlasses(int glassesId)
-    {
-        _humanView.SetGlasses(glassesId);
-    }
+        private void OnRequestShowFaceAnimation(int animationIndex)
+        {
+            _humanView.ShowFaceAnimation(animationIndex);
+        }
 
-    private void OnRequestShowHumanAnimation(int animationIndex)
-    {
-        _humanView.SetBodyState((BodyState)animationIndex);
-    }
+        private void OnRequestShowGlasses(int glassesId)
+        {
+            _humanView.SetGlasses(glassesId);
+        }
 
-    private void OnRequestShowSide(int sideId)
-    {
-        _humanView.ShowSide(sideId);
-    }
+        private void OnRequestShowHumanAnimation(int animationIndex)
+        {
+            _humanView.SetBodyState((BodyState)animationIndex);
+        }
 
-    private void OnRequestShowHair(int hairNum)
-    {
-        _humanView.SetHair(hairNum);
-    }
+        private void OnRequestShowSide(int sideId)
+        {
+            _humanView.ShowSide(sideId);
+        }
 
-    private void OnRequestTopClothes(int clothesNum)
-    {
-        _humanView.SetBodyClothes(clothesNum);
-    }
+        private void OnRequestShowHair(int hairNum)
+        {
+            _humanView.SetHair(hairNum);
+        }
 
-    private void OnRequestBottomClothes(int clothesNum)
-    {
-        _humanView.SetFootClothes(clothesNum);
+        private void OnRequestTopClothes(int clothesNum)
+        {
+            _humanView.SetBodyClothes(clothesNum);
+        }
+
+        private void OnRequestBottomClothes(int clothesNum)
+        {
+            _humanView.SetFootClothes(clothesNum);
+        }
     }
 }

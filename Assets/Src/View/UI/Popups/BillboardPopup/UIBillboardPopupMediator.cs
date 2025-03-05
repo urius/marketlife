@@ -1,71 +1,78 @@
+using Src.Common;
+using Src.Managers;
+using Src.Model;
+using Src.Model.Popups;
 using UnityEngine;
 
-public class UIBillboardPopupMediator : IMediator
+namespace Src.View.UI.Popups.BillboardPopup
 {
-    private readonly RectTransform _contentTransform;
-    private readonly GameStateModel _gameStateModel;
-    private readonly PrefabsHolder _prefabsHolder;
-    private readonly LocalizationManager _loc;
-    private readonly Dispatcher _dispatcher;
-
-    //
-    private UIBillboardPopupView _popupView;
-    private BillboardPopupViewModel _viewModel;
-
-    public UIBillboardPopupMediator(RectTransform contentTransform)
+    public class UIBillboardPopupMediator : IMediator
     {
-        _contentTransform = contentTransform;
+        private readonly RectTransform _contentTransform;
+        private readonly GameStateModel _gameStateModel;
+        private readonly PrefabsHolder _prefabsHolder;
+        private readonly LocalizationManager _loc;
+        private readonly Dispatcher _dispatcher;
 
-        _gameStateModel = GameStateModel.Instance;
-        _prefabsHolder = PrefabsHolder.Instance;
-        _loc = LocalizationManager.Instance;
-        _dispatcher = Dispatcher.Instance;
-    }
+        //
+        private UIBillboardPopupView _popupView;
+        private BillboardPopupViewModel _viewModel;
 
-    public async void Mediate()
-    {
-        _viewModel = _gameStateModel.ShowingPopupModel as BillboardPopupViewModel;
-        var go = GameObject.Instantiate(_prefabsHolder.UIBillboardPopupPrefab, _contentTransform);
-        _popupView = go.GetComponent<UIBillboardPopupView>();
-        _popupView.SetTitleText(_loc.GetLocalization(LocalizationKeys.PopupBillboardTitle));
-        _popupView.SetMessageText(_loc.GetLocalization(LocalizationKeys.PopupBillboardMessage));
+        public UIBillboardPopupMediator(RectTransform contentTransform)
+        {
+            _contentTransform = contentTransform;
 
-        _popupView.SetInputFieldText(_viewModel.InitialText);
+            _gameStateModel = GameStateModel.Instance;
+            _prefabsHolder = PrefabsHolder.Instance;
+            _loc = LocalizationManager.Instance;
+            _dispatcher = Dispatcher.Instance;
+        }
 
-        await _popupView.Appear2Async();
+        public async void Mediate()
+        {
+            _viewModel = _gameStateModel.ShowingPopupModel as BillboardPopupViewModel;
+            var go = GameObject.Instantiate(_prefabsHolder.UIBillboardPopupPrefab, _contentTransform);
+            _popupView = go.GetComponent<UIBillboardPopupView>();
+            _popupView.SetTitleText(_loc.GetLocalization(LocalizationKeys.PopupBillboardTitle));
+            _popupView.SetMessageText(_loc.GetLocalization(LocalizationKeys.PopupBillboardMessage));
 
-        Activate();
-    }
+            _popupView.SetInputFieldText(_viewModel.InitialText);
 
-    public async void Unmediate()
-    {
-        Deactivate();
+            await _popupView.Appear2Async();
 
-        await _popupView.Disppear2Async();
+            Activate();
+        }
 
-        GameObject.Destroy(_popupView.gameObject);
-    }
+        public async void Unmediate()
+        {
+            Deactivate();
 
-    private void Activate()
-    {
-        _popupView.ButtonCloseClicked += OnButtonCloseClicked;
-        _popupView.ApplyClicked += OnApplyClicked;
-    }
+            await _popupView.Disppear2Async();
 
-    private void Deactivate()
-    {
-        _popupView.ButtonCloseClicked -= OnButtonCloseClicked;
-        _popupView.ApplyClicked -= OnApplyClicked;
-    }
+            GameObject.Destroy(_popupView.gameObject);
+        }
 
-    private void OnButtonCloseClicked()
-    {
-        _dispatcher.UIRequestRemoveCurrentPopup();
-    }
+        private void Activate()
+        {
+            _popupView.ButtonCloseClicked += OnButtonCloseClicked;
+            _popupView.ApplyClicked += OnApplyClicked;
+        }
 
-    private void OnApplyClicked()
-    {
-        _dispatcher.UIBillboardPopupApplyTextClicked(_popupView.InputFieldText);
-        _dispatcher.UIRequestRemoveCurrentPopup();
+        private void Deactivate()
+        {
+            _popupView.ButtonCloseClicked -= OnButtonCloseClicked;
+            _popupView.ApplyClicked -= OnApplyClicked;
+        }
+
+        private void OnButtonCloseClicked()
+        {
+            _dispatcher.UIRequestRemoveCurrentPopup();
+        }
+
+        private void OnApplyClicked()
+        {
+            _dispatcher.UIBillboardPopupApplyTextClicked(_popupView.InputFieldText);
+            _dispatcher.UIRequestRemoveCurrentPopup();
+        }
     }
 }

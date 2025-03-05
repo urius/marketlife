@@ -1,65 +1,70 @@
-using System;
+using Src.Model;
+using Src.Model.Popups;
+using Src.Model.ShopObjects;
 
-public class DailyMissionChangeCashmanProcessor : DailyMissionProcessorBase
+namespace Src.Systems.DailyMIssions.Processors
 {
-    private readonly GameStateModel _gameStateModel;
-
-    private CashmanDressData _cashmanDressData;
-
-    public DailyMissionChangeCashmanProcessor()
+    public class DailyMissionChangeCashmanProcessor : DailyMissionProcessorBase
     {
-        _gameStateModel = GameStateModel.Instance;
-    }
+        private readonly GameStateModel _gameStateModel;
 
-    public override void Start()
-    {
-        _gameStateModel.PopupShown += OnPopupShown;
-        _gameStateModel.PopupRemoved += OnPopupRemoved;
-    }
+        private CashmanDressData _cashmanDressData;
 
-    public override void Stop()
-    {
-        _gameStateModel.PopupShown -= OnPopupShown;
-        _gameStateModel.PopupRemoved -= OnPopupRemoved;
-    }
-
-    private void OnPopupShown()
-    {
-        if (_gameStateModel.ShowingPopupModel.PopupType == PopupType.CashDesk)
+        public DailyMissionChangeCashmanProcessor()
         {
-            var cashDeskModel = (_gameStateModel.ShowingPopupModel as CashDeskPopupViewModel).CashDeskModel;
-            _cashmanDressData = GetCashmanDressData(cashDeskModel);
+            _gameStateModel = GameStateModel.Instance;
         }
-    }
 
-    private void OnPopupRemoved(PopupViewModelBase popupViewModel)
-    {
-        if (popupViewModel.PopupType == PopupType.CashDesk)
+        public override void Start()
         {
-            var cashDeskModel = (popupViewModel as CashDeskPopupViewModel).CashDeskModel;
-            var cashmanDressDataNew = GetCashmanDressData(cashDeskModel);
+            _gameStateModel.PopupShown += OnPopupShown;
+            _gameStateModel.PopupRemoved += OnPopupRemoved;
+        }
 
-            if (_cashmanDressData.Equals(cashmanDressDataNew) == false)
+        public override void Stop()
+        {
+            _gameStateModel.PopupShown -= OnPopupShown;
+            _gameStateModel.PopupRemoved -= OnPopupRemoved;
+        }
+
+        private void OnPopupShown()
+        {
+            if (_gameStateModel.ShowingPopupModel.PopupType == PopupType.CashDesk)
             {
-                MissionModel.AddValue(1);
+                var cashDeskModel = (_gameStateModel.ShowingPopupModel as CashDeskPopupViewModel).CashDeskModel;
+                _cashmanDressData = GetCashmanDressData(cashDeskModel);
             }
         }
-    }
 
-    private CashmanDressData GetCashmanDressData(CashDeskModel cashDeskModel)
-    {
-        return new CashmanDressData
+        private void OnPopupRemoved(PopupViewModelBase popupViewModel)
         {
-            HairId = cashDeskModel.HairId,
-            GlassesId = cashDeskModel.GlassesId,
-            DressId = cashDeskModel.DressId,
-        };
-    }
-}
+            if (popupViewModel.PopupType == PopupType.CashDesk)
+            {
+                var cashDeskModel = (popupViewModel as CashDeskPopupViewModel).CashDeskModel;
+                var cashmanDressDataNew = GetCashmanDressData(cashDeskModel);
 
-public struct CashmanDressData
-{
-    public int HairId;
-    public int GlassesId;
-    public int DressId;
+                if (_cashmanDressData.Equals(cashmanDressDataNew) == false)
+                {
+                    MissionModel.AddValue(1);
+                }
+            }
+        }
+
+        private CashmanDressData GetCashmanDressData(CashDeskModel cashDeskModel)
+        {
+            return new CashmanDressData
+            {
+                HairId = cashDeskModel.HairId,
+                GlassesId = cashDeskModel.GlassesId,
+                DressId = cashDeskModel.DressId,
+            };
+        }
+    }
+
+    public struct CashmanDressData
+    {
+        public int HairId;
+        public int GlassesId;
+        public int DressId;
+    }
 }

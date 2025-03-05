@@ -1,26 +1,31 @@
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using Src.Common;
+using Src.Common_Utils;
+using Src.Model;
 
-public struct LoadServerTimeCommand : IAsyncGameLoadCommand
+namespace Src.Commands.LoadSave
 {
-    public async UniTask<bool> ExecuteAsync()
+    public struct LoadServerTimeCommand : IAsyncGameLoadCommand
     {
-        var gameStateModel = GameStateModel.Instance;
-        var url = Urls.GetTimeURL;
-
-        var resultOperation = await new WebRequestsSender().GetAsync(url);
-        if (resultOperation.IsSuccess)
+        public async UniTask<bool> ExecuteAsync()
         {
-            var result = JsonConvert.DeserializeObject<GetTimeResponseDto>(resultOperation.Result);
-            gameStateModel.SetServerTime(result.response);
+            var gameStateModel = GameStateModel.Instance;
+            var url = Urls.GetTimeURL;
+
+            var resultOperation = await new WebRequestsSender().GetAsync(url);
+            if (resultOperation.IsSuccess)
+            {
+                var result = JsonConvert.DeserializeObject<GetTimeResponseDto>(resultOperation.Result);
+                gameStateModel.SetServerTime(result.response);
+            }
+
+            return resultOperation.IsSuccess;
         }
-
-        return resultOperation.IsSuccess;
     }
-}
 
-public struct GetTimeResponseDto
-{
-    public int response;
+    public struct GetTimeResponseDto
+    {
+        public int response;
+    }
 }

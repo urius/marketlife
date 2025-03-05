@@ -1,27 +1,31 @@
 using Cysharp.Threading.Tasks;
+using Src.Model;
 
-public struct LoadFriendShopCommand
+namespace Src.Commands.LoadSave
 {
-    public async UniTask<bool> ExecuteAsync(FriendData friendData)
+    public struct LoadFriendShopCommand
     {
-        var result = false;
-        if (friendData != null)
+        public async UniTask<bool> ExecuteAsync(FriendData friendData)
         {
-            result = friendData.IsUserModelLoaded;
-            if (friendData.IsUserModelLoaded == false)
+            var result = false;
+            if (friendData != null)
             {
-                var userDataStr = await new LoadUserDataCommand().ExecuteAsync(friendData.Uid);
-                if (userDataStr != null)
+                result = friendData.IsUserModelLoaded;
+                if (friendData.IsUserModelLoaded == false)
                 {
-                    var loadedFriendModel = new CreateUserModelCommand().Execute(userDataStr);
-                    if (loadedFriendModel != null)
+                    var userDataStr = await new LoadUserDataCommand().ExecuteAsync(friendData.Uid);
+                    if (userDataStr != null)
                     {
-                        friendData.SetUserModel(loadedFriendModel);
-                        result = true;
+                        var loadedFriendModel = new CreateUserModelCommand().Execute(userDataStr);
+                        if (loadedFriendModel != null)
+                        {
+                            friendData.SetUserModel(loadedFriendModel);
+                            result = true;
+                        }
                     }
                 }
             }
+            return result;
         }
-        return result;
     }
 }

@@ -1,196 +1,203 @@
 using System.Collections.Generic;
 using System.Linq;
+using Src.Common;
+using Src.Managers;
+using Src.Model;
+using Src.Model.Configs;
 using UnityEngine;
 
-public class UIBottomPanelFriendsTabMediator : UIBottomPanelScrollItemsTabMediatorBase<UIBottomPanelFriendItemView, BottomPanelFriendTabItemViewModel>
+namespace Src.View.UI.Bottom_Panel.Tabs
 {
-    private readonly FriendsDataHolder _friendsDataHolder;
-    private readonly PoolCanvasProvider _poolCanvasProvider;
-    private readonly LocalizationManager _loc;
-    private readonly AvatarsManager _avatarsManager;
-    private readonly Dispatcher _dispatcher;
-    private readonly SpritesProvider _spritesProvider;
-    private readonly ColorsHolder _colorsHolder;
-    private readonly PlayerModelHolder _playerModelHolder;
-    private readonly GameStateModel _gameStateModel;
-    private readonly MainConfig _friendActionsConfig;
-    private readonly PrefabsHolder _prefabsHolder;
-    private readonly Queue<UIBottomPanelFriendItemView> _cachedViews = new Queue<UIBottomPanelFriendItemView>();
-
-    public UIBottomPanelFriendsTabMediator(BottomPanelView view) : base(view)
+    public class UIBottomPanelFriendsTabMediator : UIBottomPanelScrollItemsTabMediatorBase<UIBottomPanelFriendItemView, BottomPanelFriendTabItemViewModel>
     {
-        _prefabsHolder = PrefabsHolder.Instance;
-        _friendsDataHolder = FriendsDataHolder.Instance;
-        _poolCanvasProvider = PoolCanvasProvider.Instance;
-        _loc = LocalizationManager.Instance;
-        _avatarsManager = AvatarsManager.Instance;
-        _dispatcher = Dispatcher.Instance;
-        _spritesProvider = SpritesProvider.Instance;
-        _colorsHolder = ColorsHolder.Instance;
-        _playerModelHolder = PlayerModelHolder.Instance;
-        _gameStateModel = GameStateModel.Instance;
-        _friendActionsConfig = GameConfigManager.Instance.MainConfig;
-    }
+        private readonly FriendsDataHolder _friendsDataHolder;
+        private readonly PoolCanvasProvider _poolCanvasProvider;
+        private readonly LocalizationManager _loc;
+        private readonly AvatarsManager _avatarsManager;
+        private readonly Dispatcher _dispatcher;
+        private readonly SpritesProvider _spritesProvider;
+        private readonly ColorsHolder _colorsHolder;
+        private readonly PlayerModelHolder _playerModelHolder;
+        private readonly GameStateModel _gameStateModel;
+        private readonly MainConfig _friendActionsConfig;
+        private readonly PrefabsHolder _prefabsHolder;
+        private readonly Queue<UIBottomPanelFriendItemView> _cachedViews = new Queue<UIBottomPanelFriendItemView>();
 
-    public override void Mediate()
-    {
-        base.Mediate();
-
-        View.SetButtonSelected(View.FriendsButton);
-        Activate();
-    }
-
-    public override void Unmediate()
-    {
-        Deactivate();
-        View.SetButtonUnselected(View.FriendsButton);
-
-        base.Unmediate();
-
-        DestroyCashedViews();
-    }
-
-    private void Activate()
-    {
-        _friendsDataHolder.FriendsDataWasSetup += OnFriendsDataSet;
-        _avatarsManager.AvatarLoadedForId += OnAvatarLoadedForId;
-    }
-
-    private void Deactivate()
-    {
-        _friendsDataHolder.FriendsDataWasSetup -= OnFriendsDataSet;
-        _avatarsManager.AvatarLoadedForId -= OnAvatarLoadedForId;
-    }
-
-    private void OnAvatarLoadedForId(string uid)
-    {
-        foreach (var displayedItem in DisplayedItems)
+        public UIBottomPanelFriendsTabMediator(BottomPanelView view) : base(view)
         {
-            if (displayedItem.ViewModel.HasFriendData && displayedItem.ViewModel.FriendData.Uid == uid)
+            _prefabsHolder = PrefabsHolder.Instance;
+            _friendsDataHolder = FriendsDataHolder.Instance;
+            _poolCanvasProvider = PoolCanvasProvider.Instance;
+            _loc = LocalizationManager.Instance;
+            _avatarsManager = AvatarsManager.Instance;
+            _dispatcher = Dispatcher.Instance;
+            _spritesProvider = SpritesProvider.Instance;
+            _colorsHolder = ColorsHolder.Instance;
+            _playerModelHolder = PlayerModelHolder.Instance;
+            _gameStateModel = GameStateModel.Instance;
+            _friendActionsConfig = GameConfigManager.Instance.MainConfig;
+        }
+
+        public override void Mediate()
+        {
+            base.Mediate();
+
+            View.SetButtonSelected(View.FriendsButton);
+            Activate();
+        }
+
+        public override void Unmediate()
+        {
+            Deactivate();
+            View.SetButtonUnselected(View.FriendsButton);
+
+            base.Unmediate();
+
+            DestroyCashedViews();
+        }
+
+        private void Activate()
+        {
+            _friendsDataHolder.FriendsDataWasSetup += OnFriendsDataSet;
+            _avatarsManager.AvatarLoadedForId += OnAvatarLoadedForId;
+        }
+
+        private void Deactivate()
+        {
+            _friendsDataHolder.FriendsDataWasSetup -= OnFriendsDataSet;
+            _avatarsManager.AvatarLoadedForId -= OnAvatarLoadedForId;
+        }
+
+        private void OnAvatarLoadedForId(string uid)
+        {
+            foreach (var displayedItem in DisplayedItems)
             {
-                displayedItem.View.SetMainIconImageSprite(_avatarsManager.GetAvatarSprite(uid));
-                break;
-            }
-        }
-    }
-
-    private void DestroyCashedViews()
-    {
-        while (_cachedViews.Count > 0)
-        {
-            var viewItem = _cachedViews.Dequeue();
-            GameObject.Destroy(viewItem.gameObject);
-        }
-    }
-
-    protected override IEnumerable<BottomPanelFriendTabItemViewModel> GetViewModelsToShow()
-    {
-        return new BottomPanelFriendTabItemViewModel[] { new BottomPanelFriendTabItemViewModel() }
-            .Concat(
-            _friendsDataHolder.Friends
-            .Where(m => m.IsApp)
-            .Select(m => new BottomPanelFriendTabItemViewModel(m)));
-    }
-
-    protected override UIBottomPanelFriendItemView GetOrCreateItem()
-    {
-        UIBottomPanelFriendItemView result;
-        if (_cachedViews.Count > 0)
-        {
-            result = _cachedViews.Dequeue();
-        }
-        else
-        {
-            var itemViewGo = GameObject.Instantiate(_prefabsHolder.UIBottomPanelFriendScrollItemPrefab, _poolCanvasProvider.PoolCanvasTransform);
-            result = itemViewGo.GetComponent<UIBottomPanelFriendItemView>();
-        }
-        result.gameObject.SetActive(true);
-        result.transform.SetParent(View.ScrollBoxView.Content);
-        return result;
-    }
-
-    protected override void ReturnOrDestroyScrollBoxItem(UIBottomPanelFriendItemView itemView)
-    {
-        itemView.gameObject.SetActive(false);
-        itemView.transform.SetParent(_poolCanvasProvider.PoolCanvasTransform);
-        _cachedViews.Enqueue(itemView);
-    }
-
-    protected override void SetupItem(UIBottomPanelFriendItemView itemView, BottomPanelFriendTabItemViewModel viewModel)
-    {
-        itemView.SetTextDefaultColor();
-        if (viewModel.HasFriendData)
-        {
-            var friendData = viewModel.FriendData;
-            itemView.SetTopText(friendData.FirstName);
-            itemView.SetBgImageDefaultColor();
-            itemView.SetBottomButtonEnabled(false);
-
-            //if (friendData.IsApp)
-            {
-                if (friendData.IsInactive())
+                if (displayedItem.ViewModel.HasFriendData && displayedItem.ViewModel.FriendData.Uid == uid)
                 {
-                    itemView.SetBgImageColor(_colorsHolder.BottomPanelFriendsInactiveFriendButtonColor);
-                    itemView.SetStatusIconImageSprite(_spritesProvider.GetMoonIcon());
-                    itemView.SetMainHintEnabled(true);
-                    itemView.SetMainHintText(_loc.GetLocalization(LocalizationKeys.HintBottomPanelInactiveFriend));
-                }
-                else
-                {
-                    var friendActionsModel = _playerModelHolder.UserModel.FriendsActionsDataModels.GetFriendShopActionsModel(friendData.Uid);
-                    var isVisitBonusAvailable = _friendActionsConfig.IsEnabled(FriendShopActionId.VisitBonus)
-                        && friendActionsModel.ActionsById[FriendShopActionId.VisitBonus].IsAvailable(_gameStateModel.ServerTime);
-                    itemView.SetStatusIconImageSprite(isVisitBonusAvailable ? _spritesProvider.GetGoldIcon() : null);
-                    itemView.SetMainHintEnabled(true);
-                    itemView.SetMainHintText(_loc.GetLocalization(LocalizationKeys.HintBottomPanelVisitFriend));
+                    displayedItem.View.SetMainIconImageSprite(_avatarsManager.GetAvatarSprite(uid));
+                    break;
                 }
             }
+        }
 
-            var avatarSprite = _avatarsManager.GetAvatarSprite(friendData.Uid);
-            itemView.SetMainIconImageSprite(avatarSprite);
-            if (avatarSprite == null)
+        private void DestroyCashedViews()
+        {
+            while (_cachedViews.Count > 0)
             {
-                _avatarsManager.LoadAvatarForUid(friendData.Uid);
+                var viewItem = _cachedViews.Dequeue();
+                GameObject.Destroy(viewItem.gameObject);
             }
         }
-        else
+
+        protected override IEnumerable<BottomPanelFriendTabItemViewModel> GetViewModelsToShow()
         {
-            itemView.SetBgImageColor(_colorsHolder.BottomPanelFriendsTabAddButtonColor);
-            itemView.SetTopText(_loc.GetLocalization(LocalizationKeys.CommonInvite));
-            itemView.SetBottomButtonEnabled(false);
-            itemView.SetMainHintEnabled(true);
-            itemView.SetMainHintText(_loc.GetLocalization(LocalizationKeys.HintBottomPanelInviteFriends));
-            itemView.SetMainIconImageSprite(_spritesProvider.GetBigPlusSignIcon());
-            itemView.SetStatusIconImageSprite(null);
+            return new BottomPanelFriendTabItemViewModel[] { new BottomPanelFriendTabItemViewModel() }
+                .Concat(
+                    _friendsDataHolder.Friends
+                        .Where(m => m.IsApp)
+                        .Select(m => new BottomPanelFriendTabItemViewModel(m)));
+        }
+
+        protected override UIBottomPanelFriendItemView GetOrCreateItem()
+        {
+            UIBottomPanelFriendItemView result;
+            if (_cachedViews.Count > 0)
+            {
+                result = _cachedViews.Dequeue();
+            }
+            else
+            {
+                var itemViewGo = GameObject.Instantiate(_prefabsHolder.UIBottomPanelFriendScrollItemPrefab, _poolCanvasProvider.PoolCanvasTransform);
+                result = itemViewGo.GetComponent<UIBottomPanelFriendItemView>();
+            }
+            result.gameObject.SetActive(true);
+            result.transform.SetParent(View.ScrollBoxView.Content);
+            return result;
+        }
+
+        protected override void ReturnOrDestroyScrollBoxItem(UIBottomPanelFriendItemView itemView)
+        {
+            itemView.gameObject.SetActive(false);
+            itemView.transform.SetParent(_poolCanvasProvider.PoolCanvasTransform);
+            _cachedViews.Enqueue(itemView);
+        }
+
+        protected override void SetupItem(UIBottomPanelFriendItemView itemView, BottomPanelFriendTabItemViewModel viewModel)
+        {
+            itemView.SetTextDefaultColor();
+            if (viewModel.HasFriendData)
+            {
+                var friendData = viewModel.FriendData;
+                itemView.SetTopText(friendData.FirstName);
+                itemView.SetBgImageDefaultColor();
+                itemView.SetBottomButtonEnabled(false);
+
+                //if (friendData.IsApp)
+                {
+                    if (friendData.IsInactive())
+                    {
+                        itemView.SetBgImageColor(_colorsHolder.BottomPanelFriendsInactiveFriendButtonColor);
+                        itemView.SetStatusIconImageSprite(_spritesProvider.GetMoonIcon());
+                        itemView.SetMainHintEnabled(true);
+                        itemView.SetMainHintText(_loc.GetLocalization(LocalizationKeys.HintBottomPanelInactiveFriend));
+                    }
+                    else
+                    {
+                        var friendActionsModel = _playerModelHolder.UserModel.FriendsActionsDataModels.GetFriendShopActionsModel(friendData.Uid);
+                        var isVisitBonusAvailable = _friendActionsConfig.IsEnabled(FriendShopActionId.VisitBonus)
+                                                    && friendActionsModel.ActionsById[FriendShopActionId.VisitBonus].IsAvailable(_gameStateModel.ServerTime);
+                        itemView.SetStatusIconImageSprite(isVisitBonusAvailable ? _spritesProvider.GetGoldIcon() : null);
+                        itemView.SetMainHintEnabled(true);
+                        itemView.SetMainHintText(_loc.GetLocalization(LocalizationKeys.HintBottomPanelVisitFriend));
+                    }
+                }
+
+                var avatarSprite = _avatarsManager.GetAvatarSprite(friendData.Uid);
+                itemView.SetMainIconImageSprite(avatarSprite);
+                if (avatarSprite == null)
+                {
+                    _avatarsManager.LoadAvatarForUid(friendData.Uid);
+                }
+            }
+            else
+            {
+                itemView.SetBgImageColor(_colorsHolder.BottomPanelFriendsTabAddButtonColor);
+                itemView.SetTopText(_loc.GetLocalization(LocalizationKeys.CommonInvite));
+                itemView.SetBottomButtonEnabled(false);
+                itemView.SetMainHintEnabled(true);
+                itemView.SetMainHintText(_loc.GetLocalization(LocalizationKeys.HintBottomPanelInviteFriends));
+                itemView.SetMainIconImageSprite(_spritesProvider.GetBigPlusSignIcon());
+                itemView.SetStatusIconImageSprite(null);
+            }
+        }
+
+        protected override void HandleClick(BottomPanelFriendTabItemViewModel viewModel)
+        {
+            if (viewModel.HasFriendData)
+            {
+                _dispatcher.UIBottomPanelFriendClicked(viewModel.FriendData);
+            }
+            else
+            {
+                _dispatcher.UIBottomPanelInviteFriendsClicked();
+            }
+        }
+
+        private void OnFriendsDataSet()
+        {
+            RefreshScrollContent();
         }
     }
 
-    protected override void HandleClick(BottomPanelFriendTabItemViewModel viewModel)
+    public class BottomPanelFriendTabItemViewModel
     {
-        if (viewModel.HasFriendData)
+        public readonly FriendData FriendData;
+
+        public BottomPanelFriendTabItemViewModel(FriendData friendData = null)
         {
-            _dispatcher.UIBottomPanelFriendClicked(viewModel.FriendData);
+            FriendData = friendData;
         }
-        else
-        {
-            _dispatcher.UIBottomPanelInviteFriendsClicked();
-        }
+
+        public bool HasFriendData => FriendData != null;
     }
-
-    private void OnFriendsDataSet()
-    {
-        RefreshScrollContent();
-    }
-}
-
-public class BottomPanelFriendTabItemViewModel
-{
-    public readonly FriendData FriendData;
-
-    public BottomPanelFriendTabItemViewModel(FriendData friendData = null)
-    {
-        FriendData = friendData;
-    }
-
-    public bool HasFriendData => FriendData != null;
 }

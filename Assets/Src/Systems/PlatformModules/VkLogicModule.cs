@@ -2,6 +2,11 @@ using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using Src.Commands;
 using Src.Commands.JsHandle;
+using Src.Common;
+using Src.Managers;
+using Src.Model;
+using Src.Model.Configs;
+using Src.Model.Popups;
 using UnityEngine;
 
 namespace Src.Systems.PlatformModules

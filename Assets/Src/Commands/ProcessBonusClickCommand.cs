@@ -1,27 +1,28 @@
-public struct ProcessBonusClickCommand
+using Src.Common;
+using Src.Managers;
+using Src.Model;
+using Src.Model.Popups;
+
+namespace Src.Commands
 {
-    public void Execute()
+    public struct ProcessBonusClickCommand
     {
-        var playerModel = PlayerModelHolder.Instance.UserModel;
-        var gameStateModel = GameStateModel.Instance;
-        var serverTime = gameStateModel.ServerTime;
-        var lastBonusTakeTime = playerModel.BonusState.LastBonusTakeTimestamp;
-        var analyticsManager = AnalyticsManager.Instance;
-
-        var isCompensation = playerModel.BonusState.IsOldGameBonusProcessed == false;
-        if (isCompensation)
+        public void Execute()
         {
-            gameStateModel.ShowPopup(new OldGameCompensationPopupViewModel());
+            var playerModel = PlayerModelHolder.Instance.UserModel;
+            var gameStateModel = GameStateModel.Instance;
+            var serverTime = gameStateModel.ServerTime;
+            var lastBonusTakeTime = playerModel.BonusState.LastBonusTakeTimestamp;
+            var analyticsManager = AnalyticsManager.Instance;
 
-            analyticsManager.SendCustom(AnalyticsManager.EventNameOldGameCompensationClick);
-        }
-        else if (DateTimeHelper.IsSameDays(serverTime, lastBonusTakeTime) == false)
-        {
-            var bonusConfig = GameConfigManager.Instance.DailyBonusConfig;
-            var viewModel = new DailyBonusPopupViewModel(playerModel.BonusState, bonusConfig, serverTime);
-            gameStateModel.ShowPopup(viewModel);
+            if (DateTimeHelper.IsSameDays(serverTime, lastBonusTakeTime) == false)
+            {
+                var bonusConfig = GameConfigManager.Instance.DailyBonusConfig;
+                var viewModel = new DailyBonusPopupViewModel(playerModel.BonusState, bonusConfig, serverTime);
+                gameStateModel.ShowPopup(viewModel);
 
-            analyticsManager.SendCustom(AnalyticsManager.EventNameDailyBonusClick, ("day_num", viewModel.CurrentBonusDay));
+                analyticsManager.SendCustom(AnalyticsManager.EventNameDailyBonusClick, ("day_num", viewModel.CurrentBonusDay));
+            }
         }
     }
 }

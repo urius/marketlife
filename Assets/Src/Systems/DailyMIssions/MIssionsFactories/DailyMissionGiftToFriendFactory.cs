@@ -1,35 +1,41 @@
+using Src.Model;
+using Src.Model.Missions;
+using Src.Systems.DailyMIssions.Processors;
 using UnityEngine;
 
-public class DailyMissionGiftToFriendFactory : DailyMissionFactoryBase<DailyMissionGiftToFriendProcessor>
+namespace Src.Systems.DailyMIssions.MIssionsFactories
 {
-    protected override string Key => MissionKeys.GiftToFriend;
-
-    public override bool CanAdd()
+    public class DailyMissionGiftToFriendFactory : DailyMissionFactoryBase<DailyMissionGiftToFriendProcessor>
     {
-        return base.CanAdd()
-            && ExtraCanAddCondition();
-    }
+        protected override string Key => MissionKeys.GiftToFriend;
 
-    public override DailyMissionModel CreateModel(float complexityMultiplier)
-    {
-        var friendsDataHolder = FriendsDataHolder.Instance;
-        var activeFriendsCount = friendsDataHolder.InGameActiveFriendsCount;
-        if (activeFriendsCount > 0)
+        public override bool CanAdd()
         {
-            var targetFriendsCount = (int)Mathf.Max(1, Mathf.Lerp(1, activeFriendsCount, complexityMultiplier));
-            var reward = ChooseReward(complexityMultiplier);
-            return new DailyMissionModel(Key, 0, targetFriendsCount, 0, reward);
+            return base.CanAdd()
+                   && ExtraCanAddCondition();
         }
-        else
-        {
-            return null;
-        }
-    }
 
-    private bool ExtraCanAddCondition()
-    {
-        var friendsDataHolder = FriendsDataHolder.Instance;
-        var activeFriendsCount = friendsDataHolder.InGameActiveFriendsCount;
-        return activeFriendsCount > 0;
+        public override DailyMissionModel CreateModel(float complexityMultiplier)
+        {
+            var friendsDataHolder = FriendsDataHolder.Instance;
+            var activeFriendsCount = friendsDataHolder.InGameActiveFriendsCount;
+            if (activeFriendsCount > 0)
+            {
+                var targetFriendsCount = (int)Mathf.Max(1, Mathf.Lerp(1, activeFriendsCount, complexityMultiplier));
+                var reward = ChooseReward(complexityMultiplier);
+                return new DailyMissionModel(Key, 0, targetFriendsCount, 0, reward);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private bool ExtraCanAddCondition()
+        {
+            var friendsDataHolder = FriendsDataHolder.Instance;
+            var activeFriendsCount = friendsDataHolder.InGameActiveFriendsCount;
+            return activeFriendsCount > 0;
+        }
     }
 }

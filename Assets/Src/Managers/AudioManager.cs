@@ -140,8 +140,14 @@ namespace Src.Managers
         public async UniTask PlayMusicWithFade(CancellationToken stopToken, AudioClip clip, float fadeOutDuration = 0.5f, float fadeInDuration = 0.5f)
         {
             await FadeOutAndStopMusicAsync(stopToken, fadeOutDuration);
+            
             if (stopToken.IsCancellationRequested) return;
+            
             await FadeInAndPlayMusicAsync(stopToken, clip, fadeInDuration);
+            
+            if (stopToken.IsCancellationRequested) return;
+            
+            UpdateVolumes();
         }
 
         private void Activate()
@@ -152,7 +158,7 @@ namespace Src.Managers
 
         private float GetMusicVolume()
         {
-            return _settingsModel.IsAudioMuted || _settingsModel.IsMusicMuted ? 0 : 1;
+            return (_settingsModel.IsAudioMuted || _settingsModel.IsMusicMuted) ? 0 : 1;
         }
 
         private void OnAudioMutedStateChanged()

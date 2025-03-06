@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Runtime.InteropServices;
 using AOT;
 using Cysharp.Threading.Tasks;
@@ -23,8 +22,19 @@ namespace Src.Common
         public static LanguageType CurrentLanguage => MirraSDK.Language.Current;
         public static bool IsRussianLanguage => CurrentLanguage == LanguageType.Russian;
         public static bool IsEnglishLanguage => CurrentLanguage == LanguageType.English;
-        
-        
+
+        public static float AudioVolume
+        {
+            get => MirraSDK.Audio.Volume;
+            set => MirraSDK.Audio.Volume = value;
+        }
+
+        public static bool IsAudioPaused
+        {
+            get => MirraSDK.Audio.Pause;
+            set => MirraSDK.Audio.Pause = value;
+        }
+
         [DllImport("__Internal")]
         private static extern void GetYGPlayerId(Action<string> callback);
 

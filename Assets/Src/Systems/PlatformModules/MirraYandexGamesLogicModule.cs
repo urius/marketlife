@@ -15,6 +15,8 @@ namespace Src.Systems.PlatformModules
         private readonly PlayerModelHolder _playerModelHolder = PlayerModelHolder.Instance;
         private readonly Dispatcher _dispatcher = Dispatcher.Instance;
 
+        private UserSettingsModel UserSettingsModel => _playerModelHolder.UserModel.UserSettingsModel;
+        
         public override void Start()
         {
             StartInternal().Forget();
@@ -28,6 +30,15 @@ namespace Src.Systems.PlatformModules
             _playerModelHolder.SetInitialData(playerId, SocialType.YG, isBuyInBankAllowed: true);
 
             Subscribe();
+
+            await _playerModelHolder.SetUserModelTask;
+
+            if (MirraSdkWrapper.IsAudioPaused)
+            {
+                UserSettingsModel.SetAudioMutedState(true);
+            }
+            
+            SubscribeAfterPlayerModelLoaded();
         }
 
         private void Subscribe()
@@ -36,6 +47,16 @@ namespace Src.Systems.PlatformModules
             _dispatcher.UITopPanelRequestOpenLeaderboardsClicked += OnUITopPanelRequestOpenLeaderboardsClicked;
             _dispatcher.UIBankItemClicked += OnUIBankItemClicked;
             _dispatcher.RequestShowAdvert += OnRequestShowAdvert;
+        }
+
+        private void SubscribeAfterPlayerModelLoaded()
+        {
+            UserSettingsModel.AudioMutedStateChanged += OnAudioMutedStateChanged;
+        }
+
+        private void OnAudioMutedStateChanged()
+        {
+            MirraSdkWrapper.IsAudioPaused = UserSettingsModel.IsAudioMuted;
         }
 
         private void OnUIBankItemClicked(BankConfigItem itemConfig)

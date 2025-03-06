@@ -13,9 +13,9 @@ namespace Src.Model
 {
     public class UserModel
     {
-        public Action<int> TutorialStepPassed = delegate { };
-        public Action BonusStateUpdated = delegate { };
-        public Action SettingsUpdated = delegate { };
+        public event Action<int> TutorialStepPassed = delegate { };
+        public event Action BonusStateUpdated = delegate { };
+        public event Action SettingsUpdated = delegate { };
 
         public readonly string Uid;
         public readonly UserProgressModel ProgressModel;

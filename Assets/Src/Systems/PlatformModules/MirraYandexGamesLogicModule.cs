@@ -1,8 +1,10 @@
 using Cysharp.Threading.Tasks;
+using Src.Commands;
 using Src.Commands.JsHandle;
 using Src.Common;
 using Src.Managers;
 using Src.Model;
+using Src.Model.Configs;
 using Src.Model.Popups;
 
 namespace Src.Systems.PlatformModules
@@ -23,7 +25,7 @@ namespace Src.Systems.PlatformModules
             var playerId = await MirraSdkWrapper.GetPlayerId();
             
             Urls.UpdateBasePathPostfix("/marketYG");
-            _playerModelHolder.SetInitialData(playerId, SocialType.YG);
+            _playerModelHolder.SetInitialData(playerId, SocialType.YG, isBuyInBankAllowed: true);
 
             Subscribe();
         }
@@ -32,7 +34,23 @@ namespace Src.Systems.PlatformModules
         {
             _dispatcher.SaveCompleted += OnSaveCompleted;
             _dispatcher.UITopPanelRequestOpenLeaderboardsClicked += OnUITopPanelRequestOpenLeaderboardsClicked;
+            _dispatcher.UIBankItemClicked += OnUIBankItemClicked;
             _dispatcher.RequestShowAdvert += OnRequestShowAdvert;
+        }
+
+        private void OnUIBankItemClicked(BankConfigItem itemConfig)
+        {
+            ProcessBuyBankItem(itemConfig).Forget();
+            
+        }
+
+        private async UniTaskVoid ProcessBuyBankItem(BankConfigItem itemConfig)
+        {
+            _gameStateModel.ChargedBankItem = itemConfig;
+
+            var buyResult = await MirraSdkWrapper.Purchase(itemConfig.Id);
+            
+            new ProcessBuyChargedBankItemResultCommand().Execute(buyResult);
         }
 
         private void OnSaveCompleted(bool result, SaveField saveField)

@@ -7,19 +7,20 @@ namespace Src.Model.Configs
     public class BankConfig
     {
         public static BankConfig Instance => _instance.Value;
-        private static Lazy<BankConfig> _instance = new Lazy<BankConfig>();
+        
+        private static readonly Lazy<BankConfig> _instance = new();
 
         public event Action ItemsUpdated = delegate { };
 
-        public readonly List<BankConfigItem> GoldItems = new List<BankConfigItem>(6);
-        public readonly List<BankConfigItem> CashItems = new List<BankConfigItem>(6);
+        public readonly List<BankConfigItem> GoldItems = new(6);
+        public readonly List<BankConfigItem> CashItems = new(6);
 
-        public void SetItems(IEnumerable<BankConfigItem> items)
+        public void SetItems(BankConfigItem[] bankConfigItems)
         {
             GoldItems.Clear();
-            GoldItems.AddRange(items.Where(i => i.IsGold));
+            GoldItems.AddRange(bankConfigItems.Where(i => i.IsGold));
             CashItems.Clear();
-            CashItems.AddRange(items.Where(i => !i.IsGold));
+            CashItems.AddRange(bankConfigItems.Where(i => !i.IsGold));
             ItemsUpdated();
         }
     }
@@ -31,5 +32,6 @@ namespace Src.Model.Configs
         public int Value;
         public int Price;
         public int ExtraPercent;
+        public string LocalizedCurrencyName;
     }
 }

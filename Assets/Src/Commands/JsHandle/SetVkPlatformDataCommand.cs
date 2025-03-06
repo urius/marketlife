@@ -10,8 +10,10 @@ namespace Src.Commands.JsHandle
             var playerModelHolder = PlayerModelHolder.Instance;
 
             var dataDto = JsonConvert.DeserializeObject<JsVkPlatfomDataCommandDto>(dataStr);
-            playerModelHolder.SetInitialData(dataDto.data.viewer_id, SocialType.VK);
-            playerModelHolder.SetBuyInBankAllowed(dataDto.data.is_ios_direct == false);
+            playerModelHolder.SetInitialData(
+                dataDto.data.viewer_id,
+                SocialType.VK,
+                isBuyInBankAllowed: dataDto.data.is_ios_direct == false);
         }
     }
 

@@ -109,6 +109,7 @@ namespace Src.View.UI.Loading
                 LoadGamePhase.LoadConfigs => "load_configs",
                 LoadGamePhase.LoadAssets => "load_assets",
                 LoadGamePhase.CreatePlayerModel => "create_player",
+                LoadGamePhase.CheckUnconsumedProducts => "check_unconsumed_products",
                 _ => "loading",
             };
             _loadPanelView.SetStatusText(_loc.GetBuiltinLocalization(key));

@@ -193,13 +193,21 @@ namespace Src.View.UI.Popups.Bank_Popup
         {
             UpdateBaseItem(itemView, viewModel);
             itemView.SetAvailable(viewModel.IsAvailable);
-            itemView.SetPriceText(FormattingHelper.ToCommaSeparatedNumber(viewModel.Price) + $" {_loc.GetLocalization($"{LocalizationKeys.CommonPayCurrencyNamePlural}{PluralsHelper.GetPlural(viewModel.Price)}")}");
+            var currencyName = GetCurrencyName(viewModel);
+            itemView.SetPriceText($"{FormattingHelper.ToCommaSeparatedNumber(viewModel.Price)} {currencyName}");
             itemView.SetExtraPercentText(string.Empty);
 
             if (viewModel.ExtraPercent > 0)
             {
                 itemView.SetExtraPercentText($"(+{viewModel.ExtraPercent}%)");
             }
+        }
+
+        private string GetCurrencyName(BankBuyableItemViewModel viewModel)
+        {
+            return viewModel.HaveLocalizedCurrencyName
+                ? viewModel.LocalizedCurrencyName
+                : $"{_loc.GetLocalization($"{LocalizationKeys.CommonPayCurrencyNamePlural}{PluralsHelper.GetPlural(viewModel.Price)}")}";
         }
 
         private void UpdateBaseItem(UIBankPopupItemViewBase itemView, IBankItemViewModel viewModel)

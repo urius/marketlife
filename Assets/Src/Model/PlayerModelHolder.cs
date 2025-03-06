@@ -22,15 +22,12 @@ namespace Src.Model
         public UniTask SetUidTask => _setUidTcs.Task;
         public UniTask SetUserModelTask => _setUserModelTcs.Task;
 
-        public void SetBuyInBankAllowed(bool isAllowed)
-        {
-            IsBuyInBankAllowed = isAllowed;
-        }
-
-        public void SetInitialData(string userUid, SocialType socialType)
+        public void SetInitialData(string userUid, SocialType socialType, bool isBuyInBankAllowed)
         {
             SocialType = socialType;
+            IsBuyInBankAllowed = isBuyInBankAllowed;
             Uid = userUid;
+            
             _setUidTcs.TrySetResult();
         }
 

@@ -1,10 +1,6 @@
-using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
-using Newtonsoft.Json;
 using Src.Common;
-using Src.Common_Utils;
-using Src.Model;
 using Src.Model.Configs;
 
 namespace Src.Commands.LoadSave
@@ -13,33 +9,36 @@ namespace Src.Commands.LoadSave
     {
         public async UniTask<bool> ExecuteAsync()
         {
-            var playerModelHolder = PlayerModelHolder.Instance;
-            var getBankURL = Urls.Instance.GetBankDataURL(playerModelHolder.SocialType);
             var bankConfig = BankConfig.Instance;
-
-            var getConfigOperation = await new WebRequestsSender().GetAsync(URLHelper.AddAntiCachePostfix(getBankURL));
-            if (getConfigOperation.IsSuccess)
+            
+            var loadedItems = await LoadBankData();
+            
+            if (loadedItems.Any())
             {
-                var bankConfigDto = JsonConvert.DeserializeObject<Dictionary<string, BankItemValueDto>>(getConfigOperation.Result);
-                var items = ConvertToBankItems(bankConfigDto);
+                var items = SetItemsExtraPercentValue(loadedItems);
+                
                 bankConfig.SetItems(items);
+                
+                return true;
             }
 
-            return getConfigOperation.IsSuccess;
+            return false;
         }
 
-        private List<BankConfigItem> ConvertToBankItems(Dictionary<string, BankItemValueDto> bankConfigDto)
+        private static UniTask<BankConfigItem[]> LoadBankData()
         {
-            var result = new List<BankConfigItem>(bankConfigDto.Count);
-            foreach (var kvp in bankConfigDto)
-            {
-                var item = ConvertItem(kvp.Key, kvp.Value);
-                result.Add(item);
-            }
+            var loadTask = MirraSdkWrapper.IsMirraSdkUsed
+                ? new LoadMirraPlatformBankConfigCommand().ExecuteAsync()
+                : new LoadInternalBankConfigCommand().ExecuteAsync();
+            
+            return loadTask;
+        }
 
-            var minGoldItem = result.Where(i => i.IsGold).First();
-            var minCashItem = result.Where(i => !i.IsGold).First();
-            foreach (var item in result)
+        private static BankConfigItem[] SetItemsExtraPercentValue(BankConfigItem[] bankConfigItems)
+        {
+            var minGoldItem = bankConfigItems.First(i => i.IsGold);
+            var minCashItem = bankConfigItems.First(i => !i.IsGold);
+            foreach (var item in bankConfigItems)
             {
                 if (item.IsGold)
                 {
@@ -51,37 +50,21 @@ namespace Src.Commands.LoadSave
                 }
             }
 
-            foreach (var item in result)
+            foreach (var item in bankConfigItems)
             {
                 item.ExtraPercent = CalculateExtraPercent(item, item.IsGold ? minGoldItem : minCashItem);
             }
 
-            return result;
+            return bankConfigItems;
         }
 
-        private int CalculateExtraPercent(BankConfigItem item, BankConfigItem minItem)
+        private static int CalculateExtraPercent(BankConfigItem item, BankConfigItem minItem)
         {
             var multiplier = (float)item.Price / minItem.Price;
             var calculatedValue = multiplier * minItem.Value;
             var extraPercent = (int)(100 * (item.Value - calculatedValue) / calculatedValue);
-            if (extraPercent > 0)
-            {
-                return extraPercent;
-            }
-            else
-            {
-                return 0;
-            }
-        }
-
-        private BankConfigItem ConvertItem(string key, BankItemValueDto value)
-        {
-            var splitted = key.Split('_');
-            var isGold = splitted[0].IndexOf('g') >= 0;
-            var amount = int.Parse(splitted[1]);
-            var price = value.price;
-
-            return new BankConfigItem { Id = key, IsGold = isGold, Value = amount, Price = price };
+            
+            return extraPercent > 0 ? extraPercent : 0;
         }
     }
 

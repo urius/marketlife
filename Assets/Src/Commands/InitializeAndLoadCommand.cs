@@ -74,6 +74,7 @@ namespace Src.Commands
                         (LoadGamePhase.LoadConfigs, new LoadConfigsCommand()),
                         (LoadGamePhase.LoadAssets, new LoadAssetsCommand()),
                         (LoadGamePhase.CreatePlayerModel, new CreatePlayerModelCommand()),
+                        (LoadGamePhase.CheckUnconsumedProducts, new CheckUnconsumedProductsCommand()),
                     };
             }
         }

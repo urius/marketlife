@@ -1,5 +1,4 @@
 using Newtonsoft.Json;
-using Src.Model;
 
 namespace Src.Commands.JsHandle
 {
@@ -7,32 +6,9 @@ namespace Src.Commands.JsHandle
     {
         public void Execute(string message)
         {
-            var gameStateModel = GameStateModel.Instance;
-            var playerModelHolder = PlayerModelHolder.Instance;
             var deserialized = JsonConvert.DeserializeObject<BuyVkMoneyResultDto>(message);
 
-            if (deserialized.data.is_success)
-            {
-                if (gameStateModel.ChargedBankItem != null)
-                {
-                    var bankItemConfig = gameStateModel.ChargedBankItem;
-                    if (bankItemConfig.IsGold)
-                    {
-                        playerModelHolder.UserModel.AddGold(bankItemConfig.Value);
-                    }
-                    else
-                    {
-                        playerModelHolder.UserModel.AddCash(bankItemConfig.Value);
-                    }
-                }
-                gameStateModel.RemoveCurrentPopupIfNeeded();
-            }
-            else if (deserialized.data.is_user_cancelled == false)
-            {
-                //failed to buy
-            }
-
-            gameStateModel.ChargedBankItem = null;
+            new ProcessBuyChargedBankItemResultCommand().Execute(deserialized.data.is_success);
         }
     }
 

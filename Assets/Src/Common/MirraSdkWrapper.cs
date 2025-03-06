@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using AOT;
 using Cysharp.Threading.Tasks;
@@ -74,10 +75,85 @@ namespace Src.Common
                 {
                     tcs.TrySetResult(false);
                 },
-                rewardTag: "cash"
+                rewardTag: "dynamic"
             );
             
             return tcs.Task;
+        }
+
+        public static UniTask<BankProductData[]> FetchProducts()
+        {
+            var tcs = new UniTaskCompletionSource<BankProductData[]>();
+
+#if UNITY_EDITOR
+            tcs.TrySetResult(new[]
+            {
+                new BankProductData("cash_500", 100, "TestCurrency"),
+                new BankProductData("gold_100", 500, "TestCurrencyGold"),
+            });
+#else
+            MirraSDK.Payments.Fetch(d =>
+            {
+                if (d.Products != null)
+                {
+                    var result = d.Products
+                        .Select(p => new BankProductData(p.Tag, p.PriceInteger, p.Currency))
+                        .ToArray();
+                    
+                    tcs.TrySetResult(result);
+                }
+
+                tcs.TrySetResult(Array.Empty<BankProductData>());
+            });
+#endif
+            return tcs.Task;
+        }
+
+        public static UniTask<bool> Purchase(string productTag)
+        {
+            var tcs = new UniTaskCompletionSource<bool>();
+
+            MirraSDK.Payments.Purchase(productTag,
+                onSuccess: () =>
+                {
+                    tcs.TrySetResult(true);
+                },
+                onError: () =>
+                {
+                    Log($"Purchase failed: {productTag}");
+                    tcs.TrySetResult(false);
+                });
+            
+            return tcs.Task;
+        }
+
+        public static void Consume(string productTag)
+        {
+            MirraSDK.Payments.Fetch(d =>
+            {
+                d.ConsumeProduct(productTag, () =>
+                {
+                    Log($"Consume: Consumed product {productTag}");
+                });
+            });
+        }
+
+        public static void FetchAndConsume(Action<string> consumeAction)
+        {
+            MirraSDK.Payments.Fetch(d =>
+            {
+                if (d.Products == null) return;
+                
+                foreach (var productData in d.Products)
+                {
+                    var tag = productData.Tag;
+                    d.ConsumeProduct(productData.Tag, () =>
+                    {
+                        Log($"FetchAndConsume: Consumed product {tag}");
+                        consumeAction?.Invoke(tag);
+                    });
+                }
+            });
         }
 
         public static UniTask<AssetBundle> LoadAssetBundle(string bundleTag, string bundleUrl)
@@ -124,6 +200,20 @@ namespace Src.Common
         private static void GetYGPlayerIdCallback(string playerId)
         {
             _getPlayerIdTcs.TrySetResult(playerId);
+        }
+    }
+
+    public struct BankProductData
+    {
+        public string ProductId;
+        public int Price;
+        public string CurrencyNameLocalized;
+
+        public BankProductData(string id, int price, string currencyNameLocalized)
+        {
+            ProductId = id;
+            Price = price;
+            CurrencyNameLocalized = currencyNameLocalized;
         }
     }
 }

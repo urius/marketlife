@@ -161,7 +161,7 @@ namespace Src.Systems.PlatformModules
             _jsBridge.SendCommandToJs("PostOfflineRevenue", payload);
         }
         
-#region private dtos
+#region PRIVATE_DTOS
         
         private struct PostNewLevelJsPayload
         {

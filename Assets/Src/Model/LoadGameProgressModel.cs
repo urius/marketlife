@@ -62,5 +62,6 @@ namespace Src.Model
         LoadConfigs,
         LoadAssets,
         CreatePlayerModel,
+        CheckUnconsumedProducts,
     }
 }

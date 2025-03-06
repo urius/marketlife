@@ -175,6 +175,8 @@ namespace Src.Model.Popups
         public BankItemRetrieveMethodType RetrieveMethodType => BankItemRetrieveMethodType.RealBuy;
         bool IBankItemViewModel.IsGold => _bankConfigItem.IsGold;
         int IBankItemViewModel.Value => _bankConfigItem.Value;
+        public string LocalizedCurrencyName => _bankConfigItem.LocalizedCurrencyName;
+        public bool HaveLocalizedCurrencyName => string.IsNullOrEmpty(_bankConfigItem.LocalizedCurrencyName) == false;
 
         public BankConfigItem GetBankconfigItem()
         {

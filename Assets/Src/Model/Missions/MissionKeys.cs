@@ -17,5 +17,10 @@ namespace Src.Model.Missions
         public const string ExpandShop = "expand_shop";
         public const string UpgradeWarehouseVolume = "upgrade_wh_volume";
         public const string AddWarehouseCells = "add_wh_cells";
+        
+        public static bool IsFriendsRelatedMission(string key)
+        {
+            return key is GiftToFriend or AddFriends or VisitFriends;
+        } 
     }
 }

@@ -8,11 +8,7 @@ namespace Src.Model.Missions
         public event Action<DailyMissionModel> MissionAdded = delegate { };
         public event Action<DailyMissionModel> MissionRemoved = delegate { };
 
-        private readonly List<DailyMissionModel> _missionsList = new List<DailyMissionModel>();
-
-        public DailyMissionsModel()
-        {
-        }
+        private readonly List<DailyMissionModel> _missionsList = new();
 
         public IReadOnlyList<DailyMissionModel> MissionsList => _missionsList;
 

@@ -1,5 +1,5 @@
 using Src.Systems;
-using Src.Systems.DailyMIssions;
+using Src.Systems.DailyMission;
 
 namespace Src.Commands
 {

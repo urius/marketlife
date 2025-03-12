@@ -1,0 +1,23 @@
+ManifestFileVersion: 0
+CRC: 3892364378
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 794f369111e305594ffbcf95ad9dd07d
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 9a2ca7bdbd1871f7131daf57de908e0c
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 794f369111e305594ffbcf95ad9dd07d
+HashAppended: 0
+ClassTypes:
+- Class: 83
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/External Resources/Audio/Music/main_theme_2.mp3
+- Assets/External Resources/Audio/Music/build_theme_1.mp3
+- Assets/External Resources/Audio/Music/build_theme_2.mp3
+- Assets/External Resources/Audio/Music/main_theme_1.mp3
+Dependencies: []

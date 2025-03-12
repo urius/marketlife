@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 1180663153
+CRC: 2688942576
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 22ab62ad7655238633bdee76c5abd745
+    Hash: 6d09c338f5c3240b631b85f6ec57e3d6
   TypeTreeHash:
     serializedVersion: 2
     Hash: a65e260057d92f2174527e6ea19c772c
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 22ab62ad7655238633bdee76c5abd745
+    Hash: 6d09c338f5c3240b631b85f6ec57e3d6
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -34,152 +34,152 @@ ClassTypes:
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
-- Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_long_green.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_small_red.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_long_blue.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/unwashes_icon_2.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/icon_giftbox_red.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/Icon_Video.png
-- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/Icon_next1.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Water_1.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Cream_1.png
-- Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Windows/Window1.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/icon_giftbox_blue.png
-- Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Floors/Floor4.png
-- Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall4.png
-- Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Windows/Window2.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/icon_music_off.png
-- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/sign_paint_wall.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Juice_2.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/sign_rotate_right.png
-- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/Icon_Role.png
-- Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Floors/Floor2.png
-- Assets/External Resources/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_2.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/icon_giftbox_yellow.png
-- Assets/External Resources/InterfaceGraphicsBundle/Popups/popup_content_inner.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_long_orange.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/icon_Checklist.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/sign_cross.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/icon_star_05.png
-- Assets/External Resources/InterfaceGraphicsBundle/TopPanel/skin_add_money_button.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_long_crimson.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/icon_crystal.png
-- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/sign_paint_floor.png
-- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/icon_action_add_product.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Fanta.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/ToothBrushes_1.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/ToothPaste.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/MilkBottles.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Banana.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Peppers_1.png
-- Assets/External Resources/InterfaceGraphicsBundle/TopPanel/top_bar_bg.png
-- Assets/External Resources/InterfaceGraphicsBundle/Popups/UpgradesPopup/icon_personal_2.png
-- Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall5.png
-- Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Doors/Door2.png
-- Assets/External Resources/InterfaceGraphicsBundle/Popups/content_skin_1.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_small_green.png
-- Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall1.png
-- Assets/External Resources/InterfaceGraphicsBundle/Popups/content_skin_2.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/icon_dollar.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/unwashes_icon_3.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/icon_giftbox_green.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Beer.png
-- Assets/External Resources/InterfaceGraphicsBundle/Popups/item_skin_orange.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/icon_save.png
-- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/Icon_Order.png
-- Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall3.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Orange.png
-- Assets/External Resources/InterfaceGraphicsBundle/TopPanel/skin_top_stribe_red.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/button_3_long_crimson_1.png
-- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/bottom_panel_bg_friend_shop_mode.png
-- Assets/External Resources/InterfaceGraphicsBundle/TopPanel/skin_top_stribe_green.png
-- Assets/External Resources/InterfaceGraphicsBundle/Popups/content_item_skin_1.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/sign_rotate_left.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Sausage_1.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/Icon_ads.png
-- Assets/External Resources/InterfaceGraphicsBundle/Popups/UpgradesPopup/sign_upgrade_wh_slot.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/white_circle_200.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Candy_1.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/sign_4arrows.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/Icon_Up3.png
-- Assets/External Resources/InterfaceGraphicsBundle/Popups/UpgradesPopup/sign_expand_shop_y.png
-- Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall6.png
-- Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall2.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/square_88_white.png
-- Assets/External Resources/InterfaceGraphicsBundle/Popups/UpgradesPopup/icon_personal_1.png
-- Assets/External Resources/InterfaceGraphicsBundle/Popups/UpgradesPopup/sign_expand_shop_x.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/item_skin_1.png
-- Assets/External Resources/InterfaceGraphicsBundle/TopPanel/skin_top_stribe_yellow.png
-- Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Floors/Floor1.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/hint_arrow_up.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/ICON_Music2.png
-- Assets/External Resources/InterfaceGraphicsBundle/InterfaceGraphicsAtlas.spriteatlas
-- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/Icon_Play1.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Cake.png
-- Assets/External Resources/InterfaceGraphicsBundle/PS_Stars.prefab
-- Assets/External Resources/InterfaceGraphicsBundle/Popups/UpgradesPopup/sign_upgrade_wh_volume.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Lipsticks_1.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Pizza_1.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Perfume_2.png
-- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/sign_doors.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_small_orange.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/bracket.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Chips.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Juice_1.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/icon_mood.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/button_3_long_crimson.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Sugar_1.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Watermelon.png
-- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/Icon_Dlassification.png
-- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/sign_windows.png
-- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/bottom_panel_bg_interior_mode_backup.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Cola.png
-- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/bottom_panel_item_skin.png
-- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/sign_cube.png
-- Assets/External Resources/InterfaceGraphicsBundle/Popups/window_caption.png
-- Assets/External Resources/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_1.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/LimeOn.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/ICON_Volume.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Bread_1.png
-- Assets/External Resources/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_4.png
-- Assets/External Resources/Materials/ParticleStar.mat
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/TV.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/Icon_Moon.png
-- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/sign_build.png
-- Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Floors/Floor3.png
-- Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall7.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Notebook.png
-- Assets/External Resources/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_5.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/Icon_Right.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/sign_friends.png
-- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/Icon_Crowd.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Hamburger.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Carrots_1.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/Icon_Down2.png
-- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/icon_cleaning.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/Icon_Back1.png
-- Assets/External Resources/InterfaceGraphicsBundle/Popups/UpgradesPopup/icon_personal_3.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Cheese_1.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/ICON_Enlarge.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/icon_star_big.png
-- Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Floors/Floor5.png
-- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/bottom_panel_bg_interior_mode.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/Icon_Tips4.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/button_1_small_blue.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/price_label.png
-- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/bottom_panel_bg_simulation_mode.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/ICON_Mute.png
-- Assets/External Resources/InterfaceGraphicsBundle/BottomPanel/icon_grab.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Eggs_1.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/ICON_Narrow.png
-- Assets/External Resources/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_3.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Sushi.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/unwashes_icon_1.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/hint_skin.png
-- Assets/External Resources/InterfaceGraphicsBundle/TopPanel/skin_top_stribe_blue.png
-- Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Doors/Door1.png
-- Assets/External Resources/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall8.png
-- Assets/External Resources/InterfaceGraphicsBundle/ProductIcons/Perfumes_1.png
-- Assets/External Resources/InterfaceGraphicsBundle/Common/sign_plus_big.png
-- Assets/External Resources/InterfaceGraphicsBundle/TopPanel/skin_top_rating_button.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/button_1_long_green.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/button_1_small_red.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/button_1_long_blue.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/unwashes_icon_2.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/icon_giftbox_red.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/Icon_Video.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/BottomPanel/Icon_next1.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ProductIcons/Water_1.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ProductIcons/Cream_1.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ShopDecorationIcons/Windows/Window1.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/icon_giftbox_blue.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ShopDecorationIcons/Floors/Floor4.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall4.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ShopDecorationIcons/Windows/Window2.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/icon_music_off.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/BottomPanel/sign_paint_wall.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ProductIcons/Juice_2.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/sign_rotate_right.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/BottomPanel/Icon_Role.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ShopDecorationIcons/Floors/Floor2.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_2.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/icon_giftbox_yellow.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Popups/popup_content_inner.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/button_1_long_orange.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/icon_Checklist.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/sign_cross.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/icon_star_05.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/TopPanel/skin_add_money_button.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/button_1_long_crimson.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/icon_crystal.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/BottomPanel/sign_paint_floor.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/BottomPanel/icon_action_add_product.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ProductIcons/Fanta.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ProductIcons/ToothBrushes_1.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ProductIcons/ToothPaste.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ProductIcons/MilkBottles.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ProductIcons/Banana.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ProductIcons/Peppers_1.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/TopPanel/top_bar_bg.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Popups/UpgradesPopup/icon_personal_2.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall5.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ShopDecorationIcons/Doors/Door2.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Popups/content_skin_1.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/button_1_small_green.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall1.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Popups/content_skin_2.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/icon_dollar.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/unwashes_icon_3.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/icon_giftbox_green.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ProductIcons/Beer.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Popups/item_skin_orange.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/icon_save.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/BottomPanel/Icon_Order.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall3.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ProductIcons/Orange.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/TopPanel/skin_top_stribe_red.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/button_3_long_crimson_1.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/BottomPanel/bottom_panel_bg_friend_shop_mode.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/TopPanel/skin_top_stribe_green.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Popups/content_item_skin_1.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/sign_rotate_left.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ProductIcons/Sausage_1.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/Icon_ads.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Popups/UpgradesPopup/sign_upgrade_wh_slot.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/white_circle_200.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ProductIcons/Candy_1.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/sign_4arrows.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/Icon_Up3.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Popups/UpgradesPopup/sign_expand_shop_y.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall6.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall2.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/square_88_white.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Popups/UpgradesPopup/icon_personal_1.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Popups/UpgradesPopup/sign_expand_shop_x.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/item_skin_1.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/TopPanel/skin_top_stribe_yellow.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ShopDecorationIcons/Floors/Floor1.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/hint_arrow_up.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/ICON_Music2.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/InterfaceGraphicsAtlas.spriteatlas
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/BottomPanel/Icon_Play1.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ProductIcons/Cake.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/PS_Stars.prefab
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Popups/UpgradesPopup/sign_upgrade_wh_volume.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ProductIcons/Lipsticks_1.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ProductIcons/Pizza_1.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ProductIcons/Perfume_2.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/BottomPanel/sign_doors.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/button_1_small_orange.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/bracket.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ProductIcons/Chips.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ProductIcons/Juice_1.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/icon_mood.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/button_3_long_crimson.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ProductIcons/Sugar_1.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ProductIcons/Watermelon.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/BottomPanel/Icon_Dlassification.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/BottomPanel/sign_windows.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/BottomPanel/bottom_panel_bg_interior_mode_backup.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ProductIcons/Cola.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/BottomPanel/bottom_panel_item_skin.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/BottomPanel/sign_cube.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Popups/window_caption.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_1.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ProductIcons/LimeOn.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/ICON_Volume.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ProductIcons/Bread_1.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_4.png
+- Assets/Resources/BuiltInAssetBundles/Materials/ParticleStar.mat
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ProductIcons/TV.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/Icon_Moon.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/BottomPanel/sign_build.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ShopDecorationIcons/Floors/Floor3.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall7.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ProductIcons/Notebook.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_5.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/Icon_Right.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/sign_friends.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/BottomPanel/Icon_Crowd.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ProductIcons/Hamburger.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ProductIcons/Carrots_1.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/Icon_Down2.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/BottomPanel/icon_cleaning.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/Icon_Back1.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Popups/UpgradesPopup/icon_personal_3.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ProductIcons/Cheese_1.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/ICON_Enlarge.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/icon_star_big.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ShopDecorationIcons/Floors/Floor5.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/BottomPanel/bottom_panel_bg_interior_mode.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/Icon_Tips4.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/button_1_small_blue.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/price_label.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/BottomPanel/bottom_panel_bg_simulation_mode.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/ICON_Mute.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/BottomPanel/icon_grab.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ProductIcons/Eggs_1.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/ICON_Narrow.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ShopObjectIcons/Shelfs/Icon_Shelf_3.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ProductIcons/Sushi.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/unwashes_icon_1.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/hint_skin.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/TopPanel/skin_top_stribe_blue.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ShopDecorationIcons/Doors/Door1.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ShopDecorationIcons/Walls/Wall8.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/ProductIcons/Perfumes_1.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/Common/sign_plus_big.png
+- Assets/Resources/BuiltInAssetBundles/InterfaceGraphicsBundle/TopPanel/skin_top_rating_button.png
 Dependencies: []

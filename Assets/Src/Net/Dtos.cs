@@ -64,7 +64,7 @@ namespace Src.Net
         public string config_postfix;
     }
 
-    public struct GetDataResponseDto
+    public struct FullUserDataDto
     {
         public string uid;
         public UserDataDto data;

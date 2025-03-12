@@ -22,7 +22,34 @@ namespace Src.Managers
     
         private Dictionary<string, string> CurrentLocalization { get; set; }
 
-        public async UniTask<bool> LoadLocalizationAsync()
+        public UniTask<bool> LoadLocalizationAsync()
+        {
+            return DisabledLogicFlags.IsServerDataDisabled ? LoadFromLocal() : LoadFromServer();
+        }
+
+        private UniTask<bool> LoadFromLocal()
+        {
+            var localizationPath = "TextAssets/localizations";
+            switch (Locale)
+            {
+                case LocaleType.Ru:
+                    localizationPath += "/localization_ru";
+                    break;
+                case LocaleType.En:
+                case LocaleType.None:
+                default:
+                    localizationPath += "/localization_en";
+                    break;
+            }
+            
+            var localizationAsset = Resources.Load<TextAsset>(localizationPath);
+            
+            CurrentLocalization = JsonConvert.DeserializeObject<Dictionary<string, string>>(localizationAsset.text);
+
+            return UniTask.FromResult(true);
+        }
+
+        private async UniTask<bool> LoadFromServer()
         {
             string localizationUrl;
             switch (Locale)

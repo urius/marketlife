@@ -1,0 +1,52 @@
+ManifestFileVersion: 0
+CRC: 83010453
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 4a2d7a4569b16e04317f032bb413c424
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 9a2ca7bdbd1871f7131daf57de908e0c
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 4a2d7a4569b16e04317f032bb413c424
+HashAppended: 0
+ClassTypes:
+- Class: 83
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Resources/BuiltInAssetBundles/Sounds/close_button_1.mp3
+- Assets/Resources/BuiltInAssetBundles/Sounds/rotate_object_1.mp3
+- Assets/Resources/BuiltInAssetBundles/Sounds/button_3.mp3
+- Assets/Resources/BuiltInAssetBundles/Sounds/delete.mp3
+- Assets/Resources/BuiltInAssetBundles/Sounds/cleaning_2.mp3
+- Assets/Resources/BuiltInAssetBundles/Sounds/cleaning_1.mp3
+- Assets/Resources/BuiltInAssetBundles/Sounds/put_product_1.mp3
+- Assets/Resources/BuiltInAssetBundles/Sounds/coin_1.mp3
+- Assets/Resources/BuiltInAssetBundles/Sounds/cashbox_2.mp3
+- Assets/Resources/BuiltInAssetBundles/Sounds/scroll_open_1.mp3
+- Assets/Resources/BuiltInAssetBundles/Sounds/new_level.mp3
+- Assets/Resources/BuiltInAssetBundles/Sounds/button_negative_2.mp3
+- Assets/Resources/BuiltInAssetBundles/Sounds/cleaning_3.mp3
+- Assets/Resources/BuiltInAssetBundles/Sounds/negative_1.mp3
+- Assets/Resources/BuiltInAssetBundles/Sounds/close_button_3.mp3
+- Assets/Resources/BuiltInAssetBundles/Sounds/new_message_1.mp3
+- Assets/Resources/BuiltInAssetBundles/Sounds/shopper_take.ogg
+- Assets/Resources/BuiltInAssetBundles/Sounds/shopper_take_1.mp3
+- Assets/Resources/BuiltInAssetBundles/Sounds/product_drops_1.mp3
+- Assets/Resources/BuiltInAssetBundles/Sounds/cashbox_1.mp3
+- Assets/Resources/BuiltInAssetBundles/Sounds/starsfall.mp3
+- Assets/Resources/BuiltInAssetBundles/Sounds/object_placement_1.mp3
+- Assets/Resources/BuiltInAssetBundles/Sounds/score.mp3
+- Assets/Resources/BuiltInAssetBundles/Sounds/click_1.mp3
+- Assets/Resources/BuiltInAssetBundles/Sounds/product_drops_2.mp3
+- Assets/Resources/BuiltInAssetBundles/Sounds/negative_2.mp3
+- Assets/Resources/BuiltInAssetBundles/Sounds/cleaning.mp3
+- Assets/Resources/BuiltInAssetBundles/Sounds/button_2.mp3
+- Assets/Resources/BuiltInAssetBundles/Sounds/button_5.mp3
+- Assets/Resources/BuiltInAssetBundles/Sounds/button_4.mp3
+- Assets/Resources/BuiltInAssetBundles/Sounds/scroll_close_1.mp3
+- Assets/Resources/BuiltInAssetBundles/Sounds/button_1.mp3
+- Assets/Resources/BuiltInAssetBundles/Sounds/take_product_1.mp3
+Dependencies: []

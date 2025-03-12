@@ -21,6 +21,29 @@ namespace Src.Commands.LoadSave
 
             UnityEngine.Debug.Log("---SaveDataCommand: " + saveFields);
 
+            if (DisabledLogicFlags.IsServerDataDisabled)
+            {
+                SaveToPlatform();
+                
+                return true;
+            }
+            else
+            {
+                return await SaveToServer(saveFields);
+            }
+        }
+
+        private void SaveToPlatform()
+        {
+            var userModel = PlayerModelHolder.Instance.UserModel;
+            var fullUserDataDto = DataExporter.Instance.ExportFull(userModel);
+            var serialized = JsonConvert.SerializeObject(fullUserDataDto);
+
+            MirraSdkWrapper.SaveString(Constants.PlayerDataKey, serialized);
+        }
+
+        private async UniTask<bool> SaveToServer(SaveField saveFields)
+        {
             var playerModel = PlayerModelHolder.Instance.UserModel;
             var url = string.Format(Urls.SaveDataURL, playerModel.Uid);
             var dataToSave = GetExportData(saveFields, playerModel);

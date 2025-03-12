@@ -26,8 +26,7 @@ namespace Src.Commands.LoadSave
 
         private void InitializeABData(string playerDataStr)
         {
-            var responseInnerStr = JsonConvert.DeserializeObject<CommonResponseDto>(playerDataStr).response;
-            var abResponseDto = JsonConvert.DeserializeObject<GetDataResponseABDto>(responseInnerStr);
+            var abResponseDto = JsonConvert.DeserializeObject<GetDataResponseABDto>(playerDataStr);
             var abDto = abResponseDto.data.ab;
 
             ABDataHolder.Instance.Setup(mainConfigPostfix: abDto.config_postfix);

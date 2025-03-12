@@ -15,7 +15,45 @@ namespace Src.Net
     public class DataExporter
     {
         public static DataExporter Instance => _instance.Value;
-        private static Lazy<DataExporter> _instance = new Lazy<DataExporter>();
+        private static Lazy<DataExporter> _instance = new();
+
+        public FullUserDataDto ExportFull(UserModel userModel)
+        {
+            var shopModel = userModel.ShopModel;
+            var lastVisitTimestamp = userModel.StatsData.LastVisitTimestamp;
+            var currentTimestamp = MirraSdkWrapper.GetCurrentTimestampSec();
+            var needToIncrementPlayDays = DateTimeHelper.IsSameDays(lastVisitTimestamp, currentTimestamp) == false;
+            var daysPlayCount = userModel.StatsData.TotalDaysPlayCount + (needToIncrementPlayDays ? 1 : 0);
+            
+            var result = new FullUserDataDto()
+            {
+                uid = userModel.Uid,
+                data = new UserDataDto()
+                {
+                    progress = ExportProgress(userModel.ProgressModel),
+                    personal = ExportPersonal(shopModel),
+                    warehouse = ExportWarehouse(shopModel),
+                    design = ExportDesign(shopModel),
+                    objects = ExportShopObjects(shopModel),
+                    unwashes = ExportUnwashes(shopModel),
+                    tutorial_steps = ExportTutorialSteps(userModel),
+                    actions_data = ExportAvailableActionsData(userModel),
+                    bonus = ExportBonus(userModel.BonusState),
+                    settings = ExportSettings(userModel.UserSettingsModel),
+                    billboard = ExportBillboardState(shopModel.BillboardModel),
+                    daily_missions = ExportDailyMissions(userModel.DailyMissionsModel),
+                },
+                external_data = new ExternalDataDto()
+                {
+                    actions = ExportExternalActions(userModel.ExternalActionsModel),
+                },
+                days_play = daysPlayCount,
+                first_visit_time = userModel.StatsData.FirstVisitTimestamp,
+                last_visit_time = currentTimestamp,
+            };
+
+            return result;
+        }
 
         public BonusStateDto ExportBonus(UserBonusState bonusState)
         {

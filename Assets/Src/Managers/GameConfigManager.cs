@@ -8,6 +8,7 @@ using Src.Common_Utils;
 using Src.Model.Common;
 using Src.Model.Configs;
 using Src.Model.Debug;
+using UnityEngine;
 using Random = System.Random;
 
 namespace Src.Managers
@@ -31,10 +32,24 @@ namespace Src.Managers
         public IMissionsConfig DailyMissionsConfig => MainConfig;
         public IAdvertConfig AdvertConfig => MainConfig;
 
-        public async UniTask<bool> LoadMainConfigAsync(string mainConfigABPostfix)
+        public UniTask<bool> LoadMainConfigAsync(string mainConfigAbPostfix)
+        {
+            return DisabledLogicFlags.IsServerDataDisabled ? LoadConfigLocal() : LoadConfigFromServer(mainConfigAbPostfix);
+        }
+
+        private UniTask<bool> LoadConfigLocal()
+        {
+            var configAsset = Resources.Load<TextAsset>("TextAssets/MainConfig");
+            var mainConfigDto = JsonConvert.DeserializeObject<MainConfigDto>(configAsset.text);
+            MainConfig = ConvertToMainConfig(mainConfigDto);
+
+            return UniTask.FromResult(true);
+        }
+
+        private async UniTask<bool> LoadConfigFromServer(string mainConfigAbPostfix)
         {
             var urlsHolder = Urls.Instance;
-            var url = string.Format(Urls.MainConfigUrlFormat, mainConfigABPostfix);
+            var url = string.Format(Urls.MainConfigUrlFormat, mainConfigAbPostfix);
 #if UNITY_EDITOR
             if (DebugDataHolder.Instance.UseTestConfigFile == true) url = urlsHolder.DebugMainConfigUrl;
 #endif

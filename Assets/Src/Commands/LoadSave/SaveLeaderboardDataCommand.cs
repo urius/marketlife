@@ -14,10 +14,11 @@ namespace Src.Commands.LoadSave
 #if UNITY_EDITOR
             if (DebugDataHolder.Instance.IsSaveDisabled == true) return;
 #endif
+            if (DisabledLogicFlags.IsServerDataDisabled) return;
+            
             var playerModel = PlayerModelHolder.Instance.UserModel;
             var friendsDataHolder = FriendsDataHolder.Instance;
             var dataExporter = DataExporter.Instance;
-            var urlsHolder = Urls.Instance;
             var url = string.Format(Urls.SaveLeaderboardDataURL, playerModel.Uid);
 
             var dataToSave = dataExporter.ExportLeaderboardPlayerData(playerModel.ProgressModel, friendsDataHolder.InGameFriendsCount);

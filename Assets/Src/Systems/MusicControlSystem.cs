@@ -49,17 +49,30 @@ namespace Src.Systems
         {
             if (musicType == MusicType.Game)
             {
-                return _playerModelHolder.UserModel.ShopModel.MoodMultiplier < 0.5 ?
-                    _audioManager.Sounds[SoundNames.MusicGameLowMood]
-                    : _audioManager.Sounds[SoundNames.MusicGameHighMood];
-            }
-            if (musicType == MusicType.Build)
-            {
-                return UnityEngine.Random.Range(0, 10) <= 5 ?
-                    _audioManager.Sounds[SoundNames.MusicBuild1]
-                    : _audioManager.Sounds[SoundNames.MusicBuild2];
+                return _playerModelHolder.UserModel.ShopModel.MoodMultiplier < 0.5
+                    ? GetAudioOrNull(SoundNames.MusicGameLowMood)
+                    : GetAudioOrNull(SoundNames.MusicGameHighMood);
             }
 
+            if (musicType == MusicType.Build)
+            {
+                return UnityEngine.Random.Range(0, 10) <= 5
+                    ? GetAudioOrNull(SoundNames.MusicBuild1)
+                    : GetAudioOrNull(SoundNames.MusicBuild2);
+            }
+
+            return null;
+        }
+
+        private AudioClip GetAudioOrNull(string name)
+        {
+            if (_audioManager.Sounds.TryGetValue(name, out var audio))
+            {
+                return audio;
+            }
+
+            Debug.LogWarning($"No audio clip found for name: {name}");
+            
             return null;
         }
 

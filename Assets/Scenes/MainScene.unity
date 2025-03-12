@@ -4725,13 +4725,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _debugUid: 48982
   _disableSave: 1
-  _disableTutorial: 1
+  _disableTutorial: 0
   _loadDebugConfigVersion: 0
   _prefabsHolder: {fileID: 11400000, guid: ef9b7d8e9f2f24fa5b28642d8858a2d4, type: 2}
   _graphicsManager: {fileID: 11400000, guid: 3c651c81f401b4f6c9adfecf35f97506, type: 2}
   _localizationManager: {fileID: 11400000, guid: 896d83f0651d245229990a6d40d7740d,
     type: 2}
   _colorsHolder: {fileID: 11400000, guid: e3f38c4c1965048dea3f80f3697ca748, type: 2}
+  _builtinAssetsHolder: {fileID: 11400000, guid: bd6225721bb4e4d68a6e0b836d90fe27,
+    type: 2}
 --- !u!114 &1026738519
 MonoBehaviour:
   m_ObjectHideFlags: 0

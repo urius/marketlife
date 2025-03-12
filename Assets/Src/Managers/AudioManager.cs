@@ -150,6 +150,14 @@ namespace Src.Managers
             UpdateVolumes();
         }
 
+        public bool IsMusicAvailable()
+        {
+            return Sounds.ContainsKey(SoundNames.MusicGameLowMood)
+                   && Sounds.ContainsKey(SoundNames.MusicGameHighMood)
+                   && Sounds.ContainsKey(SoundNames.MusicBuild1)
+                   && Sounds.ContainsKey(SoundNames.MusicBuild1);
+        }
+
         private void Activate()
         {
             _settingsModel.AudioMutedStateChanged += OnAudioMutedStateChanged;

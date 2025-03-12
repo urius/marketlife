@@ -18,27 +18,7 @@ namespace Src.Net
         public static DataImporter Instance => _instance.Value;
         private static Lazy<DataImporter> _instance = new Lazy<DataImporter>();
 
-        public UserModel ImportOld(GetDataOldResponseDto dto)
-        {
-            var designModel = ToDesignModelOld(dto.data.design);
-            var shopObjects = ToObjectsModelOld(dto.data.objects);
-            var warehouseModel = ToWarehouseModelOld(dto.data.warehouse);
-            var shopProgress = ToProgressModelOld(dto.data);
-
-            var shopModel = new ShopModel(
-                designModel,
-                shopObjects,
-                new Dictionary<Vector2Int, int>(),
-                new ShopPersonalModel(),
-                warehouseModel,
-                new ShopBillboardModel());
-
-            return new UserModel(dto.data.uid, shopProgress, shopModel, new UserStatsData(), new UserBonusState(), null,
-                new AllFriendsShopsActionsModel(Enumerable.Empty<FriendShopActionsModel>()), new UserSettingsModel(false, false),
-                new ExternalActionsModel(), new DailyMissionsModel());
-        }
-
-        public UserModel Import(GetDataResponseDto deserializedData)
+        public UserModel Import(FullUserDataDto deserializedData)
         {
             var dataDto = deserializedData.data;
             var shopModel = ToShopModel(dataDto);

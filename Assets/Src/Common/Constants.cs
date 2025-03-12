@@ -24,6 +24,7 @@ namespace Src.Common
         public const string DailyMissions = "daily_missions";    
         public const string CashAmountTextGreenColor = "#009F1F";
         public const string GoldAmountTextRedColor = "#FF6D6D";
+        public const string PlayerDataKey = "player_data";
 
         public const string LevelsMultiplier = "multiplier";    
         public const int MaxCustomersCount = 15;

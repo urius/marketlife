@@ -172,6 +172,32 @@ namespace Src.Common
             return Instance.LoadAssetBundleInternal(bundleTag, bundleUrl);
         }
 
+        public static int GetCurrentTimestampSec()
+        {
+            var currentDateTime = MirraSDK.Time.CurrentDate.ToLocalTime();
+            var timeSpan = currentDateTime - DateTime.UnixEpoch.ToLocalTime();
+            
+            return (int)timeSpan.TotalSeconds;
+        }
+
+        public static void SaveString(string keyName, string value)
+        {
+            MirraSDK.Prefs.SetString(keyName, value);
+            
+            MirraSDK.Prefs.Save();
+        }
+        
+        public static void DeleteKey(string keyName)
+        {
+            MirraSDK.Prefs.DeleteKey(keyName);
+            MirraSDK.Prefs.Save();
+        }
+
+        public static string GetString(string keyName)
+        {
+            return MirraSDK.Prefs.GetString(keyName);
+        }
+
         public static void Log(string message)
         {
             Debug.Log($"Mirra {message}");

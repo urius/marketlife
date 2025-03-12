@@ -1,7 +1,9 @@
+using System;
 using Src.Commands;
 using Src.Managers;
 using Src.Model;
 using Src.Model.Debug;
+using UnityEditor;
 using UnityEngine;
 
 namespace Src.Common
@@ -17,6 +19,7 @@ namespace Src.Common
         [SerializeField] private GraphicsManager _graphicsManager;
         [SerializeField] private LocalizationManager _localizationManager;
         [SerializeField] private ColorsHolder _colorsHolder;
+        [SerializeField] private BuiltinAssetsHolderSo _builtinAssetsHolder;
 
         private void Awake()
         {
@@ -39,6 +42,12 @@ namespace Src.Common
             DebugDataHolder.Instance.IsSaveDisabled = _disableSave;
             DebugDataHolder.Instance.UseTestConfigFile = _loadDebugConfigVersion;
             DebugDataHolder.Instance.IsTutorialDisabled = _disableTutorial;
+        }
+
+        [ContextMenu("ResetLocalData")]
+        private void ResetLocalData()
+        {
+            MirraSdkWrapper.DeleteKey(Constants.PlayerDataKey);
         }
     }
 }

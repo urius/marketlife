@@ -13,14 +13,24 @@ namespace Src.Commands.LoadSave
             var gameStateModel = GameStateModel.Instance;
             var url = Urls.GetTimeURL;
 
-            var resultOperation = await new WebRequestsSender().GetAsync(url);
-            if (resultOperation.IsSuccess)
+            if (DisabledLogicFlags.IsServerDataDisabled)
             {
-                var result = JsonConvert.DeserializeObject<GetTimeResponseDto>(resultOperation.Result);
-                gameStateModel.SetServerTime(result.response);
+                var timestampSec = MirraSdkWrapper.GetCurrentTimestampSec();
+                gameStateModel.SetServerTime(timestampSec);
+                
+                return true;
             }
+            else
+            {
+                var resultOperation = await new WebRequestsSender().GetAsync(url);
+                if (resultOperation.IsSuccess)
+                {
+                    var result = JsonConvert.DeserializeObject<GetTimeResponseDto>(resultOperation.Result);
+                    gameStateModel.SetServerTime(result.response);
+                }
 
-            return resultOperation.IsSuccess;
+                return resultOperation.IsSuccess;
+            }
         }
     }
 

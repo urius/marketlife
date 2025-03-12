@@ -13,10 +13,52 @@ namespace Src.Commands.LoadSave
     {
         public async UniTask<bool> ExecuteAsync()
         {
+            if (DisabledLogicFlags.IsServerDataDisabled)
+            {
+                LoadResourcesLocal();
+                await TryLoadMusicBundle();
+            }
+            else
+            {
+                await LoadRemoteAssetBundles();
+            }
+
+            return true;
+        }
+
+        private void LoadResourcesLocal()
+        {
+            var graphicsManager = GraphicsManager.Instance;
+            var builtinAssetsHolder = BuiltinAssetsHolderSo.Instance;
+            
+            graphicsManager.SetupAtlas(SpriteAtlasId.GameplayAtlas, builtinAssetsHolder.BuiltInGameplayAtlas, builtinAssetsHolder.BuiltInGameplayAtlasSprites);
+            graphicsManager.SetupAtlas(SpriteAtlasId.InterfaceAtlas, builtinAssetsHolder.BuiltInInterfaceAtlas, builtinAssetsHolder.BuiltInInterfaceAtlasSprites);
+            PrefabsHolder.Instance.SetupRemotePrefab(PrefabsHolder.PSStarsName, builtinAssetsHolder.PsStarsPrefab);
+            
+            AudioManager.Instance.SetSounds(builtinAssetsHolder.BuiltInSounds);
+        }
+
+        private async UniTask TryLoadMusicBundle()
+        {
+            var loadGameProgressModel = LoadGameProgressModel.Instance;
+            
+            var loadProgressProxy = new LoadPartsProgressProxy(loadGameProgressModel.SetCurrentPartLoadProgress);
+            var loadMusicBundleTask = LoadAsync(AssetBundleNames.AUDIO, version: 1, loadProgressProxy);
+            
+            var bundle = await loadMusicBundleTask;
+
+            var sounds = bundle.LoadAllAssets<AudioClip>();
+            AudioManager.Instance.SetSounds(sounds);
+            
+            loadProgressProxy.Dispose();
+        }
+
+        private async UniTask LoadRemoteAssetBundles()
+        {
             var mainConfig = GameConfigManager.Instance.MainConfig;
             var graphicsManager = GraphicsManager.Instance;
             var loadGameProgressModel = LoadGameProgressModel.Instance;
-
+            
             var loadProgressProxy = new LoadPartsProgressProxy(loadGameProgressModel.SetCurrentPartLoadProgress);
             var loadGameplayGraphicsBundleTask = LoadAsync(AssetBundleNames.GRAPHICS_GAMEPLAY, mainConfig.GameplayAtlasVersion, loadProgressProxy);
             var loadInterfaceGraphicsBundleTask = LoadAsync(AssetBundleNames.GRAPHICS_INTERFACE, mainConfig.InterfaceAtlasVersion, loadProgressProxy);
@@ -34,15 +76,13 @@ namespace Src.Commands.LoadSave
 
             var starsPSPrefab = bundle.LoadAsset<GameObject>(PrefabsHolder.PSStarsName);
             PrefabsHolder.Instance.SetupRemotePrefab(PrefabsHolder.PSStarsName, starsPSPrefab);
-
+            
             bundle = await loadAudioBundleTask;
 
             var sounds = bundle.LoadAllAssets<AudioClip>();
             AudioManager.Instance.SetSounds(sounds);
 
             loadProgressProxy.Dispose();
-
-            return true;
         }
 
         private UniTask<AssetBundle> LoadAsync(string bundleName, int version, LoadPartsProgressProxy progressProxy)

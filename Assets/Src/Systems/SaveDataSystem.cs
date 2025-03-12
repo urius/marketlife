@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Src.Commands.LoadSave;
 using Src.Common;
 using Src.Model;
@@ -20,6 +20,8 @@ namespace Src.Systems
         private readonly GameStateModel _gameStateModel = GameStateModel.Instance;
         private readonly Dispatcher _dispatcher = Dispatcher.Instance;
         private readonly UpdatesProvider _updatesProvider = UpdatesProvider.Instance;
+        
+        private readonly Queue<UserModel> _saveExternalDataQueue = new();
 
         private bool _saveProcessIsTriggered = false;
         private SaveField _saveFieldsData = SaveField.None;
@@ -30,7 +32,6 @@ namespace Src.Systems
         private int _savePlayerDataPrewarmSeconds = DefaultSavePrewarmSeconds;
         private int _saveExternalDataCooldownSeconds = 0;
         private Action _unsubscribeFromFriendActionsDelegate;
-        private Queue<UserModel> _saveExternalDataQueue = new Queue<UserModel>();
 
         public bool NeedToSavePlayerData => _saveFieldsData != SaveField.None;
         public bool NeedToSaveExternalData => _saveExternalDataQueue.Count > 0;
@@ -333,7 +334,7 @@ namespace Src.Systems
             }
         }
 
-        private async Task SaveAsync()
+        private async UniTask SaveAsync()
         {
             var saveFieldsData = _saveFieldsData;
             _saveFieldsData = SaveField.None;
@@ -341,7 +342,7 @@ namespace Src.Systems
             _dispatcher.SaveCompleted(result, saveFieldsData);
         }
 
-        private async Task SaveExternalDataAsync()
+        private async UniTask SaveExternalDataAsync()
         {
             var saveUserModel = _saveExternalDataQueue.Dequeue();
             var result = await new SaveExternalDataCommand().ExecuteAsync(saveUserModel);

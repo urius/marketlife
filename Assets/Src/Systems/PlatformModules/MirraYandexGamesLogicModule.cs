@@ -5,6 +5,7 @@ using Src.Common;
 using Src.Managers;
 using Src.Model;
 using Src.Model.Configs;
+using Src.Model.Debug;
 using Src.Model.Popups;
 
 namespace Src.Systems.PlatformModules
@@ -25,6 +26,10 @@ namespace Src.Systems.PlatformModules
         private async UniTaskVoid StartInternal()
         {
             var playerId = await MirraSdkWrapper.GetPlayerId();
+            
+#if UNITY_EDITOR
+            playerId = DebugDataHolder.Instance.DebugUid;
+#endif
             
             Urls.UpdateBasePathPostfix("/marketYG");
             _playerModelHolder.SetInitialData(playerId, SocialType.YG, isBuyInBankAllowed: true);

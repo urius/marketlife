@@ -1,7 +1,6 @@
 using Newtonsoft.Json;
 using Src.Model;
 using Src.Net;
-using UnityEngine;
 
 namespace Src.Commands.LoadSave
 {
@@ -12,26 +11,9 @@ namespace Src.Commands.LoadSave
             UserModel result = null;
             if (userDataStr != null)
             {
-                var dataImporter = DataImporter.Instance;
-                var responseDto = JsonConvert.DeserializeObject<CommonResponseDto>(userDataStr);
-                switch (responseDto.v)
-                {
-                    case 0:
-                        var deserializedDataOld = JsonConvert.DeserializeObject<GetDataOldResponseDto>(userDataStr);
-                        result = dataImporter.ImportOld(deserializedDataOld);
-                        break;
-                    case 1:
-                        if (ResponseValidator.Validate(responseDto))
-                        {
-                            var deserializedData = JsonConvert.DeserializeObject<GetDataResponseDto>(responseDto.response);
-                            result = dataImporter.Import(deserializedData);
-                        }
-                        else
-                        {
-                            Debug.Log($"{nameof(CreateUserModelCommand)}: invalid data hash");
-                        }
-                        break;
-                }
+                var deserializedData = JsonConvert.DeserializeObject<FullUserDataDto>(userDataStr);
+                
+                result = DataImporter.Instance.Import(deserializedData);
             }
 
             return result;

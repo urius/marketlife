@@ -1,4 +1,5 @@
 using Src.Common;
+using Src.Managers;
 using Src.Model;
 using Src.View.UI.Common;
 using UnityEngine;
@@ -19,12 +20,14 @@ namespace Src.View.UI.RightBottom_Panel
         private PlayerModelHolder _playerModelHolder;
         private Dispatcher _dispatcher;
         private UserModel _playerModel;
+        private AudioManager _audioManager;
 
         private void Awake()
         {
             _gameStateModel = GameStateModel.Instance;
             _playerModelHolder = PlayerModelHolder.Instance;
             _dispatcher = Dispatcher.Instance;
+            _audioManager = AudioManager.Instance;
 
             SetButtonsVisibility(false);
         }
@@ -32,7 +35,7 @@ namespace Src.View.UI.RightBottom_Panel
         private void SetButtonsVisibility(bool isVisible)
         {
             _bgImage.enabled = isVisible;
-            _muteMusicButton.gameObject.SetActive(isVisible);
+            _muteMusicButton.gameObject.SetActive(isVisible && _audioManager.IsMusicAvailable());
             _muteAudioButton.gameObject.SetActive(isVisible);
             _scaleInButton.gameObject.SetActive(isVisible);
             _scaleOutButton.gameObject.SetActive(isVisible);

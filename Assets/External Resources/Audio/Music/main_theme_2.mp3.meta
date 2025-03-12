@@ -15,7 +15,7 @@ AudioImporter:
   platformSettingOverrides:
     13:
       serializedVersion: 2
-      loadType: 2
+      loadType: 0
       sampleRateSetting: 2
       sampleRateOverride: 44100
       compressionFormat: 7
@@ -28,5 +28,5 @@ AudioImporter:
   ambisonic: 0
   3D: 1
   userData: 
-  assetBundleName: audio
+  assetBundleName: music
   assetBundleVariant: 

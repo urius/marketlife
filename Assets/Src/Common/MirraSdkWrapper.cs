@@ -197,6 +197,11 @@ namespace Src.Common
         {
             return MirraSDK.Prefs.GetString(keyName);
         }
+        
+        public static void ShareThisGame()
+        {
+            MirraSDK.Socials.ShareThisGame();
+        }
 
         public static void Log(string message)
         {

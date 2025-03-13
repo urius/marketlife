@@ -33,6 +33,8 @@ namespace Src.View.UI.Loading
         private void Start()
         {
             Activate();
+            
+            _loadPanelView.SetStatusText(_loc.GetBuiltinLocalization("loading"));
         }
 
         private void Update()

@@ -39,6 +39,8 @@ namespace Src.Managers
 
         private UniTask<bool> LoadConfigLocal()
         {
+            Debug.Log("LoadConfigLocal");
+            
             var configAsset = Resources.Load<TextAsset>("TextAssets/MainConfig");
             var mainConfigDto = JsonConvert.DeserializeObject<MainConfigDto>(configAsset.text);
             MainConfig = ConvertToMainConfig(mainConfigDto);

@@ -43,12 +43,19 @@ namespace Src.Commands.LoadSave
             var loadGameProgressModel = LoadGameProgressModel.Instance;
             
             var loadProgressProxy = new LoadPartsProgressProxy(loadGameProgressModel.SetCurrentPartLoadProgress);
-            var loadMusicBundleTask = LoadAsync(AssetBundleNames.AUDIO, version: 1, loadProgressProxy);
-            
-            var bundle = await loadMusicBundleTask;
+            var loadMusicBundleTask = LoadAsync(AssetBundleNames.MUSIC, version: 2, loadProgressProxy);
 
-            var sounds = bundle.LoadAllAssets<AudioClip>();
-            AudioManager.Instance.SetSounds(sounds);
+            try
+            {
+                var bundle = await loadMusicBundleTask;
+
+                var sounds = bundle.LoadAllAssets<AudioClip>();
+                AudioManager.Instance.SetSounds(sounds);
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("Load music bundle failed: " + e.Message);
+            }
             
             loadProgressProxy.Dispose();
         }

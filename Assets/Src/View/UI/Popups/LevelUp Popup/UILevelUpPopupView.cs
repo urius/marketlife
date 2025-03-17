@@ -18,5 +18,14 @@ namespace Src.View.UI.Popups.LevelUp_Popup
         {
             Buttons[1].interactable = interactable;
         }
+
+        public void SetShareButtonVisibility(bool isVisible)
+        {
+            Buttons[1].gameObject.SetActive(isVisible);
+
+            var rectTransform = (RectTransform)Buttons[0].transform;
+            rectTransform.anchorMin = new Vector2(isVisible ? 0.25f : 0.5f, rectTransform.anchorMin.y);
+            rectTransform.anchorMax = new Vector2(isVisible ? 0.25f : 0.5f, rectTransform.anchorMax.y);
+        }
     }
 }

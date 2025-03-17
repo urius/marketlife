@@ -197,7 +197,12 @@ namespace Src.Common
         {
             return MirraSDK.Prefs.GetString(keyName);
         }
-        
+
+        public static bool IsShareAvailable()
+        {
+            return IsYandexGames == false;
+        }
+
         public static void ShareThisGame()
         {
             MirraSDK.Socials.ShareThisGame();

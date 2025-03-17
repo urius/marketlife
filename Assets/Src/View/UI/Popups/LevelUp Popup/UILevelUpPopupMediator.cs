@@ -79,6 +79,8 @@ namespace Src.View.UI.Popups.LevelUp_Popup
             _popupView.SetShareRevenueButtonText($"+{CalculationHelper.GetLevelUpShareReward(_playerProgressModel.Level)}");
             _popupView.SetSize(750, 800);
 
+            _popupView.SetShareButtonVisibility(MirraSdkWrapper.IsShareAvailable());
+
             SetupContent();
         }
 

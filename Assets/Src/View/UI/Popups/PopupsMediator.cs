@@ -12,6 +12,7 @@ using Src.View.UI.Popups.LevelUp_Popup;
 using Src.View.UI.Popups.OfflineReport_Popup;
 using Src.View.UI.Popups.OldGameCompensationPopup;
 using Src.View.UI.Popups.OrderProduct_Popup;
+using Src.View.UI.Popups.Pause_Popup;
 using Src.View.UI.Popups.ShelfContent_Popup;
 using Src.View.UI.Popups.Upgrades_Popup;
 using Src.View.UI.Popups.Warehouse_Popup;
@@ -95,6 +96,9 @@ namespace Src.View.UI.Popups
                     break;
                 case PopupType.Leaderboards:
                     newMediator = new UILeaderboardsPopupMediator(_contentTransform);
+                    break;
+                case PopupType.Pause:
+                    newMediator = new UIPausePopupMediator(_contentTransform);
                     break;
             };
             newMediator.Mediate();

@@ -93,7 +93,8 @@ namespace Src.View
         private void TweenCameraSize(int targetSize, float duration)
         {
             LeanTween.cancel(_camera.gameObject);
-            LeanTween.value(_camera.gameObject, f => _camera.orthographicSize = f, _camera.orthographicSize, targetSize, duration);
+            LeanTween.value(_camera.gameObject, f => _camera.orthographicSize = f, _camera.orthographicSize, targetSize, duration)
+                .setIgnoreTimeScale(true);
         }
 
         private void OnRequestForceMouseCellPositionUpdate()

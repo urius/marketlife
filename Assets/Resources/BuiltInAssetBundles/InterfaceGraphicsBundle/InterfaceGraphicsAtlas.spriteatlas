@@ -173,6 +173,7 @@ SpriteAtlas:
     - dafec13efc0d44426a63df1be62d5a7e: 21300000
     - 91c56d4e8df2f45eea493e57150277a0: 21300000
     - 068c775eade72471c9b2535333653af2: 21300000
+    - 99f7e06e576a0446f830ed28be27d6e8: 21300000
     - 08851b6e2083d4cc186b2c19fd6b28b4: 21300000
     - 7b479e7ec9a4b455aa1fa8e2bc747fd4: 21300000
     - 11530f8ebeb1b4981ba44f19f406046d: 21300000
@@ -324,6 +325,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: dafec13efc0d44426a63df1be62d5a7e, type: 3}
   - {fileID: 21300000, guid: 91c56d4e8df2f45eea493e57150277a0, type: 3}
   - {fileID: 21300000, guid: 068c775eade72471c9b2535333653af2, type: 3}
+  - {fileID: 21300000, guid: 99f7e06e576a0446f830ed28be27d6e8, type: 3}
   - {fileID: 21300000, guid: 08851b6e2083d4cc186b2c19fd6b28b4, type: 3}
   - {fileID: 21300000, guid: 7b479e7ec9a4b455aa1fa8e2bc747fd4, type: 3}
   - {fileID: 21300000, guid: 11530f8ebeb1b4981ba44f19f406046d, type: 3}
@@ -474,6 +476,7 @@ SpriteAtlas:
   - sign_paint_floor
   - Floor4
   - Icon_Dlassification
+  - Icon_Pause
   - square_88_white
   - icon_music_off
   - ToothBrushes_1

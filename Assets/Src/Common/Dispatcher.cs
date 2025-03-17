@@ -53,6 +53,8 @@ namespace Src.Common
         public Action UIMuteMusicClicked = delegate { };
         public Action UIScaleInClicked = delegate { };
         public Action UIScaleOutClicked = delegate { };
+        public Action UIPauseClicked = delegate { };
+        public Action UIPausePopupCloseClicked = delegate { };
 
         public Action UIActionsRotateRightClicked = delegate { };
         public Action UIActionsRotateLeftClicked = delegate { };

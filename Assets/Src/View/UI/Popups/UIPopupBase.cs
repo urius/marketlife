@@ -43,10 +43,11 @@ namespace Src.View.UI.Popups
         {
             var tcs = new UniTaskCompletionSource();
             _popupBodyCanvasGroup.alpha = 0;
-            LeanTween.value(gameObject, a => _popupBodyCanvasGroup.alpha = a, 0, 1, 0.5f * AppearDurationSec);
+            LeanTween.value(gameObject, a => _popupBodyCanvasGroup.alpha = a, 0, 1, 0.5f * AppearDurationSec).setIgnoreTimeScale(true);
             LeanTween.value(gameObject, p => _popupBodyRectTransform.anchoredPosition = p, new Vector2(0, -300), Vector2.zero, AppearDurationSec)
                 .setEaseOutBack()
-                .setOnComplete(() => tcs.TrySetResult());
+                .setOnComplete(() => tcs.TrySetResult())
+                .setIgnoreTimeScale(true);
 
             AudioManager.Instance.PlaySound(SoundNames.PopupOpen);
             return tcs.Task;
@@ -56,10 +57,11 @@ namespace Src.View.UI.Popups
         {
             var tcs = new UniTaskCompletionSource();
             _blockRaycastsImage.color = _blockRaycastsImage.color.SetAlpha(0);
-            LeanTween.value(gameObject, a => _popupBodyCanvasGroup.alpha = a, 1, 0, DisppearDurationSec);
+            LeanTween.value(gameObject, a => _popupBodyCanvasGroup.alpha = a, 1, 0, DisppearDurationSec).setIgnoreTimeScale(true);
             LeanTween.value(gameObject, p => _popupBodyRectTransform.anchoredPosition = p, Vector2.zero, new Vector2(0, 300), DisppearDurationSec)
                 .setEaseInBack()
-                .setOnComplete(() => tcs.TrySetResult());
+                .setOnComplete(() => tcs.TrySetResult())
+                .setIgnoreTimeScale(true);
 
             AudioManager.Instance.PlaySound(SoundNames.PopupClose);
             return tcs.Task;
@@ -71,10 +73,11 @@ namespace Src.View.UI.Popups
             var targetSize = _popupBodyRectTransform.sizeDelta;
             var startSize = new Vector2(targetSize.x, 0);
             _popupBodyCanvasGroup.alpha = 0;
-            LeanTween.value(gameObject, a => _popupBodyCanvasGroup.alpha = a, 0, 1, 0.5f * AppearDurationSec);
+            LeanTween.value(gameObject, a => _popupBodyCanvasGroup.alpha = a, 0, 1, 0.5f * AppearDurationSec).setIgnoreTimeScale(true);
             LeanTween.value(gameObject, p => _popupBodyRectTransform.sizeDelta = p, startSize, targetSize, AppearDurationSec)
                 .setEaseOutBack()
-                .setOnComplete(() => tcs.TrySetResult());
+                .setOnComplete(() => tcs.TrySetResult())
+                .setIgnoreTimeScale(true);
 
             AudioManager.Instance.PlaySound(SoundNames.PopupOpen);
             return tcs.Task;
@@ -88,10 +91,11 @@ namespace Src.View.UI.Popups
             var startSize = _popupBodyRectTransform.sizeDelta;
             var targetSize = new Vector2(startSize.x, 0);
             _blockRaycastsImage.color = _blockRaycastsImage.color.SetAlpha(0);
-            LeanTween.value(gameObject, a => _popupBodyCanvasGroup.alpha = a, 1, 0, DisppearDurationSec);
+            LeanTween.value(gameObject, a => _popupBodyCanvasGroup.alpha = a, 1, 0, DisppearDurationSec).setIgnoreTimeScale(true);
             LeanTween.value(gameObject, p => _popupBodyRectTransform.sizeDelta = p, startSize, targetSize, DisppearDurationSec)
                 .setEaseInBack()
-                .setOnComplete(() => tcs.TrySetResult());
+                .setOnComplete(() => tcs.TrySetResult())
+                .setIgnoreTimeScale(true);
             return tcs.Task;
         }
 

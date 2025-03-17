@@ -183,6 +183,8 @@ namespace Src.Managers
         public static string CommonUnknownName = "common_unknown_name";    
         public static string HintTopPanelExpFomat = "hint_top_panel_exp_format";
         public static string HintTopPanelMoodFormat = "hint_top_panel_mood_format";
+        public static string PopupPauseTitle = "pause";
+        public static string PopupPauseText = "popup_pause_text";
         public static string PopupRemoveObjectTitle = "popup_remove_object_title";
         public static string PopupRemoveObjectText = "popup_remove_object_text";
         public static string PopupRemoveProductTitle = "popup_remove_product_title";

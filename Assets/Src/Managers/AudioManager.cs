@@ -11,7 +11,7 @@ namespace Src.Managers
     {
         public static AudioManager Instance { get; private set; }
 
-        public Dictionary<string, AudioClip> Sounds { get; private set; }
+        public readonly Dictionary<string, AudioClip> Sounds = new();
 
         private GameStateModel _gameStateModel;
         private PlayerModelHolder _playerModelHolder;
@@ -65,7 +65,10 @@ namespace Src.Managers
 
         public void SetSounds(AudioClip[] sounds)
         {
-            Sounds = sounds.ToDictionary(s => s.name);
+            foreach (var sound in sounds)
+            {
+                Sounds[sound.name] = sound;
+            }
         }
 
         public void PlaySound(string soundName)

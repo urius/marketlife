@@ -30,5 +30,6 @@ namespace Src.Model.Popups
         CashDesk,
         DailyMissions,
         Leaderboards,
+        Pause,
     }
 }

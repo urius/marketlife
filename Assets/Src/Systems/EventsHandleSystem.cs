@@ -76,6 +76,8 @@ namespace Src.Systems
             _dispatcher.UIDailyBonusTakeClicked += OnUIDailyBonusTakeClicked;
             _dispatcher.UIMuteAudioClicked += OnUIMuteAudioClicked;
             _dispatcher.UIMuteMusicClicked += OnUIMuteMusicClicked;
+            _dispatcher.UIPauseClicked += OnUIPauseClicked;
+            _dispatcher.UIPausePopupCloseClicked += UIPausePopupCloseClicked;
             _dispatcher.UIBankItemClicked += OnUIBankItemClicked;
             _dispatcher.UIBankAdsItemClicked += OnUIBankAdsItemClicked;
             _dispatcher.UIDispatchBillboardClick += OnUIDispatchBillboardClick;
@@ -156,6 +158,16 @@ namespace Src.Systems
         private void OnUIMuteMusicClicked()
         {
             new ToggleMuteMusicCommand().Execute();
+        }
+
+        private void OnUIPauseClicked()
+        {
+            new HandlePauseClickCommand().Execute();
+        }
+
+        private void UIPausePopupCloseClicked()
+        {
+            new HandlePauseOffCommand().Execute();
         }
 
         private void OnUIDailyBonusTakeClicked(Vector3[] itemsWorldPositions)

@@ -13,6 +13,7 @@ namespace Src.View.UI.RightBottom_Panel
         [SerializeField] private UIToggleSpriteButtonView _muteAudioButton;
         [SerializeField] private UIToggleSpriteButtonView _scaleInButton;
         [SerializeField] private UIToggleSpriteButtonView _scaleOutButton;
+        [SerializeField] private UIToggleSpriteButtonView _pauseButton;
         [SerializeField] private Image _bgImage;
 
         //
@@ -39,6 +40,7 @@ namespace Src.View.UI.RightBottom_Panel
             _muteAudioButton.gameObject.SetActive(isVisible);
             _scaleInButton.gameObject.SetActive(isVisible);
             _scaleOutButton.gameObject.SetActive(isVisible);
+            _pauseButton.gameObject.SetActive(isVisible);
         }
 
         private async void Start()
@@ -59,6 +61,7 @@ namespace Src.View.UI.RightBottom_Panel
             _muteAudioButton.Clicked += OnMuteAudioClicked;
             _scaleInButton.Clicked += OnScaleInClicked;
             _scaleOutButton.Clicked += OnScaleOutClicked;
+            _pauseButton.Clicked += OnPauseButtonClicked;
         }
 
         private void OnScaleInClicked()
@@ -79,6 +82,11 @@ namespace Src.View.UI.RightBottom_Panel
         private void OnMuteMusicClicked()
         {
             _dispatcher.UIMuteMusicClicked();
+        }
+
+        private void OnPauseButtonClicked()
+        {
+            _dispatcher.UIPauseClicked();
         }
 
         private void OnPlayerSettingsUpdated()

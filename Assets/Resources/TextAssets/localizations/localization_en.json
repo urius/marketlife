@@ -98,6 +98,8 @@
     "flying_text_unwash_already_added": "Already dirty here",
     "flying_text_unwash_cant_be_placed": "Cannot litter here",
     "flying_text_unwash_cant_be_placed_outside": "Maybe we shouldn't litter outside?)",
+    "pause": "Pause",
+    "popup_pause_text":"Game is paused",
     "popup_remove_object_title": "Sale",
     "popup_remove_object_text": "Sell this object for {0}$?",
     "popup_remove_product_title": "Discard",

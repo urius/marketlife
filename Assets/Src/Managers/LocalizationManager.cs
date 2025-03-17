@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
-using Src.Common;
-using Src.Common_Utils;
 using UnityEngine;
 
 namespace Src.Managers
@@ -24,7 +22,7 @@ namespace Src.Managers
 
         public UniTask<bool> LoadLocalizationAsync()
         {
-            return DisabledLogicFlags.IsServerDataDisabled ? LoadFromLocal() : LoadFromServer();
+            return LoadFromLocal();
         }
 
         private UniTask<bool> LoadFromLocal()
@@ -47,29 +45,6 @@ namespace Src.Managers
             CurrentLocalization = JsonConvert.DeserializeObject<Dictionary<string, string>>(localizationAsset.text);
 
             return UniTask.FromResult(true);
-        }
-
-        private async UniTask<bool> LoadFromServer()
-        {
-            string localizationUrl;
-            switch (Locale)
-            {
-                case LocaleType.Ru:
-                    localizationUrl = Urls.GetLocalizationUrl("ru");
-                    break;
-                case LocaleType.En:
-                default:
-                    localizationUrl = Urls.GetLocalizationUrl("en");
-                    break;
-            }
-
-            var getLocaleOperation = await new WebRequestsSender().GetAsync(URLHelper.AddAntiCachePostfix(localizationUrl));
-            if (getLocaleOperation.IsSuccess)
-            {
-                CurrentLocalization = JsonConvert.DeserializeObject<Dictionary<string, string>>(getLocaleOperation.Result);
-            }
-
-            return getLocaleOperation.IsSuccess;
         }
 
         public string GetLocalization(string key)

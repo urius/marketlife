@@ -27,7 +27,7 @@ namespace Src.Commands.LoadSave
 
         private static UniTask<BankConfigItem[]> LoadBankData()
         {
-            var loadTask = MirraSdkWrapper.IsMirraSdkUsed || DisabledLogicFlags.IsServerDataDisabled
+            var loadTask = MirraSdkWrapper.IsMirraSdkUsed
                 ? new LoadMirraPlatformBankConfigCommand().ExecuteAsync()
                 : new LoadInternalBankConfigCommand().ExecuteAsync();
             

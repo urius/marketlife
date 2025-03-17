@@ -73,10 +73,5 @@ namespace Src.Common
                 _ => throw new System.Exception($"AssetBundlesLoader {nameof(GetAssetBundleUrl)}: Unsupported platform type: {Application.platform}"),
             };
         }
-        
-        public static string GetLocalizationUrl(string locale)
-        {
-            return string.Format(LocalizationUrlFormat, locale.ToLower());
-        }
     }
 }

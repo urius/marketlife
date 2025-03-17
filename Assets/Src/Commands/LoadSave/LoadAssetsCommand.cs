@@ -13,15 +13,8 @@ namespace Src.Commands.LoadSave
     {
         public async UniTask<bool> ExecuteAsync()
         {
-            if (DisabledLogicFlags.IsServerDataDisabled)
-            {
-                LoadResourcesLocal();
-                await TryLoadMusicBundle();
-            }
-            else
-            {
-                await LoadRemoteAssetBundles();
-            }
+            LoadResourcesLocal();
+            await TryLoadMusicBundle();
 
             return true;
         }
@@ -57,38 +50,6 @@ namespace Src.Commands.LoadSave
                 Debug.LogWarning("Load music bundle failed: " + e.Message);
             }
             
-            loadProgressProxy.Dispose();
-        }
-
-        private async UniTask LoadRemoteAssetBundles()
-        {
-            var mainConfig = GameConfigManager.Instance.MainConfig;
-            var graphicsManager = GraphicsManager.Instance;
-            var loadGameProgressModel = LoadGameProgressModel.Instance;
-            
-            var loadProgressProxy = new LoadPartsProgressProxy(loadGameProgressModel.SetCurrentPartLoadProgress);
-            var loadGameplayGraphicsBundleTask = LoadAsync(AssetBundleNames.GRAPHICS_GAMEPLAY, mainConfig.GameplayAtlasVersion, loadProgressProxy);
-            var loadInterfaceGraphicsBundleTask = LoadAsync(AssetBundleNames.GRAPHICS_INTERFACE, mainConfig.InterfaceAtlasVersion, loadProgressProxy);
-            var loadAudioBundleTask = LoadAsync(AssetBundleNames.AUDIO, mainConfig.AudioBundleVersion, loadProgressProxy);
-
-            var bundle = await loadGameplayGraphicsBundleTask;
-            var atlas = bundle.LoadAsset<SpriteAtlas>("GameplayGraphicsAtlas");
-            var sprites = bundle.LoadAllAssets<Sprite>();
-            graphicsManager.SetupAtlas(SpriteAtlasId.GameplayAtlas, atlas, sprites);
-
-            bundle = await loadInterfaceGraphicsBundleTask;
-            atlas = bundle.LoadAsset<SpriteAtlas>("InterfaceGraphicsAtlas");
-            sprites = bundle.LoadAllAssets<Sprite>();
-            graphicsManager.SetupAtlas(SpriteAtlasId.InterfaceAtlas, atlas, sprites);
-
-            var starsPSPrefab = bundle.LoadAsset<GameObject>(PrefabsHolder.PSStarsName);
-            PrefabsHolder.Instance.SetupRemotePrefab(PrefabsHolder.PSStarsName, starsPSPrefab);
-            
-            bundle = await loadAudioBundleTask;
-
-            var sounds = bundle.LoadAllAssets<AudioClip>();
-            AudioManager.Instance.SetSounds(sounds);
-
             loadProgressProxy.Dispose();
         }
 

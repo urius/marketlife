@@ -34,7 +34,7 @@ namespace Src.Managers
 
         public UniTask<bool> LoadMainConfigAsync(string mainConfigAbPostfix)
         {
-            return DisabledLogicFlags.IsServerDataDisabled ? LoadConfigLocal() : LoadConfigFromServer(mainConfigAbPostfix);
+            return LoadConfigLocal();
         }
 
         private UniTask<bool> LoadConfigLocal()
@@ -46,23 +46,6 @@ namespace Src.Managers
             MainConfig = ConvertToMainConfig(mainConfigDto);
 
             return UniTask.FromResult(true);
-        }
-
-        private async UniTask<bool> LoadConfigFromServer(string mainConfigAbPostfix)
-        {
-            var urlsHolder = Urls.Instance;
-            var url = string.Format(Urls.MainConfigUrlFormat, mainConfigAbPostfix);
-#if UNITY_EDITOR
-            if (DebugDataHolder.Instance.UseTestConfigFile == true) url = urlsHolder.DebugMainConfigUrl;
-#endif
-            var getConfigOperation = await new WebRequestsSender().GetAsync(URLHelper.AddAntiCachePostfix(url));
-            if (getConfigOperation.IsSuccess)
-            {
-                var mainConfigDto = JsonConvert.DeserializeObject<MainConfigDto>(getConfigOperation.Result);
-                MainConfig = ConvertToMainConfig(mainConfigDto);
-            }
-
-            return getConfigOperation.IsSuccess;
         }
 
         private MainConfig ConvertToMainConfig(MainConfigDto mainConfigDto)

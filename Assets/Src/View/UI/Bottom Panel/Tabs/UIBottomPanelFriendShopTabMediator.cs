@@ -225,7 +225,7 @@ namespace Src.View.UI.Bottom_Panel.Tabs
 
         private void SetupAvatarIcon()
         {
-            _tabView.SetIconSprite(_avatarsManager.GetAvatarSprite(_viewingFriendSocialData.Uid));
+            _tabView.SetIconSprite(_avatarsManager.GetAvatarSpriteByUid(_viewingFriendSocialData.Uid));
         }
     }
 }

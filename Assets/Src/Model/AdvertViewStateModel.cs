@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace Src.Model
 {
     public class AdvertViewStateModel : IBankAdvertWatchStateProvider
     {
-        public static readonly AdvertViewStateModel Instance = new AdvertViewStateModel();
+        public static readonly AdvertViewStateModel Instance = new();
 
         public event Action<AdvertTargetType> WatchStateChanged = delegate { };
         public event Action BankAdvertWatchesCountChanged = delegate { };
@@ -15,11 +16,15 @@ namespace Src.Model
         private const string BankAdvertWatchesCountKey = "bank_advert_watches_count";
         private const string BankAdvertWatchTimeKey = "bank_advert_watch_time";
 
-        private Dictionary<AdvertTargetType, AdvertWatchState> _advertStates = new Dictionary<AdvertTargetType, AdvertWatchState>();
+        private readonly Dictionary<AdvertTargetType, AdvertWatchState> _advertStates = new();
+        
         private AdvertTargetType _lastPreparedTarget;
         private int _bankAdvertWatchesCount = -1;
         private int _bankAdvertWatchTime = -1;
+        private UniTaskCompletionSource<bool> _currentShowingAdvertStateTcs;
 
+        public UniTask<bool> CurrentShowingAdsTask => _currentShowingAdvertStateTcs?.Task ?? UniTask.FromResult(true);
+        
         public int BankAdvertWatchesCount
         {
             get
@@ -57,6 +62,8 @@ namespace Src.Model
 
         public void PrepareTarget(AdvertTargetType target)
         {
+            _currentShowingAdvertStateTcs = new UniTaskCompletionSource<bool>();
+            
             _advertStates[target] = AdvertWatchState.Prepared;
             _lastPreparedTarget = target;
             WatchStateChanged(_lastPreparedTarget);
@@ -65,7 +72,17 @@ namespace Src.Model
         public void MarkCurrentAsWatched()
         {
             _advertStates[_lastPreparedTarget] = AdvertWatchState.Watched;
+            
             WatchStateChanged(_lastPreparedTarget);
+            _currentShowingAdvertStateTcs.TrySetResult(true);
+        }
+
+        public void MarkCurrentAsCanceled()
+        {
+            _advertStates[_lastPreparedTarget] = AdvertWatchState.Default;
+            
+            WatchStateChanged(_lastPreparedTarget);
+            _currentShowingAdvertStateTcs.TrySetResult(false);
         }
 
         public void ResetTarget(AdvertTargetType target)
@@ -74,6 +91,7 @@ namespace Src.Model
             {
                 _advertStates[target] = AdvertWatchState.Default;
             }
+
             if (_lastPreparedTarget == target)
             {
                 _lastPreparedTarget = AdvertTargetType.None;
@@ -94,18 +112,10 @@ namespace Src.Model
         {
             return GetWatchState(target) == AdvertWatchState.Watched;
         }
-
-        public AdvertTargetType GetAdvertTargetTypeByDailyBonusDayNum(int dayNum)
+        
+        public bool IsDailyBonusAdsWatched()
         {
-            return dayNum switch
-            {
-                1 => AdvertTargetType.DailyDouble1,
-                2 => AdvertTargetType.DailyDouble2,
-                3 => AdvertTargetType.DailyDouble3,
-                4 => AdvertTargetType.DailyDouble4,
-                5 => AdvertTargetType.DailyDouble5,
-                _ => AdvertTargetType.None,
-            };
+            return IsWatched(AdvertTargetType.DailyBonus);
         }
     }
 
@@ -125,11 +135,7 @@ namespace Src.Model
         OfflineExpX2,
         BankGold,
         BankCash,
-        DailyDouble1,
-        DailyDouble2,
-        DailyDouble3,
-        DailyDouble4,
-        DailyDouble5,
+        DailyBonus,
     }
 
     public enum AdvertWatchState

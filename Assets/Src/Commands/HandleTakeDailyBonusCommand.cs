@@ -1,6 +1,6 @@
 using Cysharp.Threading.Tasks;
 using Src.Common;
-using Src.Managers;
+using Src.Helpers;
 using Src.Model;
 using Src.Model.Popups;
 using UnityEngine;
@@ -13,7 +13,6 @@ namespace Src.Commands
         {
             var playerModel = PlayerModelHolder.Instance.UserModel;
             var gameStateModel = GameStateModel.Instance;
-            var bonusConfig = GameConfigManager.Instance.DailyBonusConfig;
             var dispatcher = Dispatcher.Instance;
             var screenCalculator = ScreenCalculator.Instance;
             var advertStateModel = AdvertViewStateModel.Instance;
@@ -24,41 +23,23 @@ namespace Src.Commands
                 var lastBonusTakeTime = playerModel.BonusState.LastBonusTakeTimestamp;
                 if (DateTimeHelper.IsSameDays(lastBonusTakeTime, dailyBonusPopupViewModel.OpenTimestamp) == false)
                 {
-                    var bonusConfigItems = bonusConfig.DailyBonusConfig;
-                    var totalCashReward = 0;
-                    var totalGoldReward = 0;
-                    for (var i = 0; i < bonusConfigItems.Length; i++)
+                    var targetDayItemIndex = DailyBonusRewardHelper.GetDayItemIndex(dailyBonusPopupViewModel.CurrentBonusDay);
+                    var reward = DailyBonusRewardHelper.GetRewardForDay(dailyBonusPopupViewModel.CurrentBonusDay);
+                    var screenPoint = screenCalculator.WorldToScreenPoint(itemsWorldPositions[targetDayItemIndex]);
+                    if (reward.IsGold)
                     {
-                        var bonusConfigItem = bonusConfigItems[i];
-                        if (dailyBonusPopupViewModel.CurrentBonusDay >= bonusConfigItem.DayNum)
-                        {
-                            var screenPoint = screenCalculator.WorldToScreenPoint(itemsWorldPositions[i]);
-                            var advertTarget = advertStateModel.GetAdvertTargetTypeByDailyBonusDayNum(bonusConfigItem.DayNum);
-                            var isDoubled = advertTarget != AdvertTargetType.None && advertStateModel.IsWatched(advertTarget);
-                            if (bonusConfigItem.Reward.IsGold)
-                            {
-                                totalGoldReward += bonusConfigItem.Reward.Value * (isDoubled ? 2 : 1);
-                                dispatcher.UIRequestAddGoldFlyAnimation(screenPoint, bonusConfigItem.Reward.Value);
-                            }
-                            else
-                            {
-                                totalCashReward += bonusConfigItem.Reward.Value * (isDoubled ? 2 : 1);
-                                dispatcher.UIRequestAddCashFlyAnimation(screenPoint, 5 * (i + 1));
-                            }
-                            advertStateModel.ResetTarget(advertTarget);
-                        }
+                        dispatcher.UIRequestAddGoldFlyAnimation(screenPoint, reward.Value);
+                        playerModel.AddGold(reward.Value);
+                    }
+                    else
+                    {
+                        dispatcher.UIRequestAddCashFlyAnimation(screenPoint, 5 * (targetDayItemIndex + 1));
+                        playerModel.AddCash(reward.Value);
                     }
 
-                    if (totalCashReward > 0)
-                    {
-                        playerModel.AddCash(totalCashReward);
-                    }
-                    if (totalGoldReward > 0)
-                    {
-                        playerModel.AddGold(totalGoldReward);
-                    }
-
-                    playerModel.UpdateDailyBonus(dailyBonusPopupViewModel.OpenTimestamp, dailyBonusPopupViewModel.CurrentBonusDay);
+                    advertStateModel.ResetTarget(AdvertTargetType.DailyBonus);
+                    playerModel.UpdateDailyBonus(dailyBonusPopupViewModel.OpenTimestamp,
+                        dailyBonusPopupViewModel.CurrentBonusDay);
 
                     await UniTask.Delay(2000);
 

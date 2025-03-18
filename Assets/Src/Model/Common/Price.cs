@@ -18,5 +18,10 @@ namespace Src.Model.Common
 
             return new Price(value, isGoldPrice);
         }
+
+        public static Price operator *(Price price, int i)
+        {
+            return new Price(price.Value * i, price.IsGold);
+        }
     }
 }

@@ -19,6 +19,8 @@
     "common_upgrade_name_format_add_wh_slots": "Add Cell [{0}]",
     "common_upgrade_name_format_add_wh_volume": "Increase Volume [{0}]",
     "common_invite": "Invite",
+    "common_take_reward": "Take",
+    "common_take_reward_x2": "Take (x2)",
     "common_reward_x2": "Double (x2)",
     "common_unknown_name": "Unknown",
     "scale_in": "Zoom In",

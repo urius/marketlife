@@ -1,6 +1,6 @@
-using System;
 using System.Linq;
 using Src.Common;
+using Src.Helpers;
 using Src.Managers;
 using Src.Model;
 using Src.Model.Configs;
@@ -46,7 +46,7 @@ namespace Src.View.UI.Popups.DailyBonus_Popup
 
             await _popupView.Appear2Async();
 
-            Acttivate();
+            Activate();
         }
 
         public async void Unmediate()
@@ -58,20 +58,20 @@ namespace Src.View.UI.Popups.DailyBonus_Popup
             GameObject.Destroy(_popupView.gameObject);
         }
 
-        private void Acttivate()
+        private void Activate()
         {
             _popupView.ButtonCloseClicked += OnButtonCloseClicked;
             _popupView.TakeButtonClicked += OnTakeButtonClicked;
+            _popupView.TakeButtonX2Clicked += OnTakeX2ButtonClicked;
             _playerModel.BonusStateUpdated += OnBonusStateUpdated;
             _advertWatchStateModel.WatchStateChanged += OnWatchStateChanged;
-            ActivateItemViews();
         }
 
         private void Deactivate()
         {
-            DectivateItemViews();
             _popupView.ButtonCloseClicked -= OnButtonCloseClicked;
             _popupView.TakeButtonClicked -= OnTakeButtonClicked;
+            _popupView.TakeButtonX2Clicked -= OnTakeX2ButtonClicked;
             _playerModel.BonusStateUpdated -= OnBonusStateUpdated;
             _advertWatchStateModel.WatchStateChanged -= OnWatchStateChanged;
         }
@@ -81,55 +81,17 @@ namespace Src.View.UI.Popups.DailyBonus_Popup
             UpdateItemViews();
         }
 
-        private void ActivateItemViews()
-        {
-            for (var i = 0; i < _popupView.ItemViews.Length; i++)
-            {
-                ActivateItemView(_popupView.ItemViews[i]);
-            }
-        }
-
-        private void DectivateItemViews()
-        {
-            for (var i = 0; i < _popupView.ItemViews.Length; i++)
-            {
-                DeactivateItemView(_popupView.ItemViews[i]);
-            }
-        }
-
-        private void ActivateItemView(UIDailyBonusPopupPrizeItemView itemView)
-        {
-            itemView.DoubleButtonClicked += OnItemDoubleClicked;
-        }
-
-        private void DeactivateItemView(UIDailyBonusPopupPrizeItemView itemView)
-        {
-            itemView.DoubleButtonClicked -= OnItemDoubleClicked;
-        }
-
-        private void OnItemDoubleClicked(UIDailyBonusPopupPrizeItemView itemView)
-        {
-            _dispatcher.UIDailyBonusDoubleClicked(Array.IndexOf(_popupView.ItemViews, itemView));
-            //itemView.SetDoubleButtonInteractable(false);
-        }
-
         private void OnBonusStateUpdated()
         {
             if (DateTimeHelper.IsSameDays(_playerModel.BonusState.LastBonusTakeTimestamp, _viewModel.OpenTimestamp))
             {
-                _popupView.SetTakeButtonInteractable(false);
+                _popupView.SetTakeButtonsInteractable(false);
             }
         }
 
         private void OnButtonCloseClicked()
         {
             _dispatcher.UIRequestRemoveCurrentPopup();
-        }
-
-        private void OnTakeButtonClicked()
-        {
-            var itemViewsPositions = _popupView.ItemViews.Select(v => v.transform.position).ToArray();
-            _dispatcher.UIDailyBonusTakeClicked(itemViewsPositions);
         }
 
         private void SetupView()
@@ -149,18 +111,33 @@ namespace Src.View.UI.Popups.DailyBonus_Popup
 
         private void SetupItemView(UIDailyBonusPopupPrizeItemView itemView, DailyBonusConfig itemConfig)
         {
-            var isDoubled = _advertWatchStateModel.IsWatched(_advertWatchStateModel.GetAdvertTargetTypeByDailyBonusDayNum(itemConfig.DayNum));
-            var isGold = itemConfig.Reward.IsGold;
+            var itemNum = itemConfig.DayNum;
+            var currentDayItemNum = DailyBonusRewardHelper.GetDayItemIndex(_viewModel.CurrentBonusDay) + 1;
+            var multiplier = DailyBonusRewardHelper.Get5DayMultiplier(_viewModel.CurrentBonusDay);
+            var dayNum = itemNum + 5 * (multiplier - 1);
+            var reward = DailyBonusRewardHelper.GetRewardForDay(dayNum);
+            var isGold = reward.IsGold;
             ColorUtility.TryParseHtmlString(
                 isGold ? Constants.GoldAmountTextRedColor : Constants.CashAmountTextGreenColor, out var valueTextColor);
-        
-            itemView.SetDayText(string.Format(_loc.GetLocalization(LocalizationKeys.PopupDailyBonusDayFormat), itemConfig.DayNum));
+
+            itemView.SetDayText(
+                string.Format(_loc.GetLocalization(LocalizationKeys.PopupDailyBonusDayFormat), dayNum, valueTextColor));
             itemView.SetIconSprite(isGold ? _spritesProvider.GetGoldIcon() : _spritesProvider.GetCashIcon());
             itemView.SetValueTextColor(valueTextColor);
-            itemView.SetValueText($"+{FormattingHelper.ToCommaSeparatedNumber(itemConfig.Reward.Value * (isDoubled ? 2 : 1))}");
-            itemView.SetAlpha(itemConfig.DayNum <= _viewModel.CurrentBonusDay ? 1 : 0.4f);
-            itemView.SetDoubleButtonVisible(itemConfig.DayNum <= _viewModel.CurrentBonusDay);
-            itemView.SetDoubleButtonInteractable(isDoubled == false);
+            itemView.SetValueText($"+{FormattingHelper.ToCommaSeparatedNumber(reward.Value)}");
+            itemView.SetAlpha(itemNum == currentDayItemNum ? 1 : 0.4f);
+        }
+
+        private void OnTakeButtonClicked()
+        {
+            var itemViewsPositions = _popupView.ItemViews.Select(v => v.transform.position).ToArray();
+            _dispatcher.UIDailyBonusTakeClicked(itemViewsPositions);
+        }
+
+        private void OnTakeX2ButtonClicked()
+        {
+            var itemViewsPositions = _popupView.ItemViews.Select(v => v.transform.position).ToArray();
+            _dispatcher.UIDailyBonusTakeX2Clicked(itemViewsPositions);
         }
     }
 }

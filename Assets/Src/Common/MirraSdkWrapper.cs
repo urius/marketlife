@@ -39,6 +39,16 @@ namespace Src.Common
         [DllImport("__Internal")]
         private static extern void GetYGPlayerId(Action<string> callback);
 
+        public static UniTask<bool> InvokeAuthorization()
+        {
+            var tcs = new UniTaskCompletionSource<bool>();
+
+            MirraSDK.Player.InvokeAuthorization(
+                onSuccess: () => { tcs.TrySetResult(true); },
+                onError: () => { tcs.TrySetResult(false); });
+            
+            return tcs.Task;
+        }
 
         public static void SendGameReady()
         {
@@ -50,9 +60,9 @@ namespace Src.Common
             return Instance.GetPlayerIdInternal();
         }
 
-        public static void SetScore(int scoreValue, string scoreTag = "score")
+        public static void SetScore(string scoreTag, int scoreValue)
         {
-            Log("SetScore: " + scoreValue);
+            Log("SetScore: " + scoreTag + " = " + scoreValue);
             
             MirraSDK.Socials.SetScore(scoreTag, scoreValue);
         }
@@ -62,6 +72,49 @@ namespace Src.Common
             Log("Request ShowLeaderboard, scoreTag: " + scoreTag);
             
             MirraSDK.Socials.InvokeLeaderboard(scoreTag);
+        }
+        
+        public static UniTask<MirraLeaderboardUserData[]> GetScoreTable(string scoreTag)
+        {
+            var tcs = new UniTaskCompletionSource<MirraLeaderboardUserData[]>();
+            
+            MirraSDK.Socials.GetScoreTable(
+                scoreTag: scoreTag, 
+                leadingPlayers: 3, 
+                includePlayer: true,
+                playersAround: 2, 
+                onScoreTableResolve: (scoreTable) =>
+                {
+                    var result = new MirraLeaderboardUserData[scoreTable.Count];
+                    for (var i = 0; i < scoreTable.Count; i++)
+                    {
+                        var scoreTableData = scoreTable[i];
+                        result[i] = new MirraLeaderboardUserData(
+                            scoreTableData.position, scoreTableData.name, scoreTableData.score, scoreTableData.pictureURL);
+                        
+                        Log("GetScoreTable value: " + scoreTableData.score);
+                    }
+
+                    Log("GetScoreTable success " + scoreTag + " " + result.Length);
+                    
+                    tcs.TrySetResult(result);
+                },
+                onScoreTableError: () =>
+                {
+                    Log("GetScoreTable error" + scoreTag);
+                    
+                    tcs.TrySetResult(Array.Empty<MirraLeaderboardUserData>());
+                }
+            );
+
+#if UNITY_EDITOR
+            
+                var result = new MirraLeaderboardUserData(1, "Name", 100500,
+                    "https://games-sdk.yandex.ru/games/api/sdk/v1/player/avatar/0/islands-retina-medium");
+                return UniTask.FromResult(new[] { result });
+#endif
+            
+            return tcs.Task;
         }
 
         public static bool IsRewardedReady()
@@ -261,6 +314,22 @@ namespace Src.Common
             ProductId = id;
             Price = price;
             CurrencyNameLocalized = currencyNameLocalized;
+        }
+    }
+
+    public struct MirraLeaderboardUserData
+    {
+        public readonly int Rank;
+        public readonly string PlayerName;
+        public readonly int Score;
+        public readonly string PictureURL;
+
+        public MirraLeaderboardUserData(int rank, string playerName, int score, string pictureURL)
+        {
+            Rank = rank;
+            PlayerName = playerName;
+            Score = score;
+            PictureURL = pictureURL;
         }
     }
 }

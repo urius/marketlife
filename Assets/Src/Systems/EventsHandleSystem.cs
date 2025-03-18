@@ -74,6 +74,7 @@ namespace Src.Systems
             _dispatcher.UIGetBonusButtonClicked += OnUIGetBonusButtonClicked;
             _dispatcher.UIDailyMissionsButtonClicked += OnUIDailyMissionsButtonClicked;
             _dispatcher.UIDailyBonusTakeClicked += OnUIDailyBonusTakeClicked;
+            _dispatcher.UIDailyBonusTakeX2Clicked += OnUIDailyBonusTakeX2Clicked;
             _dispatcher.UIMuteAudioClicked += OnUIMuteAudioClicked;
             _dispatcher.UIMuteMusicClicked += OnUIMuteMusicClicked;
             _dispatcher.UIPauseClicked += OnUIPauseClicked;
@@ -83,7 +84,6 @@ namespace Src.Systems
             _dispatcher.UIDispatchBillboardClick += OnUIDispatchBillboardClick;
             _dispatcher.UIBillboardPopupApplyTextClicked += OnUIBillboardPopupApplyTextClicked;
             _dispatcher.UIFriendShopBottomPanelUserViewCreated += OnUIFriendShopBottomPanelUserViewCreated;
-            _dispatcher.UIDailyBonusDoubleClicked += OnUIDailyBonusDoubleClicked;
             _dispatcher.UIOfflineReportPopupViewAdsClicked += OnUIOfflineReportPopupViewAdsClicked;
             _dispatcher.UIChangeCashDeskManHairClicked += OnUIChangeCashDeskManHairClicked;
             _dispatcher.UIChangeCashDeskManGlassesClicked += OnUIChangeCashDeskManGlassesClicked;
@@ -123,11 +123,6 @@ namespace Src.Systems
         private void OnUIOfflineReportPopupViewAdsClicked()
         {
             new HandleOfflineReportDoubleRewardCommand().Execute();
-        }
-
-        private void OnUIDailyBonusDoubleClicked(int itemIndex)
-        {
-            new HandleDailyBonusDoubleRewardCommand().Execute(itemIndex);
         }
 
         private void OnUIFriendShopBottomPanelUserViewCreated(Vector3 screenCoords)
@@ -173,6 +168,11 @@ namespace Src.Systems
         private void OnUIDailyBonusTakeClicked(Vector3[] itemsWorldPositions)
         {
             new HandleTakeDailyBonusCommand().Execute(itemsWorldPositions);
+        }
+
+        private void OnUIDailyBonusTakeX2Clicked(Vector3[] itemsWorldPositions)
+        {
+            new HandleDailyBonusDoubleRewardCommand().Execute(itemsWorldPositions);
         }
 
         private void OnUIGetBonusButtonClicked()

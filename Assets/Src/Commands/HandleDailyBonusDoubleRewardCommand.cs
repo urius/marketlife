@@ -1,22 +1,26 @@
 using Src.Common;
 using Src.Model;
+using UnityEngine;
 
 namespace Src.Commands
 {
     public struct HandleDailyBonusDoubleRewardCommand
     {
-        public void Execute(int rewardIndex)
+        public async void Execute(Vector3[] itemsWorldPositions)
         {
             var advertStateModel = AdvertViewStateModel.Instance;
-            var dayNum = rewardIndex + 1;
-            var advertTarget = advertStateModel.GetAdvertTargetTypeByDailyBonusDayNum(dayNum);
             var dispatcher = Dispatcher.Instance;
 
-            if (advertTarget != AdvertTargetType.None
-                && advertStateModel.IsWatched(advertTarget) == false)
+            if (advertStateModel.IsWatched(AdvertTargetType.DailyBonus) == false)
             {
-                advertStateModel.PrepareTarget(advertTarget);
+                advertStateModel.PrepareTarget(AdvertTargetType.DailyBonus);
                 dispatcher.RequestShowAdvert();
+
+                var watchAdsResult = await advertStateModel.CurrentShowingAdsTask;
+                if (watchAdsResult)
+                {
+                    new HandleTakeDailyBonusCommand().Execute(itemsWorldPositions);
+                }
             }
         }
     }

@@ -87,15 +87,17 @@ namespace Src.Systems.PlatformModules
         {
             if (result && (saveField & SaveField.Progress) == SaveField.Progress)
             {
-                var expAmount = _playerModelHolder.UserModel.ProgressModel.ExpAmount;
+                var progressModel = _playerModelHolder.UserModel.ProgressModel;
                 
-                MirraSdkWrapper.SetScore(expAmount);
+                MirraSdkWrapper.SetScore(Constants.ScoreTagExp, progressModel.ExpAmount);
+                //MirraSdkWrapper.SetScore(Constants.ScoreTagCash, progressModel.Cash);
+                //MirraSdkWrapper.SetScore(Constants.ScoreTagGold, progressModel.Gold);
             }
         }
 
         private void OnUITopPanelRequestOpenLeaderboardsClicked()
         {
-            MirraSdkWrapper.ShowLeaderboard();
+            new ShowInGameLeaderboardsPopupCommand().Execute();
         }
 
         private void OnRequestShowAdvert()

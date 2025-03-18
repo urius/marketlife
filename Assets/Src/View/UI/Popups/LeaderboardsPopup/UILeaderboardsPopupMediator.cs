@@ -89,9 +89,16 @@ namespace Src.View.UI.Popups.LeaderboardsPopup
                 }
 
                 var itemsData = GetDataByTab(tabType);
-                var existInLB = itemsData.Any(d => d.UserSocialData.Uid == _playerModelHolder.Uid);
-                var tabView = _popupView.GetTabButton(i) as UILeaderboardsPopupTabButtonView;
-                tabView.SetPlaceIndicatorVisibility(existInLB);
+                if (itemsData is { Length: > 0 })
+                {
+                    var existInLB = itemsData.Any(d => d.Uid == _playerModelHolder.Uid);
+                    var tabView = _popupView.GetTabButton(i) as UILeaderboardsPopupTabButtonView;
+                    tabView.SetPlaceIndicatorVisibility(existInLB);
+                }
+                else
+                {
+                    _popupView.SetTabButtonVisibility(i, false);
+                }
             }
         }
 
@@ -110,6 +117,7 @@ namespace Src.View.UI.Popups.LeaderboardsPopup
             _popupView.ButtonCloseClicked += OnButtonCloseClicked;
             _updatesProvider.RealtimeUpdate += OnRealtimeUpdate;
             _avatarsManager.AvatarLoadedForId += OnAvatarLoadedForId;
+            _avatarsManager.AvatarLoadedForUrl += OnAvatarLoadedForUrl;
         }
 
         private void Deactivate()
@@ -118,6 +126,7 @@ namespace Src.View.UI.Popups.LeaderboardsPopup
             _popupView.ButtonCloseClicked -= OnButtonCloseClicked;
             _updatesProvider.RealtimeUpdate -= OnRealtimeUpdate;
             _avatarsManager.AvatarLoadedForId -= OnAvatarLoadedForId;
+            _avatarsManager.AvatarLoadedForUrl -= OnAvatarLoadedForUrl;
         }
 
         private void OnButtonCloseClicked()
@@ -130,9 +139,23 @@ namespace Src.View.UI.Popups.LeaderboardsPopup
             var viewModels = _virtualListDisplayer.ViewModels;
             foreach (var displayedItem in _virtualListDisplayer.DisplayedItems)
             {
-                if (viewModels[displayedItem.Index].UserSocialData.Uid == uid)
+                if (viewModels[displayedItem.Index].Uid == uid)
                 {
-                    var avatarSprite = _avatarsManager.GetAvatarSprite(uid);
+                    var avatarSprite = _avatarsManager.GetAvatarSpriteByUid(uid);
+                    displayedItem.View.SetAvatar(avatarSprite);
+                    break;
+                }
+            }
+        }
+
+        private void OnAvatarLoadedForUrl(string url)
+        {
+            var viewModels = _virtualListDisplayer.ViewModels;
+            foreach (var displayedItem in _virtualListDisplayer.DisplayedItems)
+            {
+                if (viewModels[displayedItem.Index].PictureUrl == url)
+                {
+                    var avatarSprite = _avatarsManager.GetAvatarSpriteByUrl(url);
                     displayedItem.View.SetAvatar(avatarSprite);
                     break;
                 }
@@ -189,7 +212,7 @@ namespace Src.View.UI.Popups.LeaderboardsPopup
                 return _contentPositionsByTab[tab];
             }
 
-            var playerItem = _virtualListDisplayer.ViewModels.FirstOrDefault(vm => vm.UserSocialData.Uid == _playerModelHolder.Uid);
+            var playerItem = _virtualListDisplayer.ViewModels.FirstOrDefault(vm => vm.Uid == _playerModelHolder.Uid);
             if (playerItem != null)
             {
                 var index = playerItem.Rank - 1;
@@ -214,20 +237,42 @@ namespace Src.View.UI.Popups.LeaderboardsPopup
         private void ShowItemDelegate(UILeaderboardsPopupItemView itemView, LeaderboardUserData itemModel)
         {
             itemView.SetRankText(itemModel.Rank.ToString());
-            itemView.SetNameText($"{itemModel.UserSocialData.FirstName} {itemModel.UserSocialData.LastName}");
+            itemView.SetNameText(itemModel.DisplayedName);
             itemView.SetValueText(FormattingHelper.ToCommaSeparatedNumber(itemModel.LeaderboardValue));
             itemView.SetTypeImageSprite(_currentLBTypeIconSprite);
-            itemView.SetBgImageColor(_playerModelHolder.Uid == itemModel.UserSocialData.Uid ? _colorsHolder.LeaderboardUserItemBgColor : Color.white);
+            itemView.SetBgImageColor(_playerModelHolder.Uid == itemModel.Uid ? _colorsHolder.LeaderboardUserItemBgColor : Color.white);
 
-            var avatarSprite = _avatarsManager.GetAvatarSprite(itemModel.UserSocialData.Uid);
-            if (avatarSprite != null)
+            SetupAvatar(itemView, itemModel);
+            
+        }
+
+        private void SetupAvatar(UILeaderboardsPopupItemView itemView, LeaderboardUserData itemModel)
+        {
+            if (itemModel.Uid != null)
             {
-                itemView.SetAvatar(avatarSprite);
+                var avatarSprite = _avatarsManager.GetAvatarSpriteByUid(itemModel.Uid);
+                if (avatarSprite != null)
+                {
+                    itemView.SetAvatar(avatarSprite);
+                }
+                else
+                {
+                    itemView.SetAvatar(null);
+                    _avatarsManager.LoadAvatarForUid(itemModel.Uid);
+                }
             }
-            else
+            else if (itemModel.PictureUrl != null)
             {
-                itemView.SetAvatar(null);
-                _avatarsManager.LoadAvatarForUid(itemModel.UserSocialData.Uid);
+                var avatarSprite = _avatarsManager.GetAvatarSpriteByUrl(itemModel.PictureUrl);
+                if (avatarSprite != null)
+                {
+                    itemView.SetAvatar(avatarSprite);
+                }
+                else
+                {
+                    itemView.SetAvatar(null);
+                    _avatarsManager.LoadAvatarForUrl(itemModel.PictureUrl);
+                }
             }
         }
 

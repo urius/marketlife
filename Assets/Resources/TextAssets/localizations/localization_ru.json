@@ -19,6 +19,8 @@
     "common_upgrade_name_format_add_wh_slots":"Добавление ячейки [{0}]",
     "common_upgrade_name_format_add_wh_volume":"Увеличение объема [{0}]",
     "common_invite":"Пригласить",
+    "common_take_reward": "Взять",
+    "common_take_reward_x2": "Взять (x2)",
     "common_reward_x2":"Удвоить (х2)",
     "common_unknown_name":"Неизвестный",
     "scale_in":"Приблизить",

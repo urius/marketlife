@@ -12,17 +12,29 @@ namespace Src.Managers
         private static Lazy<AvatarsManager> _instance = new Lazy<AvatarsManager>();
 
         public event Action<string> AvatarLoadedForId = delegate { };
+        public event Action<string> AvatarLoadedForUrl = delegate { };
 
-        private readonly Dictionary<string, AvatarData> _avatarsData = new Dictionary<string, AvatarData>();
+        private readonly Dictionary<string, AvatarDataWithUid> _avatarsDataByUid = new();
+        private readonly Dictionary<string, AvatarData> _avatarsDataByUrl = new();
 
         public void SetupAvatarSettings(string uid, string url)
         {
-            _avatarsData[uid] = new AvatarData(uid, url);
+            _avatarsDataByUid[uid] = new AvatarDataWithUid(uid, url);
         }
 
-        public Sprite GetAvatarSprite(string uid)
+        public Sprite GetAvatarSpriteByUid(string uid)
         {
-            if (_avatarsData.TryGetValue(uid, out var data))
+            if (_avatarsDataByUid.TryGetValue(uid, out var data))
+            {
+                return data.AvatarSprite;
+            }
+
+            return null;
+        }
+
+        public Sprite GetAvatarSpriteByUrl(string url)
+        {
+            if (_avatarsDataByUrl.TryGetValue(url, out var data))
             {
                 return data.AvatarSprite;
             }
@@ -32,9 +44,8 @@ namespace Src.Managers
 
         public async void LoadAvatarForUid(string uid)
         {
-            if (_avatarsData.ContainsKey(uid))
+            if (_avatarsDataByUid.TryGetValue(uid, out var avatarData))
             {
-                var avatarData = _avatarsData[uid];
                 if (avatarData.DownloadIsInProgress == false)
                 {
                     avatarData.DownloadIsInProgress = true;
@@ -47,32 +58,67 @@ namespace Src.Managers
                             AvatarLoadedForId(avatarData.Uid);
                         }
                     }
+
                     avatarData.DownloadIsInProgress = false;
                 }
             }
         }
-    }
 
-    public class AvatarData
-    {
-        public readonly string Uid;
-        public readonly string Url;
-
-        public bool DownloadIsInProgress = false;
-
-        public AvatarData(string uid, string url)
+        public async void LoadAvatarForUrl(string url)
         {
-            Uid = uid;
-            Url = url;
+            if (_avatarsDataByUrl.ContainsKey(url) == false)
+            {
+                var avatarData = new AvatarData(url);
+                _avatarsDataByUrl[url] = avatarData;
+                
+                if (avatarData.DownloadIsInProgress == false)
+                {
+                    avatarData.DownloadIsInProgress = true;
+                    using (var webRequest = UnityWebRequestTexture.GetTexture(avatarData.Url))
+                    {
+                        await webRequest.SendWebRequest();
+                        if (webRequest.result == UnityWebRequest.Result.Success)
+                        {
+                            avatarData.SetLoadedData(webRequest.downloadHandler.data);
+                            AvatarLoadedForUrl(avatarData.Url);
+                        }
+                    }
+
+                    avatarData.DownloadIsInProgress = false;
+                }
+            }
         }
 
-        public Sprite AvatarSprite { get; private set; }
-
-        public void SetLoadedData(byte[] data)
+        private class AvatarData
         {
-            var texture = new Texture2D(2, 2);
-            texture.LoadImage(data);
-            AvatarSprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+            public readonly string Url;
+
+            public bool DownloadIsInProgress = false;
+
+            public AvatarData(string url)
+            {
+                Url = url;
+            }
+
+            public Sprite AvatarSprite { get; private set; }
+
+            public void SetLoadedData(byte[] data)
+            {
+                var texture = new Texture2D(2, 2);
+                texture.LoadImage(data);
+                AvatarSprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+            }
+        }
+
+        private class AvatarDataWithUid : AvatarData
+        {
+            public readonly string Uid;
+
+            public AvatarDataWithUid(string uid, string url)
+                : base(url)
+            {
+                Uid = uid;
+            }
         }
     }
 }

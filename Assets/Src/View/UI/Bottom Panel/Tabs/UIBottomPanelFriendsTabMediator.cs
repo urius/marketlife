@@ -74,7 +74,7 @@ namespace Src.View.UI.Bottom_Panel.Tabs
             {
                 if (displayedItem.ViewModel.HasFriendData && displayedItem.ViewModel.FriendData.Uid == uid)
                 {
-                    displayedItem.View.SetMainIconImageSprite(_avatarsManager.GetAvatarSprite(uid));
+                    displayedItem.View.SetMainIconImageSprite(_avatarsManager.GetAvatarSpriteByUid(uid));
                     break;
                 }
             }
@@ -152,7 +152,7 @@ namespace Src.View.UI.Bottom_Panel.Tabs
                     }
                 }
 
-                var avatarSprite = _avatarsManager.GetAvatarSprite(friendData.Uid);
+                var avatarSprite = _avatarsManager.GetAvatarSpriteByUid(friendData.Uid);
                 itemView.SetMainIconImageSprite(avatarSprite);
                 if (avatarSprite == null)
                 {

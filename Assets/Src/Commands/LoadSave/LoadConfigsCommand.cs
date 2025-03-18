@@ -11,8 +11,12 @@ namespace Src.Commands.LoadSave
             var result = true;
             var abDataHolder = ABDataHolder.Instance;
 
+            new LoadLeaderboardsDataCommand().ExecuteAsync().Forget();
+            
             result &= await GameConfigManager.Instance.LoadMainConfigAsync(abDataHolder.MainConfigPostfix);
             result &= await new LoadBankConfigCommand().ExecuteAsync();
+            
+            
             return result;
         }
     }

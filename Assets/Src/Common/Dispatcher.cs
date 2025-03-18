@@ -82,11 +82,11 @@ namespace Src.Common
         public Action UIDailyMissionsButtonClicked = delegate { };
         public Action<DailyMissionModel, Vector3> UITakeDailyMissionRewardClicked = delegate { };
         public Action<Vector3[]> UIDailyBonusTakeClicked = delegate { };
+        public Action<Vector3[]> UIDailyBonusTakeX2Clicked = delegate { };
         public Action<Vector3> UILevelUpShareClicked = delegate { };
         public Action<Vector3> UIOfflineReportShareClicked = delegate { };
         public Action UIShareSuccessCallback = delegate { };
         public Action<string> UIBillboardPopupApplyTextClicked = delegate { };
-        public Action<int> UIDailyBonusDoubleClicked = delegate { };
         public Action UIOfflineReportPopupViewAdsClicked = delegate { };
         public Action<int> UIChangeCashDeskManHairClicked = delegate { };
         public Action<int> UIChangeCashDeskManGlassesClicked = delegate { };

@@ -40,6 +40,10 @@ namespace Src.Commands.JsHandle
                             break;
                     }
                 }
+                else
+                {
+                    advertViewStateModel.MarkCurrentAsCanceled();
+                }
             }
         }
     }

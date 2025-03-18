@@ -8,12 +8,12 @@ namespace Src.Commands.JsHandle
 {
     public struct ProcessVkGetUsersDataCommand
     {
-        public void Execute(string messsage)
+        public void Execute(string message)
         {
-            UnityEngine.Debug.Log($"{nameof(ProcessVkGetUsersDataCommand)}: message: {messsage}");
+            UnityEngine.Debug.Log($"{nameof(ProcessVkGetUsersDataCommand)}: message: {message}");
 
             var avatarsManager = AvatarsManager.Instance;
-            var deserializedData = JsonConvert.DeserializeObject<VkUsersDataDto>(messsage);
+            var deserializedData = JsonConvert.DeserializeObject<VkUsersDataDto>(message);
             var convertedData = deserializedData.data.Select(d => new UserSocialData(d.id.ToString(), d.first_name, d.last_name, d.photo_50));
             foreach (var data in convertedData)
             {

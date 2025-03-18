@@ -4,6 +4,7 @@ using Src.Common_Utils;
 using Src.Managers;
 using Src.Model;
 using Src.Model.Configs;
+using Src.Model.Leaderboards;
 using Src.View.UI.Common;
 using Src.View.UI.Tutorial;
 using TMPro;
@@ -39,6 +40,7 @@ namespace Src.View.UI.Top_Panel
         private int _updateGoldAnimationDelayMs = 0;
         private int _updateCashAnimationDelayMs = 0;
         private int _updateExpAnimationDelayMs = 0;
+        private LeaderboardsDataHolder _leaderboardsDataHolder;
 
         public void Awake()
         {
@@ -51,6 +53,7 @@ namespace Src.View.UI.Top_Panel
             _tutorialUIElementsProvider = TutorialUIElementsProvider.Instance;
             _camera = Camera.main;
             _bankAdvertViewStateProvider = AdvertViewStateModel.Instance;
+            _leaderboardsDataHolder = LeaderboardsDataHolder.Instance;
 
             _notificationsCounterGold.gameObject.SetActive(false);
             _notificationsCounterCash.gameObject.SetActive(false);
@@ -72,6 +75,7 @@ namespace Src.View.UI.Top_Panel
         {
             SetLevel(_playerProgressModel.Level);
             UpdateValues();
+            UpdateLeaderBoardButtonVisibility();
 
             Activate();
         }
@@ -178,6 +182,7 @@ namespace Src.View.UI.Top_Panel
             _playerProgressModel.ExpChanged += OnExpChanged;
             _playerProgressModel.LevelChanged += OnLevelChanged;
             _playerShopModel.MoodChanged += OnMoodChanged;
+            _leaderboardsDataHolder.LeaderboardDataSet += OnLeaderboardDataSet;
             _crystalsBarView.ButtonClicked += OnAddGoldClicked;
             _cashBarView.ButtonClicked += OnAddCashClicked;
             _expBarView.ButtonClicked += OnRequestOpenLeaderboardsClicked;
@@ -185,6 +190,24 @@ namespace Src.View.UI.Top_Panel
             _dispatcher.UIRequestAddCashFlyAnimation += OnUIRequestAddCashFlyAnimation;
             _dispatcher.UIRequestAddExpFlyAnimation += OnUIRequestAddExpFlyAnimation;
             _bankAdvertViewStateProvider.BankAdvertWatchesCountChanged += OnBankAdvertWatchesCountChanged;
+        }
+
+        private void OnLeaderboardDataSet(LeaderboardType _)
+        {
+            UpdateLeaderBoardButtonVisibility();
+        }
+
+        private void UpdateLeaderBoardButtonVisibility()
+        {
+            
+            if (_leaderboardsDataHolder.IsLeaderboardsSet)
+            {
+                _expBarView.ShowButtonAsync().Forget();
+            }
+            else
+            {
+                _expBarView.HideButtonAsync().Forget();
+            }
         }
 
         private void OnBankAdvertWatchesCountChanged()

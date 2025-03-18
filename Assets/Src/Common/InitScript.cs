@@ -32,6 +32,7 @@ namespace Src.Common
 
         private async void Start()
         {
+            await MirraSdkWrapper.InvokeAuthorization();
             await PlayerModelHolder.Instance.SetUidTask;
             await new InitializeAndLoadCommand().ExecuteAsync();
         }

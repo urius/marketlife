@@ -191,6 +191,7 @@
     "popup_daily_missions_title": "Daily Missions",
     "popup_daily_missions_status_format": "To complete: {0}",
     "popup_daily_missions_retreive_reward": "Claim Reward",
+    "popup_daily_missions_retreive_reward_x2": "Claim Reward (x2)",
     "popup_daily_missions_mission_completed": "Mission completed!",
     "popup_leaderboards_title": "Leaderboard",
     "popup_leaderboards_exp_tab": "By Experience",

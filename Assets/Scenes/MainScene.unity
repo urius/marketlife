@@ -4726,7 +4726,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _debugUid: 48982
-  _disableSave: 0
+  _disableSave: 1
   _disableTutorial: 1
   _loadDebugConfigVersion: 0
   _prefabsHolder: {fileID: 11400000, guid: ef9b7d8e9f2f24fa5b28642d8858a2d4, type: 2}

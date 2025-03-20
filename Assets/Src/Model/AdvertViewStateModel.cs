@@ -115,7 +115,7 @@ namespace Src.Model
         
         public bool IsDailyBonusAdsWatched()
         {
-            return IsWatched(AdvertTargetType.DailyBonus);
+            return IsWatched(AdvertTargetType.DailyBonusRewardX2);
         }
     }
 
@@ -135,7 +135,8 @@ namespace Src.Model
         OfflineExpX2,
         BankGold,
         BankCash,
-        DailyBonus,
+        DailyBonusRewardX2,
+        DailyMissionRewardX2,
     }
 
     public enum AdvertWatchState

@@ -19,6 +19,7 @@ namespace Src.Systems.DailyMission
 
         private readonly GameStateModel _gameStateModel = GameStateModel.Instance;
         private readonly PlayerModelHolder _playerModelHolder = PlayerModelHolder.Instance;
+        private readonly AdvertViewStateModel _advertStateModel = AdvertViewStateModel.Instance;
         private readonly GameConfigManager _configManager = GameConfigManager.Instance;
         private readonly System.Random _random = new();
         private readonly Dispatcher _dispatcher = Dispatcher.Instance;
@@ -60,6 +61,7 @@ namespace Src.Systems.DailyMission
             
             _gameStateModel.GameStateChanged += OnGameStateChanged;
             _dispatcher.UITakeDailyMissionRewardClicked += OnUITakeDailyMissionRewardClicked;
+            _dispatcher.UITakeDailyMissionRewardX2Clicked += OnUITakeDailyMissionRewardX2Clicked;
             _updatesProvider.RealtimeSecondUpdate += OnRealtimeSecondUpdate;
         }
 
@@ -117,23 +119,41 @@ namespace Src.Systems.DailyMission
             {
                 var screenPoint = _screenCalculator.WorldToScreenPoint(rewardIconWorldPosition);
                 var missionReward = missionModel.Reward;
+                var multiplier = _advertStateModel.IsWatched(AdvertTargetType.DailyMissionRewardX2) ? 2 : 1;
+                var rewardAmount = missionReward.Amount * multiplier;
                 switch (missionReward.Type)
                 {
                     case RewardType.Cash:
                         _dispatcher.UIRequestAddCashFlyAnimation(screenPoint, Mathf.Clamp((int)(missionReward.Amount * 0.002), 1, 10));
-                        _playerModelHolder.UserModel.AddCash(missionReward.Amount);
+                        _playerModelHolder.UserModel.AddCash(rewardAmount);
                         break;
                     case RewardType.Gold:
                         _dispatcher.UIRequestAddGoldFlyAnimation(screenPoint, Mathf.Clamp((int)(missionReward.Amount * 1), 1, 10));
-                        _playerModelHolder.UserModel.AddGold(missionReward.Amount);
+                        _playerModelHolder.UserModel.AddGold(rewardAmount);
                         break;
                     case RewardType.Exp:
                         _dispatcher.UIRequestAddExpFlyAnimation(screenPoint, Mathf.Clamp((int)(missionReward.Amount * 0.02), 1, 10));
-                        _playerModelHolder.UserModel.AddExp(missionReward.Amount);
+                        _playerModelHolder.UserModel.AddExp(rewardAmount);
                         break;
                 }
 
                 missionModel.SetRewardTaken();
+            }
+        }
+
+        private async void OnUITakeDailyMissionRewardX2Clicked(DailyMissionModel missionModel, Vector3 rewardIconWorldPosition)
+        {
+            if (_advertStateModel.IsWatched(AdvertTargetType.DailyMissionRewardX2) == false)
+            {
+                _advertStateModel.PrepareTarget(AdvertTargetType.DailyMissionRewardX2);
+                _dispatcher.RequestShowAdvert();
+
+                var watchAdsResult = await _advertStateModel.CurrentShowingAdsTask;
+                if (watchAdsResult)
+                {
+                    OnUITakeDailyMissionRewardClicked(missionModel, rewardIconWorldPosition);
+                    _advertStateModel.ResetTarget(AdvertTargetType.DailyMissionRewardX2);
+                }
             }
         }
 

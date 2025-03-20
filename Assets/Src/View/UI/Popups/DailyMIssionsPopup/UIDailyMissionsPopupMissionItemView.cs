@@ -10,6 +10,7 @@ namespace Src.View.UI.Popups.DailyMIssionsPopup
     public class UIDailyMissionsPopupMissionItemView : MonoBehaviour
     {
         public event Action<UIDailyMissionsPopupMissionItemView> TakeRewardClicked = delegate { };
+        public event Action<UIDailyMissionsPopupMissionItemView> TakeRewardX2Clicked = delegate { };
 
         [SerializeField] private Image _missionIcon;
         [SerializeField] private TMP_Text _missionDescriptionText;
@@ -17,11 +18,20 @@ namespace Src.View.UI.Popups.DailyMIssionsPopup
         [SerializeField] private Image _rewardIcon;
         [SerializeField] private Button _takeRewardButton;
         [SerializeField] private TMP_Text _takeRewardButtonText;
+        [SerializeField] private Button _takeRewardX2Button;
+        [SerializeField] private TMP_Text _takeRewardX2ButtonText;
         [SerializeField] private RectTransform _progressTransform;
         [SerializeField] private TMP_Text _progressText;
         [SerializeField] private RectTransform _progressLineTransform;
 
         public Transform RewardButtonTransform => _takeRewardButton.transform;
+        public Transform RewardX2ButtonTransform => _takeRewardX2Button.transform;
+
+        private void Awake()
+        {
+            _takeRewardButton.AddOnClickListener(OnTakeRewardClick);
+            _takeRewardX2Button.AddOnClickListener(OnTakeRewardX2Click);
+        }
 
         public void SetMissionIconSprite(Sprite sprite)
         {
@@ -36,6 +46,11 @@ namespace Src.View.UI.Popups.DailyMIssionsPopup
         public void SetTakeButtonText(string description)
         {
             _takeRewardButtonText.text = description;
+        }
+
+        public void SetTakeX2ButtonText(string description)
+        {
+            _takeRewardX2ButtonText.text = description;
         }
 
         public void SetRewardAmount(int amount)
@@ -70,10 +85,16 @@ namespace Src.View.UI.Popups.DailyMIssionsPopup
         {
             _takeRewardButton.gameObject.SetActive(isVisible);
         }
+        
+        public void SetTakeX2ButtonVisibility(bool isVisible)
+        {
+            _takeRewardX2Button.gameObject.SetActive(isVisible);
+        }
 
-        public void SetTakeButtonInteractable(bool isInteractable)
+        public void SetTakeButtonsInteractable(bool isInteractable)
         {
             _takeRewardButton.interactable = isInteractable;
+            _takeRewardX2Button.interactable = isInteractable;
         }
 
         public void SetProgressVisibility(bool isVisible)
@@ -81,14 +102,14 @@ namespace Src.View.UI.Popups.DailyMIssionsPopup
             _progressTransform.gameObject.SetActive(isVisible);
         }
 
-        private void Awake()
-        {
-            _takeRewardButton.AddOnClickListener(OnTakeRewardClick);
-        }
-
         private void OnTakeRewardClick()
         {
             TakeRewardClicked(this);
+        }
+
+        private void OnTakeRewardX2Click()
+        {
+            TakeRewardX2Clicked(this);
         }
     }
 }

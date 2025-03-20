@@ -81,6 +81,7 @@ namespace Src.Common
         public Action UIGetBonusButtonClicked = delegate { };
         public Action UIDailyMissionsButtonClicked = delegate { };
         public Action<DailyMissionModel, Vector3> UITakeDailyMissionRewardClicked = delegate { };
+        public Action<DailyMissionModel, Vector3> UITakeDailyMissionRewardX2Clicked = delegate { };
         public Action<Vector3[]> UIDailyBonusTakeClicked = delegate { };
         public Action<Vector3[]> UIDailyBonusTakeX2Clicked = delegate { };
         public Action<Vector3> UILevelUpShareClicked = delegate { };

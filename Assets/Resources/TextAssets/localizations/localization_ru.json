@@ -191,6 +191,7 @@
     "popup_daily_missions_title":"Ежедневные задания",
     "popup_daily_missions_status_format":"До завершения: {0}",
     "popup_daily_missions_retreive_reward":"Получить награду",  
+    "popup_daily_missions_retreive_reward_x2":"Получить награду (x2)",  
     "popup_daily_missions_mission_completed":"Задание выполнено!",
     "popup_leaderboards_title":"Таблица рекордов",
     "popup_leaderboards_exp_tab":"По опыту",

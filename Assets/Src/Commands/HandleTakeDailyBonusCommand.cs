@@ -37,7 +37,7 @@ namespace Src.Commands
                         playerModel.AddCash(reward.Value);
                     }
 
-                    advertStateModel.ResetTarget(AdvertTargetType.DailyBonus);
+                    advertStateModel.ResetTarget(AdvertTargetType.DailyBonusRewardX2);
                     playerModel.UpdateDailyBonus(dailyBonusPopupViewModel.OpenTimestamp,
                         dailyBonusPopupViewModel.CurrentBonusDay);
 

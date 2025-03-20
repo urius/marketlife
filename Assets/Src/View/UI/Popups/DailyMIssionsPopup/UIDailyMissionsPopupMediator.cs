@@ -144,17 +144,25 @@ namespace Src.View.UI.Popups.DailyMIssionsPopup
         private void ActivateView(UIDailyMissionsPopupMissionItemView itemView)
         {
             itemView.TakeRewardClicked += OnTakeRewardClicked;
+            itemView.TakeRewardX2Clicked += OnTakeRewardX2Clicked;
         }
 
         private void DeactivateItem(UIDailyMissionsPopupMissionItemView itemView)
         {
             itemView.TakeRewardClicked -= OnTakeRewardClicked;
+            itemView.TakeRewardX2Clicked -= OnTakeRewardX2Clicked;
         }
 
         private void OnTakeRewardClicked(UIDailyMissionsPopupMissionItemView itemView)
         {
             var itemViewModel = GetViewModelByView(itemView);
             _dispatcher.UITakeDailyMissionRewardClicked(itemViewModel, itemView.RewardButtonTransform.position);
+        }
+
+        private void OnTakeRewardX2Clicked(UIDailyMissionsPopupMissionItemView itemView)
+        {
+            var itemViewModel = GetViewModelByView(itemView);
+            _dispatcher.UITakeDailyMissionRewardX2Clicked(itemViewModel, itemView.RewardX2ButtonTransform.position);
         }
 
         private DailyMissionModel GetViewModelByView(UIDailyMissionsPopupMissionItemView itemView)
@@ -197,9 +205,12 @@ namespace Src.View.UI.Popups.DailyMIssionsPopup
             }
 
             itemView.SetTakeButtonVisibility(missionModel.IsCompleted);
-            itemView.SetTakeButtonInteractable(missionModel.IsCompleted && missionModel.IsRewardTaken == false);
+            itemView.SetTakeX2ButtonVisibility(missionModel.IsCompleted && !missionModel.IsRewardTaken);
+            itemView.SetTakeButtonsInteractable(missionModel.IsCompleted && missionModel.IsRewardTaken == false);
             var takeButtonText = _loc.GetLocalization(missionModel.IsRewardTaken ? LocalizationKeys.PopupDailyMissionsMissionCompleted : LocalizationKeys.PopupDailyMissionsRetreiveReward);
             itemView.SetTakeButtonText(takeButtonText);
+            var takeX2ButtonText = _loc.GetLocalization(LocalizationKeys.PopupDailyMissionsRetreiveRewardX2);
+            itemView.SetTakeX2ButtonText(takeX2ButtonText);
         }
 
         private Sprite GetRewardIconSprite(Reward reward)

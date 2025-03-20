@@ -1,3 +1,5 @@
+using Src.Common;
+
 public struct QuickDeliverCommand
 {
     public void Execute(int slotIndex)

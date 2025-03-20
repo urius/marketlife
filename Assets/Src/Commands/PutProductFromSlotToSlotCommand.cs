@@ -1,4 +1,5 @@
 using System;
+using Src.Common;
 
 public struct PutProductFromSlotToSlotCommand
 {

@@ -168,6 +168,7 @@ namespace Src.Managers
         public static string PopupShelfContentProductDescriptionFormat = "popup_shelf_content_product_description_format";
         public static string PopupShelfContentProductEmpty = "popup_shelf_content_product_empty";
         public static string PopupShelfContentProductTakeFromWarehouse = "popup_shelf_content_product_take_from_warehouse";
+        public static string PopupOrderProductTitle = "popup_order_product_title";
         public static string PopupOrderProductDemandText = "popup_order_product_demand_text";
         public static string PopupOrderProductDeliverText = "popup_order_product_deliver_text";
         public static string PopupOrderProductProfitText = "popup_order_product_profit_text";

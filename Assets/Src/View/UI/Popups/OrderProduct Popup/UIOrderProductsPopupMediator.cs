@@ -60,6 +60,7 @@ namespace Src.View.UI.Popups.OrderProduct_Popup
             _itemRect = (_prefabsHolder.UIOrderProductPopupItemPrefab.transform as RectTransform).rect;
             var popupGo = GameObject.Instantiate(_prefabsHolder.UITabbedContentPopupPrefab, _parentTransform);
             _popupView = popupGo.GetComponent<UITabbedContentPopupView>();
+            _popupView.SetTitleText(_loc.GetLocalization(LocalizationKeys.PopupOrderProductTitle));
             _popupView.SetupTabButtons(_viewModel.TabIds
                 .Select(id => _loc.GetLocalization($"{LocalizationKeys.NameProductGroupIdPrefix}{id}"))
                 .ToArray());

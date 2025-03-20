@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
 using Src.Managers;
+using Src.Model;
 using Src.Model.Common;
 using Src.Model.Configs;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Src.Common
 {
@@ -59,14 +62,20 @@ namespace Src.Common
             return result;
         }
 
-        public static int CalculateExpToAdd(ProductConfig productConfig, int amount)
+        public static int CalculateExpToAdd(ProductConfig productConfig, int amount, bool onlineMode = false)
         {
             var result = 0;
             if (amount > 0)
             {
                 var buyPrice = productConfig.GetPriceForAmount(amount);
-                var clearProfitInCash = productConfig.GetSellPriceForAmount(amount) - (buyPrice.IsGold ? 0 : buyPrice.Value);
+                var clearProfitInCash = productConfig.GetSellPriceForAmount(amount) - (buyPrice.IsGold || onlineMode ? 0 : buyPrice.Value);
                 result += clearProfitInCash;
+                
+                if (onlineMode)
+                {
+                    var playerLevel = PlayerModelHolder.Instance.UserModel.ProgressModel.Level;
+                    result *= Math.Max(1, 5 - playerLevel);
+                }
             }
 
             return result > 0 ? result : 0;

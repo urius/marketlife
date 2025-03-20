@@ -255,7 +255,7 @@ namespace Src.Systems
                     var sellPrice = productToPay.SellPrice;
                     _viewingUserModel.ProgressModel.AddCash(sellPrice);
                     _viewingUserModel.ProgressModel.DelayedCash = Math.Max(0, _viewingUserModel.ProgressModel.DelayedCash - sellPrice);
-                    _viewingUserModel.ProgressModel.AddExp(CalculationHelper.CalculateExpToAdd(productToPay.Config, productToPay.Amount));
+                    _viewingUserModel.ProgressModel.AddExp(CalculationHelper.CalculateExpToAdd(productToPay.Config, productToPay.Amount, onlineMode: true));
                     customer.ToPayingState();
 
                     var screenPoint = _screenCalculator.CellToScreenPoint(customer.Coords);

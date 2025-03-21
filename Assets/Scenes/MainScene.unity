@@ -38,6 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1363,7 +1364,6 @@ MonoBehaviour:
   _muteAudioButton: {fileID: 1757389253}
   _scaleInButton: {fileID: 1071082812}
   _scaleOutButton: {fileID: 1888118221}
-  _pauseButton: {fileID: 1645676856}
   _bgImage: {fileID: 214987895}
 --- !u!114 &214987895
 MonoBehaviour:
@@ -4734,8 +4734,6 @@ MonoBehaviour:
   _localizationManager: {fileID: 11400000, guid: 896d83f0651d245229990a6d40d7740d,
     type: 2}
   _colorsHolder: {fileID: 11400000, guid: e3f38c4c1965048dea3f80f3697ca748, type: 2}
-  _builtinAssetsHolder: {fileID: 11400000, guid: bd6225721bb4e4d68a6e0b836d90fe27,
-    type: 2}
 --- !u!114 &1026738519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7829,9 +7827,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1512013713}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ab141c1630fe4d1b83dc1b4d474b651, type: 3}
+  m_Script: {fileID: 11500000, guid: abb28c9e54d644d79382b67c7a413809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rectTransform: {fileID: 1512013714}
   _button: {fileID: 1512013715}
   _iconImage: {fileID: 1512013716}
   _notificationPointImage: {fileID: 910083102}

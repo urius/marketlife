@@ -7836,6 +7836,7 @@ MonoBehaviour:
   _iconImage: {fileID: 1512013716}
   _notificationPointImage: {fileID: 910083102}
   _notificationCheckImage: {fileID: 2121928354}
+  _rectTransform: {fileID: 1512013714}
 --- !u!1 &1518942245
 GameObject:
   m_ObjectHideFlags: 0

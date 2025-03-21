@@ -8,7 +8,7 @@ namespace Src.View.UI.Left_Panel
 {
     public class UIDailyMissionsButtonMediator : IMediator
     {
-        private readonly UIDailyMIssionsButtonView _buttonView;
+        private readonly UIDailyMissionsButtonView _buttonView;
         private readonly GameStateModel _gameStateModel;
         private readonly PlayerModelHolder _playerModelHodler;
         private readonly Dispatcher _dispatcher;
@@ -18,7 +18,7 @@ namespace Src.View.UI.Left_Panel
         private DailyMissionsModel _playerMissionsModel;
         private bool _newMissionsNotificationFlag = false;
 
-        public UIDailyMissionsButtonMediator(UIDailyMIssionsButtonView buttonView)
+        public UIDailyMissionsButtonMediator(UIDailyMissionsButtonView buttonView)
         {
             _buttonView = buttonView;
 
@@ -42,15 +42,18 @@ namespace Src.View.UI.Left_Panel
 
         private void UpdateButtonView()
         {
+            var isSomePopupShowing = _gameStateModel.ShowingPopupModel != null;
             _buttonView.gameObject.SetActive(_playerMissionsModel.MissionsList.Count > 0);
             var allRewardsTaken = _playerMissionsModel.MissionsList.All(m => m.IsRewardTaken);
             _buttonView.SetIconImageAlpha(allRewardsTaken ? 0.5f : 1f);
-            _buttonView.SetNotificationCheckVisibility(false);
-            if (HaveCompletedMissions())
+            var haveCompletedMissions = HaveCompletedMissions();
+            _buttonView.SetNotificationCheckVisibility(haveCompletedMissions);
+            _buttonView.SetJumpAnimationState(haveCompletedMissions && !isSomePopupShowing);
+
+            if (haveCompletedMissions)
             {
                 _buttonView.SetNotificationColor(_colorsHolder.DailyMissionCompletedMissionsNotificationColor);
                 _buttonView.SetNotificationVisibility(true);
-                _buttonView.SetNotificationCheckVisibility(true);
             }
             else if (_newMissionsNotificationFlag == true)
             {

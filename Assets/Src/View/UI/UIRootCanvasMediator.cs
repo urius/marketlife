@@ -17,7 +17,7 @@ namespace Src.View.UI
         [SerializeField] private RectTransform _gameViewUiContainerRectTransform;
         [SerializeField] private BottomPanelView _bottomPanelView;
         [SerializeField] private UIGetDailyBonusButtonView _dailyBonusButtonView;
-        [SerializeField] private UIDailyMIssionsButtonView _dailyMissionsButtonView;
+        [SerializeField] private UIDailyMissionsButtonView _dailyMissionsButtonView;
         [SerializeField] private Canvas _rootCanvas;
         [SerializeField] private Canvas _popupsCanvas;
         [SerializeField] private Canvas _tutorialCanvas;

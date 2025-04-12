@@ -1,9 +1,8 @@
-using System;
+using Cysharp.Threading.Tasks;
 using Src.Commands;
 using Src.Managers;
 using Src.Model;
 using Src.Model.Debug;
-using UnityEditor;
 using UnityEngine;
 
 namespace Src.Common
@@ -32,7 +31,8 @@ namespace Src.Common
 
         private async void Start()
         {
-            await MirraSdkWrapper.InvokeAuthorization();
+            MirraSdkWrapper.InvokeAuthorization().Forget();
+            
             await PlayerModelHolder.Instance.SetUidTask;
             await new InitializeAndLoadCommand().ExecuteAsync();
         }

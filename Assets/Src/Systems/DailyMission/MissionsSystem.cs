@@ -159,7 +159,7 @@ namespace Src.Systems.DailyMission
 
         private void OnGameStateChanged(GameStateName prevState, GameStateName currentState)
         {
-            if (currentState == GameStateName.ReadyForStart)
+            if (currentState == GameStateName.Loaded)
             {
                 var isNewDay = IsNewDay();
                 var dailyMissionsModel = _playerModelHolder.UserModel.DailyMissionsModel;
@@ -168,19 +168,9 @@ namespace Src.Systems.DailyMission
                     dailyMissionsModel.Clear();
                     CreateMissionModels();
                 }
+
                 CreateMissionProcessors();
-                if (isNewDay == false)
-                {
-                    StartCreatedProcessors();
-                }
-            }
-            else if (prevState == GameStateName.ReadyForStart
-                     && currentState == GameStateName.PlayerShopSimulation)
-            {
-                if (IsNewDay())
-                {
-                    StartCreatedProcessors();
-                }
+                StartCreatedProcessors();
             }
         }
 

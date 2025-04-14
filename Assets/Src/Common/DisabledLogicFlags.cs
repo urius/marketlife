@@ -4,5 +4,6 @@ namespace Src.Common
     {
         public static bool IsFriendsLogicDisabled = false;
         public static bool IsServerDataDisabled => MirraSdkWrapper.IsYandexGames;
+        public static bool IsLeaderboardsDisabled => !MirraSdkWrapper.IsVk;
     }
 }

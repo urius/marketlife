@@ -16,6 +16,7 @@ namespace Src.Commands.LoadSave
         {
             var leaderboardsDataHolder = LeaderboardsDataHolder.Instance;
             
+            if (DisabledLogicFlags.IsLeaderboardsDisabled) return leaderboardsDataHolder.IsLeaderboardsSet;
             if (leaderboardsDataHolder.IsLeaderboardsSet) return leaderboardsDataHolder.IsLeaderboardsSet;
             
             if (MirraSdkWrapper.IsMirraSdkUsed)

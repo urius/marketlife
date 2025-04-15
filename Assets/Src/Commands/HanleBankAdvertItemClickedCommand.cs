@@ -1,3 +1,5 @@
+using Src.Common;
+using Src.Model;
 using UnityEngine;
 
 public struct HanleBankAdvertItemClickedCommand

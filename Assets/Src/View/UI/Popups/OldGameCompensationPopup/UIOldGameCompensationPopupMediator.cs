@@ -1,4 +1,6 @@
 using System;
+using Src.Common;
+using Src.Managers;
 using UnityEngine;
 
 public class UIOldGameCompensationPopupMediator : IMediator

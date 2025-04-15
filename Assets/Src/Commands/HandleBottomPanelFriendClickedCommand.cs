@@ -1,3 +1,5 @@
+using Src.Managers;
+
 public struct HandleBottomPanelFriendClickedCommand
 {
     public void Execute(FriendData friendData)

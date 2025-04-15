@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using Src.Common;
+using Src.Model;
 
 public struct ProcessShowAdsResultCommand
 {

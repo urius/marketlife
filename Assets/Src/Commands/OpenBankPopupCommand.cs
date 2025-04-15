@@ -1,3 +1,5 @@
+using Src.Model;
+
 public struct OpenBankPopupCommand
 {
     public async void Execute(bool isGold)

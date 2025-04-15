@@ -1,4 +1,6 @@
 using Cysharp.Threading.Tasks;
+using Src.Common;
+using Src.Model;
 using UnityEngine;
 
 public struct HandleTakeDailyBonusCommand

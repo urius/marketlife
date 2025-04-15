@@ -1,5 +1,8 @@
 using System;
 using System.Linq;
+using Src.Common;
+using Src.Managers;
+using Src.Model;
 using UnityEngine;
 
 public class UIDailyBonusPopupMediator : IMediator

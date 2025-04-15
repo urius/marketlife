@@ -1,3 +1,5 @@
+using Src.Common;
+
 public struct UIRequestPlaceShelfCommand
 {
     public void Execute(int shelfNumericId)

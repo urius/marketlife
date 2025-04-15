@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Src.Common;
 
 public class UIBottomPanelFloorsTabMediator : UIBottomPanelInteriorModeScrollItemsTabMediatorBase<ItemConfig<ShopDecorationConfigDto>>
 {

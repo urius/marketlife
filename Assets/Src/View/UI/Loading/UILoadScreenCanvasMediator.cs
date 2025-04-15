@@ -1,5 +1,6 @@
 using System;
 using Cysharp.Threading.Tasks;
+using Src.Managers;
 using UnityEngine;
 
 public class UILoadScreenCanvasMediator : MonoBehaviour

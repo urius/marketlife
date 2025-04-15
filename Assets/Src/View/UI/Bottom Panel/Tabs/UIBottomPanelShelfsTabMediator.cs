@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Src.Common;
+using Src.Managers;
 
 public class UIBottomPanelShelfsTabMediator : UIBottomPanelInteriorModeScrollItemsTabMediatorBase<ItemConfig<ShelfConfigDto>>
 {

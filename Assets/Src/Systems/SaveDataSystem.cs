@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
+using Src.Common;
 using UnityEngine;
 
 public class SaveDataSystem
@@ -331,7 +333,7 @@ public class SaveDataSystem
         }
     }
 
-    private async Task SaveAsync()
+    private async UniTask SaveAsync()
     {
         var saveFieldsData = _saveFieldsData;
         _saveFieldsData = SaveField.None;

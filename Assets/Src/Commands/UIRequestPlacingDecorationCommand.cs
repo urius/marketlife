@@ -1,3 +1,5 @@
+using Src.Common;
+
 public struct UIRequestPlacingDecorationCommand
 {
     public void Execute(ShopDecorationObjectType decorationType, int numericId)

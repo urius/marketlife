@@ -1,3 +1,6 @@
+using Src.Common;
+using Src.Model;
+
 public struct HandleDailyBonusDoubleRewardCommand
 {
     public void Execute(int rewardIndex)

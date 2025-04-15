@@ -1,3 +1,5 @@
+using Src.Model;
+
 public struct CloseCurrentPopupCommand
 {
     public void Execute()

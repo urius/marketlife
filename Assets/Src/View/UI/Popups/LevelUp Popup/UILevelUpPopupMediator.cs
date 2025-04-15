@@ -1,4 +1,5 @@
 using Src.Common;
+using Src.Managers;
 using UnityEngine;
 
 public class UILevelUpPopupMediator : UIContentPopupMediator

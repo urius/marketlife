@@ -1,3 +1,5 @@
+using Src.Common;
+
 public struct ProcessHighlightedObjectClickCommand
 {
     public void Execute()

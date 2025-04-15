@@ -1,3 +1,4 @@
+using Src.Common;
 using UnityEngine;
 
 public class ShelfViewMediator : ShopObjectMediatorBase

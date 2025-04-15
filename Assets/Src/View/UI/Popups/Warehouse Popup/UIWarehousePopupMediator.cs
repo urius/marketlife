@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Src.Common;
+using Src.Managers;
 using UnityEngine;
 
 public class UIWarehousePopupMediator : IMediator

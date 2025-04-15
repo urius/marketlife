@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using Src.Common;
 
 public struct SwitchToFriendShopCommand
 {

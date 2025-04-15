@@ -3,87 +3,111 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIDailyMissionsPopupMissionItemView : MonoBehaviour
+namespace Src.View.UI.Popups.DailyMIssionsPopup
 {
-    public event Action<UIDailyMissionsPopupMissionItemView> TakeRewardClicked = delegate { };
-
-    [SerializeField] private Image _missionIcon;
-    [SerializeField] private TMP_Text _missionDescriptionText;
-    [SerializeField] private TMP_Text _rewardAmountText;
-    [SerializeField] private Image _rewardIcon;
-    [SerializeField] private Button _takeRewardButton;
-    [SerializeField] private TMP_Text _takeRewardButtonText;
-    [SerializeField] private RectTransform _progressTransform;
-    [SerializeField] private TMP_Text _progressText;
-    [SerializeField] private RectTransform _progressLineTransform;
-
-    public Transform RewardButtonTransform => _takeRewardButton.transform;
-
-    public void SetMissionIconSprite(Sprite sprite)
+    public class UIDailyMissionsPopupMissionItemView : MonoBehaviour
     {
-        _missionIcon.sprite = sprite;
-    }
+        public event Action<UIDailyMissionsPopupMissionItemView> TakeRewardClicked = delegate { };
+        public event Action<UIDailyMissionsPopupMissionItemView> TakeRewardX2Clicked = delegate { };
 
-    public void SetMissionDescription(string description)
-    {
-        _missionDescriptionText.text = description;
-    }
+        [SerializeField] private Image _missionIcon;
+        [SerializeField] private TMP_Text _missionDescriptionText;
+        [SerializeField] private TMP_Text _rewardAmountText;
+        [SerializeField] private Image _rewardIcon;
+        [SerializeField] private Button _takeRewardButton;
+        [SerializeField] private TMP_Text _takeRewardButtonText;
+        [SerializeField] private Button _takeRewardX2Button;
+        [SerializeField] private TMP_Text _takeRewardX2ButtonText;
+        [SerializeField] private RectTransform _progressTransform;
+        [SerializeField] private TMP_Text _progressText;
+        [SerializeField] private RectTransform _progressLineTransform;
 
-    public void SetTakeButtonText(string description)
-    {
-        _takeRewardButtonText.text = description;
-    }
+        public Transform RewardButtonTransform => _takeRewardButton.transform;
+        public Transform RewardX2ButtonTransform => _takeRewardX2Button.transform;
 
-    public void SetRewardAmount(int amount)
-    {
-        _rewardAmountText.text = $"+{FormattingHelper.ToCommaSeparatedNumber(amount)}";
-    }
+        private void Awake()
+        {
+            _takeRewardButton.AddOnClickListener(OnTakeRewardClick);
+            _takeRewardX2Button.AddOnClickListener(OnTakeRewardX2Click);
+        }
 
-    public void SetRewardTextColor(Color color)
-    {
-        _rewardAmountText.color = color;
-    }
+        public void SetMissionIconSprite(Sprite sprite)
+        {
+            _missionIcon.sprite = sprite;
+        }
 
-    public void SetRewardIconSprite(Sprite sprite)
-    {
-        _rewardIcon.sprite = sprite;
-    }
+        public void SetMissionDescription(string description)
+        {
+            _missionDescriptionText.text = description;
+        }
 
-    public void SetProgressText(int current, int target)
-    {
-        _progressText.text = $"{FormattingHelper.ToCommaSeparatedNumber(current)}/{FormattingHelper.ToCommaSeparatedNumber(target)}";
-    }
+        public void SetTakeButtonText(string description)
+        {
+            _takeRewardButtonText.text = description;
+        }
 
-    public void SetProgress(float progress)
-    {
-        var scaleX = Mathf.Clamp(progress, 0f, 1f);
-        var scale = _progressLineTransform.transform.localScale;
-        scale.x = scaleX;
-        _progressLineTransform.transform.localScale = scale;
-    }
+        public void SetTakeX2ButtonText(string description)
+        {
+            _takeRewardX2ButtonText.text = description;
+        }
 
-    public void SetTakeButtonVisibility(bool isVisible)
-    {
-        _takeRewardButton.gameObject.SetActive(isVisible);
-    }
+        public void SetRewardAmount(int amount)
+        {
+            _rewardAmountText.text = $"+{FormattingHelper.ToCommaSeparatedNumber(amount)}";
+        }
 
-    public void SetTakeButtonInteractable(bool isInteractable)
-    {
-        _takeRewardButton.interactable = isInteractable;
-    }
+        public void SetRewardTextColor(Color color)
+        {
+            _rewardAmountText.color = color;
+        }
 
-    public void SetProgressVisibility(bool isVisible)
-    {
-        _progressTransform.gameObject.SetActive(isVisible);
-    }
+        public void SetRewardIconSprite(Sprite sprite)
+        {
+            _rewardIcon.sprite = sprite;
+        }
 
-    private void Awake()
-    {
-        _takeRewardButton.AddOnClickListener(OnTakeRewardClick);
-    }
+        public void SetProgressText(int current, int target)
+        {
+            _progressText.text = $"{FormattingHelper.ToCommaSeparatedNumber(current)}/{FormattingHelper.ToCommaSeparatedNumber(target)}";
+        }
 
-    private void OnTakeRewardClick()
-    {
-        TakeRewardClicked(this);
+        public void SetProgress(float progress)
+        {
+            var scaleX = Mathf.Clamp(progress, 0f, 1f);
+            var scale = _progressLineTransform.transform.localScale;
+            scale.x = scaleX;
+            _progressLineTransform.transform.localScale = scale;
+        }
+
+        public void SetTakeButtonVisibility(bool isVisible)
+        {
+            _takeRewardButton.gameObject.SetActive(isVisible);
+        }
+        
+        public void SetTakeX2ButtonVisibility(bool isVisible)
+        {
+            _takeRewardX2Button.gameObject.SetActive(isVisible);
+        }
+
+        public void SetTakeButtonsInteractable(bool isInteractable)
+        {
+            _takeRewardButton.interactable = isInteractable;
+            _takeRewardX2Button.interactable = isInteractable;
+        }
+
+        public void SetProgressVisibility(bool isVisible)
+        {
+            _progressTransform.gameObject.SetActive(isVisible);
+        }
+
+        private void OnTakeRewardClick()
+        {
+            TakeRewardClicked(this);
+        }
+
+        private void OnTakeRewardX2Click()
+        {
+            TakeRewardX2Clicked(this);
+        }
     }
 }

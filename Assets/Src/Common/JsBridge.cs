@@ -1,5 +1,6 @@
 using System.Runtime.InteropServices;
 using Newtonsoft.Json;
+using Src.Common;
 using UnityEngine;
 
 public class JsBridge : MonoBehaviour

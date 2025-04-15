@@ -1,3 +1,5 @@
+using Src.Model;
+
 public class AdvertProcessCooldownSystem
 {
     private readonly GameStateModel _gameStateModel;

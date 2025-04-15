@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Src.Common;
+using Src.Model;
 
 public class BankPopupViewModel : PopupViewModelBase
 {

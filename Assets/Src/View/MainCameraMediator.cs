@@ -1,4 +1,5 @@
 using System;
+using Src.Common;
 using UnityEngine;
 
 public class MainCameraMediator : MonoBehaviour

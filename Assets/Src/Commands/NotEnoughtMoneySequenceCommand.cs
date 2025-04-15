@@ -1,3 +1,5 @@
+using Src.Common;
+
 public struct NotEnoughtMoneySequenceCommand
 {
     public void Execute(bool isGold)

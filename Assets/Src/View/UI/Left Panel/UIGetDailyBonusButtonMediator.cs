@@ -1,3 +1,6 @@
+using Src.Common;
+using Src.Managers;
+
 public class UIGetDailyBonusButtonMediator : IMediator
 {
     private readonly UIGetDailyBonusButtonView _buttonView;

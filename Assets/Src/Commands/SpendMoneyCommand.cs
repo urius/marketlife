@@ -1,3 +1,5 @@
+using Src.Common;
+
 public struct SpendMoneyCommand
 {
     public bool Execute(string priceStr)

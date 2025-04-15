@@ -7,6 +7,7 @@ public struct LoadUserDataCommand
     {
         var url = string.Format(Urls.GetDataURL, uid);
         var resultOperation = await new WebRequestsSender().GetAsync(url);
+        
         if (resultOperation.IsSuccess)
         {
             return resultOperation.Result;

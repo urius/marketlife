@@ -1,3 +1,4 @@
+using Src.Common;
 using Src.Model;
 
 namespace Src.Commands
@@ -25,6 +26,8 @@ namespace Src.Commands
                 }
 
                 gameStateModel.RemoveCurrentPopupIfNeeded();
+
+                Dispatcher.Instance.RequestSaveAsap();
             }
 
             gameStateModel.ChargedBankItem = null;

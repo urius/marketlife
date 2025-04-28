@@ -34,6 +34,8 @@ namespace Src.Commands
             {
                 playerModelHolder.UserModel.AddCash(value);
             }
+
+            Dispatcher.Instance.RequestSaveAsap();
         }
     }
 }

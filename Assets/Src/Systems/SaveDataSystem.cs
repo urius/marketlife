@@ -14,7 +14,7 @@ namespace Src.Systems
 {
     public class SaveDataSystem
     {
-        private const int DefaultSavePrewarmSeconds = 2;
+        private const int DefaultSavePrewarmSeconds = 1;
         private const int DefaultSaveCooldownSeconds = 6;
 
         private readonly GameStateModel _gameStateModel = GameStateModel.Instance;
@@ -39,7 +39,7 @@ namespace Src.Systems
 
         public async void Start()
         {
-            await _gameStateModel.GameDataLoadedTask;
+            await PlayerModelHolder.Instance.SetUserModelTask;
 
             _playerModel = PlayerModelHolder.Instance.UserModel;
             _shopModel = _playerModel.ShopModel;
@@ -122,6 +122,7 @@ namespace Src.Systems
 
             _dispatcher.RequestMarkToSaveField += OnRequestMarkToSaveField;
             _dispatcher.RequestTriggerSave += OnRequestTriggerSave;
+            _dispatcher.RequestSaveAsap += OnRequestSaveAsap;
 
             _updatesProvider.RealtimeSecondUpdate += OnRealtimeSecondUpdate;
         }
@@ -256,17 +257,13 @@ namespace Src.Systems
                     if (NeedToSavePlayerData)
                     {
                         _saveExternalDataCooldownSeconds = DefaultSaveCooldownSeconds;
-                        _isSaveRequestSending = true;
                         await SaveAsync();
-                        _isSaveRequestSending = false;
                     }
 
                     if (NeedToSaveExternalData)
                     {
                         _saveExternalDataCooldownSeconds = DefaultSaveCooldownSeconds;
-                        _isSaveRequestSending = true;
                         await SaveExternalDataAsync();
-                        _isSaveRequestSending = false;
                     }
 
                     _saveProcessIsTriggered = false;
@@ -336,17 +333,38 @@ namespace Src.Systems
 
         private async UniTask SaveAsync()
         {
+            _isSaveRequestSending = true;
+            
             var saveFieldsData = _saveFieldsData;
             _saveFieldsData = SaveField.None;
             var result = await new SaveDataCommand().ExecuteAsync(saveFieldsData);
             _dispatcher.SaveCompleted(result, saveFieldsData);
+            
+            _isSaveRequestSending = false;
         }
 
         private async UniTask SaveExternalDataAsync()
         {
+            _isSaveRequestSending = true;
+            
             var saveUserModel = _saveExternalDataQueue.Dequeue();
             var result = await new SaveExternalDataCommand().ExecuteAsync(saveUserModel);
             _dispatcher.SaveExternalDataCompleted(result);
+            
+            _isSaveRequestSending = false;
+        }
+
+        private void OnRequestSaveAsap()
+        {
+            if (_isSaveRequestSending == false)
+            {
+                SaveAsync().Forget();
+            }
+            else
+            {
+                UniTask.WaitUntil(() => _isSaveRequestSending == false)
+                    .ContinueWith(SaveAsync);
+            }
         }
 
         private void OnSizeChanged(int previousValue, int currentValue)

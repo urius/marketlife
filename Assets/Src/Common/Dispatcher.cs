@@ -33,6 +33,7 @@ namespace Src.Common
         public Action<Vector3, float> UIRequestMoveCamera = delegate { };
         public Action<SaveField> RequestMarkToSaveField = delegate { };
         public Action RequestTriggerSave = delegate { };    
+        public Action RequestSaveAsap = delegate { };    
 
         public Action<int> UIBottomPanelPlaceShelfClicked = delegate { };
         public Action<int> UIBottomPanelPlaceFloorClicked = delegate { };

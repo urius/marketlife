@@ -17,18 +17,8 @@ namespace Src.Systems
         public void Start()
         {
             _localizationManager = LocalizationManager.Instance;
-
-            SetupDisabledLogicFlags();
             
             Activate();
-        }
-
-        private void SetupDisabledLogicFlags()
-        {
-            if (MirraSdkWrapper.IsYandexGames)
-            {
-                DisabledLogicFlags.IsFriendsLogicDisabled = true;
-            }
         }
 
         private void Activate()

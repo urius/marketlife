@@ -44,10 +44,10 @@ namespace Src.View.Gameplay
             _gameStateModel.ActionStateChanged += OnActionStateChanged;
             _gameStateModel.HighlightStateChanged += OnHighlightStateChanged;
             _gameStateModel.GameStateChanged += OnGameStateChanged;
-            _updatesProvider.GameplaySecondUpdate += OnGameplaySecondUpdate;
+            _updatesProvider.GameplayHalfSecondPassed += OnGameplayHalfSecondPassed;
         }
 
-        private void OnGameplaySecondUpdate()
+        private void OnGameplayHalfSecondPassed()
         {
             UpdateDoorsState();
         }
@@ -72,9 +72,9 @@ namespace Src.View.Gameplay
             {
                 foreach (var kvp in _doorViews)
                 {
-                    var doorOusidePoint = kvp.Key;
-                    if (_activeUserModel.SessionDataModel.HaveCustomerAt(doorOusidePoint)
-                        || _activeUserModel.SessionDataModel.HaveCustomerAt(GetDoorInsidePoint(doorOusidePoint)))
+                    var doorOutsidePoint = kvp.Key;
+                    if (_activeUserModel.SessionDataModel.HaveCustomerAt(doorOutsidePoint)
+                        || _activeUserModel.SessionDataModel.HaveCustomerAt(GetDoorInsidePoint(doorOutsidePoint)))
                     {
                         SetDoorOpenState(kvp.Key, isOpenState: true);
                     }
@@ -86,9 +86,9 @@ namespace Src.View.Gameplay
             }
         }
 
-        private Vector2Int GetDoorInsidePoint(Vector2Int doorOusidePoint)
+        private Vector2Int GetDoorInsidePoint(Vector2Int doorOutsidePoint)
         {
-            var result = doorOusidePoint;
+            var result = doorOutsidePoint;
             if (result.x == -1) result.x = 0;
             if (result.y == -1) result.y = 0;
             return result;

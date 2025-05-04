@@ -11,6 +11,8 @@ namespace Src.Common
         public event Action GametimeUpdate = delegate { };
         public event Action RealtimeSecondUpdate = delegate { };
         public event Action GameplaySecondUpdate = delegate { };
+        public event Action GameplayHalfSecondPassed = delegate { };
+        public event Action GameplayQuarterSecondPassed = delegate { };
 
         public void CallRealtimeUpdate()
         {
@@ -30,6 +32,16 @@ namespace Src.Common
         public void CallGameplaySecondUpdate()
         {
             GameplaySecondUpdate();
+        }
+
+        public void CallGameplayHalfSecondPassed()
+        {
+            GameplayHalfSecondPassed();
+        }
+
+        public void CallGameplayQuarterSecondPassed()
+        {
+            GameplayQuarterSecondPassed();
         }
     }
 }

@@ -17,8 +17,9 @@ namespace Src.View.Gameplay
         private GameStateModel _gameStateModel;
         private GridCalculator _gridCalculator;
         private TutorialUIElementsProvider _tutorialUIElementsProvider;
-        private int NextRealtimeSecondUpdate;
-        private int NextGameplaySecondUpdate;
+        private int _nextRealtimeSecondUpdate;
+        private int _nextGameplaySecondUpdate;
+        private int _quarterInvokeCount;
 
         private void Awake()
         {
@@ -29,12 +30,51 @@ namespace Src.View.Gameplay
 
             _tutorialUIElementsProvider.SetElement(TutorialUIElement.ShopFloorTransform, transform);
             SetupGridCalculator();
-            NextRealtimeSecondUpdate = (int)Time.realtimeSinceStartup + 1;
-            NextGameplaySecondUpdate = NextRealtimeSecondUpdate;
+            _nextRealtimeSecondUpdate = (int)Time.realtimeSinceStartup + 1;
+            _nextGameplaySecondUpdate = _nextRealtimeSecondUpdate;
 
             Activate();
+            
+            InvokeRepeating(nameof(InvokeQuarterSecondPassed), 0.5f, 0.25f);
         }
 
+        private void FixedUpdate()
+        {
+            if (_gameStateModel.IsGamePaused == false)
+            {
+                _updatesProvider.CallGameplayUpdate();
+                if (Time.realtimeSinceStartup >= _nextGameplaySecondUpdate)
+                {
+                    _nextGameplaySecondUpdate = (int)Time.realtimeSinceStartup + 1;
+                    _updatesProvider.CallGameplaySecondUpdate();
+                }
+            }
+            _updatesProvider.CallRealtimeUpdate();
+            if (Time.realtimeSinceStartup >= _nextRealtimeSecondUpdate)
+            {
+                _nextRealtimeSecondUpdate = (int)Time.realtimeSinceStartup + 1;
+                _updatesProvider.CallRealtimeSecondUpdate();
+            }
+            UpdateCursorAnimation();
+        }
+
+        private void InvokeQuarterSecondPassed()
+        {
+            _updatesProvider.CallGameplayQuarterSecondPassed();
+
+            _quarterInvokeCount++;
+            
+            if (_quarterInvokeCount % 2 == 0)
+            {
+                _updatesProvider.CallGameplayHalfSecondPassed();
+            }
+            
+            if (_quarterInvokeCount % 4 == 0)
+            {
+                _quarterInvokeCount = 0;
+            }
+        }
+        
         private void Activate()
         {
             _dispatcher.MouseCellCoordsUpdated += OnMouseCellCoordsUpdated;
@@ -57,26 +97,6 @@ namespace Src.View.Gameplay
         private void OnMouseCellCoordsUpdated(Vector2Int cellCoords)
         {
             _guiCursorRenderer.transform.position = _gridCalculator.CellToWorld(cellCoords);
-        }
-
-        private void FixedUpdate()
-        {
-            if (_gameStateModel.IsGamePaused == false)
-            {
-                _updatesProvider.CallGameplayUpdate();
-                if (Time.realtimeSinceStartup >= NextGameplaySecondUpdate)
-                {
-                    NextGameplaySecondUpdate = (int)Time.realtimeSinceStartup + 1;
-                    _updatesProvider.CallGameplaySecondUpdate();
-                }
-            }
-            _updatesProvider.CallRealtimeUpdate();
-            if (Time.realtimeSinceStartup >= NextRealtimeSecondUpdate)
-            {
-                NextRealtimeSecondUpdate = (int)Time.realtimeSinceStartup + 1;
-                _updatesProvider.CallRealtimeSecondUpdate();
-            }
-            UpdateCursorAnimation();
         }
 
         private void UpdateCursorAnimation()

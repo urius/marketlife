@@ -135,7 +135,7 @@ namespace Src.View.Gameplay.Human
             switch (_customerModel.AnimationState)
             {
                 case CustomerAnimationState.Thinking:
-                    _animationCooldownFrames = UnityEngine.Random.Range(100, 200);
+                    _animationCooldownFrames = UnityEngine.Random.Range(20, 50);
                     _humanView.SetBodyState(BodyState.Idle);
                     _gameplayTimeUpdateDelegate = WaitingDelegate;
                     break;
@@ -146,12 +146,12 @@ namespace Src.View.Gameplay.Human
                     _humanView.SetBodyState(BodyState.Walking);
                     break;
                 case CustomerAnimationState.TakingProduct:
-                    _animationCooldownFrames = 100;
+                    _animationCooldownFrames = 50;
                     _humanView.SetBodyState(BodyState.Taking);
                     _gameplayTimeUpdateDelegate = WaitingDelegate;
                     break;
                 case CustomerAnimationState.Paying:
-                    _animationCooldownFrames = 120;
+                    _animationCooldownFrames = 80;
                     _humanView.SetBodyState(BodyState.Taking);
                     _gameplayTimeUpdateDelegate = WaitingDelegate;
                     break;
@@ -180,7 +180,7 @@ namespace Src.View.Gameplay.Human
         {
             _startWorldCoords = _gridCalculator.CellToWorld(prevCoords);
             _targetWorldCoords = _gridCalculator.CellToWorld(currentCoords);
-            _moveDirection = (_targetWorldCoords - _gridCalculator.CellToWorld(prevCoords)).normalized * 0.04f;
+            _moveDirection = (_targetWorldCoords - _gridCalculator.CellToWorld(prevCoords)).normalized * 0.08f;
             _needToChangeSortingLayer = _shopDesignModel.IsCellInside(currentCoords) != _shopDesignModel.IsCellInside(prevCoords);
 
             _gameplayTimeUpdateDelegate = MovingAnimationDelegate;

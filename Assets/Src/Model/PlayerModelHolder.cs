@@ -50,5 +50,6 @@ namespace Src.Model
         Undefined,
         VK,
         YG,
+        CrazyGames,
     }
 }

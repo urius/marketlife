@@ -65,6 +65,7 @@ namespace Src.Commands
                     };
                 case SocialType.Undefined:
                 case SocialType.YG:
+                case SocialType.CrazyGames:
                 default:
                     return new (LoadGamePhase Phase, IAsyncGameLoadCommand Command)[]
                     {

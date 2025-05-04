@@ -2,6 +2,7 @@ using Src.Common;
 using Src.Managers;
 using Src.Model;
 using Src.Model.Popups;
+using UnityEngine;
 
 namespace Src.Commands.JsHandle
 {
@@ -14,6 +15,8 @@ namespace Src.Commands.JsHandle
             var playerModel = PlayerModelHolder.Instance.UserModel;
             var mainConfig = GameConfigManager.Instance.MainConfig;
 
+            Debug.Log("ProcessShowRewardedAdsResultCommand: result = " + isSuccessResult);
+            
             if (isSuccessResult)
             {
                 advertViewStateModel.MarkCurrentAsWatched();

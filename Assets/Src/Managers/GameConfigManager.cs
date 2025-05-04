@@ -30,7 +30,7 @@ namespace Src.Managers
         public IMissionsConfig DailyMissionsConfig => MainConfig;
         public IAdvertConfig AdvertConfig => MainConfig;
 
-        public UniTask<bool> LoadMainConfigAsync(string mainConfigAbPostfix)
+        public UniTask<bool> LoadMainConfigAsync()
         {
             return LoadConfigLocal();
         }

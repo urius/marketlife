@@ -18,6 +18,7 @@ namespace Src.Common
 
         public static bool IsYandexGames => MirraSDK.Platform.Current == PlatformType.Web_YandexGames;
         public static bool IsVk => MirraSDK.Platform.Current == PlatformType.Web_VKontakte;
+        public static bool IsCrazyGames => MirraSDK.Platform.Current == PlatformType.Web_CrazyGames;
         public static bool IsMirraSdkUsed => IsVk == false;
 
         public static LanguageType CurrentLanguage => MirraSDK.Language.Current;
@@ -290,7 +291,7 @@ namespace Src.Common
             }
             else
             {
-                _getPlayerIdTcs.TrySetResult(MirraSDK.Player.PlatformToken);
+                _getPlayerIdTcs.TrySetResult(MirraSDK.Player.PlatformId);
             }
 #endif
             return _getPlayerIdTcs.Task;

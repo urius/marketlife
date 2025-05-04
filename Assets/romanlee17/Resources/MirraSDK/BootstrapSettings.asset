@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd83f3051e1788e4ab5ba2b2a5b8c852, type: 3}
   m_Name: BootstrapSettings
   m_EditorClassIdentifier: 
-  <RuntimePlatform>k__BackingField: 9
+  <RuntimePlatform>k__BackingField: 4
   <RuntimeAssets>k__BackingField: {fileID: 11400000, guid: 0ed7955408c0f8947b55899edef645ec,
     type: 2}
   <AndroidAdsProvider>k__BackingField: 0

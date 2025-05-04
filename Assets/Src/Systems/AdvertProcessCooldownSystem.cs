@@ -1,3 +1,4 @@
+using Src.Common;
 using Src.Model;
 
 public class AdvertProcessCooldownSystem

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Src.View.Gameplay.Human;
 using UnityEngine;
 
 public class HumansMediator : MonoBehaviour

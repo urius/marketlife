@@ -6,6 +6,8 @@ ini_set ('display_errors', true);
 $command = $_GET["command"];
 $id = $_GET["id"];
 $ids = $_GET["ids"];
+$name = $_GET["name"];
+$picture_url = $_GET["picture_url"];
 $post_data = $_POST["data"];
 $post_data_hash = $_POST["hash"];
 $error = null;
@@ -46,6 +48,24 @@ switch ($command) {
 			$save_result = save_external_data($mysqli, $id, $post_data, $error);
 		}
 		show_is_success_response($save_result, $error);
+		break;
+	case 'set_user_info':
+		$mysqli = init_connection();
+		$save_result = false;
+		if ($id != null && $name != null && $picture_url != null) {
+			$save_result = save_user_info($mysqli, $id, $name, $picture_url, $error);
+		} else {
+			fill_error($error, "ERR_MISSING_PARAMS", "Missing required parameters: id, name, or picture_url");
+		}
+		show_is_success_response($save_result, $error);
+		break;
+	case 'get_users_info':
+		$mysqli = init_connection();
+		if (validate_post($post_data, $post_data_hash, $error)) {
+			$uids = explode(',', $post_data);
+			$users_info = get_users_info($mysqli, $uids, $error);
+			show_response(json_encode($users_info), $error);
+		}
 		break;
 	case 'get_users_last_visit':
 		validate_ids_or_abort($ids);
@@ -127,6 +147,21 @@ function save_external_data($mysqli, $id, $data_str, &$error) {
 		return true;
 	} else {
 		fill_error($error, "ERR_SAVE_EXTARNAL_DATA", "Failed to save external data for user");
+	}
+
+	return false;
+}
+
+function save_user_info($mysqli, $id, $name, $picture_url, &$error) {
+	$query_str = "INSERT INTO `players_info`(`id`, `name`, `picture_url`) 
+				  VALUES ('$id', '$name', '$picture_url')
+				  ON DUPLICATE KEY UPDATE name='$name', picture_url='$picture_url'";
+
+	$sql_result = mysqli_query($mysqli, $query_str);
+	if ($sql_result) {
+		return true;
+	} else {
+		fill_error($error, "ERR_SAVE_USER_INFO", "Failed to save user info");
 	}
 
 	return false;
@@ -234,6 +269,25 @@ function show_response($response_str, $error) {
 function show_is_success_response($is_success, $error) {
 	$response_str = json_encode(array('success' => $is_success));
 	show_response($response_str, $error);
+}
+
+function get_users_info($mysqli, $uids, &$error) {
+	$result = array();
+	$query_ids_str = "'".implode("','", $uids)."'";
+	$query_str = "SELECT id, name, picture_url 
+				  FROM players_info 
+				  WHERE id IN ($query_ids_str)";
+	
+	$sql_result = mysqli_query($mysqli, $query_str);
+	if($sql_result) {
+		while ($fetched = mysqli_fetch_assoc($sql_result)) {
+			$result[] = $fetched;
+		}
+		mysqli_free_result($sql_result);
+	} else {
+		fill_error($error, "ERR_SELECT_USERS_INFO", "Failed to get users info from db");
+	}
+	return array("users" => $result);
 }
 
 ?>

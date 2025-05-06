@@ -19,6 +19,8 @@ namespace Src.Common
         private const string GetLeaderboardsPostfix = "/DataProvider.php?command=get_leaderboards&id={0}";
         private const string AddNotificationsPostfix = "/vk/VKNotificationsProcessor.php?command=add&ids={0}&type={1}";
         private const string SaveDataPostfix = "/DataProvider.php?command=save_data&id={0}";
+        private const string SetUserInfoPostfix = "/DataProvider.php?command=set_user_info&id={0}&name={1}&picture_url={2}";
+        private const string GetUsersInfoPostfix = "/DataProvider.php?command=get_users_info";
         
         private static string _basePath = $"{BaseHostUrl}/marketVK/unity";
 
@@ -38,7 +40,8 @@ namespace Src.Common
         public string ResetNotificationsURL => _basePath + ResetNotificationsPostfix;
         public static string AddNotificationsURL => _basePath + AddNotificationsPostfix;
         public static string GetLeaderboardsURL => _basePath + GetLeaderboardsPostfix;
-
+        public static string SetUserInfoURL => _basePath + SetUserInfoPostfix;
+        public static string GetUsersInfoURL => _basePath + GetUsersInfoPostfix;
         
         private static string AssetBundlesBaseUrl => $"{_basePath}/AssetBundles";
         private static string AssetBundlesWebGlUrl => $"{AssetBundlesBaseUrl}/WebGL";

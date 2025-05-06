@@ -6,6 +6,8 @@ ini_set ('display_errors', true);
 $command = $_GET["command"];
 $id = $_GET["id"];
 $ids = $_GET["ids"];
+$name = $_GET["name"];
+$picture_url = $_GET["picture_url"];
 $post_data = $_POST["data"];
 $post_data_hash = $_POST["hash"];
 $error = null;
@@ -30,6 +32,18 @@ switch ($command) {
 		$player_data = get_or_create_player_data($mysqli, $id, $error);
 		show_response(json_encode($player_data), $error);
 		break;
+	case 'get_users_last_visit':
+		validate_ids_or_abort($ids);
+		$mysqli = init_connection();
+		$ids_array = explode(',', $ids);
+		$visit_times = get_visit_times($mysqli, $ids_array, $error);
+		show_response(json_encode($visit_times), $error);
+		break; 
+	case 'get_leaderboards':
+		$mysqli = init_connection();
+		$leaderboard_data = get_leaderboards_data($mysqli, $error);
+		show_response(json_encode($leaderboard_data), $error);
+		break;
 	case 'save_data':
 		$mysqli = init_connection();
 		$save_result = false;
@@ -47,19 +61,41 @@ switch ($command) {
 		}
 		show_is_success_response($save_result, $error);
 		break;
-	case 'get_users_last_visit':
-		validate_ids_or_abort($ids);
+	case 'set_user_info':
 		$mysqli = init_connection();
-		$ids_array = explode(',', $ids);
-		$visit_times = get_visit_times($mysqli, $ids_array, $error);
-		show_response(json_encode($visit_times), $error);
-		break; 
+		$save_result = false;
+		if ($id != null && $name != null && $picture_url != null) {
+			$save_result = save_user_info($mysqli, $id, $name, $picture_url, $error);
+		} else {
+			fill_error($error, "ERR_MISSING_PARAMS", "Missing required parameters: id, name, or picture_url");
+		}
+		show_is_success_response($save_result, $error);
+		break;
+	case 'get_users_info':
+		$mysqli = init_connection();
+		if (validate_post($post_data, $post_data_hash, $error)) {
+			$uids = explode(',', $post_data);
+			$users_info = get_users_info($mysqli, $uids, $error);
+			show_response(json_encode($users_info), $error);
+		}
+		break;
+	case 'save_leaderboard_data':
+		$mysqli = init_connection();
+		$save_result = false;
+		if (validate_post($post_data, $post_data_hash, $error)) {
+			$save_result = save_leaderboard_data($mysqli, $id, $post_data, $error);
+		}
+		$response_str = json_encode(array('success' => $save_result, "saved_data" => $post_data));
+		show_response($response_str, $error);
+		break;
 	default:
 		echo "working...";
 		break;
 }
 
 function validate_id_or_abort($id) {
+	return;
+	
 	$match_result = preg_match('/\w+/', $id, $matches);
 	if ($match_result == true) {
 		$match_result = (strlen($matches[0]) == strlen($id));
@@ -71,6 +107,8 @@ function validate_id_or_abort($id) {
 }
 
 function validate_ids_or_abort($ids) {
+	return;
+
 	$match_result = preg_match('/(?:,?\w+)+/', $ids, $matches);
 	if ($match_result == true) {
 		$match_result = (strlen($matches[0]) == strlen($ids));
@@ -115,6 +153,27 @@ function save_data($mysqli, $id, $data_str, &$error) {
 	return false;
 }
 
+function save_leaderboard_data($mysqli, $id, $data_str, &$error) {
+	$timestmap = time();
+	$decoded_data = json_decode($data_str);
+	$cash = intval($decoded_data->cash);
+	$gold = intval($decoded_data->gold);
+	$exp = intval($decoded_data->exp);
+	$friends = intval($decoded_data->friends);
+	$query_str = "INSERT INTO `leaderboard_data`(`uid`, `cash`, `exp`, `gold`, `friends`, `timestamp`) 
+							VALUES ('$id',$cash,$exp,$gold,$friends,$timestmap)
+							ON DUPLICATE KEY UPDATE cash=$cash, exp=$exp, gold=$gold, friends=$friends, timestamp=$timestmap";
+
+	$sql_result = mysqli_query($mysqli, $query_str);
+	if ($sql_result) {
+		return true;
+	} else {
+		fill_error($error, "ERR_SAVE_LEADERBOARD_DATA", "Failed to save leaderboard data");
+	}
+
+	return false;
+}
+
 function save_external_data($mysqli, $id, $data_str, &$error) {
 	$timestmap = time();
 	$query_str = "UPDATE players
@@ -127,6 +186,21 @@ function save_external_data($mysqli, $id, $data_str, &$error) {
 		return true;
 	} else {
 		fill_error($error, "ERR_SAVE_EXTARNAL_DATA", "Failed to save external data for user");
+	}
+
+	return false;
+}
+
+function save_user_info($mysqli, $id, $name, $picture_url, &$error) {
+	$query_str = "INSERT INTO `players_info`(`id`, `name`, `picture_url`) 
+				  VALUES ('$id', '$name', '$picture_url')
+				  ON DUPLICATE KEY UPDATE name='$name', picture_url='$picture_url'";
+
+	$sql_result = mysqli_query($mysqli, $query_str);
+	if ($sql_result) {
+		return true;
+	} else {
+		fill_error($error, "ERR_SAVE_USER_INFO", "Failed to save user info");
 	}
 
 	return false;
@@ -190,6 +264,57 @@ function get_visit_times($mysqli, $ids_arr, &$error) {
 	return $result;
 }
 
+function get_leaderboards_data($mysqli, &$error) {
+	$result = [];
+	$timestamp_bound = time() - 7 * 24 * 3600;
+	$temp_lb = get_leaderboard_for($mysqli, "cash", $timestamp_bound);
+	if ($temp_lb === null) {
+		fill_error($error, "ERR_SELECT_LEADERBOARD_CASH", "Failed to get cash leadeboard from db");
+		return null;
+	}
+	$result["cash"] = $temp_lb;
+
+	$temp_lb = get_leaderboard_for($mysqli, "gold", $timestamp_bound);
+	if ($temp_lb === null) {
+		fill_error($error, "ERR_SELECT_LEADERBOARD_GOLD", "Failed to get gold leadeboard from db");
+		return null;
+	}
+	$result["gold"] = $temp_lb;
+
+	$temp_lb = get_leaderboard_for($mysqli, "exp", $timestamp_bound);
+	if ($temp_lb === null) {
+		fill_error($error, "ERR_SELECT_LEADERBOARD_EXP", "Failed to get exp leadeboard from db");
+		return null;
+	}
+	$result["exp"] = $temp_lb;
+
+	$temp_lb = get_leaderboard_for($mysqli, "friends", $timestamp_bound);
+	if ($temp_lb === null) {
+		fill_error($error, "ERR_SELECT_LEADERBOARD_FRIENDS", "Failed to get friends leadeboard from db");
+		return null;
+	}
+	$result["friends"] = $temp_lb;
+	return $result;
+}
+
+function get_leaderboard_for($mysqli, $type_str, $timestamp_bound) {
+	$query_str = "SELECT uid,$type_str as value FROM `leaderboard_data` WHERE timestamp > $timestamp_bound AND $type_str >= 0 ORDER BY $type_str DESC LIMIT 100";
+	$sql_result = mysqli_query($mysqli, $query_str);
+
+	if ($sql_result) {
+		$result = array();
+		while ($fetched = mysqli_fetch_assoc($sql_result)) {
+			decode_values($fetched);
+			$result[] = $fetched["uid"].":".$fetched["value"];
+		}
+		mysqli_free_result($sql_result);
+
+		return $result;
+	}
+
+	return null;
+}
+
 function decode_values(&$values_arr) {
 	foreach ($values_arr as $key => $value) {
 		$decoded_value = json_decode($value);
@@ -205,7 +330,7 @@ function decode_values(&$values_arr) {
 // WHERE uid = 't'
 
 function init_connection() {
-	$mysqli = new mysqli("127.0.0.1", "u8446_script", "kjR6aqeP", "u8446_market_2", 3310);
+	$mysqli = new mysqli("127.0.0.1", "i116296_script_cg", "kjR6aqeP1", "i116296_market_crazy_games", 3306);
 	if ($mysqli->connect_errno) {
 	    die ( '{"response":"-1", "reason":"Could not connect to Database: (' . $mysqli->connect_errno . ')' . $mysqli->connect_error );
 	};
@@ -234,6 +359,25 @@ function show_response($response_str, $error) {
 function show_is_success_response($is_success, $error) {
 	$response_str = json_encode(array('success' => $is_success));
 	show_response($response_str, $error);
+}
+
+function get_users_info($mysqli, $uids, &$error) {
+	$result = array();
+	$query_ids_str = "'".implode("','", $uids)."'";
+	$query_str = "SELECT id, name, picture_url 
+				  FROM players_info 
+				  WHERE id IN ($query_ids_str)";
+	
+	$sql_result = mysqli_query($mysqli, $query_str);
+	if($sql_result) {
+		while ($fetched = mysqli_fetch_assoc($sql_result)) {
+			$result[] = $fetched;
+		}
+		mysqli_free_result($sql_result);
+	} else {
+		fill_error($error, "ERR_SELECT_USERS_INFO", "Failed to get users info from db");
+	}
+	return array("users" => $result);
 }
 
 ?>

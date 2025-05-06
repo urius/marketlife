@@ -49,7 +49,7 @@ namespace Src.Systems
                 _module = new MirraYandexGamesLogicModule();
                 _module.Start();
             }
-            else if(MirraSdkWrapper.IsCrazyGames)
+            else if (MirraSdkWrapper.IsCrazyGames)
             {
                 _module = new MirraCrazyGamesLogicModule();
                 _module.Start();

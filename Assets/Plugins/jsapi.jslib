@@ -20,5 +20,22 @@ mergeInto(LibraryManager.library, {
             const uniqueIdCStr = stringToNewUTF8(uniqueId);
             {{{ makeDynCall('vi', 'callback') }}} (uniqueIdCStr);
         });
+  },
+  GetCGUser: function(callback) {
+     console.log("calling GetCGUser...");
+     
+     window.CrazyGames.SDK.user
+         .getUser()
+         .then(user => {
+            const userNameStr = user.username;
+            const userPictureUrlStr = user.profilePictureUrl;
+            
+            console.log(userNameStr);        
+            console.log(userPictureUrlStr); 
+                     
+            const userNameStrCs = stringToNewUTF8(userNameStr);
+            const userPictureUrlStrCs = stringToNewUTF8(userPictureUrlStr);
+            {{{ makeDynCall('vii', 'callback') }}} (userNameStrCs, userPictureUrlStrCs);   
+         });
   }
 });

@@ -7,6 +7,7 @@ using Src.Common_Utils;
 using Src.Model;
 using Src.Model.Leaderboards;
 using Src.Net;
+using UnityEngine;
 
 namespace Src.Commands.LoadSave
 {
@@ -15,17 +16,22 @@ namespace Src.Commands.LoadSave
         public async UniTask<bool> ExecuteAsync()
         {
             var leaderboardsDataHolder = LeaderboardsDataHolder.Instance;
+
+            Debug.Log("LoadLeaderboardsDataCommand IsLeaderboardsDisabled = "
+                      + DisabledLogicFlags.IsLeaderboardsDisabled +
+                      "  DisabledLogicFlags.IsPlatformLeaderboardDataDisabled = " +
+                      DisabledLogicFlags.IsPlatformLeaderboardDataDisabled);
             
-            if (DisabledLogicFlags.IsLeaderboardsDisabled) return leaderboardsDataHolder.IsLeaderboardsSet;
-            if (leaderboardsDataHolder.IsLeaderboardsSet) return leaderboardsDataHolder.IsLeaderboardsSet;
+            if (DisabledLogicFlags.IsLeaderboardsDisabled
+                || leaderboardsDataHolder.IsLeaderboardsSet) return leaderboardsDataHolder.IsLeaderboardsSet;
             
-            if (MirraSdkWrapper.IsMirraSdkUsed)
+            if (DisabledLogicFlags.IsPlatformLeaderboardDataDisabled)
             {
-                await LoadLeaderboardDataFromPlatform();
+                await LoadLeaderboardDataFromServer();
             }
             else
             {
-                await LoadLeaderboardDataFromServer();
+                await LoadLeaderboardDataFromPlatform();
             }
 
             return leaderboardsDataHolder.IsLeaderboardsSet;

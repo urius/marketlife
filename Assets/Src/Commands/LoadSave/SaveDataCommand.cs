@@ -7,6 +7,7 @@ using Src.Model;
 using Src.Model.Debug;
 using Src.Net;
 using Src.Systems;
+using UnityEngine;
 
 namespace Src.Commands.LoadSave
 {
@@ -21,7 +22,8 @@ namespace Src.Commands.LoadSave
 
             UnityEngine.Debug.Log("---SaveDataCommand: " + saveFields);
 
-            if (DisabledLogicFlags.IsServerDataDisabled)
+            if (DisabledLogicFlags.IsServerDataDisabled 
+                || MirraSdkWrapper.IsAuthorized() == false)
             {
                 SaveToPlatform();
                 
@@ -44,6 +46,8 @@ namespace Src.Commands.LoadSave
 
         private async UniTask<bool> SaveToServer(SaveField saveFields)
         {
+            Debug.Log("Save to server");
+            
             var playerModel = PlayerModelHolder.Instance.UserModel;
             var url = string.Format(Urls.SaveDataURL, playerModel.Uid);
             var dataToSave = GetExportData(saveFields, playerModel);

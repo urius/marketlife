@@ -40,6 +40,11 @@ namespace Src.Common
         [DllImport("__Internal")]
         private static extern void GetYGPlayerId(Action<string> callback);
 
+        public static bool IsAuthorized()
+        {
+            return MirraSDK.Player.IsAuthorized;
+        }
+
         public static UniTask<bool> InvokeAuthorization()
         {
             var tcs = new UniTaskCompletionSource<bool>();
@@ -271,6 +276,8 @@ namespace Src.Common
             MirraSDK.Prefs.SetString(keyName, value);
             
             MirraSDK.Prefs.Save();
+
+            Log("Save to platform");
         }
         
         public static void DeleteKey(string keyName)

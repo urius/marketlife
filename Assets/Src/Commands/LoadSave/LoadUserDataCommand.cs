@@ -11,9 +11,10 @@ namespace Src.Commands.LoadSave
     {
         public async UniTask<string> ExecuteAsync(string uid)
         {
-            if (DisabledLogicFlags.IsServerDataDisabled)
+            if (DisabledLogicFlags.IsServerDataDisabled
+                || MirraSdkWrapper.IsAuthorized() == false)
             {
-                var playerDataStr =  MirraSdkWrapper.GetString(Constants.PlayerDataKey);
+                var playerDataStr = MirraSdkWrapper.GetString(Constants.PlayerDataKey);
 
                 return string.IsNullOrEmpty(playerDataStr) ? GetDefaultUserDataStr(uid) : playerDataStr;
             }

@@ -325,6 +325,8 @@ namespace Src.Common
             }
             else
             {
+                Log("MirraSDK.Player.PlatformId: " + MirraSDK.Player.PlatformId);
+                
                 _getPlayerIdTcs.TrySetResult(MirraSDK.Player.PlatformId);
             }
 #endif

@@ -168,7 +168,7 @@ namespace Src.View.UI.Popups.OfflineReport_Popup
             else
             {
                 _popupView.SetAdsButtonVisibility(false);
-                _popupView.SetShareButtonVisiblity(MirraSdkWrapper.IsShareAvailable());
+                _popupView.SetShareButtonVisiblity(DisabledLogicFlags.IsSharingDisabled == false);
                 _popupView.SetShareButtonInteractable(_shareSuccessReceived == false);
             }
         }

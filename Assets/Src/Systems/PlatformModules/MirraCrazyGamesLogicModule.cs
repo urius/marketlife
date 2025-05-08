@@ -76,6 +76,7 @@ namespace Src.Systems.PlatformModules
             _dispatcher.RequestShowAdvert += OnRequestShowAdvert;
             _dispatcher.UILevelUpShareClicked += OnUILevelUpShareClicked;
             _dispatcher.UIOfflineReportShareClicked += OnUIOfflineReportShareClicked;
+            _gameStateModel.PopupRemoved += OnPopupRemoved;
             
             _socialUsersData.NewUidsRequested += OnSocialUsersDataNewUidsRequested;
         }
@@ -248,7 +249,7 @@ namespace Src.Systems.PlatformModules
 
             return _cgGetUserInfoTcs.Task;
         }
-        
+
         [MonoPInvokeCallback(typeof(Action<string, string>))]
         private static void GetCGPlayerInfoCallback(string playerName, string playerPictureUrl)
         {
@@ -261,12 +262,19 @@ namespace Src.Systems.PlatformModules
             });
         }
 
+        private void OnPopupRemoved(PopupViewModelBase popupViewModel)
+        {
+            if (popupViewModel.PopupType == PopupType.LevelUp)
+            {
+                MirraSdkWrapper.ShowInterstitialAd().Forget();
+            }
+        }
+
         private struct GetUserInfoData
         {
             public string Name;
             public string PictureUrl;
         }
-
         
         [Serializable]
         private class GetUsersInfoResponseDto

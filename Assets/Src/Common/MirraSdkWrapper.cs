@@ -55,6 +55,16 @@ namespace Src.Common
         {
             MirraSDK.Analytics.GameIsReady();
         }
+
+        public static void SendGameplayStart()
+        {
+            MirraSDK.Analytics.GameplayStart();
+        }
+
+        public static void SendGameplayStop()
+        {
+            MirraSDK.Analytics.GameplayStop();
+        }
         
         public static UniTask<string> GetPlayerId()
         {
@@ -123,8 +133,10 @@ namespace Src.Common
             return MirraSDK.Ads.IsRewardedReady;
         }
 
-        public static UniTask<bool> ShowRewardedAd()
+        public static async UniTask<bool> ShowRewardedAd()
         {
+            SendGameplayStop();
+            
             var tcs = new UniTaskCompletionSource<bool>();
             
             MirraSDK.Ads.InvokeRewarded(
@@ -143,7 +155,27 @@ namespace Src.Common
                 rewardTag: "dynamic"
             );
             
-            return tcs.Task;
+            var result = await tcs.Task;
+
+            SendGameplayStart();
+            
+            return result;
+        }
+
+        public static async UniTask ShowInterstitialAd()
+        {
+            var tcs = new UniTaskCompletionSource();
+
+            SendGameplayStop();
+            
+            MirraSDK.Ads.InvokeInterstitial(
+                ignoreOnce: false,
+                onAnyClose: () => { tcs.TrySetResult(); }
+            );
+
+            await tcs.Task;
+            
+            SendGameplayStart();
         }
 
         public static UniTask<BankProductData[]> FetchProducts()

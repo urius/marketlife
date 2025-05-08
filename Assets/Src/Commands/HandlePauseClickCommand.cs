@@ -1,3 +1,4 @@
+using Src.Common;
 using Src.Model;
 using Src.Model.Popups;
 using UnityEngine;
@@ -14,6 +15,8 @@ namespace Src.Commands
             {
                 Time.timeScale = 0;
                 gameStateModel.ShowPopup(new PausePopupViewModel());
+                
+                MirraSdkWrapper.SendGameplayStop();
             }
             else
             {

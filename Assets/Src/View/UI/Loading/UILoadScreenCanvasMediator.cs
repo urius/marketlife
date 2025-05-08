@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using Src.Common;
 using Src.Common_Utils;
 using Src.Managers;
 using Src.Model;
@@ -73,6 +74,8 @@ namespace Src.View.UI.Loading
                 await AnimateRemoveLoadingPanelAsync();
                 await AnimateRemoveBgAsync();
                 _isScreenRemoved = true;
+                
+                MirraSdkWrapper.SendGameplayStart();
             }
 
             DestroyIfNeeded();

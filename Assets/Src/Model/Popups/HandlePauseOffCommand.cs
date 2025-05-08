@@ -9,6 +9,8 @@ namespace Src.Model.Popups
         {
             Dispatcher.Instance.UIRequestRemoveCurrentPopup();
             Time.timeScale = 1;
+
+            MirraSdkWrapper.SendGameplayStart();
         }
     }
 }

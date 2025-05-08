@@ -25,6 +25,8 @@ namespace Src.Common
             Application.targetFrameRate = 51;
 
             new InitializeSystemsCommand().Execute();
+            
+            MirraSdkWrapper.SendGameplayStop();
 
             Debug.Log($"Application.absoluteURL: {Application.absoluteURL}");
         }

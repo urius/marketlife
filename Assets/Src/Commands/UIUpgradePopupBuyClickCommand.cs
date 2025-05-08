@@ -8,11 +8,10 @@ namespace Src.Commands
 {
     public struct UIUpgradePopupBuyClickCommand
     {
-        public void Execute(UpgradesPopupItemViewModelBase viewModel)
+        public async void Execute(UpgradesPopupItemViewModelBase viewModel, bool payByWatchingAd)
         {
             var playerModel = PlayerModelHolder.Instance.UserModel;
             var shopModel = playerModel.ShopModel;
-            var dispatcher = Dispatcher.Instance;
             var gameStateModel = GameStateModel.Instance;
             var analyticsManager = AnalyticsManager.Instance;
 
@@ -20,18 +19,30 @@ namespace Src.Commands
             {
                 var upgradeConfigToBuy = (viewModel as UpgradesPopupUpgradeItemViewModel).UpgradeConfig;
                 var isSuccess = false;
-                if (playerModel.CanSpendMoney(upgradeConfigToBuy.Price))
+                
+                if (payByWatchingAd)
                 {
-                    if (ApplyUpgarde(upgradeConfigToBuy))
+                    var showAdResult = await MirraSdkWrapper.ShowRewardedAd();
+
+                    if (showAdResult)
                     {
-                        (gameStateModel.ShowingPopupModel as UpgradesPopupViewModel).UpdateItems();
-                        playerModel.TrySpendMoney(upgradeConfigToBuy.Price);
-                        isSuccess = true;
+                        isSuccess = ProcessUpgrade(upgradeConfigToBuy);
                     }
                 }
                 else
                 {
-                    new NotEnoughtMoneySequenceCommand().Execute(upgradeConfigToBuy.Price.IsGold);
+                    if (playerModel.CanSpendMoney(upgradeConfigToBuy.Price))
+                    {
+                        isSuccess = ProcessUpgrade(upgradeConfigToBuy);
+                        if (isSuccess)
+                        {
+                            playerModel.TrySpendMoney(upgradeConfigToBuy.Price);
+                        }
+                    }
+                    else
+                    {
+                        new NotEnoughtMoneySequenceCommand().Execute(upgradeConfigToBuy.Price.IsGold);
+                    }
                 }
 
                 analyticsManager.SendCustom(AnalyticsManager.EventNameApplyUpgrade,
@@ -58,7 +69,19 @@ namespace Src.Commands
             }
         }
 
-        private bool ApplyUpgarde(UpgradeConfig upgradeConfig)
+        private bool ProcessUpgrade(UpgradeConfig upgradeConfig)
+        {
+            if (ApplyUpgrade(upgradeConfig))
+            {
+                ((UpgradesPopupViewModel)GameStateModel.Instance.ShowingPopupModel).UpdateItems();
+                
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool ApplyUpgrade(UpgradeConfig upgradeConfig)
         {
             var playerModelHolder = PlayerModelHolder.Instance;
             var shopModel = playerModelHolder.ShopModel;

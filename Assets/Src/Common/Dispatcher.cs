@@ -76,6 +76,7 @@ namespace Src.Common
         public Action<ShelfContentPopupViewModel, int> UIShelfContentRemoveProductClicked = delegate { };
         public Action<int> UIWarehousePopupSlotClicked = delegate { };
         public Action<UpgradesPopupItemViewModelBase> UIUpgradePopupBuyClicked = delegate { };
+        public Action<UpgradesPopupItemViewModelBase> UIUpgradePopupAdsClicked = delegate { };
         public Action TutorialActionPerformed = delegate { };
         public Action<BankConfigItem> UIBankItemClicked = delegate { };
         public Action<bool> UIBankAdsItemClicked = delegate { };

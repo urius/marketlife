@@ -9,7 +9,8 @@ namespace Src.View.UI.Popups.Upgrades_Popup
 {
     public class UIUpgradesPopupItemView : MonoBehaviour
     {
-        public Action<UIUpgradesPopupItemView> BuyClicked = delegate { };
+        public event Action<UIUpgradesPopupItemView> BuyClicked = delegate { };
+        public event Action<UIUpgradesPopupItemView> AdsClicked = delegate { };
 
         [SerializeField] private TMP_Text _tittleText;
         [SerializeField] private TMP_Text _decsriptionText;
@@ -20,11 +21,14 @@ namespace Src.View.UI.Popups.Upgrades_Popup
         [SerializeField] private Image _unlockRequirement1Image;
         [SerializeField] private TMP_Text _unlockRequirement2Text;
         [SerializeField] private Image _unlockRequirement2Image;
+        [SerializeField] private Button _adsButton;
+        [SerializeField] private TMP_Text _adsButtonText;
         [SerializeField] private Button _buyButton;
         [SerializeField] private UIPriceLabelView _buyButtonPrice;
 
         public void Awake()
         {
+            _adsButton.AddOnClickListener(OnAdsClicked);
             _buyButton.AddOnClickListener(OnBuyClicked);
         }
 
@@ -33,11 +37,12 @@ namespace Src.View.UI.Popups.Upgrades_Popup
             _iconImage.sprite = sprite;
         }
 
-        public void SetupState(bool isUnlocked, bool isCharged)
+        public void SetupState(bool isUnlocked, bool isCharged, bool getViaAdAvailable)
         {
             _decsriptionText.gameObject.SetActive(isUnlocked);
             _unlockText.gameObject.SetActive(!isUnlocked);
             _buyButton.gameObject.SetActive(!isCharged && isUnlocked);
+            _adsButton.gameObject.SetActive(getViaAdAvailable && !isCharged && isUnlocked);
             _statusText.gameObject.SetActive(isCharged);
         }
 
@@ -67,6 +72,11 @@ namespace Src.View.UI.Popups.Upgrades_Popup
             _statusText.text = text;
         }
 
+        public void SetAdsButtonText(string text)
+        {
+            _adsButtonText.text = text;
+        }
+
         public void SetUnlockState(string text, int requirementsCount)
         {
             _unlockText.gameObject.SetActive(requirementsCount > 0);
@@ -94,6 +104,11 @@ namespace Src.View.UI.Popups.Upgrades_Popup
         private void OnBuyClicked()
         {
             BuyClicked(this);
+        }
+
+        private void OnAdsClicked()
+        {
+            AdsClicked(this);
         }
     }
 }

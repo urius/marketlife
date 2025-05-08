@@ -53,6 +53,7 @@ namespace Src.Systems
             _dispatcher.UIShelfContentRemoveProductClicked += OnUIShelfContentRemoveProductClicked;
             _dispatcher.UIWarehousePopupSlotClicked += OnUIWarehousePopupSlotClicked;
             _dispatcher.UIUpgradePopupBuyClicked += OnUIUpgradePopupBuyClicked;
+            _dispatcher.UIUpgradePopupAdsClicked += OnUIUpgradePopupAdsClicked;
             _dispatcher.MouseCellCoordsUpdated += OnMouseCellCoordsUpdated;
             _dispatcher.BottomPanelFriendsClicked += OnBottomPanelFriendsClicked;
             _dispatcher.BottomPanelWarehouseClicked += OnBottomPanelWarehouseClicked;
@@ -231,7 +232,12 @@ namespace Src.Systems
 
         private void OnUIUpgradePopupBuyClicked(UpgradesPopupItemViewModelBase itemViewModel)
         {
-            new UIUpgradePopupBuyClickCommand().Execute(itemViewModel);
+            new UIUpgradePopupBuyClickCommand().Execute(itemViewModel, payByWatchingAd: false);
+        }
+
+        private void OnUIUpgradePopupAdsClicked(UpgradesPopupItemViewModelBase itemViewModel)
+        {
+            new UIUpgradePopupBuyClickCommand().Execute(itemViewModel, payByWatchingAd: true);
         }
 
         private void OnUIWarehousePopupSlotClicked(int warehouseSlotIndex)

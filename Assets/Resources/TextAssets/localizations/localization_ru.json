@@ -253,5 +253,6 @@
     "mission_description_repaint_walls":"Перекрасить {0} стен",
     "mission_description_expand_shop":"Расширить магазин {0} раз(-а)",
     "mission_description_upgrade_wh_volume":"Увеличить объём склада до {0}",
-    "mission_description_add_wh_cells":"Расширить склад до {0} ячеек"
+    "mission_description_add_wh_cells":"Расширить склад до {0} ячеек",
+    "watch_ad": "реклама"
 }

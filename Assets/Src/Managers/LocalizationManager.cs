@@ -238,6 +238,7 @@ namespace Src.Managers
         public static string PopupDailyMissionsRetreiveReward = "popup_daily_missions_retreive_reward";
         public static string PopupDailyMissionsRetreiveRewardX2 = "popup_daily_missions_retreive_reward_x2";
         public static string PopupDailyMissionsMissionCompleted = "popup_daily_missions_mission_completed";       
+        public static string WatchAd = "watch_ad";       
 
         public static string TutorialTitleDefault = "tutorial_title_default";
         public static string TutorialMessagePrefix = "tutorial_message_";

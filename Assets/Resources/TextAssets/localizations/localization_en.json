@@ -253,5 +253,6 @@
     "mission_description_repaint_walls": "Repaint {0} walls",
     "mission_description_expand_shop": "Expand the store {0} time(s)",
     "mission_description_upgrade_wh_volume": "Increase warehouse volume to {0}",
-    "mission_description_add_wh_cells": "Expand the warehouse to {0} cells"
+    "mission_description_add_wh_cells": "Expand the warehouse to {0} cells",
+    "watch_ad": "AD"
 }

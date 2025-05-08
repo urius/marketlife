@@ -205,17 +205,25 @@ namespace Src.View.UI.Popups.Upgrades_Popup
         private void ActivateItem(UIUpgradesPopupItemView itemView)
         {
             itemView.BuyClicked += OnItemBuyClicked;
+            itemView.AdsClicked += OnItemAdsClicked;
         }
 
         private void DeactivateItem(UIUpgradesPopupItemView itemView)
         {
             itemView.BuyClicked -= OnItemBuyClicked;
+            itemView.AdsClicked -= OnItemAdsClicked;
         }
 
         private void OnItemBuyClicked(UIUpgradesPopupItemView itemView)
         {
             var viewModel = _displayedItems.First(i => i.View == itemView).Model;
             _dispatcher.UIUpgradePopupBuyClicked(viewModel);
+        }
+
+        private void OnItemAdsClicked(UIUpgradesPopupItemView itemView)
+        {
+            var viewModel = _displayedItems.First(i => i.View == itemView).Model;
+            _dispatcher.UIUpgradePopupAdsClicked(viewModel);
         }
 
         private void SetupItem(UIUpgradesPopupItemView itemView, UpgradesPopupItemViewModelBase viewModel)
@@ -226,7 +234,7 @@ namespace Src.View.UI.Popups.Upgrades_Popup
                 var personalConfig = personalViewModel.PersonalConfig;
                 var restWorkTimeSec = _personalModel.GetEndWorkTime(personalConfig) - _gameStateModel.ServerTime;
                 var isWorking = restWorkTimeSec > 0;
-                itemView.SetupState(isUnlocked: true, isWorking);
+                itemView.SetupState(isUnlocked: true, isWorking, getViaAdAvailable: true);
                 UpdatePersonalItemState(itemView, restWorkTimeSec);
                 itemView.SetIconSprite(_spritesProvider.GetPersonalIcon(personalConfig.Key));
                 var hoursStr = string.Format(_loc.GetLocalization(LocalizationKeys.CommonHoursShortFormat), personalConfig.WorkHours);
@@ -246,7 +254,11 @@ namespace Src.View.UI.Popups.Upgrades_Popup
                 var isLockedByFriends = playerFriendsCount < upgradeConfig.UnlockFriends;
                 var isLocked = isLockedByLevel || isLockedByFriends;
                 var isMaxReached = upgradeViewModel.IsMaxReached;
-                itemView.SetupState(!isLocked, isMaxReached);
+                var canPayByWatchingAd = upgradeConfig.UpgradeType
+                                             is UpgradeType.ExpandX or UpgradeType.ExpandY
+                                         && playerLevel < 5;
+                
+                itemView.SetupState(!isLocked, isMaxReached, getViaAdAvailable: canPayByWatchingAd);
                 itemView.SetIconSprite(_spritesProvider.GetUpgradeIcon(upgradeConfig.UpgradeType));
 
                 itemView.SetTitleText(

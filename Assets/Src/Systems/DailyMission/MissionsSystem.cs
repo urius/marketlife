@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using Src.Commands;
 using Src.Common;
 using Src.Managers;
 using Src.Model;
@@ -145,10 +146,7 @@ namespace Src.Systems.DailyMission
         {
             if (_advertStateModel.IsWatched(AdvertTargetType.DailyMissionRewardX2) == false)
             {
-                _advertStateModel.PrepareTarget(AdvertTargetType.DailyMissionRewardX2);
-                _dispatcher.RequestShowAdvert();
-
-                var watchAdsResult = await _advertStateModel.CurrentShowingAdsTask;
+                var watchAdsResult = await new ShowRewardedAdvertCommand().Execute(AdvertTargetType.DailyMissionRewardX2);
                 if (watchAdsResult)
                 {
                     OnUITakeDailyMissionRewardClicked(missionModel, rewardIconWorldPosition);

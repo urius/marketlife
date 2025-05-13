@@ -746,5 +746,6 @@ namespace Src.Model.Configs
     {
         int AdvertDefaultWatchesCount { get; }
         int AdvertWatchCooldownMinutes { get; }
+        int AdvertSingleAdWatchCooldownSeconds { get; }
     }
 }

@@ -12,15 +12,18 @@ namespace Src.Model
         public event Action<AdvertTargetType> WatchStateChanged = delegate { };
         public event Action BankAdvertWatchesCountChanged = delegate { };
         public event Action BankAdvertWatchTimeChanged = delegate { };
+        public event Action LastAdvertWatchTimeChanged = delegate { };
 
         private const string BankAdvertWatchesCountKey = "bank_advert_watches_count";
         private const string BankAdvertWatchTimeKey = "bank_advert_watch_time";
+        private const string LastAdvertWatchTimeKey = "last_advert_watch_time";
 
         private readonly Dictionary<AdvertTargetType, AdvertWatchState> _advertStates = new();
         
         private AdvertTargetType _lastPreparedTarget;
         private int _bankAdvertWatchesCount = -1;
         private int _bankAdvertWatchTime = -1;
+        private int _lastAdvertWatchTime = -1;
         private UniTaskCompletionSource<bool> _currentShowingAdvertStateTcs;
 
         public UniTask<bool> CurrentShowingAdsTask => _currentShowingAdvertStateTcs?.Task ?? UniTask.FromResult(true);
@@ -59,7 +62,26 @@ namespace Src.Model
             {
                 _bankAdvertWatchTime = value;
                 PlayerPrefs.SetInt(BankAdvertWatchTimeKey, _bankAdvertWatchTime);
-                BankAdvertWatchTimeChanged();
+                LastAdvertWatchTimeChanged();
+            }
+        }
+        
+        public int LastAdvertWatchTime
+        {
+            get
+            {
+                if (_lastAdvertWatchTime < 0)
+                {
+                    _lastAdvertWatchTime = PlayerPrefs.GetInt(LastAdvertWatchTimeKey, 0);
+                }
+
+                return _lastAdvertWatchTime;
+            }
+            set
+            {
+                _lastAdvertWatchTime = value;
+                PlayerPrefs.SetInt(LastAdvertWatchTimeKey, _lastAdvertWatchTime);
+                LastAdvertWatchTimeChanged();
             }
         }
 
@@ -140,6 +162,8 @@ namespace Src.Model
         BankCash,
         DailyBonusRewardX2,
         DailyMissionRewardX2,
+        ShopUpgrade,
+        ShopPersonal,
     }
 
     public enum AdvertWatchState

@@ -9,14 +9,11 @@ namespace Src.Commands
         public async void Execute(Vector3[] itemsWorldPositions)
         {
             var advertStateModel = AdvertViewStateModel.Instance;
-            var dispatcher = Dispatcher.Instance;
 
             if (advertStateModel.IsWatched(AdvertTargetType.DailyBonusRewardX2) == false)
             {
-                advertStateModel.PrepareTarget(AdvertTargetType.DailyBonusRewardX2);
-                dispatcher.RequestShowAdvert();
-
-                var watchAdsResult = await advertStateModel.CurrentShowingAdsTask;
+                var watchAdsResult = await new ShowRewardedAdvertCommand().Execute(AdvertTargetType.DailyBonusRewardX2);
+                
                 if (watchAdsResult)
                 {
                     new HandleTakeDailyBonusCommand().Execute(itemsWorldPositions);

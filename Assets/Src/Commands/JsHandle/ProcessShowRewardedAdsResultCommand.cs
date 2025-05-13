@@ -16,6 +16,8 @@ namespace Src.Commands.JsHandle
             var mainConfig = GameConfigManager.Instance.MainConfig;
 
             Debug.Log("ProcessShowRewardedAdsResultCommand: result = " + isSuccessResult);
+
+            advertViewStateModel.LastAdvertWatchTime = gameStateModel.ServerTime;
             
             if (isSuccessResult)
             {

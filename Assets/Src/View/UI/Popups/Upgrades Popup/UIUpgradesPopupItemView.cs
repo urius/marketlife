@@ -1,4 +1,5 @@
 using System;
+using Src.Common;
 using Src.Common_Utils;
 using Src.View.UI.Common;
 using TMPro;
@@ -23,6 +24,7 @@ namespace Src.View.UI.Popups.Upgrades_Popup
         [SerializeField] private Image _unlockRequirement2Image;
         [SerializeField] private Button _adsButton;
         [SerializeField] private TMP_Text _adsButtonText;
+        [SerializeField] private TMP_Text _adsCooldownText;
         [SerializeField] private Button _buyButton;
         [SerializeField] private UIPriceLabelView _buyButtonPrice;
 
@@ -44,6 +46,19 @@ namespace Src.View.UI.Popups.Upgrades_Popup
             _buyButton.gameObject.SetActive(!isCharged && isUnlocked);
             _adsButton.gameObject.SetActive(getViaAdAvailable && !isCharged && isUnlocked);
             _statusText.gameObject.SetActive(isCharged);
+        }
+
+        public void SetAdsButtonCooldown(int cooldown)
+        {
+            var isOnCooldownState = cooldown > 0;
+            _adsButton.interactable = !isOnCooldownState;
+            _adsCooldownText.gameObject.SetActive(isOnCooldownState);
+            _adsButtonText.gameObject.SetActive(!isOnCooldownState);
+
+            if (isOnCooldownState)
+            {
+                _adsCooldownText.text = FormattingHelper.ToSeparatedTimeFormat(cooldown);
+            }
         }
 
         public void SetPrice(bool isGold, int amount)

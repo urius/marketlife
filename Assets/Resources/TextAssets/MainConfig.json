@@ -115,9 +115,9 @@
          "p1": { "key":"Water_1",        "unlock_level":25, "price_per_1000v":"2",  "profit_per_1000v":15,   "demand_1000v_per_hour":5,     "deliver":"00:05",   "group":1,  "amount_per_1000v":10 }
      },     
     "PersonalConfig":{
-        "clean_1": { "key":"icon_personal_2", "price":"2000", "price_per_cell":"20", "unlock_level":3, "work_hours":48 },
-        "sec_1":   { "key":"icon_personal_3", "price":"1500", "price_per_cell":"25", "unlock_level":4, "work_hours":48 },
-        "mer_1":   { "key":"icon_personal_1", "price":"10g",  "price_per_cell":"22", "unlock_level":5, "work_hours":48, "volume_per_hour": 10000 }
+        "clean_1": { "key":"icon_personal_2", "price":"2000", "price_per_cell":"20", "unlock_level":3, "work_hours":12 },
+        "sec_1":   { "key":"icon_personal_3", "price":"1500", "price_per_cell":"25", "unlock_level":4, "work_hours":24 },
+        "mer_1":   { "key":"icon_personal_1", "price":"5g",  "price_per_cell":"22", "unlock_level":5, "work_hours":12, "volume_per_hour": 10000 }
     },
     "WarehouseVolumeUpgradesConfig": [
         {"value":500,   "price":"1g", "unlock_level":0, "unlock_friends":0},

@@ -23,6 +23,8 @@ namespace Src.View.UI.Popups.Upgrades_Popup
         private readonly UpdatesProvider _updatesProvider;
         private readonly PoolCanvasProvider _poolCanvasProvider;
         private readonly FriendsDataHolder _friendsDataHolder;
+        private readonly IAdvertConfig _adsConfig;
+        private readonly AdvertViewStateModel _advertViewStateModel;
         private readonly List<(UIUpgradesPopupItemView View, UpgradesPopupItemViewModelBase Model)> _displayedItems = new(3);
 
         private UpgradesPopupViewModel _viewModel;
@@ -43,7 +45,13 @@ namespace Src.View.UI.Popups.Upgrades_Popup
             _updatesProvider = UpdatesProvider.Instance;
             _poolCanvasProvider = PoolCanvasProvider.Instance;
             _friendsDataHolder = FriendsDataHolder.Instance;
+            _adsConfig = GameConfigManager.Instance.AdvertConfig;
+            _advertViewStateModel = AdvertViewStateModel.Instance;
         }
+
+        private int AdsCooldownSecondsLeft => Mathf.Max(0,
+            _advertViewStateModel.LastAdvertWatchTime + _adsConfig.AdvertSingleAdWatchCooldownSeconds -
+            _gameStateModel.ServerTime);
 
         public async void Mediate()
         {
@@ -84,6 +92,7 @@ namespace Src.View.UI.Popups.Upgrades_Popup
             _viewModel.ItemsUpdated += OnItemsUpdated;
             _viewModel.TabSelected += OnTabSelected;
             _personalModel.PersonalWorkingTimeUpdated += OnPersonalWorkingTimeUpdated;
+            _advertViewStateModel.LastAdvertWatchTimeChanged += OnLastAdvertWatchTimeChanged;
         }
 
         private void Deactivate()
@@ -98,6 +107,7 @@ namespace Src.View.UI.Popups.Upgrades_Popup
             _viewModel.ItemsUpdated -= OnItemsUpdated;
             _viewModel.TabSelected -= OnTabSelected;
             _personalModel.PersonalWorkingTimeUpdated -= OnPersonalWorkingTimeUpdated;
+            _advertViewStateModel.LastAdvertWatchTimeChanged -= OnLastAdvertWatchTimeChanged;
         }
 
         private void OnTabSelected(TabType tabType)
@@ -125,12 +135,23 @@ namespace Src.View.UI.Popups.Upgrades_Popup
 
         private void OnRealtimeSecondPassed()
         {
+            UpdateDisplayedItems();
+        }
+
+        private void OnLastAdvertWatchTimeChanged()
+        {
+            UpdateDisplayedItems();
+        }
+
+        private void UpdateDisplayedItems()
+        {
             foreach (var (View, Model) in _displayedItems)
             {
                 if (Model.ItemType == UpgradesPopupItemType.Personal)
                 {
                     var personalItemViewModel = (Model as UpgradesPopupPersonalItemViewModel);
-                    var restWorkTimeSec = _personalModel.GetEndWorkTime(personalItemViewModel.PersonalConfig) - _gameStateModel.ServerTime;
+                    var restWorkTimeSec =
+                        _personalModel.GetEndWorkTime(personalItemViewModel.PersonalConfig) - _gameStateModel.ServerTime;
                     if (restWorkTimeSec >= 0)
                     {
                         UpdatePersonalItemState(View, restWorkTimeSec);
@@ -140,6 +161,8 @@ namespace Src.View.UI.Popups.Upgrades_Popup
                         }
                     }
                 }
+
+                View.SetAdsButtonCooldown(AdsCooldownSecondsLeft);
             }
         }
 
@@ -279,6 +302,8 @@ namespace Src.View.UI.Popups.Upgrades_Popup
                 }
                 itemView.SetPrice(upgradeConfig.Price.IsGold, upgradeConfig.Price.Value);
             }
+
+            itemView.SetAdsButtonCooldown(AdsCooldownSecondsLeft);
         }
 
         private void SetupUpgradeItemUnlockRequirements(

@@ -22,7 +22,7 @@ namespace Src.Commands
                 
                 if (payByWatchingAd)
                 {
-                    var showAdResult = await MirraSdkWrapper.ShowRewardedAd();
+                    var showAdResult = await new ShowRewardedAdvertCommand().Execute(AdvertTargetType.ShopUpgrade);
 
                     if (showAdResult)
                     {
@@ -53,17 +53,30 @@ namespace Src.Commands
                 var personalConfigToBuy = (viewModel as UpgradesPopupPersonalItemViewModel).PersonalConfig;
                 var isSuccess = false;
                 var price = personalConfigToBuy.GetPrice(shopModel.ShopDesign.Square);
-                if (playerModel.CanSpendMoney(price))
+                if (payByWatchingAd)
                 {
-                    playerModel.TrySpendMoney(price);
-                    shopModel.PersonalModel.SetPersonalWorkingTime(personalConfigToBuy, gameStateModel.ServerTime + personalConfigToBuy.WorkHours * 3600);
-                    isSuccess = true;
+                    var showAdResult = await new ShowRewardedAdvertCommand().Execute(AdvertTargetType.ShopPersonal);
+
+                    if (showAdResult)
+                    {
+                        shopModel.PersonalModel.SetPersonalWorkingTime(personalConfigToBuy,
+                            gameStateModel.ServerTime + personalConfigToBuy.WorkHours * 3600);
+                        isSuccess = true;
+                    }
                 }
                 else
                 {
-                    new NotEnoughtMoneySequenceCommand().Execute(price.IsGold);
+                    if (playerModel.CanSpendMoney(price))
+                    {
+                        playerModel.TrySpendMoney(price);
+                        shopModel.PersonalModel.SetPersonalWorkingTime(personalConfigToBuy, gameStateModel.ServerTime + personalConfigToBuy.WorkHours * 3600);
+                        isSuccess = true;
+                    }
+                    else
+                    {
+                        new NotEnoughtMoneySequenceCommand().Execute(price.IsGold);
+                    }
                 }
-
                 analyticsManager.SendCustom(AnalyticsManager.EventNameHirePersonalUpgrade,
                     ("type", personalConfigToBuy.RawIdStr), ("success", isSuccess));
             }

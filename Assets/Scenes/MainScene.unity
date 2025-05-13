@@ -4726,7 +4726,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _debugUid: 48982
-  _disableSave: 1
+  _disableSave: 0
   _disableTutorial: 1
   _loadDebugConfigVersion: 0
   _prefabsHolder: {fileID: 11400000, guid: ef9b7d8e9f2f24fa5b28642d8858a2d4, type: 2}
@@ -7832,11 +7832,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ab141c1630fe4d1b83dc1b4d474b651, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rectTransform: {fileID: 1512013714}
   _button: {fileID: 1512013715}
   _iconImage: {fileID: 1512013716}
   _notificationPointImage: {fileID: 910083102}
   _notificationCheckImage: {fileID: 2121928354}
-  _rectTransform: {fileID: 1512013714}
 --- !u!1 &1518942245
 GameObject:
   m_ObjectHideFlags: 0

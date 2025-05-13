@@ -12,7 +12,8 @@
     "BillboardUnlockLevel":2,
     "GoldToCashConversionRate":100,
     "AdvertDefaultWatchesCount":10,
-    "AdvertWatchCooldownMinutes":30,
+    "AdvertWatchCooldownMinutes":10,
+    "AdvertSingleAdWatchCooldownSeconds":10,
     "FriendActionsConfig":{
         "take":{"action_id":1, "amount":10, "cooldown_minutes":300, "reset_price_gold":15 },
         "add_unwash":{"action_id":2, "amount":10, "cooldown_minutes":120, "reset_price_gold":6 },

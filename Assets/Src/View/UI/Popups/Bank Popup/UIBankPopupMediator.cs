@@ -37,7 +37,7 @@ namespace Src.View.UI.Popups.Bank_Popup
 
         protected override UIContentPopupView PopupView => _popupView;
 
-        public async override void Mediate()
+        public override async void Mediate()
         {
             _viewModel = _gameStateModel.ShowingPopupModel as BankPopupViewModel;
             TopPadding = 5;
@@ -53,7 +53,7 @@ namespace Src.View.UI.Popups.Bank_Popup
             await _popupView.Appear2Async();
         }
 
-        public async override void Unmediate()
+        public override async void Unmediate()
         {
             base.Unmediate();
             Deactivate();
@@ -174,7 +174,10 @@ namespace Src.View.UI.Popups.Bank_Popup
         private void UpdateAdvertItem(UIBankPopupAdvertItemView itemView, BankAdvertItemViewModel bankAdvertItemViewModel)
         {
             UpdateBaseItem(itemView, bankAdvertItemViewModel);
-            var canWatch = bankAdvertItemViewModel.RestWatchesCount > 0;
+            var restSingleWatchCooldown =
+                Mathf.Max(0, bankAdvertItemViewModel.EndSingleWatchCooldownTime - _gameStateModel.ServerTime);
+            var canWatch = bankAdvertItemViewModel.RestWatchesCount > 0
+                           && restSingleWatchCooldown <= 0;
             itemView.SetAvailable(canWatch);
             if (canWatch)
             {
@@ -183,7 +186,17 @@ namespace Src.View.UI.Popups.Bank_Popup
             }
             else
             {
-                var timeRestStr = FormattingHelper.ToSeparatedTimeFormat(Mathf.Max(0, bankAdvertItemViewModel.ResetWatchesCountTime - _gameStateModel.ServerTime));
+                var cooldownValue = 0;
+                if (bankAdvertItemViewModel.RestWatchesCount <= 0)
+                {
+                    cooldownValue = bankAdvertItemViewModel.ResetWatchesCountTime - _gameStateModel.ServerTime;
+                }
+                else
+                {
+                    cooldownValue = restSingleWatchCooldown;
+                }
+
+                var timeRestStr = FormattingHelper.ToSeparatedTimeFormat(Mathf.Max(0, cooldownValue));
                 var priceText = string.Format(_loc.GetLocalization(LocalizationKeys.PopupBankAdvertAvailableAfterFormat), timeRestStr);
                 itemView.SetPriceText(priceText);
             }
@@ -239,7 +252,7 @@ namespace Src.View.UI.Popups.Bank_Popup
             }
             else
             {
-                _dispatcher.UIBankItemClicked((viewModel as BankBuyableItemViewModel).GetBankconfigItem());
+                _dispatcher.UIBankItemClicked((viewModel as BankBuyableItemViewModel).GetBankConfigItem());
             }
         }
     }

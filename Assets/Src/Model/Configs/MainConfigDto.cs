@@ -15,6 +15,7 @@ namespace Src.Model.Configs
         public int GoldToCashConversionRate;
         public int AdvertDefaultWatchesCount;
         public int AdvertWatchCooldownMinutes;
+        public int AdvertSingleAdWatchCooldownSeconds;
 
         public Dictionary<string, FriendActionConfigDto> FriendActionsConfig;
         public Dictionary<string, ShelfConfigDto> ShelfsConfig;
@@ -26,7 +27,7 @@ namespace Src.Model.Configs
         public Dictionary<string, ProductConfigDto> ProductsConfig;
         public Dictionary<string, PersonalConfigDto> PersonalConfig;
         public Dictionary<string, float> LevelsConfig;
-        public List<UpgradeConfigDto> WarehouseVolumeUpgradesConfig; //Workarond for AOT on WebGL
+        public List<UpgradeConfigDto> WarehouseVolumeUpgradesConfig; //Workaround for AOT on WebGL
         public UpgradeConfigDto[] WarehouseSlotsUpgradesConfig;
         public UpgradeConfigDto[] ExtendShopXUpgradesConfig;
         public UpgradeConfigDto[] ExtendShopYUpgradesConfig;

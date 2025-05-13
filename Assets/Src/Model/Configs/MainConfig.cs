@@ -97,6 +97,7 @@ namespace Src.Model.Configs
             MissionsConfig = missionsConfig;
             AdvertDefaultWatchesCount = dto.AdvertDefaultWatchesCount;
             AdvertWatchCooldownMinutes = dto.AdvertWatchCooldownMinutes;
+            AdvertSingleAdWatchCooldownSeconds = dto.AdvertSingleAdWatchCooldownSeconds;
             //
             _levelsConfig = levelsConfig;
             this.dto = dto;
@@ -106,6 +107,7 @@ namespace Src.Model.Configs
         DailyBonusConfig[] IDailyBonusConfig.DailyBonusConfig => DailyBonusConfig;
         public int AdvertDefaultWatchesCount { get; private set; }
         public int AdvertWatchCooldownMinutes { get; private set; }
+        public int AdvertSingleAdWatchCooldownSeconds { get; private set; }
 
         public UpgradeConfig GetCurrentUpgradeForValue(UpgradeType upgradeType, int value)
         {

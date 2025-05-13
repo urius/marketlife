@@ -19,6 +19,7 @@ namespace Src.Model.Popups
         private readonly IBankAdvertWatchStateProvider _advertWatchStateProvider;
         private readonly int _advertDefaultWatchesCount;
         private readonly int _advertCooldownMinutes;
+        private readonly int _advertSingleAdWatchCooldownSeconds;
 
         public BankPopupViewModel(
             int initialTabIndex,
@@ -35,6 +36,7 @@ namespace Src.Model.Popups
             _advertWatchStateProvider = advertWatchStateProvider;
             _advertDefaultWatchesCount = mainConfig.AdvertDefaultWatchesCount;
             _advertCooldownMinutes = mainConfig.AdvertWatchCooldownMinutes;
+            _advertSingleAdWatchCooldownSeconds = mainConfig.AdvertSingleAdWatchCooldownSeconds;
             UpdateItems();
 
             _bankConfig.ItemsUpdated += OnConfigItemsUpdated;
@@ -43,6 +45,7 @@ namespace Src.Model.Popups
         }
 
         private int ResetWatchesCountTime => _advertWatchStateProvider.BankAdvertWatchTime + _advertCooldownMinutes * 60;
+        private int EndSingleWatchCooldownTime => _advertWatchStateProvider.BankAdvertWatchTime + _advertSingleAdWatchCooldownSeconds;
 
         public IBankItemViewModel[] GoldItems { get; private set; }
         public IBankItemViewModel[] CashItems { get; private set; }
@@ -86,6 +89,7 @@ namespace Src.Model.Popups
             foreach (var item in advertItems)
             {
                 item.UpdateResetWatchesCountTime(ResetWatchesCountTime);
+                item.UpdateEndSingleWatchCooldownTime(EndSingleWatchCooldownTime);
             }
 
             AdvertWatchTimeChanged();
@@ -96,11 +100,11 @@ namespace Src.Model.Popups
             var restWatchesCount = _advertDefaultWatchesCount - _advertWatchStateProvider.BankAdvertWatchesCount;
             var bankAdvertRewardGold = _mainConfig.BankAdvertRewardGold;
             var bankAdvertRewardCash = bankAdvertRewardGold * CalculationHelper.GetGoldToCashConversionRate();
-            GoldItems = new IBankItemViewModel[] { new BankAdvertItemViewModel(isGold: true, bankAdvertRewardGold, restWatchesCount, ResetWatchesCountTime) }
+            GoldItems = new IBankItemViewModel[] { new BankAdvertItemViewModel(isGold: true, bankAdvertRewardGold, restWatchesCount, ResetWatchesCountTime, EndSingleWatchCooldownTime) }
                 .Concat(_bankConfig.GoldItems
                     .Select(c => new BankBuyableItemViewModel(c, _isBuyInBankAllowed)))
                 .ToArray();
-            CashItems = new IBankItemViewModel[] { new BankAdvertItemViewModel(isGold: false, bankAdvertRewardCash, restWatchesCount, ResetWatchesCountTime) }
+            CashItems = new IBankItemViewModel[] { new BankAdvertItemViewModel(isGold: false, bankAdvertRewardCash, restWatchesCount, ResetWatchesCountTime, EndSingleWatchCooldownTime) }
                 .Concat(_bankConfig.CashItems
                     .Select(c => new BankBuyableItemViewModel(c, _isBuyInBankAllowed)))
                 .ToArray();
@@ -129,13 +133,15 @@ namespace Src.Model.Popups
         private int _value;
         private int _restWatchesCount;
         private int _resetWatchesCountTime;
+        private int _endSingleWatchCooldownTime;
 
-        public BankAdvertItemViewModel(bool isGold, int value, int restWatchesCount, int resetWatchesCountTime)
+        public BankAdvertItemViewModel(bool isGold, int value, int restWatchesCount, int resetWatchesCountTime, int endSingleWatchCooldownTime)
         {
             _isGold = isGold;
             _value = value;
             _restWatchesCount = restWatchesCount;
             _resetWatchesCountTime = resetWatchesCountTime;
+            _endSingleWatchCooldownTime = endSingleWatchCooldownTime;
         }
 
         public BankItemRetrieveMethodType RetrieveMethodType => BankItemRetrieveMethodType.Advert;
@@ -143,6 +149,7 @@ namespace Src.Model.Popups
         public int Value => _value;
         public int RestWatchesCount => _restWatchesCount;
         public int ResetWatchesCountTime => _resetWatchesCountTime;
+        public int EndSingleWatchCooldownTime => _endSingleWatchCooldownTime;
 
         public void UpdateWatchesCount(int newValue)
         {
@@ -152,6 +159,11 @@ namespace Src.Model.Popups
         public void UpdateResetWatchesCountTime(int time)
         {
             _resetWatchesCountTime = time;
+        }
+
+        public void UpdateEndSingleWatchCooldownTime(int time)
+        {
+            _endSingleWatchCooldownTime = time;
         }
     }
 
@@ -178,7 +190,7 @@ namespace Src.Model.Popups
         public string LocalizedCurrencyName => _bankConfigItem.LocalizedCurrencyName;
         public bool HaveLocalizedCurrencyName => string.IsNullOrEmpty(_bankConfigItem.LocalizedCurrencyName) == false;
 
-        public BankConfigItem GetBankconfigItem()
+        public BankConfigItem GetBankConfigItem()
         {
             return _bankConfigItem;
         }

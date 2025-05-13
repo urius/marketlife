@@ -24,7 +24,7 @@ namespace Src.Model
         private UniTaskCompletionSource<bool> _currentShowingAdvertStateTcs;
 
         public UniTask<bool> CurrentShowingAdsTask => _currentShowingAdvertStateTcs?.Task ?? UniTask.FromResult(true);
-        
+
         public int BankAdvertWatchesCount
         {
             get
@@ -33,6 +33,7 @@ namespace Src.Model
                 {
                     _bankAdvertWatchesCount = PlayerPrefs.GetInt(BankAdvertWatchesCountKey, 0);
                 }
+
                 return _bankAdvertWatchesCount;
             }
             set
@@ -42,6 +43,7 @@ namespace Src.Model
                 BankAdvertWatchesCountChanged();
             }
         }
+
         public int BankAdvertWatchTime
         {
             get
@@ -50,6 +52,7 @@ namespace Src.Model
                 {
                     _bankAdvertWatchTime = PlayerPrefs.GetInt(BankAdvertWatchTimeKey, 0);
                 }
+
                 return _bankAdvertWatchTime;
             }
             set

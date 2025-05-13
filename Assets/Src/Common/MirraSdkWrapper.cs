@@ -147,14 +147,17 @@ namespace Src.Common
             MirraSDK.Ads.InvokeRewarded(
                 onSuccess: () =>
                 {
+                    Log("Mirra ShowRewardedAd onSuccess");
                     tcs.TrySetResult(true);
                 },
                 onNotReady: () =>
                 {
+                    Log("Mirra ShowRewardedAd onNotReady");
                     tcs.TrySetResult(false);
                 },
                 onAnyClose: () =>
                 {
+                    Log("Mirra ShowRewardedAd onAnyClose");
                     tcs.TrySetResult(false);
                 },
                 rewardTag: "dynamic"

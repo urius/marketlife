@@ -158,7 +158,7 @@ namespace Src.Common
                 onAnyClose: () =>
                 {
                     Log("Mirra ShowRewardedAd onAnyClose");
-                    tcs.TrySetResult(false);
+                    UniTask.DelayFrame(10).ContinueWith(() => tcs.TrySetResult(false));
                 },
                 rewardTag: "dynamic"
             );
@@ -278,6 +278,8 @@ namespace Src.Common
         {
             if (IsCrazyGames)
             {
+                Log("Save to PlayerPrefs");
+                
                 PlayerPrefs.SetString(keyName, value);
                 PlayerPrefs.Save();
             }
@@ -306,7 +308,16 @@ namespace Src.Common
 
         public static string GetString(string keyName)
         {
-            return IsCrazyGames ? PlayerPrefs.GetString(keyName) : MirraSDK.Prefs.GetString(keyName);
+            if (IsCrazyGames)
+            {
+                Log("Load from PlayerPrefs");
+                
+                return PlayerPrefs.GetString(keyName);
+            }
+            else
+            {
+                return MirraSDK.Prefs.GetString(keyName);
+            }
         }
 
         public static void ShareThisGame()

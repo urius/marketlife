@@ -62,7 +62,7 @@ namespace Src.Model
             {
                 _bankAdvertWatchTime = value;
                 PlayerPrefs.SetInt(BankAdvertWatchTimeKey, _bankAdvertWatchTime);
-                LastAdvertWatchTimeChanged();
+                BankAdvertWatchTimeChanged();
             }
         }
         

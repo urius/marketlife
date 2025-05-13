@@ -11,8 +11,12 @@ namespace Src.Commands.LoadSave
     {
         public async UniTask<string> ExecuteAsync(string uid)
         {
+            var isAuthorized = MirraSdkWrapper.IsAuthorized();
+
+            Debug.Log($"Load Data (is User Authorized = {isAuthorized})");
+            
             if (DisabledLogicFlags.IsServerDataDisabled
-                || MirraSdkWrapper.IsAuthorized() == false)
+                || isAuthorized == false)
             {
                 var playerDataStr = MirraSdkWrapper.GetString(Constants.PlayerDataKey);
 

@@ -273,22 +273,37 @@ namespace Src.Common
 
         public static void SaveString(string keyName, string value)
         {
-            MirraSDK.Prefs.SetString(keyName, value);
-            
-            MirraSDK.Prefs.Save();
+            if (IsCrazyGames)
+            {
+                PlayerPrefs.SetString(keyName, value);
+                PlayerPrefs.Save();
+            }
+            else
+            {
+                MirraSDK.Prefs.SetString(keyName, value);
+                MirraSDK.Prefs.Save();
+            }
 
             Log("Save to platform");
         }
         
         public static void DeleteKey(string keyName)
         {
-            MirraSDK.Prefs.DeleteKey(keyName);
-            MirraSDK.Prefs.Save();
+            if (IsCrazyGames)
+            {
+                PlayerPrefs.DeleteKey(keyName);
+                PlayerPrefs.Save();
+            }
+            else
+            {
+                MirraSDK.Prefs.DeleteKey(keyName);
+                MirraSDK.Prefs.Save();
+            }
         }
 
         public static string GetString(string keyName)
         {
-            return MirraSDK.Prefs.GetString(keyName);
+            return IsCrazyGames ? PlayerPrefs.GetString(keyName) : MirraSDK.Prefs.GetString(keyName);
         }
 
         public static void ShareThisGame()

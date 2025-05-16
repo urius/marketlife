@@ -24,18 +24,37 @@ mergeInto(LibraryManager.library, {
   GetCGUser: function(callback) {
      console.log("calling GetCGUser...");
      
-     window.CrazyGames.SDK.user
-         .getUser()
-         .then(user => {
-            const userNameStr = user.username;
-            const userPictureUrlStr = user.profilePictureUrl;
-            
-            console.log(userNameStr);        
-            console.log(userPictureUrlStr); 
-                     
-            const userNameStrCs = stringToNewUTF8(userNameStr);
-            const userPictureUrlStrCs = stringToNewUTF8(userPictureUrlStr);
-            {{{ makeDynCall('vii', 'callback') }}} (userNameStrCs, userPictureUrlStrCs);   
-         });
+     const available = (window.CrazyGames && window.CrazyGames.SDK && window.CrazyGames.SDK.user) ? window.CrazyGames.SDK.user.isUserAccountAvailable : false;
+     
+     console.log("User account system available " + available);
+     
+     if (available) {
+         window.CrazyGames.SDK.user
+             .getUser()
+             .then(user => {
+                
+                console.log("getUser response, user: " + user);
+                
+                if (user) {
+                    const userNameStr = user.username;
+                    const userPictureUrlStr = user.profilePictureUrl;
+                    
+                    console.log(userNameStr);        
+                    console.log(userPictureUrlStr); 
+                             
+                    const userNameStrCs = stringToNewUTF8(userNameStr);
+                    const userPictureUrlStrCs = stringToNewUTF8(userPictureUrlStr);
+                    {{{ makeDynCall('vii', 'callback') }}} (userNameStrCs, userPictureUrlStrCs);  
+                }  else {
+                    const userNameStrCs = stringToNewUTF8("");
+                    const userPictureUrlStrCs = stringToNewUTF8("");
+                    {{{ makeDynCall('vii', 'callback') }}} (userNameStrCs, userPictureUrlStrCs);  
+                }
+             });
+     } else {
+         const userNameStrCs = stringToNewUTF8("");
+         const userPictureUrlStrCs = stringToNewUTF8("");
+         {{{ makeDynCall('vii', 'callback') }}} (userNameStrCs, userPictureUrlStrCs);  
+     }
   }
 });

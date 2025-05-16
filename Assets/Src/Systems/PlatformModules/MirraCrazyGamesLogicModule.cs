@@ -43,7 +43,13 @@ namespace Src.Systems.PlatformModules
 
         private async UniTaskVoid StartInternal()
         {
-            var playerId = await MirraSdkWrapper.GetPlayerId();
+            var userInfo = await GetCrazyGamesUserInfo();
+
+            var playerId = (string.IsNullOrEmpty(userInfo.Name) == false)
+                ? userInfo.Name
+                : GetIdByDeviceInfo();
+
+            Debug.Log("Player id: " + playerId);
             
 #if UNITY_EDITOR
             playerId = DebugDataHolder.Instance.DebugUid;
@@ -63,7 +69,14 @@ namespace Src.Systems.PlatformModules
             
             SubscribeAfterPlayerModelLoaded();
 
-            SaveUserInfoIfNeeded().Forget();
+            SaveUserInfoIfNeeded(userInfo).Forget();
+        }
+
+        private static string GetIdByDeviceInfo()
+        {
+            return MD5Helper.MD5Hash(
+                SystemInfo.deviceName + SystemInfo.deviceModel + SystemInfo.deviceType + SystemInfo.graphicsDeviceType +
+                SystemInfo.graphicsDeviceID);
         }
 
         private void Subscribe()
@@ -203,16 +216,14 @@ namespace Src.Systems.PlatformModules
             return new UserSocialData(dto.id, dto.name, string.Empty, dto.picture_url);
         }
 
-        private async UniTaskVoid SaveUserInfoIfNeeded()
+        private async UniTaskVoid SaveUserInfoIfNeeded(GetUserInfoData userInfo)
         {
             var lastUserInfoSaveTs = PlayerPrefs.GetInt(LastUserInfoSaveTsKey, 0);
             var currentTs = (int)new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds();
-            
+
             if (currentTs - lastUserInfoSaveTs > SecondsInWeek)
             {
                 Debug.Log("ProcessSetUserInfo");
-                
-                var userInfo = await GetCrazyGamesUserInfo();
 
                 var uid = _playerModelHolder.UserModel.Uid;
 
@@ -242,7 +253,7 @@ namespace Src.Systems.PlatformModules
 
 #if UNITY_EDITOR
             _cgGetUserInfoTcs.TrySetResult(
-                new GetUserInfoData { Name = "test Name", PictureUrl = "https://imgs.crazygames.com/userportal/avatars/89.png" });
+                new GetUserInfoData { Name = "De-bugg_", PictureUrl = "https://imgs.crazygames.com/userportal/avatars/89.png" });
 #else
             GetCGUser(GetCGPlayerInfoCallback);
 #endif

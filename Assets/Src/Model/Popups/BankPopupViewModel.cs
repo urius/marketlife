@@ -45,7 +45,7 @@ namespace Src.Model.Popups
         }
 
         private int ResetWatchesCountTime => _advertWatchStateProvider.BankAdvertWatchTime + _advertCooldownMinutes * 60;
-        private int EndSingleWatchCooldownTime => _advertWatchStateProvider.BankAdvertWatchTime + _advertSingleAdWatchCooldownSeconds;
+        private int EndSingleWatchCooldownTime => _advertWatchStateProvider.LastAdvertWatchTime + _advertSingleAdWatchCooldownSeconds;
 
         public IBankItemViewModel[] GoldItems { get; private set; }
         public IBankItemViewModel[] CashItems { get; private set; }

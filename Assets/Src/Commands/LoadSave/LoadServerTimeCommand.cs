@@ -13,7 +13,7 @@ namespace Src.Commands.LoadSave
             var gameStateModel = GameStateModel.Instance;
             var url = Urls.GetTimeURL;
 
-            if (DisabledLogicFlags.IsServerDataDisabled)
+            if (DisabledLogicFlags.IsServerSavesDisabled)
             {
                 var timestampSec = MirraSdkWrapper.GetCurrentTimestampSec();
                 gameStateModel.SetServerTime(timestampSec);

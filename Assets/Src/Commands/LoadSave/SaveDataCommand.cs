@@ -22,8 +22,7 @@ namespace Src.Commands.LoadSave
 
             UnityEngine.Debug.Log("---SaveDataCommand: " + saveFields);
 
-            if (DisabledLogicFlags.IsServerDataDisabled 
-                || MirraSdkWrapper.IsAuthorized() == false)
+            if (DisabledLogicFlags.IsServerSavesDisabled)
             {
                 SaveToPlatform();
                 

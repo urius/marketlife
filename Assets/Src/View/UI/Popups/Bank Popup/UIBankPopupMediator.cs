@@ -176,8 +176,9 @@ namespace Src.View.UI.Popups.Bank_Popup
             UpdateBaseItem(itemView, bankAdvertItemViewModel);
             var restSingleWatchCooldown =
                 Mathf.Max(0, bankAdvertItemViewModel.EndSingleWatchCooldownTime - _gameStateModel.ServerTime);
-            var canWatch = bankAdvertItemViewModel.RestWatchesCount > 0
-                           && restSingleWatchCooldown <= 0;
+            
+            var canWatch = bankAdvertItemViewModel.RestWatchesCount > 0 && restSingleWatchCooldown <= 0;
+            
             itemView.SetAvailable(canWatch);
             if (canWatch)
             {

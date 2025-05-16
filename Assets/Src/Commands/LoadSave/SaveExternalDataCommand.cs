@@ -17,7 +17,7 @@ namespace Src.Commands.LoadSave
 #if UNITY_EDITOR
             if (DebugDataHolder.Instance.IsSaveDisabled == true) return true;
 #endif
-            if (DisabledLogicFlags.IsServerDataDisabled || DisabledLogicFlags.IsFriendsLogicDisabled) return true;
+            if (DisabledLogicFlags.IsServerSavesDisabled || DisabledLogicFlags.IsFriendsLogicDisabled) return true;
 
             var dataToSave = GetExportData(userModel.ExternalActionsModel);
             var dataToSaveStr = JsonConvert.SerializeObject(dataToSave);

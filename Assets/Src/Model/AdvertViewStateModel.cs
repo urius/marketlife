@@ -151,6 +151,7 @@ namespace Src.Model
 
         int BankAdvertWatchesCount { get; }
         int BankAdvertWatchTime { get; }
+        int LastAdvertWatchTime { get; }
     }
 
     public enum AdvertTargetType

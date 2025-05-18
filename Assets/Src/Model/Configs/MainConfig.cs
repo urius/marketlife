@@ -25,7 +25,7 @@ public class MainConfig :
     public readonly int QuickDeliverPriceGoldPerHour;
     public readonly int ActionDefaultAmount;
     public readonly int ActionDefaultCooldownMinutes;
-    public readonly int ShareOfflineReportRewardGold = 1;
+    public readonly int DefaultShareOfflineReportRewardGold = 1;
     public readonly int BankAdvertRewardGold = 1;
     public readonly int BillboardUnlockLevel;
     public readonly int MaxBillboardTextLength = 128;

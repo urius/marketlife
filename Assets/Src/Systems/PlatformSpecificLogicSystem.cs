@@ -230,8 +230,9 @@ public class VKLogicModule : PlatformSpecificLogicModuleBase
     private void OnUIOfflineReportShareClicked(Vector3 buttonWorldPosition)
     {
         var offlineReportPopupModel = _gameStateModel.ShowingPopupModel as OfflineReportPopupViewModel;
-        var config = GameConfigManager.Instance.MainConfig;
-        _wallPostContext = new WallPostContext(config.ShareOfflineReportRewardGold, buttonWorldPosition);
+        var rewardGold = RewardsHelper.GetGoldRewardForOfflineShare();
+        
+        _wallPostContext = new WallPostContext(rewardGold, buttonWorldPosition);
         var payload = new PostOfflineRevenueJsPayload(
             offlineReportPopupModel.ReportModel.CalculationHours,
             offlineReportPopupModel.ReportModel.CalculationMinutes,

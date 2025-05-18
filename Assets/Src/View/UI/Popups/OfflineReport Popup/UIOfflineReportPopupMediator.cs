@@ -13,7 +13,6 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
     private readonly LocalizationManager _loc;
     private readonly SpritesProvider _spritesProvider;
     private readonly Dispatcher _dispatcher;
-    private readonly MainConfig _config;
     private readonly AdvertViewStateModel _advertViewStateModel;
     private readonly FriendsDataHolder _friendsHolder;
     private readonly ColorsHolder _colorsHolder;
@@ -35,7 +34,6 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
         _loc = LocalizationManager.Instance;
         _spritesProvider = SpritesProvider.Instance;
         _dispatcher = Dispatcher.Instance;
-        _config = GameConfigManager.Instance.MainConfig;
         _advertViewStateModel = AdvertViewStateModel.Instance;
         _friendsHolder = FriendsDataHolder.Instance;
         _colorsHolder = ColorsHolder.Instance;
@@ -53,7 +51,7 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
         _popupView.SetTitleText(string.Format(_loc.GetLocalization(LocalizationKeys.PopupOfflineReportTitleFormat), titleTimePassedStr));
         _popupView.SetupTabButtons(_viewModel.Tabs.Select(ToTabName).ToArray());
         _popupView.SetShareButtonText(_loc.GetLocalization(LocalizationKeys.CommonShare));
-        _popupView.SetShareRevenueButtonText($"+{_config.ShareOfflineReportRewardGold}");
+        _popupView.SetShareRevenueButtonText($"+{RewardsHelper.GetGoldRewardForOfflineShare()}");
         _popupView.SetAdsButtonVisibility(_viewModel.ProfitFromSell > 0);
         ShowTab(0);
 
@@ -151,6 +149,8 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
         _popupView.SetAdsButtonInteractable(
             _advertViewStateModel.IsWatched(AdvertTargetType.OfflineProfitX2) == false
             || _advertViewStateModel.IsWatched(AdvertTargetType.OfflineExpX2) == false);
+        
+        _popupView.SetShareButtonVisiblity(true);
 
         if (_advertViewStateModel.IsWatched(AdvertTargetType.OfflineProfitX2) == false)
         {
@@ -164,7 +164,6 @@ public class UIOfflineReportPopupMediator : UIContentPopupMediator
         else
         {
             _popupView.SetAdsButtonVisibility(false);
-            _popupView.SetShareButtonVisiblity(true);
             _popupView.SetShareButtonInteractable(_shareSuccessReceived == false);
         }
     }
